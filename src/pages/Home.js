@@ -1,8 +1,17 @@
 import React from 'react';
-// import Home from './Home';
 
 // requisito 1
 class Home extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      questions: [],
+    }
+  }
+
+  
+
   render() {
     return (
 
