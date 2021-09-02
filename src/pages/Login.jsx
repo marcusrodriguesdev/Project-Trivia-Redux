@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { getToken } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -45,6 +48,7 @@ class Login extends Component {
   }
 
   render() {
+    const { getTokenProps } = this.props;
     const { validEmail, validName } = this.state;
     return (
       <form>
@@ -64,16 +68,27 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          disabled={ !validName || !validEmail }
-          type="button"
-          data-testid="btn-play"
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            disabled={ !validName || !validEmail }
+            type="button"
+            data-testid="btn-play"
+            onClick={ getTokenProps }
+          >
+            Jogar
+          </button>
+        </Link>
       </form>
     );
   }
 }
 
-export default connect()(Login);
+const mapDispatchToProps = (dispatch) => ({
+  getTokenProps: () => dispatch(getToken()),
+});
+
+Login.propTypes = {
+  getTokenProps: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);

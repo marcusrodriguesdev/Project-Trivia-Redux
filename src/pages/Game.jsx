@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 class Game extends Component {
   render() {
     return (
-      <div>asdasd</div>
+      <div>TELA GAMER</div>
     );
   }
 }
