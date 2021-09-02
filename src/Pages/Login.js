@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setUser as setUserAction } from '../Actions';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { fetchAPI } from '../Reducers/index';
+
 
 class Login extends Component {
   constructor(props) {
@@ -48,6 +50,8 @@ class Login extends Component {
   }
 
   render() {
+    const { setUser } = this.props;
+
     return (
       <div>
         <label htmlFor="input-player-name">
@@ -74,6 +78,7 @@ class Login extends Component {
           type="submit"
           data-testid="btn-play"
           disabled={ !this.canBeSubmitted() }
+          onClick={ () => setUser(this.state) }
         >
           Jogar
         </button>
@@ -100,6 +105,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
   fetchAPItoken: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   history: PropTypes.shape({
@@ -113,6 +119,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAPItoken: () => dispatch(fetchAPI()),
+  setUser: (user) => dispatch(setUserAction(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
