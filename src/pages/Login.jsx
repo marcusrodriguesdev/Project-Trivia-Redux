@@ -1,5 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { tokenActionThunk } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -7,12 +9,18 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.loginValidator = this.loginValidator.bind(this);
     this.handleClickConfig = this.handleClickConfig.bind(this);
+    this.buttonChange = this.buttonChange.bind(this);
+
     this.state = {
       name: '',
       email: '',
       buttonValidator: true,
-      redirect: false,
     };
+  }
+
+  componentDidMount() {
+    const { tokenRequest } = this.props;
+    tokenRequest();
   }
 
   handleChange({ target }) {
@@ -21,7 +29,9 @@ class Login extends React.Component {
   }
 
   handleClickConfig() {
-    this.setState({ redirect: true });
+    const { history } = this.props;
+
+    history.push('/config');
   }
 
   loginValidator() {
@@ -34,9 +44,15 @@ class Login extends React.Component {
     }
   }
 
+  buttonChange() {
+    const { history, token } = this.props;
+
+    localStorage.token = token;
+    history.push('/game');
+  }
+
   render() {
     const { email, name, buttonValidator, redirect } = this.state;
-    if (redirect) return <Redirect to="/config" />;
     return (
       <form method="get">
         <label htmlFor="email">
@@ -79,4 +95,16 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  tokenRequest: PropTypes.func,
+}.isRequired;
+
+const mapStateToProps = ({ token }) => ({
+  token,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  tokenRequest: () => dispatch(tokenActionThunk()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
