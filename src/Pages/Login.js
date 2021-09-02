@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import logo from '../trivia.png';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Input from '../Components/Input';
 import Button from '../Components/Button';
 import fetchAPI from '../services/fetchAPI';
-import { connect } from 'react-redux';
+import logo from '../trivia.png';
 import { saveToken } from '../Redux/Action/index';
 
 class Login extends Component {
@@ -98,6 +99,11 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf(PropTypes.func),
+  getToken: PropTypes.func,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   getToken: (token) => dispatch(saveToken(token)),
