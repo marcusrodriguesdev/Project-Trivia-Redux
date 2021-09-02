@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
-import Header from '../components/Header';
 import Input from '../components/Input';
 import { logged } from '../redux/actions';
 
@@ -71,7 +70,6 @@ class Login extends React.Component {
           testid="btn-play"
           disable={ btnStatus }
         />
-        <Header />
       </div>
     );
   }
