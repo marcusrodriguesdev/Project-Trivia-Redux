@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import fecthApiToken from '../services/fetchApiToken';
 // import logo from '../trivia.png';
@@ -46,9 +47,6 @@ class Login extends React.Component {
 
     return (
       <div>
-        {/* <header className="App-header">
-          <img src={ logo } className="App-logo" alt="logo" />
-        </header> */}
         <form className="main-form">
           <label htmlFor="name">
             <input
@@ -82,6 +80,14 @@ class Login extends React.Component {
           >
             PLAY
           </button>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Settings
+            </button>
+          </Link>
         </form>
       </div>
     );
