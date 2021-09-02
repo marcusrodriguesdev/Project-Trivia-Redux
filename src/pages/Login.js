@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { setPlayerToken } from '../actions';
 import '../App.css';
 import logo from '../trivia.png';
@@ -67,6 +68,14 @@ class Login extends React.Component {
           >
             Jogar
           </button>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
         </header>
       </div>
     );
