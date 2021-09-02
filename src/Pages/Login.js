@@ -5,7 +5,7 @@ import Input from '../Components/Input';
 import Button from '../Components/Button';
 import fetchAPI from '../services/fetchAPI';
 import logo from '../trivia.png';
-import { addName, saveToken } from '../Redux/Action/index';
+import { addName, saveToken } from '../Redux/Action';
 
 class Login extends Component {
   constructor(props) {
