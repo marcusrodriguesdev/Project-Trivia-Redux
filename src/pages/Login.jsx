@@ -13,15 +13,22 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.validateButton = this.validateButton.bind(this);
+  }
+
+  validateButton() {
+    const { name: stateName, email } = this.state;
+
+    if (stateName === '' || email === '') {
+      this.setState({ btnStatus: true });
+    } else {
+      this.setState({ btnStatus: false });
+    }
   }
 
   handleChange({ target: { name, value } }) {
-    const { name: stateName, email } = this.state;
-
-    this.setState({
-      [name]: value,
-    }, () => {
-      this.setState({ btnStatus: !stateName || !email ? true : false });
+    this.setState({ [name]: value }, () => {
+      this.validateButton();
     });
   }
 
@@ -32,7 +39,7 @@ class Login extends React.Component {
       <div>
         <Input
           type="text"
-          testId="input-player-name"
+          testid="input-player-name"
           id="name"
           label="Name"
           name="name"
@@ -40,7 +47,7 @@ class Login extends React.Component {
         />
         <Input
           type="email"
-          testId="input-player-email"
+          testid="input-gravatar-email"
           id="email"
           label="Email"
           name="email"
@@ -49,7 +56,7 @@ class Login extends React.Component {
         <Button
           label="Jogar"
           type="button"
-          testeId="btn-play"
+          testid="btn-play"
           disable={ btnStatus }
         />
       </div>
