@@ -2,6 +2,7 @@ const LOGIN = 'LOGIN';
 export const INITIAL_STATE = {
   name: '',
   email: '',
+  profile: '',
 };
 
 function loginReducer(state = INITIAL_STATE, action) {
@@ -12,6 +13,7 @@ function loginReducer(state = INITIAL_STATE, action) {
       ...state,
       name: payload.name,
       email: payload.email,
+      profile: payload.profile,
     };
 
   default:

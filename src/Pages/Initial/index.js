@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import propTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
+
+import PropTypes from 'prop-types';
 import Login from '../../actions';
 
 class Initial extends Component {
@@ -11,6 +14,7 @@ class Initial extends Component {
       name: '',
       email: '',
       disable: true,
+      profile: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,11 +28,13 @@ class Initial extends Component {
       this.setState({
         [id]: value,
         disable: false,
+        profile: md5(email).toString(),
       });
     } else {
       this.setState({
         [id]: value,
         disable: true,
+        profile: md5(email).toString(),
       });
     }
   }
@@ -39,9 +45,11 @@ class Initial extends Component {
 
     localStorage.setItem('token', token.token);
 
-    const { name, email } = this.state;
-    const { Login: LoginAction } = this.props;
-    LoginAction(name, email);
+    const { name, email, profile } = this.state;
+    const { Login: LoginAction, history } = this.props;
+    LoginAction(name, email, profile);
+
+    history.push('/jogo');
   }
 
   render() {
@@ -81,11 +89,12 @@ class Initial extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  Login: (name, email) => dispatch(Login(name, email)),
+  Login: (name, email, profile) => dispatch(Login(name, email, profile)),
 });
 
-Initial.propTypes = {
-  Login: propTypes.func.isRequired,
-};
-
 export default connect(null, mapDispatchToProps)(Initial);
+
+Initial.propTypes = {
+  Login: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.string).isRequired,
+};
