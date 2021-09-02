@@ -9,6 +9,7 @@ class Feedback extends React.Component {
       name: 'teste',
       score: 1,
       message: '',
+      correctAnswers: 0,
     };
   }
 
@@ -25,15 +26,19 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { picture, name, score, message } = this.state;
+    const { picture, name, score, message, correctAnswers } = this.state;
 
     return (
-      <header>
-        <img src={ picture } alt="foto de perfil" data-testid="header-profile-picture" />
-        <h4 data-testid="header-player-name">{ name }</h4>
-        <h6 data-testid="header-score">{ score }</h6>
+      <div>
+        <header>
+          <img src={ picture } alt="foto" data-testid="header-profile-picture" />
+          <h4 data-testid="header-player-name">{ name }</h4>
+          <h6 data-testid="header-score">{ score }</h6>
+        </header>
         <h2 data-testid="feedback-text">{ message }</h2>
-      </header>
+        <h6 data-testid="feedback-total-score">{score}</h6>
+        <h6 data-testid="feedback-total-question">{ correctAnswers }</h6>
+      </div>
     );
   }
 }
