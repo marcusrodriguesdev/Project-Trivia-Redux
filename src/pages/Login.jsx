@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // import logo from '../trivia.png';
 
@@ -35,9 +36,6 @@ class Login extends React.Component {
     const { name, email, validation } = this.state;
     return (
       <div>
-        {/* <header className="App-header">
-          <img src={ logo } className="App-logo" alt="logo" />
-        </header> */}
         <form className="main-form">
           <label htmlFor="name">
             <input
@@ -70,6 +68,14 @@ class Login extends React.Component {
           >
             PLAY
           </button>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Settings
+            </button>
+          </Link>
         </form>
       </div>
     );
