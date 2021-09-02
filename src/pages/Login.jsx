@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { getTokenThunk } from '../redux/actions';
 // import trivia from '../trivia.png';
 
 class Login extends React.Component {
@@ -12,6 +16,12 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { token } = this.props;
+    localStorage.setItem('token', token);
   }
 
   handleChange({ target }) {
@@ -30,9 +40,13 @@ class Login extends React.Component {
     }
   }
 
+  handleClick() {
+    const { fetchToken } = this.props;
+    fetchToken();
+  }
+
   render() {
     const { name, email, validEmail, validName } = this.state;
-    console.log(validEmail);
     return (
     //   <img src={ trivia } alt="trivia" />
       <form>
@@ -57,17 +71,29 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          type="button"
-          disabled={ !validEmail || !validName }
-          data-testid="btn-play"
-          onClick=""
+        <Link
+          to="/game"
         >
-          Jogar
-        </button>
+          <button
+            type="button"
+            disabled={ !validEmail || !validName }
+            data-testid="btn-play"
+            onClick={ this.handleClick }
+          >
+            Jogar
+          </button>
+        </Link>
       </form>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  fetchToken: () => dispatch(getTokenThunk()),
+});
+
+Login.propTypes = {
+  fetchToken: PropTypes.func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);
