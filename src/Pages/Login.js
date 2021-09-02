@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { setUser as setUserAction } from '../Actions';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { fetchAPI } from '../Reducers/index';
 
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { setUser as setUserAction, getTokenApi as getTokenApiAction } from '../Actions';
 
 class Login extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.canBeSubmitted = this.canBeSubmitted.bind(this);
     this.handleSettingsButton = this.handleSettingsButton.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handlePlayButton = this.handlePlayButton.bind(this);
   }
 
   handleChange({ target }) {
@@ -29,10 +28,12 @@ class Login extends Component {
     });
   }
 
-  handleClick() {
-    const { fetchAPItoken, token } = this.props;
-    fetchAPItoken();
+  handlePlayButton() {
+    const { getToken, token, history, setUser } = this.props;
+    getToken();
+    setUser(this.state);
     localStorage.setItem('token', token);
+    history.push('/trivia');
   }
 
   canBeSubmitted() {
@@ -50,8 +51,6 @@ class Login extends Component {
   }
 
   render() {
-    const { setUser } = this.props;
-
     return (
       <div>
         <label htmlFor="input-player-name">
@@ -78,7 +77,7 @@ class Login extends Component {
           type="submit"
           data-testid="btn-play"
           disabled={ !this.canBeSubmitted() }
-          onClick={ () => setUser(this.state) }
+          onClick={ this.handlePlayButton }
         >
           Jogar
         </button>
@@ -87,16 +86,6 @@ class Login extends Component {
           data-testid="btn-settings"
           onClick={ this.handleSettingsButton }
         >
-          <Link to="/game">
-            <button
-              disabled={ btnDisable }
-              type="button"
-              data-testid="btn-play"
-              onClick={ () => this.handleClick() }
-            >
-              Jogar
-            </button>
-          </Link>
           Settings
         </button>
       </div>
@@ -106,19 +95,19 @@ class Login extends Component {
 
 Login.propTypes = {
   setUser: PropTypes.func.isRequired,
-  fetchAPItoken: PropTypes.func.isRequired,
+  getToken: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  token: state.login.token,
+const mapStateToProps = ({ trivia: { token } }) => ({
+  token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchAPItoken: () => dispatch(fetchAPI()),
+  getToken: (token) => dispatch(getTokenApiAction(token)),
   setUser: (user) => dispatch(setUserAction(user)),
 });
 

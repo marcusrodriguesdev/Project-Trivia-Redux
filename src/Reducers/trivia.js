@@ -1,8 +1,6 @@
 import ACTIONS from '../Actions/index';
 
 const INITIAL_STATE = {
-  name: '',
-  email: '',
   token: '',
 };
 
@@ -12,6 +10,11 @@ function triviaReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       ...action.payload,
+    };
+  case ACTIONS.GET_TOKEN_SUCCESS:
+    return {
+      ...state,
+      token: action.payload,
     };
   default:
     return state;
