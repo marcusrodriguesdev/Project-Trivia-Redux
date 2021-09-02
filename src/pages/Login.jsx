@@ -25,7 +25,8 @@ class Login extends Component {
 
   validateEmailAndUser() {
     const { email, user } = this.state;
-    if (email.length > 0 && user.length > 0) {
+    const emailPattern = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/i;
+    if (emailPattern.test(email) && user.length > 0) {
       return false;
     }
     return true;
