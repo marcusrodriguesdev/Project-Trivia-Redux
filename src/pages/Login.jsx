@@ -1,6 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import Button from '../components/Button';
+import Header from '../components/Header';
 import Input from '../components/Input';
+import { logged } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,6 +18,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.validateButton = this.validateButton.bind(this);
+    this.submitButton = this.submitButton.bind(this);
   }
 
   validateButton() {
@@ -24,6 +29,12 @@ class Login extends React.Component {
     } else {
       this.setState({ btnStatus: false });
     }
+  }
+
+  submitButton() {
+    const { getInfo } = this.props;
+    const { name } = this.state;
+    getInfo(name);
   }
 
   handleChange({ target: { name, value } }) {
@@ -56,12 +67,22 @@ class Login extends React.Component {
         <Button
           label="Jogar"
           type="button"
+          click={ this.submitButton }
           testid="btn-play"
           disable={ btnStatus }
         />
+        <Header />
       </div>
     );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  getInfo: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getInfo: (value) => dispatch(logged(value)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
