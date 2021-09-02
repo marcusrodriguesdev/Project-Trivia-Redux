@@ -1,11 +1,11 @@
 import getToken from '../../Services/getToken';
 
-export const CLICK_BUTTON_LOGIN = 'CLICK_BUTTON_LOGIN';
+export const SET_DATA_USER = 'CLICK_BUTTON_LOGIN';
 
 export const SET_TOKEN = 'SET_TOKEN';
 
-export const ClickButtonLogin = (payload) => ({
-  type: CLICK_BUTTON_LOGIN,
+export const setDataUser = (payload) => ({
+  type: SET_DATA_USER,
   payload,
 });
 

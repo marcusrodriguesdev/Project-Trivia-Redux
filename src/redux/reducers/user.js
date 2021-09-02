@@ -1,14 +1,14 @@
-import { CLICK_BUTTON_LOGIN } from '../actions';
+import { SET_DATA_USER } from '../actions';
 
 const ESTADO_INICIAL = {
-  nome: '',
+  user: '',
   email: '',
 };
 
 function userReducer(state = ESTADO_INICIAL, action) {
   const { payload, type } = action;
   switch (type) {
-  case CLICK_BUTTON_LOGIN:
+  case SET_DATA_USER:
     return {
       ...state,
       ...payload,

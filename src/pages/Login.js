@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import logo from '../trivia.png';
-
+import { setDataUser } from '../redux/actions';
 // requisito 1
 class Login extends React.Component {
   constructor() {
@@ -31,8 +32,12 @@ class Login extends React.Component {
   }
 
   handlerClick() {
-    const { history } = this.props;
+    const { history, setData } = this.props;
     history.push('/game');
+    const userData = this.state;
+    delete userData.emailValidation;
+    delete userData.userValidation;
+    setData(userData);
   }
 
   render() {
@@ -82,7 +87,11 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToPros = (dispatch) => ({
+  setData: (payload) => dispatch(setDataUser(payload)),
+});
+
+export default connect(null, mapDispatchToPros)(Login);
 
 Login.propTypes = {
   history: PropTypes.objectOf(String).isRequired,
