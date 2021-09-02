@@ -62,7 +62,7 @@ export default class Login extends React.Component {
           Email :
           <input
             name="email"
-            type="text"
+            type="email"
             data-testid="input-gravatar-email"
             onChange={ (event) => this.handleChange(event) }
           />
@@ -76,6 +76,11 @@ export default class Login extends React.Component {
             onClick={ this.saveTokenInLocalStorage }
           >
             Jogar
+          </button>
+        </Link>
+        <Link to="/config">
+          <button type="button" data-testid="btn-settings">
+            Configuracoes
           </button>
         </Link>
       </form>
