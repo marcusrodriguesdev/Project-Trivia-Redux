@@ -5,10 +5,16 @@ import Proptypes from 'prop-types';
 import { fetchTokenThunk } from '../redux/actions';
 
 class PlayButton extends Component {
-  handleClick() {
-    const { fetchToken, history } = this.props;
-    const token = fetchToken();
-    localStorage.setItem({ token });
+  constructor() {
+    super();
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  async handleClick() {
+    const { fetchToken, history, token } = this.props;
+    await fetchToken();
+    localStorage.setItem('token', token);
     history.push('/jogar');
   }
 
@@ -33,10 +39,15 @@ const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(fetchTokenThunk()),
 });
 
-export default connect(null, mapDispatchToProps)(PlayButton);
+const mapStateToProps = (state) => ({
+  token: state.myReducer.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
 
 PlayButton.propTypes = {
-  history: Proptypes.objectOf.isRequired,
-  buttonCheck: Proptypes.func.isRequired,
   fetchToken: Proptypes.func.isRequired,
+  history: Proptypes.objectOf.isRequired,
+  token: Proptypes.string.isRequired,
+  buttonCheck: Proptypes.func.isRequired,
 };
