@@ -6,6 +6,6 @@ export default class Feedback extends Component {
       <div>
         Feedback
       </div>
-    )
+    );
   }
 }

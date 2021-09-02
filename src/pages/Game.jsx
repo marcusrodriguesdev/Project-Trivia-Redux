@@ -6,6 +6,6 @@ export default class Game extends Component {
       <div>
         Game
       </div>
-    )
+    );
   }
 }
