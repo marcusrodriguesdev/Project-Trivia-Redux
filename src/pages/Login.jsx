@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NameInput from '../components/NameInput';
 import EmailInput from '../components/EmailInput';
 import logo from '../trivia.png';
+import PlayButton from '../components/PlayButton';
 
 class Login extends Component {
   constructor(props) {
@@ -28,13 +29,9 @@ class Login extends Component {
           <img src={ logo } className="App-logo" alt="logo" />
           <NameInput handleChange={ this.handleChange } value={ nameInput } />
           <EmailInput handleChange={ this.handleChange } value={ emailInput } />
-          <button
-            data-testid="btn-play"
-            type="button"
-            disabled={ !(nameInput.length && emailInput.length) }
-          >
-            Login
-          </button>
+          <PlayButton
+            buttonCheck={ !(nameInput.length && emailInput.length) }
+          />
         </header>
       </div>
     );
