@@ -1,13 +1,25 @@
-import { TYPE_USER } from '../actions';
+import { ADD_TOKEN } from '../actions/index';
 
 const initialState = {
-  email: '',
+  player: {
+    name: '',
+    assertions: '',
+    score: '',
+    gravatarEmail: '',
+  },
+  ranking: [
+    { name: '',
+      score: 0,
+      picture: '',
+    },
+  ],
+  token: '',
 };
 
 const user = (state = initialState, action) => {
   switch (action.type) {
-  case TYPE_USER:
-    return { ...state, email: action.payload };
+  case ADD_TOKEN:
+    return { ...state, token: action.payload };
   default:
     return state;
   }
