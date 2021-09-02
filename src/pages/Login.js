@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { saveName, saveEmail } from '../actions/index';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -11,6 +14,7 @@ export default class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.saveTokenInLocalStorage = this.saveTokenInLocalStorage.bind(this);
+    this.saveNameAndEmail = this.saveNameAndEmail.bind(this);
   }
 
   async getToken() {
@@ -44,6 +48,14 @@ export default class Login extends React.Component {
     }
   }
 
+  async saveNameAndEmail() {
+    const { saveUserName, saveUserEmail } = this.props;
+    const { name, email } = this.state;
+    await this.saveTokenInLocalStorage();
+    saveUserName(name);
+    saveUserEmail(email);
+  }
+
   render() {
     const { btnDisabled } = this.state;
     return (
@@ -73,7 +85,7 @@ export default class Login extends React.Component {
             data-testid="btn-play"
             type="button"
             disabled={ btnDisabled }
-            onClick={ this.saveTokenInLocalStorage }
+            onClick={ this.saveNameAndEmail }
           >
             Jogar
           </button>
@@ -87,3 +99,15 @@ export default class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = {
+  saveUserEmail: PropTypes.func.isRequired,
+  saveUserName: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  saveUserName: (state) => dispatch(saveName(state)),
+  saveUserEmail: (state) => dispatch(saveEmail(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
