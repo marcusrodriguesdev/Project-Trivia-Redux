@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './style.css';
+
 class Login extends Component {
   constructor() {
     super();
@@ -29,7 +31,7 @@ class Login extends Component {
 
     return (
       <div>
-        <form>
+        <form className="login-form">
           <input
             data-testid="input-player-name"
             data-validation="validName"
