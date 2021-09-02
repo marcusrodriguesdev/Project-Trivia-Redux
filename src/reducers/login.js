@@ -1,4 +1,4 @@
-import { SET_NAME, SET_TOKEN } from '../actions';
+import { SET_NAME } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -12,13 +12,7 @@ function loginReducer(state = INITIAL_STATE, action) {
   case SET_NAME:
     return {
       ...state,
-      name: action.payload.name,
-      gravatarEmail: action.payload.email,
-    };
-  case SET_TOKEN:
-    return {
-      ...state,
-      token: action.payload,
+      name: action.state.login,
     };
   default:
     return state;
