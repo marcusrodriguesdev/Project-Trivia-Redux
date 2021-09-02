@@ -13,7 +13,7 @@ class Login extends Component {
       email: '',
     };
     this.handleChanges = this.handleChanges.bind(this);
-    this.saveLocalStorage=this.saveLocalStorage.bind(this);
+    this.saveLocalStorage = this.saveLocalStorage.bind(this);
   }
 
   handleChanges({ target: { name, value } }) {
