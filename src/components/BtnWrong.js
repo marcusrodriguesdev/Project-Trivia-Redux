@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class BtnWrong extends Component {
   render() {
@@ -12,3 +13,8 @@ export default class BtnWrong extends Component {
     );
   }
 }
+
+BtnWrong.propTypes = {
+  wrong: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+};

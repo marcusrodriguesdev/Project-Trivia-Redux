@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import BtnCorrect from '../components/BtnCorrect';
 import BtnWrong from '../components/BtnWrong';
+
 import { getQuestionsThunk } from '../redux/actions';
 
 class GameScreen extends React.Component {
@@ -45,6 +48,12 @@ class GameScreen extends React.Component {
   }
 }
 
+GameScreen.propTypes = {
+  token: PropTypes.string.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+};
+
 const mapStateToProps = (state) => ({
   token: state.login.token,
   questions: state.questions.questions,
@@ -55,4 +64,5 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getQuestionsThunk(token));
   },
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);
