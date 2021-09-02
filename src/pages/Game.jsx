@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Game extends React.Component {
-  componentDidUpdate() {
-    this.setToken();
-  }
-
   setToken() {
     const { savedToken } = this.props;
     localStorage.setItem('token', savedToken);
   }
 
   render() {
+    this.setToken();
+
     return (
       <div>Game</div>
     );
