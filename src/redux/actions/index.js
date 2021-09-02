@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { getToken } from '../../services/questionApi';
 
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const SET_TOKEN = 'SET_TOKEN';
@@ -13,6 +13,8 @@ export function setToken(token) {
 
 export const fetchToken = () => async (dispatch) => {
   dispatch(requestToken);
-  const request = await axios('https://opentdb.com/api_token.php?command=request');
-  return dispatch(setToken(request.data.token));
+
+  const token = await getToken();
+
+  return dispatch(setToken(token));
 };

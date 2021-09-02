@@ -5,7 +5,7 @@ class Answer extends Component {
   render() {
     const { answer, index } = this.props;
 
-    const testId = answer.isCorrect ? 'correct-answer' : `answer-${index}`;
+    const testId = answer.isCorrect ? 'correct-answer' : `wrong-answer-${index}`;
 
     return (
       <button data-testid={ testId } type="button" key={ answer }>

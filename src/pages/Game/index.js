@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Question from '../../components/Question';
 
-import { getQuestion, getToken } from '../../services/questionApi';
+import { getQuestion } from '../../services/questionApi';
 
 class Game extends Component {
   constructor(props) {
@@ -20,7 +22,8 @@ class Game extends Component {
   }
 
   async fetchQuestion() {
-    const token = await getToken();
+    const { token } = this.props;
+
     const questionInfo = await getQuestion(token);
 
     this.setState({
@@ -40,4 +43,12 @@ class Game extends Component {
   }
 }
 
-export default Game;
+Game.propTypes = {
+  token: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = ({ auth }) => ({
+  token: auth.token,
+});
+
+export default connect(mapStateToProps)(Game);
