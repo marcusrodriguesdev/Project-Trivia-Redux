@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Input from '../components/Input';
 import logo from '../trivia.png';
 
@@ -49,6 +50,9 @@ class login extends Component {
               disabled={ !(name && email) }
             >
               Jogar
+            </button>
+            <button type="button" data-testid="btn-settings">
+              <Link to="/gameConfig"> Config </Link>
             </button>
           </div>
         </header>
