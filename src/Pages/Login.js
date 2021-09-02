@@ -11,6 +11,7 @@ export default class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.canBeSubmitted = this.canBeSubmitted.bind(this);
+    this.handleSettingsButton = this.handleSettingsButton.bind(this);
   }
 
   handleChange({ target }) {
@@ -28,6 +29,11 @@ export default class Login extends Component {
     if (email.match(emailValidInput) && name.length > 0) {
       return true;
     }
+  }
+
+  handleSettingsButton() {
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   render() {
@@ -59,6 +65,12 @@ export default class Login extends Component {
           disabled={ !this.canBeSubmitted() }
         >
           Jogar
+        </button>
+        <button
+          data-testid="btn-settings"
+          onClick={ this.handleSettingsButton }
+        >
+          Settings
         </button>
       </div>
     );
