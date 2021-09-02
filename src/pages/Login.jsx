@@ -13,6 +13,7 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.redirectSetting = this.redirectSetting.bind(this);
   }
 
   async getToken() {
@@ -32,6 +33,11 @@ class Login extends Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  redirectSetting() {
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   render() {
@@ -70,6 +76,14 @@ class Login extends Component {
             onClick={ handleClick }
           >
             Jogar
+          </button>
+
+          <button
+            type="submit"
+            data-testid="btn-settings"
+            onClick={ this.redirectSetting }
+          >
+            Settings
           </button>
         </form>
       </div>
