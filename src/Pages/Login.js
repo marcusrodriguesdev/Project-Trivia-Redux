@@ -20,6 +20,7 @@ class Login extends Component {
     this.handleName = this.handleName.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
   }
 
   handleEmail({ target }) {
@@ -55,6 +56,12 @@ class Login extends Component {
     history.push('/trivia');
   }
 
+  handleSettings() {
+    const { history } = this.props;
+
+    history.push('/settings');
+  }
+
   render() {
     const { email, name, emailValid, nameValid } = this.state;
     return (
@@ -81,6 +88,11 @@ class Login extends Component {
           dataTest="btn-play"
           disabled={ !(emailValid && nameValid) }
           onClick={ this.handleClick }
+        />
+        <Button
+          text="Configurações"
+          dataTest="btn-settings"
+          onClick={ this.handleSettings }
         />
       </div>
     );
