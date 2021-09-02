@@ -2,34 +2,36 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 
-import { fetchTokenThunk } from '../redux/actions';
+import { Link } from 'react-router-dom';
+import { fetchTokenThunk, setNameAction, setEmailAction } from '../redux/actions';
 
 class PlayButton extends Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.handleClick = this.handleClick.bind(this);
   }
 
   async handleClick() {
-    const { fetchToken, history, token } = this.props;
+    const { fetchToken, token, setEmail, setName, playerName, playerEmail } = this.props;
+    setEmail(playerEmail);
+    setName(playerName);
     await fetchToken();
     localStorage.setItem('token', token);
-    history.push('/jogar');
   }
 
   render() {
     const { buttonCheck } = this.props;
     return (
       <div>
-        <button
+        <Link
+          to="/jogar"
           type="button"
           disabled={ buttonCheck }
           onClick={ this.handleClick }
           data-testid="btn-play"
         >
           Jogar!
-        </button>
+        </Link>
       </div>
     );
   }
@@ -37,6 +39,8 @@ class PlayButton extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(fetchTokenThunk()),
+  setName: (payload) => dispatch(setNameAction(payload)),
+  setEmail: (payload) => dispatch(setEmailAction(payload)),
 });
 
 const mapStateToProps = (state) => ({
@@ -47,7 +51,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
 
 PlayButton.propTypes = {
   fetchToken: Proptypes.func.isRequired,
-  history: Proptypes.objectOf.isRequired,
   token: Proptypes.string.isRequired,
   buttonCheck: Proptypes.func.isRequired,
+  setName: Proptypes.func.isRequired,
+  setEmail: Proptypes.func.isRequired,
+  playerEmail: Proptypes.string.isRequired,
+  playerName: Proptypes.string.isRequired,
 };

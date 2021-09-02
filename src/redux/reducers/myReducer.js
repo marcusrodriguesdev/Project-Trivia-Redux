@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   token: '',
 };
 
-function userReducer(state = INITIAL_STATE, { type, payload }) {
+function playerReducer(state = INITIAL_STATE, { type, payload }) {
   switch (type) {
   case TOKEN_SUCCESS:
     return ({ ...state, token: payload });
@@ -16,4 +16,4 @@ function userReducer(state = INITIAL_STATE, { type, payload }) {
   }
 }
 
-export default userReducer;
+export default playerReducer;
