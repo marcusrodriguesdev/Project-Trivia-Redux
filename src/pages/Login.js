@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../trivia.png';
-
+import {} from 'react-router-dom';
 // requisito 1
 class Login extends React.Component {
   constructor() {
@@ -12,6 +12,7 @@ class Login extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handlerClick = this.handlerClick.bind(this);
   }
 
   handleChange(event) {
@@ -26,6 +27,11 @@ class Login extends React.Component {
         emailValidation,
       });
     });
+  }
+
+  handlerClick() {
+    const { history } = this.props;
+    history.push('/game');
   }
 
   render() {
@@ -63,8 +69,9 @@ class Login extends React.Component {
               type="submit"
               data-testid="btn-play"
               disabled={ userValidation || emailValidation }
+              onClick={ this.handlerClick }
             >
-              Entrar
+              Jogar
             </button>
           </fieldset>
         </form>

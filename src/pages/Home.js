@@ -3,6 +3,8 @@ import React from 'react';
 
 // requisito 1
 class Home extends React.Component {
+  componentDidMount() {}
+
   render() {
     return (
 
