@@ -1,16 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { tokenActionThunk } from '../actions';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.loginValidator = this.loginValidator.bind(this);
+    this.buttonChange = this.buttonChange.bind(this);
 
     this.state = {
       name: '',
       email: '',
       buttonValidator: true,
     };
+  }
+
+  componentDidMount() {
+    const { tokenRequest } = this.props;
+    tokenRequest();
   }
 
   handleChange({ target }) {
@@ -26,6 +35,13 @@ class Login extends React.Component {
     if (emailVerify && name) {
       this.setState({ buttonValidator: false });
     }
+  }
+
+  buttonChange() {
+    const { history, token } = this.props;
+
+    localStorage.token = token;
+    history.push('/game');
   }
 
   render() {
@@ -65,4 +81,16 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  tokenRequest: PropTypes.func,
+}.isRequired;
+
+const mapStateToProps = ({ token }) => ({
+  token,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  tokenRequest: () => dispatch(tokenActionThunk()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
