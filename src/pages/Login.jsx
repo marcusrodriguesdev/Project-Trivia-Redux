@@ -8,19 +8,31 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
+      validation: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.inputValidation = this.inputValidation.bind(this);
   }
 
   handleChange({ target }) {
     const { value, name } = target;
     this.setState({
       [name]: value,
-    });
+    }, this.inputValidation());
+  }
+
+  inputValidation() {
+    const { name, email } = this.state;
+    const regex = /\S+@\S+\.\S+/;
+    if (name.length > 0 && email.length > 0 && regex.test(email)) {
+      this.setState({ validation: false });
+    } else {
+      this.setState({ validation: true });
+    }
   }
 
   render() {
-    const {name, email} = this.state;
+    const { name, email, validation } = this.state;
     return (
       <div>
         {/* <header className="App-header">
@@ -54,6 +66,7 @@ class Login extends React.Component {
             type="button"
             className="play-button"
             data-testid="btn-play"
+            disabled={ validation }
           >
             PLAY
           </button>
