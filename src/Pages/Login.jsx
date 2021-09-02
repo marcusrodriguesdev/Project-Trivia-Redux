@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -12,6 +13,7 @@ class Login extends Component {
       email: '',
     };
     this.handleChanges = this.handleChanges.bind(this);
+    this.saveLocalStorage = this.saveLocalStorage.bind(this);
   }
 
   handleChanges({ target: { name, value } }) {
@@ -20,9 +22,19 @@ class Login extends Component {
     });
   }
 
+  saveLocalStorage() {
+    const { fetchToken } = this.props;
+    const { username, email } = this.state;
+    const storage = { name: username };
+    const gravatar = md5(email).toString();
+    const gravatarStorage = { picture: gravatar };
+    localStorage.setItem('ranking', JSON.stringify(gravatarStorage));
+    localStorage.setItem('player', JSON.stringify(storage));
+    fetchToken();
+  }
+
   render() {
     const { username, email } = this.state;
-    const { fetchToken } = this.props;
     return (
       <div>
         <fieldset>
@@ -53,7 +65,7 @@ class Login extends Component {
               type="button"
               data-testid="btn-play"
               disabled={ !(email && username) }
-              onClick={ fetchToken }
+              onClick={ this.saveLocalStorage }
             >
               Jogar
             </button>
