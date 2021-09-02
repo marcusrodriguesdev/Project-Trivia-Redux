@@ -1,5 +1,6 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
+import fecthApiToken from '../services/fetchApiToken';
 // import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -12,13 +13,15 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.inputValidation = this.inputValidation.bind(this);
+    this.onFecthToken = this.onFecthToken.bind(this);
   }
 
-  handleChange({ target }) {
-    const { value, name } = target;
-    this.setState({
-      [name]: value,
-    }, this.inputValidation());
+  async onFecthToken() {
+    const { history } = this.props;
+
+    const token = await fecthApiToken();
+    localStorage.setItem('token', JSON.stringify(token));
+    history.push('/Game');
   }
 
   inputValidation() {
@@ -31,8 +34,16 @@ class Login extends React.Component {
     }
   }
 
+  handleChange({ target }) {
+    const { value, name } = target;
+    this.setState({
+      [name]: value,
+    }, this.inputValidation());
+  }
+
   render() {
     const { name, email, validation } = this.state;
+
     return (
       <div>
         {/* <header className="App-header">
@@ -67,6 +78,7 @@ class Login extends React.Component {
             className="play-button"
             data-testid="btn-play"
             disabled={ validation }
+            onClick={ this.onFecthToken }
           >
             PLAY
           </button>
@@ -77,3 +89,7 @@ class Login extends React.Component {
 }
 
 export default Login;
+
+Login.propTypes = {
+  history: PropTypes.func.isRequired,
+};
