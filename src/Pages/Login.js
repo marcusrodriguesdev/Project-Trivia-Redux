@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { setUser as setUserAction } from '../Actions';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { fetchAPI } from '../Reducers/index';
+
 
 class Login extends Component {
   constructor(props) {
@@ -14,6 +17,8 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.canBeSubmitted = this.canBeSubmitted.bind(this);
+    this.handleSettingsButton = this.handleSettingsButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -24,6 +29,12 @@ class Login extends Component {
     });
   }
 
+  handleClick() {
+    const { fetchAPItoken, token } = this.props;
+    fetchAPItoken();
+    localStorage.setItem('token', token);
+  }
+
   canBeSubmitted() {
     const { email, name } = this.state;
     const emailValidInput = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -31,6 +42,11 @@ class Login extends Component {
     if (email.match(emailValidInput) && name.length > 0) {
       return true;
     }
+  }
+
+  handleSettingsButton() {
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   render() {
@@ -66,17 +82,44 @@ class Login extends Component {
         >
           Jogar
         </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleSettingsButton }
+        >
+          <Link to="/game">
+            <button
+              disabled={ btnDisable }
+              type="button"
+              data-testid="btn-play"
+              onClick={ () => this.handleClick() }
+            >
+              Jogar
+            </button>
+          </Link>
+          Settings
+        </button>
       </div>
     );
   }
 }
 
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+  fetchAPItoken: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  token: state.login.token,
+});
+
 const mapDispatchToProps = (dispatch) => ({
+  fetchAPItoken: () => dispatch(fetchAPI()),
   setUser: (user) => dispatch(setUserAction(user)),
 });
 
-Login.propTypes = {
-  setUser: PropTypes.func.isRequired,
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

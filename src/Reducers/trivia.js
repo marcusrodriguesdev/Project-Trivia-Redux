@@ -3,6 +3,7 @@ import ACTIONS from '../Actions/index';
 const INITIAL_STATE = {
   name: '',
   email: '',
+  token: '',
 };
 
 function triviaReducer(state = INITIAL_STATE, action) {
