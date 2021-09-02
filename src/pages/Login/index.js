@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import { fetchToken } from '../../redux/actions';
 
 import './style.css';
@@ -40,7 +41,8 @@ class Login extends Component {
         name,
         assertions: '',
         score: '',
-        gravatarEmail: email },
+        gravatarEmail: email,
+      },
     });
     window.localStorage.setItem('state', playerDataString);
     window.localStorage.setItem('token', token);
@@ -49,6 +51,7 @@ class Login extends Component {
 
   render() {
     const { name, email, validName, validEmail } = this.state;
+    const { history } = this.props;
 
     return (
       <div>
@@ -80,6 +83,14 @@ class Login extends Component {
             onClick={ this.handleClick }
           >
             Jogar
+          </button>
+
+          <button
+            data-testid="btn-settings"
+            type="button"
+            onClick={ () => history.push('/settings') }
+          >
+            Configurações
           </button>
         </form>
       </div>
