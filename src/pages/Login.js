@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -72,6 +73,10 @@ class Login extends React.Component {
               disabled={ disabled }
             >
               Jogar
+            </button>
+
+            <button type="button" data-testid="btn-settings">
+              <Link to="/settings"> Configurações </Link>
             </button>
           </p>
         </header>
