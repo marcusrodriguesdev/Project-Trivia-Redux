@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import '../App.css';
 
@@ -55,6 +56,10 @@ class Login extends Component {
           {playButton ? <button type="button" data-testid="btn-play">Jogar</button>
             : <button type="button" data-testid="btn-play" disabled>Jogar</button>}
         </header>
+
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">Settings</button>
+        </Link>
       </div>
     );
   }
