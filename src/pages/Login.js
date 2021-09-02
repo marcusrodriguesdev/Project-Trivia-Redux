@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../trivia.png';
+import ButtonConfig from '../components/ButtonConfig/Index';
 
 // requisito 1
 class Login extends React.Component {
@@ -66,6 +67,7 @@ class Login extends React.Component {
             >
               Entrar
             </button>
+            <ButtonConfig />
           </fieldset>
         </form>
       </>
