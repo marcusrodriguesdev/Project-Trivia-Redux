@@ -1,17 +1,15 @@
-const STORE_USER_INFO = 'STORE_USER_INFO';
+const STORE_TOKEN = 'STORE_TOKEN';
 
 const DEFAULT_STATE = {
-  name: '',
-  email: '',
   token: '',
 };
 
 const userInfo = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
-  case STORE_USER_INFO:
+  case STORE_TOKEN:
     return {
       ...state,
-      ...action.payload,
+      token: action.payload.token,
     };
   default:
     return state;
