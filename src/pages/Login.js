@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Login extends React.Component {
   constructor() {
@@ -9,6 +10,19 @@ export default class Login extends React.Component {
       btnDisabled: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.saveTokenInLocalStorage = this.saveTokenInLocalStorage.bind(this);
+  }
+
+  async getToken() {
+    const resolve = await fetch('https://opentdb.com/api_token.php?command=request');
+    const data = await resolve.json();
+    const { token } = data;
+    return token;
+  }
+
+  async saveTokenInLocalStorage() {
+    const token = await this.getToken();
+    localStorage.setItem('token', token);
   }
 
   handleChange({ target }) {
@@ -54,13 +68,16 @@ export default class Login extends React.Component {
           />
         </label>
 
-        <button
-          data-testid="btn-play"
-          type="button"
-          disabled={ btnDisabled }
-        >
-          Jogar
-        </button>
+        <Link to="/trivia">
+          <button
+            data-testid="btn-play"
+            type="button"
+            disabled={ btnDisabled }
+            onClick={ this.saveTokenInLocalStorage }
+          >
+            Jogar
+          </button>
+        </Link>
       </form>
     );
   }
