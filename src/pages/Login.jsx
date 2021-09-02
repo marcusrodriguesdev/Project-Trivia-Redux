@@ -19,8 +19,8 @@ class Login extends React.Component {
 
   async onFecthToken() {
     const { history } = this.props;
-
     const token = await fecthApiToken();
+
     localStorage.setItem('token', JSON.stringify(token));
     history.push('/Game');
   }

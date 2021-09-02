@@ -13,7 +13,7 @@ export const setFetchApiError = (payload) => ({
 
 export const fecthApiThunk = () => async (dispatch) => {
   try {
-    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const response = await fetch();
     const data = await response.json();
     dispatch(setFetchApiSuccess(data));
   } catch (error) {
