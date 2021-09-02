@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../trivia.png';
 import { setDataUser } from '../redux/actions';
+import ButtonConfig from '../components/ButtonConfig/Index';
+
 // requisito 1
 class Login extends React.Component {
   constructor() {
@@ -79,6 +81,7 @@ class Login extends React.Component {
             >
               Jogar
             </button>
+            <ButtonConfig />
           </fieldset>
         </form>
       </>
