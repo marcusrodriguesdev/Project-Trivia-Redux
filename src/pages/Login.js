@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import logo from '../trivia.png';
-import {} from 'react-router-dom';
+
 // requisito 1
 class Login extends React.Component {
   constructor() {
@@ -82,3 +83,7 @@ class Login extends React.Component {
 }
 
 export default Login;
+
+Login.propTypes = {
+  history: PropTypes.objectOf(String).isRequired,
+};
