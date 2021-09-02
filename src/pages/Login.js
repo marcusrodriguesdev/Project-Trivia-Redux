@@ -8,9 +8,13 @@ class Login extends React.Component {
     return (
 
       <>
-      {/* <img src={logo}>a</h1> */}
+        <img src={ logo } className="App-logo" alt="logo" />
         <h1>Login</h1>
-        <p>Login</p>
+        <form>
+          <fieldset>Xablau
+            <label></label>
+          </fieldset>
+        </form>
       </>
 
     );
