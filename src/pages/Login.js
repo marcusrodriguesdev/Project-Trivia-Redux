@@ -49,7 +49,7 @@ export default class Login extends React.Component {
           Email :
           <input
             name="email"
-            type="text"
+            type="email"
             data-testid="input-gravatar-email"
             onChange={ (event) => this.handleChange(event) }
           />
