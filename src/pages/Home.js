@@ -1,8 +1,24 @@
 import React from 'react';
-// import Home from './Home';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { fetchToken } from '../redux/actions/index';
 
 // requisito 1
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.setToken = this.setToken.bind(this);
+  }
+
+  componentDidMount() {
+    this.setToken();
+  }
+
+  setToken() {
+    const { setToken } = this.props;
+    setToken();
+  }
+
   render() {
     return (
 
@@ -15,4 +31,12 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapDispatchToProps = (dispatch) => ({
+  setToken: () => dispatch(fetchToken()),
+});
+
+export default connect(null, mapDispatchToProps)(Home);
+
+Home.propTypes = {
+  setToken: PropTypes.func.isRequired,
+};

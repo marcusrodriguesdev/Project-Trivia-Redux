@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import logo from '../trivia.png';
+import { setDataUser } from '../redux/actions';
 import ButtonConfig from '../components/ButtonConfig/Index';
 
 // requisito 1
@@ -13,6 +16,7 @@ class Login extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event) {
@@ -27,6 +31,15 @@ class Login extends React.Component {
         emailValidation,
       });
     });
+  }
+
+  handleClick() {
+    const { history, setData } = this.props;
+    history.push('/game');
+    const userData = this.state;
+    delete userData.emailValidation;
+    delete userData.userValidation;
+    setData(userData);
   }
 
   render() {
@@ -64,8 +77,9 @@ class Login extends React.Component {
               type="submit"
               data-testid="btn-play"
               disabled={ userValidation || emailValidation }
+              onClick={ this.handleClick }
             >
-              Entrar
+              Jogar
             </button>
             <ButtonConfig />
           </fieldset>
@@ -76,4 +90,13 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToPros = (dispatch) => ({
+  setData: (payload) => dispatch(setDataUser(payload)),
+});
+
+export default connect(null, mapDispatchToPros)(Login);
+
+Login.propTypes = {
+  history: PropTypes.objectOf(String).isRequired,
+  setData: PropTypes.func.isRequired,
+};
