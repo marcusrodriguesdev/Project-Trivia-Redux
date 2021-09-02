@@ -1,5 +1,6 @@
 import React from 'react';
-import Home from './Home.js';
+import Home from './Home';
+import logo from '../trivia.png';
 
 // requisito 1
 class Login extends React.Component {
@@ -7,7 +8,8 @@ class Login extends React.Component {
     return (
 
       <>
-        <Home />
+      {/* <img src={logo}>a</h1> */}
+        <h1>Login</h1>
         <p>Login</p>
       </>
 
