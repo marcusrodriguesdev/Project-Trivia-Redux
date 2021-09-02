@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { setPlayerToken } from '../actions';
 import '../App.css';
 import logo from '../trivia.png';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -12,11 +13,23 @@ export default class Login extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange({ target }) {
     const { name, value } = target;
     this.setState({ [name]: value });
+  }
+
+  handleSubmit() {
+    const { history, sendToken } = this.props;
+    fetch('https://opentdb.com/api_token.php?command=request')
+      .then((response) => response.json())
+      .then(({ token }) => {
+        sendToken(token);
+        localStorage.setItem('token', token);
+      });
+    history.push('/game');
   }
 
   render() {
@@ -46,17 +59,28 @@ export default class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link to="/game">
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ !email || !nome }
-            >
-              Jogar
-            </button>
-          </Link>
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ !email || !nome }
+            onClick={ this.handleSubmit }
+          >
+            Jogar
+          </button>
         </header>
       </div>
     );
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  sendToken: (payload) => dispatch(setPlayerToken(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  sendToken: PropTypes.func.isRequired,
+};
