@@ -5,11 +5,13 @@ class Game extends React.Component {
     return (
       <header>
         <img
-          src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+          src={ `https://www.gravatar.com/avatar/${JSON.parse(localStorage.getItem('ranking')).picture}` }
           alt="Foto de Perfil"
           data-testid="header-profile-picture"
         />
-        <h1 data-testid="header-player-name">.</h1>
+        <h1 data-testid="header-player-name">
+          {JSON.parse(localStorage.getItem('player')).name}
+        </h1>
         <h2 data-testid="header-score">0</h2>
       </header>
     );
