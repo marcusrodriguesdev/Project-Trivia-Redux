@@ -31,7 +31,7 @@ class Login extends Component {
   }
 
   handleClick(event) {
-    const { fetch, token } = this.props;
+    const { fetch, token, history } = this.props;
     const { name, email } = this.state;
     event.preventDefault();
     fetch();
@@ -44,6 +44,7 @@ class Login extends Component {
     });
     window.localStorage.setItem('state', playerDataString);
     window.localStorage.setItem('token', token);
+    history.push('/game');
   }
 
   render() {
@@ -88,6 +89,9 @@ class Login extends Component {
 
 Login.propTypes = {
   fetch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   token: PropTypes.string.isRequired,
 };
 
