@@ -1,6 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
+import { requestTokenThunk } from '../redux/actions';
+import fetchToken from '../services/tokenAPI';
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,7 +17,13 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
+
+  // componentDidMount() {
+  //   const { token } = this.props;
+  //   localStorage.setItem('token', JSON.stringify(token()));
+  // }
 
   handleChange({ target }) {
     const { name, value } = target;
@@ -33,6 +43,16 @@ class Login extends React.Component {
         disabled: true,
       });
     }
+  }
+
+  async handleClick() {
+    const { history, getToken } = this.props;
+
+    const data = await fetchToken();
+    getToken(data.token);
+    localStorage.setItem('token', JSON.stringify(data.token));
+    history.push('/game');
+    // r2
   }
 
   render() {
@@ -71,6 +91,7 @@ class Login extends React.Component {
               type="button"
               data-testid="btn-play"
               disabled={ disabled }
+              onClick={ this.handleClick }
             >
               Jogar
             </button>
@@ -86,4 +107,19 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getToken: () => dispatch(requestTokenThunk()),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.token.token,
+});
+
+Login.propTypes = {
+  getToken: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
