@@ -1,6 +1,6 @@
 import React from 'react';
 
-import logo from '../trivia.png';
+// import logo from '../trivia.png';
 
 class Login extends React.Component {
   constructor(props) {
