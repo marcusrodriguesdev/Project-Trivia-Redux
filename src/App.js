@@ -9,10 +9,10 @@ import Ranking from './pages/Ranking';
 export default function App() {
   return (
     <Switch>
-      <Route exact path="/ranking" component={ Ranking }/>
-      <Route exact path="/feedback" component={ Feedback }/>
-      <Route exact path="/game" component={ Game }/>
-      <Route exact path="/" component={ Login }/>
+      <Route exact path="/ranking" component={ Ranking } />
+      <Route exact path="/feedback" component={ Feedback } />
+      <Route exact path="/game" component={ Game } />
+      <Route exact path="/" component={ Login } />
     </Switch>
   );
 }
