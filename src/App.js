@@ -7,6 +7,7 @@ import Trivia from './Pages/Trivia';
 
 export default function App() {
   return (
+    // aaaa
     <Switch>
       <Route path="/" exact component={ Login } />
       <Route path="/settings" component={ Settings } />
