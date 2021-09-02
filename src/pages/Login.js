@@ -52,6 +52,7 @@ class Login extends React.Component {
     getToken(data.token);
     localStorage.setItem('token', JSON.stringify(data.token));
     history.push('/game');
+    // r2
   }
 
   render() {
