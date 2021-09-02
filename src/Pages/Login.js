@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Login extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.canBeSubmitted = this.canBeSubmitted.bind(this);
+    this.handleSettingsButton = this.handleSettingsButton.bind(this);
   }
 
   handleChange({ target }) {
@@ -28,6 +30,11 @@ export default class Login extends Component {
     if (email.match(emailValidInput) && name.length > 0) {
       return true;
     }
+  }
+
+  handleSettingsButton() {
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   render() {
@@ -60,7 +67,20 @@ export default class Login extends Component {
         >
           Jogar
         </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleSettingsButton }
+        >
+          Settings
+        </button>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
