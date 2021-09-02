@@ -29,9 +29,9 @@ class Login extends React.Component {
     }
   }
 
-  handleClick() {
+  handleClick(routeName) {
     const { history } = this.props;
-    history.push('/question');
+    history.push(`/${routeName}`);
   }
 
   validateEmail(email) {
@@ -69,9 +69,16 @@ class Login extends React.Component {
           data-testid="btn-play"
           type="button"
           disabled={ !validateEmail || !validateName }
-          onClick={ this.handleClick }
+          onClick={ () => this.handleClick('question') }
         >
           Jogar
+        </button>
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ () => this.handleClick('settings') }
+        >
+          Configurações
         </button>
       </>
     );
