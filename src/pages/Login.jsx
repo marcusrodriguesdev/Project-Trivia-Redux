@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 
 class Login extends Component {
@@ -11,6 +12,19 @@ class Login extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  async getToken() {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const object = await response.json();
+    localStorage.setItem('token', object.token);
+  }
+
+  handleClick() {
+    const { history } = this.props;
+    this.getToken();
+    history.push('/jogo');
   }
 
   handleChange({ target }) {
@@ -21,7 +35,7 @@ class Login extends Component {
   }
 
   render() {
-    const { handleChange } = this;
+    const { handleChange, handleClick } = this;
     const { player, email } = this.state;
     return (
       <div className="App">
@@ -53,6 +67,7 @@ class Login extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ email.length && player.length ? '' : 'true' }
+            onClick={ handleClick }
           >
             Jogar
           </button>
@@ -61,5 +76,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf().isRequired,
+};
 
 export default Login;
