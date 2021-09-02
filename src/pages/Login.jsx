@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import actionLogin from '../actions';
 
-
 class Login extends Component {
   constructor() {
     super();
@@ -75,11 +74,10 @@ class Login extends Component {
           Jogar
         </button>
         <Link to="/settings">
-          <button
-            type="button"
-            data-testid="btn-settings"
-          >
+          <button type="button" data-testid="btn-settings">
             Settings
+          </button>
+        </Link>
         <Link to="/play">
           <button
             disabled={ this.validateEmailAndUser() }
