@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import logo from '../trivia.png';
 import Input from '../Components/Input';
 import Button from '../Components/Button';
+import fetchAPI from '../services/fetchAPI';
+import { connect } from 'react-redux';
+import { saveToken } from '../Redux/Action/index';
 
 class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       email: '',
@@ -16,6 +19,7 @@ class Login extends Component {
 
     this.handleName = this.handleName.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleEmail({ target }) {
@@ -38,6 +42,17 @@ class Login extends Component {
     this.setState({
       name: target.value,
     });
+  }
+
+  async handleClick() {
+    const { history, getToken } = this.props;
+
+    const data = await fetchAPI();
+
+    getToken(data.token);
+    localStorage.setItem('token', JSON.stringify(data.token));
+
+    history.push('/trivia');
   }
 
   render() {
@@ -65,10 +80,15 @@ class Login extends Component {
           text="Jogar"
           dataTest="btn-play"
           disabled={ !(emailValid && nameValid) }
+          onClick={ this.handleClick }
         />
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getToken: (token) => dispatch(saveToken(token)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
