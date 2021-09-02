@@ -8,7 +8,7 @@ function userReducer(state = ESTADO_INICIAL, action) {
 
     return {
       ...state,
-      email: action.email,
+      ...action.payload,
     };
 
   default:

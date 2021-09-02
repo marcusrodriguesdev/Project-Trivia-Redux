@@ -1,9 +1,8 @@
-export default function ClickButtonLogin(valorRecebidoEmail, valorRecebidoSenha) {
+export default function ClickButtonLogin(payload) {
   return (
     {
       type: 'CLICK_BUTTON_LOGIN',
-      email: valorRecebidoEmail,
-      senha: valorRecebidoSenha,
+      payload,
     }
   );
 }
