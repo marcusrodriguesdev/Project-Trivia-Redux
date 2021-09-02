@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import '../App.css';
-import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -58,7 +58,7 @@ class Login extends Component {
         </header>
 
         <Link to="/settings">
-          <button type="button" data-testid="btn-settings"></button>
+          <button type="button" data-testid="btn-settings">Settings</button>
         </Link>
       </div>
     );
