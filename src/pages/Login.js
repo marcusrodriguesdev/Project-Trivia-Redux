@@ -77,7 +77,7 @@ class Login extends React.Component {
               type="submit"
               data-testid="btn-play"
               disabled={ userValidation || emailValidation }
-              onClick={ this.handlerClick }
+              onClick={ this.handleClick }
             >
               Jogar
             </button>
