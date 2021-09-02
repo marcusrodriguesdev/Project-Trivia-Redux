@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import '../css/Header.css';
 
 class Header extends Component {
   render() {
     const { name } = this.props;
     console.log(name);
     return (
-      <header>
+      <header className="cabecalho">
         <div>
           <img
             src="https://www.gravatar.com/avatar/HASH"

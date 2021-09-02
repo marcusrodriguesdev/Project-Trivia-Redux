@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import { logged } from '../redux/actions';
+import { getToken, logged } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.validateButton = this.validateButton.bind(this);
-    this.submitButton = this.submitButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   validateButton() {
@@ -30,16 +30,18 @@ class Login extends React.Component {
     }
   }
 
-  submitButton() {
-    const { getInfo } = this.props;
-    const { name } = this.state;
-    getInfo(name);
-  }
-
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value }, () => {
       this.validateButton();
     });
+  }
+
+  handleClick() {
+    const { token, history, getInfo } = this.props;
+    const { name } = this.state;
+    token();
+    getInfo(name);
+    history.push('/trivia');
   }
 
   render() {
@@ -66,7 +68,7 @@ class Login extends React.Component {
         <Button
           label="Jogar"
           type="button"
-          click={ this.submitButton }
+          click={ this.handleClick }
           testid="btn-play"
           disable={ btnStatus }
         />
@@ -75,12 +77,17 @@ class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
-  getInfo: PropTypes.func.isRequired,
-};
-
 const mapDispatchToProps = (dispatch) => ({
+  token: () => dispatch(getToken()),
   getInfo: (value) => dispatch(logged(value)),
 });
+
+Login.propTypes = {
+  getInfo: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  token: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
