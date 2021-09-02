@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { setUser as setUserAction } from '../Actions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -31,6 +34,8 @@ export default class Login extends Component {
   }
 
   render() {
+    const { setUser } = this.props;
+
     return (
       <div>
         <label htmlFor="input-player-name">
@@ -57,6 +62,7 @@ export default class Login extends Component {
           type="submit"
           data-testid="btn-play"
           disabled={ !this.canBeSubmitted() }
+          onClick={ () => setUser(this.state) }
         >
           Jogar
         </button>
@@ -64,3 +70,13 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(setUserAction(user)),
+});
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
