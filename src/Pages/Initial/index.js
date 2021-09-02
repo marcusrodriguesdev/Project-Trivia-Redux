@@ -32,7 +32,12 @@ class Initial extends Component {
     }
   }
 
-  sendLogin() {
+  async sendLogin() {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const token = await response.json();
+
+    localStorage.setItem('token', token.token);
+
     const { name, email } = this.state;
     const { Login: LoginAction } = this.props;
     LoginAction(name, email);
