@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getTokenThunk, loginAction } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -30,7 +32,9 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { history } = this.props;
+    const { history, setToken, setLoginInfo } = this.props;
+    setToken();
+    setLoginInfo(this.state);
     history.push('/question');
   }
 
@@ -78,10 +82,17 @@ class Login extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  setToken: () => dispatch(getTokenThunk()),
+  setLoginInfo: (payload) => dispatch(loginAction(payload)),
+});
+
 Login.propTypes = {
+  setLoginInfo: PropTypes.func.isRequired,
+  setToken: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
