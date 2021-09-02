@@ -15,4 +15,4 @@ export default function App() {
   );
 }
 
-// bora time, projetinho novo.
+// bora time, projetinho novo começando.
