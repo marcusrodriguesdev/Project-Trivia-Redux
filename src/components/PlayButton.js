@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { fetchTokenThunk } from '../redux/actions';
 
@@ -12,24 +13,25 @@ class PlayButton extends Component {
   }
 
   async handleClick() {
-    const { fetchToken, history, token } = this.props;
+    const { fetchToken, token } = this.props;
     await fetchToken();
     localStorage.setItem('token', token);
-    history.push('/jogar');
   }
 
   render() {
     const { buttonCheck } = this.props;
     return (
       <div>
-        <button
-          type="button"
-          disabled={ buttonCheck }
-          onClick={ this.handleClick }
-          data-testid="btn-play"
-        >
-          Jogar!
-        </button>
+        <Link to="/jogar">
+          <button
+            type="button"
+            disabled={ buttonCheck }
+            onClick={ this.handleClick }
+            data-testid="btn-play"
+          >
+            Jogar!
+          </button>
+        </Link>
       </div>
     );
   }
@@ -47,7 +49,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
 
 PlayButton.propTypes = {
   fetchToken: Proptypes.func.isRequired,
-  history: Proptypes.objectOf.isRequired,
   token: Proptypes.string.isRequired,
   buttonCheck: Proptypes.func.isRequired,
 };
