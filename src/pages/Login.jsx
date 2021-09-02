@@ -1,21 +1,27 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.loginValidator = this.loginValidator.bind(this);
-
+    this.handleClickConfig = this.handleClickConfig.bind(this);
     this.state = {
       name: '',
       email: '',
       buttonValidator: true,
+      redirect: false,
     };
   }
 
   handleChange({ target }) {
     const { value, id } = target;
     this.setState({ [id]: value }, () => this.loginValidator());
+  }
+
+  handleClickConfig() {
+    this.setState({ redirect: true });
   }
 
   loginValidator() {
@@ -29,7 +35,8 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email, name, buttonValidator } = this.state;
+    const { email, name, buttonValidator, redirect } = this.state;
+    if (redirect) return <Redirect to="/config" />;
     return (
       <form method="get">
         <label htmlFor="email">
@@ -59,6 +66,13 @@ class Login extends React.Component {
           type="button"
         >
           Entrar
+        </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleClickConfig }
+        >
+          Configurações
         </button>
       </form>
     );

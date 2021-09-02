@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
+import ConfigWindow from './pages/ConfigWindow';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       </header> */}
       <Switch>
         <Route exact path="/" component={ Login } />
+        <Route exact path="/config" component={ ConfigWindow } />
       </Switch>
     </div>
   );
