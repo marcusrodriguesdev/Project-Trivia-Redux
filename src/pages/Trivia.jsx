@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Header from '../components/Header';
 
-class Game extends React.Component {
+class Trivia extends React.Component {
   setToken() {
     const { savedToken } = this.props;
     localStorage.setItem('token', savedToken);
@@ -12,7 +13,9 @@ class Game extends React.Component {
     this.setToken();
 
     return (
-      <div>Game</div>
+      <div>
+        <Header />
+      </div>
     );
   }
 }
@@ -21,8 +24,8 @@ const mapStateToProps = (state) => ({
   savedToken: state.user.token,
 });
 
-Game.propTypes = {
+Trivia.propTypes = {
   savedToken: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Game);
+export default connect(mapStateToProps, null)(Trivia);
