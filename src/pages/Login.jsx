@@ -66,6 +66,18 @@ class Login extends Component {
             data-testid="input-player-name"
           />
         </label>
+        <button
+          disabled={ this.validateEmailAndUser() }
+          type="button"
+          data-testid="btn-play"
+        >
+          Jogar
+        </button>
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">
+            Settings
+          </button>
+        </Link>
         <Link to="/play">
           <button
             disabled={ this.validateEmailAndUser() }
