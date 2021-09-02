@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from '../trivia.png';
 import '../App.css';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -55,6 +56,10 @@ class Login extends Component {
           {playButton ? <button type="button" data-testid="btn-play">Jogar</button>
             : <button type="button" data-testid="btn-play" disabled>Jogar</button>}
         </header>
+
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings"></button>
+        </Link>
       </div>
     );
   }
