@@ -49,7 +49,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
 
 PlayButton.propTypes = {
   fetchToken: Proptypes.func.isRequired,
-  history: Proptypes.objectOf.isRequired,
   token: Proptypes.string.isRequired,
   buttonCheck: Proptypes.func.isRequired,
 };
