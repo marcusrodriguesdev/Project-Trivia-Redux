@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './trivia.png';
 import './App.css';
 
-//requisito 1
+// requisito 1
 export default function App() {
   return (
     <div className="App">
