@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchAPI } from '../Reducers/index';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -13,6 +16,7 @@ export default class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.canBeSubmitted = this.canBeSubmitted.bind(this);
     this.handleSettingsButton = this.handleSettingsButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -21,6 +25,12 @@ export default class Login extends Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  handleClick() {
+    const { fetchAPItoken, token } = this.props;
+    fetchAPItoken();
+    localStorage.setItem('token', token);
   }
 
   canBeSubmitted() {
@@ -72,6 +82,16 @@ export default class Login extends Component {
           data-testid="btn-settings"
           onClick={ this.handleSettingsButton }
         >
+          <Link to="/game">
+            <button
+              disabled={ btnDisable }
+              type="button"
+              data-testid="btn-play"
+              onClick={ () => this.handleClick() }
+            >
+              Jogar
+            </button>
+          </Link>
           Settings
         </button>
       </div>
@@ -80,7 +100,19 @@ export default class Login extends Component {
 }
 
 Login.propTypes = {
+  fetchAPItoken: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  token: state.login.token,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchAPItoken: () => dispatch(fetchAPI()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
