@@ -46,6 +46,7 @@ class Login extends React.Component {
 
   render() {
     const { btnStatus } = this.state;
+    const { history } = this.props;
 
     return (
       <div>
@@ -71,6 +72,11 @@ class Login extends React.Component {
           click={ this.handleClick }
           testid="btn-play"
           disable={ btnStatus }
+        />
+        <Button
+          label="Configurações"
+          testid="btn-settings"
+          click={ () => history.push('/settings') }
         />
       </div>
     );
