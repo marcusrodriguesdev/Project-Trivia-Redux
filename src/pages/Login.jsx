@@ -39,7 +39,6 @@ class Login extends Component {
     const tokien = await response.json();
     const tokienData = tokien.token;
     localStorage.setItem('token', JSON.stringify(tokienData));
-    console.log(tokienData);
   }
 
   render() {
