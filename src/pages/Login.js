@@ -14,7 +14,7 @@ class Login extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handlerClick = this.handlerClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event) {
@@ -31,7 +31,7 @@ class Login extends React.Component {
     });
   }
 
-  handlerClick() {
+  handleClick() {
     const { history, setData } = this.props;
     history.push('/game');
     const userData = this.state;
@@ -95,4 +95,5 @@ export default connect(null, mapDispatchToPros)(Login);
 
 Login.propTypes = {
   history: PropTypes.objectOf(String).isRequired,
+  setData: PropTypes.func.isRequired,
 };

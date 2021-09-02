@@ -14,7 +14,7 @@ class Home extends React.Component {
     this.setToken();
   }
 
-  async setToken() {
+  setToken() {
     const { setToken } = this.props;
     setToken();
   }
