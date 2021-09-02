@@ -9,8 +9,6 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      nome: '',
-      email: '',
       validateEmail: false,
       validateName: false,
     };
