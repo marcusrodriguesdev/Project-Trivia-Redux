@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import InputCard from '../components/InputCard';
-import fetchToken from '../redux/actions/index';
+import fetchToken from '../redux/actions/fetch/fetchToken';
 
 class Login extends Component {
   constructor() {
