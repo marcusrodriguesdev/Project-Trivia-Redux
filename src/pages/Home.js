@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 import Question from '../Components/Question';
 import { fetchTriviaQuestions } from '../services/API';
+import StopWatch from '../Components/stopWatch';
 
 class Home extends React.Component {
   constructor() {
@@ -59,10 +60,11 @@ class Home extends React.Component {
   nextClick() {
     const { currentQuestionIndex, currentQuestion } = this.state;
     this.setCurrentQuestion(currentQuestionIndex + 1);
+    const newQuestionIndex = currentQuestionIndex + 1;
     this.setState({
-      currentQuestionIndex: currentQuestionIndex + 1,
+      currentQuestionIndex: newQuestionIndex,
     });
-    if (currentQuestion[currentQuestionIndex + 1] === undefined) {
+    if (currentQuestion[newQuestionIndex] === undefined) {
       this.setState({
         currentQuestionIndex: 0,
       });
@@ -90,6 +92,7 @@ class Home extends React.Component {
           answerClicked={ answerClicked }
           nextClick={ this.nextClick }
         />
+        <StopWatch />
       </>
     );
   }

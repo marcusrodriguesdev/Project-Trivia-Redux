@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import shuffleList from '../../services/suffleList';
 import './Question.css';
+import { setTimer } from '../../redux/actions';
 
 class Question extends React.Component {
   constructor(props) {
@@ -30,23 +32,33 @@ class Question extends React.Component {
   }
 
   handleClick() {
-    const { correctAnswer, answerClick } = this.props;
+    const { correctAnswer, answerClick, setTimeGlobal } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
     answerClick();
+    setTimeGlobal(true);
   }
 
   renderNexButton() {
-    const { nextClick } = this.props;
+    const { nextClick, setTimeGlobal } = this.props;
     return (
-      <button type="button" data-testid="btn-next" onClick={ nextClick }>Próxima</button>
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => {
+          nextClick();
+          setTimeGlobal(false);
+        } }
+      >
+        Próxima
+      </button>
     );
   }
 
   render() {
-    const { category, question, answerClicked } = this.props;
+    const { category, question, isTimer } = this.props;
     const { correctAnswerIdentifier, answerList } = this.state;
     return (
       <div>
@@ -66,6 +78,7 @@ class Question extends React.Component {
                 type="button"
                 data-testid="correct-answer"
                 key={ element }
+                disabled={ isTimer }
               >
                 {element}
               </button>
@@ -77,12 +90,13 @@ class Question extends React.Component {
               type="button"
               data-testid="wrong-answer"
               key={ element }
+              disabled={ isTimer }
             >
               {element}
             </button>
           );
         }) }
-        { answerClicked ? this.renderNexButton() : undefined }
+        { isTimer ? this.renderNexButton() : undefined }
       </div>
     );
   }
@@ -92,10 +106,20 @@ Question.propTypes = {
   category: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,
   correctAnswer: PropTypes.string.isRequired,
+  isTimer: PropTypes.bool.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
-  answerClicked: PropTypes.bool.isRequired,
   answerClick: PropTypes.func.isRequired,
   nextClick: PropTypes.func.isRequired,
+  setTimeGlobal: PropTypes.func.isRequired,
 };
 
-export default Question;
+const MapStateToProps = (state) => ({
+  isTimer: state.game.stopWatch.isTimer,
+});
+
+const MapDispachToProps = (dispatch) => ({
+
+  setTimeGlobal: (payload) => dispatch(setTimer(payload)),
+});
+
+export default connect(MapStateToProps, MapDispachToProps)(Question);
