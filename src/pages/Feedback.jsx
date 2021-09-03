@@ -5,6 +5,8 @@ import md5 from 'crypto-js/md5';
 
 class Feedback extends React.Component {
   render() {
+    const localstorage = JSON.parse(localStorage.getItem('state'));
+    const { player: { score } } = localstorage;
     const { name, email } = this.props;
     const hashEmail = md5(email).toString();
     return (
@@ -12,7 +14,7 @@ class Feedback extends React.Component {
         <header>
           <img src={ `https://www.gravatar.com/avatar/${hashEmail}` } alt="Gravatar" data-testid="header-profile-picture" />
           <h2 data-testid="header-player-name">{ name }</h2>
-          <h2 data-testid="header-score">0</h2>
+          <h2 data-testid="header-score">{ score }</h2>
           <p data-testid="feedback-text">FEEDBACK TEXT</p>
         </header>
       </div>

@@ -18,14 +18,14 @@ class Game extends Component {
   }
 
   render() {
-    const { response, name, email } = this.props;
+    const { response, name, email, totalPoints } = this.props;
     const hashEmail = md5(email).toString();
     return (
       <div>
         <header>
           <img src={ `https://www.gravatar.com/avatar/${hashEmail}` } alt="Gravatar" data-testid="header-profile-picture" />
           <h2 data-testid="header-player-name">{ name }</h2>
-          <h2 data-testid="header-score">0</h2>
+          <h2 data-testid="header-score">{totalPoints}</h2>
         </header>
         {response && <Questions resp={ response } />}
       </div>
@@ -38,9 +38,11 @@ Game.propTypes = {
   fetch: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   response: PropTypes.string.isRequired,
+  totalPoints: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  totalPoints: state.player.score,
   name: state.login.user,
   email: state.login.email,
   response: state.trivia.response.results,

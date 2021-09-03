@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import './Questions.css';
+import { actionPlayerScore } from '../actions';
+
+const TEN_POINTS = 10;
+const THREE = 3;
+const TWO = 2;
+const ONE = 1;
+const ZERO = 0;
 
 class Questions extends Component {
   constructor() {
@@ -16,6 +24,7 @@ class Questions extends Component {
       redirect: false,
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
+    this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
     this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
   }
@@ -41,9 +50,46 @@ class Questions extends Component {
       disable: true });
   }
 
-  handleClickClassName({ target: { name } }) {
+  checkDifficulty(e) {
+    switch (e) {
+    case 'hard':
+      return THREE;
+    case 'medium':
+      return TWO;
+    case 'easy':
+      return ONE;
+    default:
+      return ZERO;
+    }
+  }
+
+  handleClickClassName({ target }) {
+    this.handleClickClassNameHelper(target.name);
+    const { resp, player, playerStatus: { score, assertions } } = this.props;
+    const { seconds } = this.state;
+
+    if (target.id === 'correct-answer') {
+      const { difficulty } = resp[0];
+      const pointsFromDifficulty = this.checkDifficulty(difficulty);
+      const timerPoints = seconds;
+      const correctAnswerPoints = TEN_POINTS + timerPoints * pointsFromDifficulty;
+      const sum = correctAnswerPoints + score;
+      const playerScore = {
+        player: {
+          name: '',
+          assertions: 1 + assertions,
+          score: sum,
+          gravatarEmail: '',
+        },
+      };
+      localStorage.setItem('state', JSON.stringify(playerScore));
+      player(1, sum);
+    }
+  }
+
+  handleClickClassNameHelper(a) {
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
-    const teste = name;
+    const teste = a;
     console.log(teste);
     if (teste === 'correct' || teste === 'incorrect') {
       this.setState({
@@ -67,7 +113,6 @@ class Questions extends Component {
   }
 
   render() {
-    // embaralhar questões incorretas/ sort
     const { redirect, correct, incorrect, seconds, disable,
       numberQuestion, visibilit } = this.state;
     const { resp } = this.props;
@@ -82,6 +127,7 @@ class Questions extends Component {
           name="correct"
           onClick={ this.handleClickClassName }
           data-testid="correct-answer"
+          id="correct-answer"
           type="button"
           disabled={ disable }
         >
@@ -119,8 +165,17 @@ class Questions extends Component {
 }
 
 Questions.propTypes = {
-  resp: PropTypes.string.isRequired,
-  // numberQuestion: PropTypes.number.isRequired,
+  player: PropTypes.func.isRequired,
+  resp: PropTypes.objectOf(PropTypes.string).isRequired,
+  playerStatus: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
-export default Questions;
+const mapStateToProps = (state) => ({
+  playerStatus: state.player,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  player: (assertions, score) => dispatch(actionPlayerScore(assertions, score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
