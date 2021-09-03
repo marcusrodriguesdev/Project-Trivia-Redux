@@ -10,10 +10,12 @@ class Question extends Component {
 
     this.state = {
       shuffledAnswers: [],
+      guessed: false,
     };
 
     this.combineAnswers = this.combineAnswers.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
+    this.handleGuess = this.handleGuess.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +32,12 @@ class Question extends Component {
     const combinedAnswers = [...incorrectAnswers, correctAnswer];
 
     this.shuffleAnswers(combinedAnswers, correctAnswer);
+  }
+
+  handleGuess() {
+    this.setState({
+      guessed: true,
+    });
   }
 
   shuffleAnswers(answers, correctAnswer) {
@@ -64,7 +72,7 @@ class Question extends Component {
 
   render() {
     const { questionInfo } = this.props;
-    const { shuffledAnswers } = this.state;
+    const { shuffledAnswers, guessed } = this.state;
 
     return (
       <>
@@ -74,7 +82,13 @@ class Question extends Component {
           <p data-testid="question-text">{`Question: ${questionInfo.question}`}</p>
           <div className="answers">
             {shuffledAnswers.map((answer, index) => (
-              <Answer key={ answer.text } answer={ answer } index={ index } />
+              <Answer
+                key={ answer.text }
+                answer={ answer }
+                index={ index }
+                guessed={ guessed }
+                handleGuess={ this.handleGuess }
+              />
             ))}
           </div>
         </div>
