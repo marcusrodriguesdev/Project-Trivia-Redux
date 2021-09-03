@@ -32,6 +32,14 @@ class Game extends Component {
           <h2 data-testid="header-score">{totalPoints}</h2>
         </header>
         {response && <Questions resp={ response } />}
+        <label htmlFor="gravatar-email" data-testid="input-gravatar-email">
+          Gravar email:
+          <input
+            type="text"
+            id="gravatar-email"
+            // onChange={this.}
+          />
+        </label>
       </div>
     );
   }
