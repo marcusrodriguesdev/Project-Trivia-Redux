@@ -17,13 +17,12 @@ class Question extends React.Component {
   }
 
   handleClick({ target }) {
-    const { correctAnswer, setTimeGlobal } = this.props;
+    const { correctAnswer } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
     if (target.innerText === correctAnswer) { this.calcPonts(); }
-    setTimeGlobal(true);
   }
 
   calcPonts() {
