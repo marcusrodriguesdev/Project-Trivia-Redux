@@ -22,6 +22,7 @@ class Login extends Component {
 
   onClick() {
     getToken();
+    console.log(getToken());
     const { playerEmail, playerName } = this.state;
     const { updateNameEmail } = this.props;
     updateNameEmail({ playerEmail, playerName });
