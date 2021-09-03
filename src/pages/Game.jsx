@@ -10,7 +10,7 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      questions: {},
+      questions: { results: [] },
       loading: true,
       countQuestion: 0,
     };
