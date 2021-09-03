@@ -9,6 +9,7 @@ export default class QuestionsComponent extends React.Component {
 
     this.handleClicked = this.handleClicked.bind(this);
     this.renderNextBtn = this.renderNextBtn.bind(this);
+    this.handleClickCorrect = this.handleClickCorrect.bind(this);
 
     this.state = {
       clicked: false,
@@ -17,6 +18,12 @@ export default class QuestionsComponent extends React.Component {
 
   handleClicked() {
     this.setState({ clicked: true });
+  }
+
+  handleClickCorrect() {
+    const { handleClick } = this.props;
+    this.handleClicked();
+    handleClick();
   }
 
   renderNextBtn() {
@@ -38,18 +45,18 @@ export default class QuestionsComponent extends React.Component {
     const { clicked } = this.state;
     return (
       <div>
-        <p data-testid="question-category">{question[0].category}</p>
-        <p data-testid="question-text">{question[0].question}</p>
+        <p data-testid="question-category">{question.category}</p>
+        <p data-testid="question-text">{question.question}</p>
         <button
           data-testid="correct-answer"
           type="button"
           disabled={ buttonDisable }
           className={ clicked && 'correct' }
-          onClick={ this.handleClicked }
+          onClick={ this.handleClickCorrect }
         >
-          {question[0].correct_answer}
+          {question.correct_answer}
         </button>
-        {question[0].incorrect_answers.map((incorrect, index) => (
+        {question.incorrect_answers.map((incorrect, index) => (
           <button
             key={ index }
             data-testid={ `wrong-answer-${index}` }
@@ -68,6 +75,7 @@ export default class QuestionsComponent extends React.Component {
 }
 
 QuestionsComponent.propTypes = {
-  question: PropTypes.arrayOf.isRequired,
+  question: PropTypes.objectOf.isRequired,
+  handleClick: PropTypes.func.isRequired,
   buttonDisable: PropTypes.bool.isRequired,
 };

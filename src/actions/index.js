@@ -1,11 +1,12 @@
 import fetchApi from '../services/api';
 
-export const SET_NAME = 'SET_NAME';
+export const SET_PLAYER = 'SET_PLAYER';
 export const SET_TOKEN = 'SET_TOKEN';
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
+export const SET_SCORE_AND_ASSERTIONS = 'SET_SCORE_AND_ASSERTIONS';
 
 export const loginAction = (payload) => ({
-  type: SET_NAME,
+  type: SET_PLAYER,
   payload,
 });
 
@@ -15,6 +16,11 @@ export const apiTokenRequest = () => ({
 
 export const setToken = (payload) => ({
   type: SET_TOKEN,
+  payload,
+});
+
+export const setScoreAndAssertions = (payload) => ({
+  type: SET_SCORE_AND_ASSERTIONS,
   payload,
 });
 
