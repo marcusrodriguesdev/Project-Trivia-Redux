@@ -42,7 +42,13 @@ class Game extends React.Component {
         </span>
         <span data-testid="correct-answer">{ results[0].correct_answer }</span>
         {results[0].incorrect_answers
-          .map((answer, index) => <span key={ index } data-testid={ `wrong-answer-${index}` }>{answer}</span>)}
+          .map((answer, index) => (
+            <span
+              key={ index }
+              data-testid={ `wrong-answer-${index}` }
+            >
+              {answer}
+            </span>))}
       </>
     );
   }
