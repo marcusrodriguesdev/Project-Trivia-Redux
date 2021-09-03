@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { MD5 } from 'crypto-js';
 
-import { fetchToken } from '../../redux/actions';
+import { fetchToken, setGravatar, setPlayerData } from '../../redux/actions';
 
 import './style.css';
+import Header from '../../components/Header';
 
 class Login extends Component {
   constructor() {
@@ -19,6 +21,13 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.getGravatar = this.getGravatar.bind(this);
+  }
+
+  getGravatar(email) {
+    const gravatarHash = MD5(email).toString();
+    const gravatarEmail = `https://www.gravatar.com/avatar/${gravatarHash}`;
+    return gravatarEmail;
   }
 
   handleChange({ target }) {
@@ -32,19 +41,28 @@ class Login extends Component {
   }
 
   handleClick(event) {
-    const { fetch, token, history } = this.props;
+    const { fetch, token, history, setGravatarToState, setPlayerToState } = this.props;
     const { name, email } = this.state;
+
     event.preventDefault();
     fetch();
+
+    const gravatarEmail = this.getGravatar(email);
+    setGravatarToState(gravatarEmail);
+    setPlayerToState(name, email);
     const playerDataString = JSON.stringify({
       player: {
         name,
         assertions: '',
         score: '',
-        gravatarEmail: email,
+        gravatarEmail,
       },
     });
+    const rankingDataString = JSON.stringify([
+      { name, score: 10, picture: gravatarEmail },
+    ]);
     window.localStorage.setItem('state', playerDataString);
+    window.localStorage.setItem('ranking', rankingDataString);
     window.localStorage.setItem('token', token);
     history.push('/game');
   }
@@ -55,6 +73,7 @@ class Login extends Component {
 
     return (
       <div>
+        <Header />
         <form className="login-form">
           <input
             data-testid="input-player-name"
@@ -98,20 +117,14 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  fetch: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  token: PropTypes.string.isRequired,
-};
-
 const mapStateToProps = (state) => ({
   token: state.auth.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetch: () => dispatch(fetchToken()),
+  setGravatarToState: (gravatar) => dispatch(setGravatar(gravatar)),
+  setPlayerToState: (name, email) => dispatch(setPlayerData(name, email)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
