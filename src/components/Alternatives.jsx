@@ -4,7 +4,29 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Alternatives extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      seconds: 30,
+    };
+  }
+
+  componentDidMount() {
+    const ONE_SECOND = 1000;
+    this.countDown = setInterval(() => {
+      this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
+    }, ONE_SECOND);
+  }
+
+  componentDidUpdate() {
+    const { seconds } = this.state;
+    if (seconds === 0) {
+      clearInterval(this.countDown);
+    }
+  }
+
   displayAnswer() {
+    const { seconds } = this.state;
     const { questions: { results } } = this.props;
     const {
       correct_answer: correctAnswer,
@@ -12,10 +34,12 @@ class Alternatives extends React.Component {
     } = results[0];
     return (
       <div>
+        <p>{ seconds }</p>
         <button
           type="button"
           key="alternative"
           data-testid="correct-answer"
+          disabled={ seconds === 0 }
         >
           { correctAnswer }
         </button>
@@ -24,6 +48,7 @@ class Alternatives extends React.Component {
             type="button"
             key="alternative"
             data-testid={ `wrong-answer-${index}` }
+            disabled={ seconds === 0 }
           >
             { wrongAnswer }
           </button>))}
