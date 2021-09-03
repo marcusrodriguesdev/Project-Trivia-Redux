@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import Timer from '../components/Timer';
+import '../App.css';
 
 class Game extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Game extends Component {
     this.renderQuestions = this.renderQuestions.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
     this.setTimer = this.setTimer.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +26,15 @@ class Game extends Component {
 
   setTimer(callback) {
     this.setState((prevState) => ({ time: prevState.time - 1 }), callback);
+  }
+
+  handleClick() {
+    const rightBtn = document.querySelector('.correct-btn');
+    const wrongBtn = document.querySelectorAll('.wrong-btn');
+    rightBtn.className = 'correct-answer';
+    wrongBtn.forEach((button) => {
+      button.className = 'wrong-answer';
+    });
   }
 
   async saveQuestions() {
@@ -51,12 +62,16 @@ class Game extends Component {
           disabled={ disabled }
           type="button"
           data-testid="correct-answer"
+          className="correct-btn"
+          onClick={ this.handleClick }
         >
           { correctAnswer }
         </button>
         {incorrectAnswer.map((answer, index) => (
           <button
             disabled={ disabled }
+            onClick={ this.handleClick }
+            className="wrong-btn"
             type="button"
             key={ index }
             data-testid={ `wrong-answers-${index}` }
