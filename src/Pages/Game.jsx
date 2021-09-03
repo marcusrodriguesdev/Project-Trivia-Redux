@@ -8,7 +8,9 @@ class Game extends React.Component {
       questions: [],
       actualQuestion: 0,
       questionsLoaded: false,
+      answered: false,
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -28,14 +30,25 @@ class Game extends React.Component {
       });
   }
 
+  handleClick() {
+    this.setState({
+      answered: true,
+    });
+  }
+
   alternatives() {
-    const { questions, actualQuestion, questionsLoaded } = this.state;
+    const { questions, actualQuestion, questionsLoaded, answered } = this.state;
     let wrongAnswers = [];
     if (questionsLoaded) {
       wrongAnswers = questions[actualQuestion].incorrect_answers
         .map((answer, index) => (
           <li key={ index }>
-            <button data-testid={ `wrong-answer-${index}` } type="button">
+            <button
+              data-testid={ `wrong-answer-${index}` }
+              type="button"
+              className={ answered ? 'wrong' : '' }
+              onClick={ this.handleClick }
+            >
               { questionsLoaded && answer }
             </button>
           </li>
@@ -47,7 +60,12 @@ class Game extends React.Component {
         ...wrongAnswers,
         (
           <li key="4">
-            <button type="button" data-testid="correct-answer">
+            <button
+              type="button"
+              data-testid="correct-answer"
+              className={ answered ? 'correct' : '' }
+              onClick={ this.handleClick }
+            >
               { questionsLoaded && questions[actualQuestion].correct_answer }
             </button>
           </li>
