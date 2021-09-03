@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Header from '../components/header';
 import Question from '../Components/Question';
 import { fetchTriviaQuestions } from '../services/API';
 
@@ -40,13 +41,16 @@ class Home extends React.Component {
       );
     }
     return (
-      <Question
-        key={ question.question }
-        category={ question.category }
-        question={ question.question }
-        correctAnswer={ question.correct_answer }
-        incorrectAnswers={ question.incorrect_answers }
-      />
+      <>
+        <Header />
+        <Question
+          key={ question.question }
+          category={ question.category }
+          question={ question.question }
+          correctAnswer={ question.correct_answer }
+          incorrectAnswers={ question.incorrect_answers }
+        />
+      </>
     );
   }
 }
