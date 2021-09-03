@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '../trivia.png';
 import ButtonConfig from '../components/ButtonConfig/Index';
-import StopWatch from '../components/StopWatch/Index';
+
 // requisito 1
 class Login extends React.Component {
   constructor() {
@@ -68,7 +68,6 @@ class Login extends React.Component {
               Entrar
             </button>
             <ButtonConfig />
-            <StopWatch />
           </fieldset>
         </form>
       </>
