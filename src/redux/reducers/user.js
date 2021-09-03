@@ -3,6 +3,7 @@ import { SET_DATA_USER } from '../actions';
 const ESTADO_INICIAL = {
   user: '',
   email: '',
+  score: 0,
 };
 
 function userReducer(state = ESTADO_INICIAL, action) {
