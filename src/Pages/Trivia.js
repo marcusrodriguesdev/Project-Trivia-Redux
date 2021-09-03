@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 import Button from '../Components/Button';
 import Header from '../Components/Header';
 
@@ -86,6 +87,10 @@ class Trivia extends Component {
     );
   }
 }
+
+Trivia.propTypes = {
+  token: PropTypes.string,
+}.isRequired;
 
 const mapStateToProps = ({ user }) => ({
   token: user.token,
