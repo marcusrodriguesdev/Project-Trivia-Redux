@@ -42,12 +42,13 @@ class Initial extends Component {
   async sendLogin() {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const token = await response.json();
+    const stringToken = token.token;
 
-    localStorage.setItem('token', token.token);
+    localStorage.setItem('token', stringToken);
 
     const { name, email, profile } = this.state;
     const { Login: LoginAction, history } = this.props;
-    LoginAction(name, email, profile);
+    LoginAction(name, email, profile, stringToken);
 
     history.push('/jogo');
   }
@@ -89,7 +90,7 @@ class Initial extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  Login: (name, email, profile) => dispatch(Login(name, email, profile)),
+  Login: (name, email, profile, token) => dispatch(Login(name, email, profile, token)),
 });
 
 export default connect(null, mapDispatchToProps)(Initial);

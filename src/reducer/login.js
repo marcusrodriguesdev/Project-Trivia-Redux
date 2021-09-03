@@ -14,6 +14,7 @@ function loginReducer(state = INITIAL_STATE, action) {
       name: payload.name,
       email: payload.email,
       profile: payload.profile,
+      token: payload.token,
     };
 
   default:
