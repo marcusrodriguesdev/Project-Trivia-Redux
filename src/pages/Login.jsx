@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogin } from '../actions';
+import ConfigButton from '../components/ConfigButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,12 +34,10 @@ class Login extends React.Component {
       const validEmail = validationRegex.test(email);
       return validEmail;
     };
-
     const nameIsValid = name.length >= minLength;
-
     return (
       <div>
-
+        <ConfigButton />
         <input
           data-testid="input-gravatar-email"
           type="email"
@@ -47,7 +46,6 @@ class Login extends React.Component {
           placeholder="emaildobol@porexemplo.com"
           onChange={ this.handleLogin }
         />
-
         <input
           data-testid="input-player-name"
           type="text"
@@ -60,7 +58,6 @@ class Login extends React.Component {
           onClick={ () => (userEmail(email)) }
           to="/game"
         >
-
           <button
             data-testid="btn-play"
             type="button"
