@@ -6,7 +6,51 @@ export class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      clicked: false,
     };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      clicked: true,
+    });
+  }
+
+  answersRender(questions) {
+    const { clicked } = this.state;
+    return (
+      <ul>
+        <label
+          data-testid="correct-answer"
+          htmlFor="correct"
+          className={ clicked ? 'green-border' : '' }
+        >
+          <input type="radio" id="correct" name="answer" onClick={ this.handleClick } />
+          {questions[0].correct_answer}
+          <br />
+        </label>
+        {questions[0].incorrect_answers.map((answer, index) => (
+          <label
+            data-testid="wrong-answer"
+            htmlFor={ index }
+            key={ index }
+            className={ clicked ? 'red-border' : '' }
+          >
+            <input
+              type="radio"
+              id={ index }
+              name="answer"
+              key={ index }
+              data-testid={ `wrong-answer-${index}` }
+              onClick={ this.handleClick }
+            />
+            {answer}
+            <br />
+          </label>))}
+      </ul>
+    );
   }
 
   render() {
@@ -32,15 +76,7 @@ export class Game extends React.Component {
           <h3 data-testid="question-text">
             {questions[0].question}
           </h3>
-          <ul>
-            <li data-testid="correct-answer">
-              {questions[0].correct_answer}
-            </li>
-            {questions[0].incorrect_answers.map((answer, index) => (
-              <li key="index" data-testid={ `wrong-answer-${index}` }>
-                {answer}
-              </li>))}
-          </ul>
+          { this.answersRender(questions) }
         </div>
       </div>);
   }
