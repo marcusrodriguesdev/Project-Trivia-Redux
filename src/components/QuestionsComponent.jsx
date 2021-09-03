@@ -8,6 +8,7 @@ export default class QuestionsComponent extends React.Component {
     super(props);
 
     this.handleClicked = this.handleClicked.bind(this);
+    this.renderNextBtn = this.renderNextBtn.bind(this);
 
     this.state = {
       clicked: false,
@@ -16,6 +17,20 @@ export default class QuestionsComponent extends React.Component {
 
   handleClicked() {
     this.setState({ clicked: true });
+  }
+
+  renderNextBtn() {
+    const { clicked } = this.state;
+    if (clicked) {
+      return (
+        <button
+          data-testid="btn-next"
+          type="button"
+        >
+          Próxima
+        </button>
+      );
+    }
   }
 
   render() {
@@ -46,6 +61,7 @@ export default class QuestionsComponent extends React.Component {
             {incorrect}
           </button>
         ))}
+        {this.renderNextBtn()}
       </div>
     );
   }
