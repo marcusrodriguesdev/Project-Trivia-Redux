@@ -5,6 +5,28 @@ import '../css/Alternatives.css';
 import { connect } from 'react-redux';
 
 class Alternatives extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      next: false,
+    };
+    this.handleClick = this.handleClick.bind(this);
+    this.showCorrectAnswer = this.showCorrectAnswer.bind(this);
+    this.displayAnswer = this.displayAnswer.bind(this);
+    this.showNextQuestion = this.showNextQuestion.bind(this);
+  }
+
+  handleClick() {
+    this.setState((previousValue) => ({
+      next: !previousValue.next,
+    }));
+  }
+
+  showNextQuestion() {
+    this.handleClick();
+    this.displayAnswer();
+  }
+
   showCorrectAnswer() {
     const correct = document.querySelector('.correct');
     correct.className = 'correct correct-answer';
@@ -14,6 +36,7 @@ class Alternatives extends React.Component {
       item.className = 'incorrect incorrect-answer';
       return item;
     });
+    this.handleClick();
   }
 
   displayAnswer() {
@@ -22,6 +45,7 @@ class Alternatives extends React.Component {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
     } = results[0];
+    console.log(results);
     return (
       <div>
         <button
@@ -48,10 +72,21 @@ class Alternatives extends React.Component {
   }
 
   render() {
+    const { next } = this.state;
     const { loading } = this.props;
     return (
       <div>
         {!loading && this.displayAnswer()}
+        <div>
+          { next && (
+            <button
+              type="button"
+              onClick={ this.showNextQuestion }
+              data-testid="btn-next"
+            >
+              Proxima
+            </button>) }
+        </div>
       </div>
     );
   }
