@@ -117,6 +117,16 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  fetch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  setGravatarToState: PropTypes.func.isRequired,
+  setPlayerToState: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+};
+
 const mapStateToProps = (state) => ({
   token: state.auth.token,
 });
