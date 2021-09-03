@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import { Link } from 'react-router-dom';
 import Questions from '../components/Questions';
 import { fetchApi } from '../actions';
 
@@ -33,6 +32,14 @@ class Game extends Component {
           <h2 data-testid="header-score">{totalPoints}</h2>
         </header>
         {response && <Questions resp={ response } />}
+        <label htmlFor="gravatar-email" data-testid="input-gravatar-email">
+          Gravar email:
+          <input
+            type="text"
+            id="gravatar-email"
+            // onChange={this.}
+          />
+        </label>
       </div>
     );
   }
