@@ -2,61 +2,49 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import { getQuestion } from '../Services/fetchAPI';
+// import { getQuestion } from '../Services/fetchAPI';
+import { getQuestionsThunk } from '../Redux/Action';
 // import Loading from './Loading';
 
 class GamePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: null,
       index: 0,
     };
-    this.setQuestions = this.setQuestions.bind(this);
   }
 
   componentDidMount() {
-    this.setQuestions();
-  }
-
-  setQuestions() {
-    const token = localStorage.getItem('token');
-    console.log(token);
-    // eslint-disable-next-line no-magic-numbers
-    if (token) {
-      const questions = getQuestion(token);
-      this.setState({
-        questions,
-      });
-    }
+    // this.setQuestions();
+    const { sendQuestionsToState, token } = this.props;
+    sendQuestionsToState(token);
   }
 
   questionMod() {
-    const { questions, index } = this.state;
-    console.log(questions, index);
+    const { index } = this.state;
+    const { questions } = this.props;
+    console.log(questions);
     const currentQuestion = questions[index];
-    // const incorrectAnswers = currentQuestion.incorrect_answers;
+    const incorrectAnswers = currentQuestion.incorrect_answers;
     return (
       <>
         <h3 data-testid="question-text">{currentQuestion.question}</h3>
         <h5 data-testid="question-category">{currentQuestion.category}</h5>
-        {/* {incorrectAnswers.map((answer, mapIndex) => (
+        {incorrectAnswers.map((answer, mapIndex) => (
           <p
             data-testid={ `wrong-answer-${mapIndex}` }
             key="incorrectAnswer"
           >
             {answer}
-          </p>)) } */}
+          </p>)) }
         <p data-testid="correct-answer">{currentQuestion.correct_answer }</p>
       </>
     );
   }
 
   render() {
-    // const isDefined = localStorage.getItem('token');
-    // if (!isDefined) return <div>Loading</div>;
-    const { questions } = this.state;
-    console.log(questions);
+    const { questions } = this.props;
+    if (!questions.length) return <div>Loading</div>;
     const { playerName, playerEmail, playerScore } = this.props;
     const imgPath = 'https://www.gravatar.com/avatar/$ce11fce876c93ed5d2a72da660496473';
     const hash = md5(playerEmail).toString();
@@ -84,12 +72,23 @@ GamePage.propTypes = {
   playerEmail: PropTypes.string.isRequired,
   playerName: PropTypes.string.isRequired,
   playerScore: PropTypes.number.isRequired,
+  questions: PropTypes.shape({
+    length: PropTypes.number.isRequired,
+  }).isRequired,
+  sendQuestionsToState: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   playerScore: state.player.score,
   playerName: state.player.name,
   playerEmail: state.player.gravatarEmail,
+  token: state.token,
+  questions: state.questions,
 });
 
-export default connect(mapStateToProps)(GamePage);
+const mapDispatchToProps = (dispatch) => ({
+  sendQuestionsToState: (token) => dispatch(getQuestionsThunk(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
