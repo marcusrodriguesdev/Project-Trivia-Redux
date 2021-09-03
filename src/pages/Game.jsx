@@ -15,6 +15,7 @@ class Game extends Component {
     this.renderIncorrectAnswerButton = this.renderIncorrectAnswerButton.bind(this);
   }
 
+  // Função que embaralha arrays
   shuffleArray(array) { // Função provinda de "https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array"
     for (let i = array.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -84,9 +85,21 @@ class Game extends Component {
   }
 
   render() {
+    const { name } = this.props;
+    console.log(name);
     return (
       <div>
-        <div>TELA GAMER</div>
+        <header>
+        <img
+          src="https://www.gravatar.com/avatar/"
+          data-testid="header-profile-picture"
+          alt="gravatar"
+        />
+        <h3 data-testid="header-player-name">
+          { name }
+        </h3>
+        <p data-testid="header-score">0</p>
+      </header>
         {this.renderQuestion()}
       </div>
     );
@@ -94,6 +107,7 @@ class Game extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  name: state.player.name,
   token: state.user.token.token,
   questions: state.game.questions.results,
 });
@@ -105,6 +119,7 @@ const mapDispatchToProps = (dispatch) => ({
 Game.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   questions: PropTypes.shape({
     response_code: PropTypes.number,
     results: PropTypes.shape({

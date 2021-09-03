@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getToken } from '../actions';
+import { getToken, saveName } from '../actions';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      /* name: '',
-      email: '', */
+      name: '',
       validName: false,
       validEmail: false,
     };
@@ -49,45 +48,58 @@ class Login extends Component {
 
   render() {
     const { getTokenProps } = this.props;
-    const { validEmail, validName } = this.state;
+    const { getPlayerName } = this.props;
+    const { validEmail, validName, name } = this.state;
     return (
-      <form>
-        <label htmlFor="name">
-          <input
-            type="text"
-            id="name"
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          <input
-            type="text"
-            id="email"
-            data-testid="input-gravatar-email"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <Link to="/game">
+      <div>
+        <form>
+          <label htmlFor="name">
+            <input
+              type="text"
+              id="name"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            <input
+              type="text"
+              id="email"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <Link onClick={ () => (getPlayerName(name)) } to="/game">
+            <button
+              disabled={ !validName || !validEmail }
+              type="button"
+              data-testid="btn-play"
+              onClick={ getTokenProps }
+            >
+              Jogar
+            </button>
+          </Link>
+        </form>
+        <Link to="/settings">
           <button
-            disabled={ !validName || !validEmail }
             type="button"
-            data-testid="btn-play"
-            onClick={ getTokenProps }
+            data-testid="btn-settings"
           >
-            Jogar
+            Configurações
           </button>
         </Link>
-      </form>
+      </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   getTokenProps: () => dispatch(getToken()),
+  getPlayerName: (name) => dispatch(saveName(name)),
 });
 
 Login.propTypes = {
+  getPlayerName: PropTypes.func.isRequired,
   getTokenProps: PropTypes.func.isRequired,
 };
 

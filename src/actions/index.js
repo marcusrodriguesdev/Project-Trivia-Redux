@@ -1,5 +1,6 @@
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
+export const SAVE_NAME = 'SAVE_NAME';
 export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
 
 export const saveQuestions = (payload) => ({
@@ -29,3 +30,10 @@ export const getQuestions = (token) => async (dispatch) => {
   const objResponse = await response.json();
   return dispatch(saveQuestions(objResponse));
 };
+
+export const saveName = (name) => ({
+  type: SAVE_NAME,
+  player: {
+    name,
+  },
+});
