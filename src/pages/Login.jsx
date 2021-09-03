@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import actionLogin from '../actions';
+import actionLogin, { actionPlayerScore } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -17,21 +17,30 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    const { player } = this.props;
     this.token();
     const playerScore = {
       player: {
-        name: '',
+        // name: '',
         assertions: 0,
         score: 0,
-        gravatarEmail: '',
+        // gravatarEmail: '',
       },
     };
-    localStorage.setItem('state', JSON.stringify(playerScore));
+    // localStorage.setItem('state', JSON.stringify(playerScore));
+    player(0, playerScore.player.score);
   }
 
   validateEmailAndUser() {
     const { email, user } = this.state;
     const emailPattern = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/i;
+    const player = {
+      user,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('state', JSON.stringify({ player }));
     if (emailPattern.test(email) && user.length > 0) {
       return false;
     }
@@ -103,11 +112,13 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  player: PropTypes.func.isRequired,
   userEmailAction: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   userEmailAction: (user, email) => dispatch(actionLogin(user, email)),
+  player: (assertions, score) => dispatch(actionPlayerScore(assertions, score)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

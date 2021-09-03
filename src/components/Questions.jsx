@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './Questions.css';
+import { actionPlayerScore } from '../actions';
 
 const TEN_POINTS = 10;
 const THREE = 3;
@@ -56,26 +58,24 @@ class Questions extends Component {
   }
 
   handleClickClassName({ target }) {
-    const { resp } = this.props;
+    const { resp, player, playerStatus: { score, assertions } } = this.props;
     const { seconds } = this.state;
     if (target.id === 'correct-answer') {
       const { difficulty } = resp[0];
       const pointsFromDifficulty = this.checkDifficulty(difficulty);
       const timerPoints = seconds;
       const correctAnswerPoints = TEN_POINTS + timerPoints * pointsFromDifficulty;
-      console.log(correctAnswerPoints);
-
-      // Criei este localstorece no coponemte LOgin ha qu modificá-lo
-
-      // const playerScore = {
-      //   player: {
-      //     name: '',
-      //     assertions: 0,
-      //     score: correctAnswerPoints,
-      //     gravatarEmail: '',
-      //   },
-      // };
-      // localStorage.setItem('state', JSON.stringify(playerScore));
+      const sum = correctAnswerPoints + score;
+      const playerScore = {
+        player: {
+          name: '',
+          assertions: 1 + assertions,
+          score: sum,
+          gravatarEmail: '',
+        },
+      };
+      localStorage.setItem('state', JSON.stringify(playerScore));
+      player(1, sum);
     }
 
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
@@ -120,7 +120,17 @@ class Questions extends Component {
 }
 
 Questions.propTypes = {
-  resp: PropTypes.objectOf(propTypes.string).isRequired,
+  player: PropTypes.func.isRequired,
+  resp: PropTypes.objectOf(PropTypes.string).isRequired,
+  playerStatus: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
-export default Questions;
+const mapStateToProps = (state) => ({
+  playerStatus: state.player,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  player: (assertions, score) => dispatch(actionPlayerScore(assertions, score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
