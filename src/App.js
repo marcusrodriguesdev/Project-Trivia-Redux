@@ -4,6 +4,7 @@ import logo from './trivia.png';
 import './App.css';
 import Game from './pages/Game';
 import Login from './pages/Login';
+import Configuration from './pages/Configuration';
 
 class App extends React.Component {
   render() {
@@ -14,6 +15,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/game" component={ Game } />
             <Route exact path="/" component={ Login } />
+            <Route exact path="/config" component={ Configuration } />
           </Switch>
         </header>
       </div>
