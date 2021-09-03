@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
+import { playerInfo as playerInfoAction } from '../actions';
 
 class Login extends Component {
   constructor() {
     super();
 
     this.state = {
-      player: '',
+      name: '',
       email: '',
     };
 
@@ -23,8 +25,11 @@ class Login extends Component {
   }
 
   handleClick() {
-    const { history } = this.props;
+    const { history, playerInfo } = this.props;
+    const { email, name } = this.state;
     this.getToken();
+
+    playerInfo({ email, name });
     history.push('/jogo');
   }
 
@@ -42,24 +47,26 @@ class Login extends Component {
 
   render() {
     const { handleChange, handleClick } = this;
-    const { player, email } = this.state;
+    const { name, email } = this.state;
     return (
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
         </header>
         <form>
-          <label htmlFor="palyer">
+          <label htmlFor="name">
+            Nome:
             <input
-              id="player"
-              name="player"
-              value={ player }
+              id="name"
+              name="name"
+              value={ name }
               onChange={ handleChange }
               type="text"
               data-testid="input-player-name"
             />
           </label>
           <label htmlFor="email">
+            E-mail:
             <input
               id="email"
               name="email"
@@ -72,12 +79,11 @@ class Login extends Component {
           <button
             type="button"
             data-testid="btn-play"
-            disabled={ email.length && player.length ? '' : 'true' }
+            disabled={ email.length && name.length ? '' : 'true' }
             onClick={ handleClick }
           >
             Jogar
           </button>
-
           <button
             type="submit"
             data-testid="btn-settings"
@@ -93,6 +99,11 @@ class Login extends Component {
 
 Login.propTypes = {
   history: PropTypes.objectOf().isRequired,
+  playerInfo: PropTypes.func.isRequired,
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  playerInfo: (payload) => dispatch(playerInfoAction(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
