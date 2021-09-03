@@ -3,7 +3,7 @@ export const ACTIONS = {
   GET_TOKEN: 'GET_TOKEN',
 };
 
-export const setEmail = (email) => ({ type: ACTIONS.SET_EMAIL, payload: email });
+export const setEmail = (payload) => ({ type: ACTIONS.SET_EMAIL, payload });
 
 export const getToken = (token) => ({ type: ACTIONS.GET_TOKEN, payload: token });
 

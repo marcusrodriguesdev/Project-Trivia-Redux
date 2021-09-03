@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import HeaderInfo from '../components/HeaderInfo';
 
 class game extends Component {
   constructor(props) {
@@ -59,7 +60,8 @@ class game extends Component {
     }
     return (
       <div className="App">
-        Tela do jogo
+        <HeaderInfo />
+        Tela de jogo
         <div className="question-board">
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
