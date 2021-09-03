@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Input from '../components/Input';
 import logo from '../trivia.png';
-import { getTokenApi } from '../actions';
+import { getTokenApi, setEmail } from '../actions';
 
 class login extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class login extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -24,9 +25,16 @@ class login extends Component {
     });
   }
 
+  handleOnClick() {
+    const { getApiToken, propSetEmail } = this.props;
+    const { email } = this.state;
+    propSetEmail(email);
+    getApiToken();
+  }
+
   render() {
     const { name, email } = this.state;
-    const { getApiToken, tokenValue } = this.props;
+    const { tokenValue } = this.props;
     console.log(tokenValue);
     return (
       <div className="App">
@@ -56,7 +64,7 @@ class login extends Component {
                 type="button"
                 data-testid="btn-play"
                 disabled={ !(name && email) }
-                onClick={ () => { getApiToken(); } }
+                onClick={ this.handleOnClick }
               >
                 Jogar
               </button>
@@ -74,10 +82,12 @@ login.propTypes = {
   }).isRequired,
   getApiToken: PropTypes.func.isRequired,
   tokenValue: PropTypes.string.isRequired,
+  propSetEmail: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getApiToken: () => dispatch(getTokenApi()),
+  propSetEmail: (payload) => dispatch(setEmail(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(login);
