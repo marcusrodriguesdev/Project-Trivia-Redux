@@ -43,9 +43,11 @@ class Home extends React.Component {
     const { results } = re2;
     this.setState({
       questions: [...results],
-      loading: false,
     });
     this.setCurrentQuestion(currentQuestionIndex);
+    this.setState({
+      loading: false,
+    });
   }
 
   answerClick() {

@@ -7,12 +7,26 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
 
-    const { correctAnswer, answerClicked } = this.props;
+    const { correctAnswer } = this.props;
     this.state = {
       correctAnswerIdentifier: correctAnswer,
-      answerClicked,
+      answerList: [],
     };
     this.handleClick = this.handleClick.bind(this);
+    this.setAnswersList = this.setAnswersList.bind(this);
+  }
+
+  componentDidMount() {
+    const { correctAnswer, incorrectAnswers } = this.props;
+    const answerList = [correctAnswer, ...incorrectAnswers];
+    const shuffledList = shuffleList(answerList);
+    this.setAnswersList(shuffledList);
+  }
+
+  setAnswersList(list) {
+    this.setState({
+      answerList: list,
+    });
   }
 
   handleClick() {
@@ -32,10 +46,8 @@ class Question extends React.Component {
   }
 
   render() {
-    const { category, question, correctAnswer, incorrectAnswers } = this.props;
-    const answerList = [correctAnswer, ...incorrectAnswers];
-    const shuffledList = shuffleList(answerList);
-    const { correctAnswerIdentifier, answerClicked } = this.state;
+    const { category, question, answerClicked } = this.props;
+    const { correctAnswerIdentifier, answerList } = this.state;
     return (
       <div>
         <div data-testid="question-category">
@@ -46,7 +58,7 @@ class Question extends React.Component {
           Pergunta:
           { question }
         </div>
-        { shuffledList.map((element) => {
+        { answerList.map((element) => {
           if (element === correctAnswerIdentifier) {
             return (
               <button
