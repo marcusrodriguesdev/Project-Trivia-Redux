@@ -7,9 +7,6 @@ const store = createStore(
   rootReducers,
   composeWithDevTools(applyMiddleware(thunk)),
 );
-if (window.Cypress) {
-  window.store = store;
-}
 
 if (window.Cypress) {
   window.store = store;
