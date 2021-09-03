@@ -2,6 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import './Questions.css';
 
+const TEN_POINTS = 10;
+const THREE = 3;
+const TWO = 2;
+const ONE = 1;
+const ZERO = 0;
+
 class Questions extends Component {
   constructor() {
     super();
@@ -36,7 +42,42 @@ class Questions extends Component {
       disable: true });
   }
 
-  handleClickClassName() {
+  checkDifficulty(e) {
+    switch (e) {
+    case 'hard':
+      return THREE;
+    case 'medium':
+      return TWO;
+    case 'easy':
+      return ONE;
+    default:
+      return ZERO;
+    }
+  }
+
+  handleClickClassName({ target }) {
+    const { resp } = this.props;
+    const { seconds } = this.state;
+    if (target.id === 'correct-answer') {
+      const { difficulty } = resp[0];
+      const pointsFromDifficulty = this.checkDifficulty(difficulty);
+      const timerPoints = seconds;
+      const correctAnswerPoints = TEN_POINTS + timerPoints * pointsFromDifficulty;
+      console.log(correctAnswerPoints);
+
+      // Criei este localstorece no coponemte LOgin ha qu modificá-lo
+
+      // const playerScore = {
+      //   player: {
+      //     name: '',
+      //     assertions: 0,
+      //     score: correctAnswerPoints,
+      //     gravatarEmail: '',
+      //   },
+      // };
+      // localStorage.setItem('state', JSON.stringify(playerScore));
+    }
+
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
   }
 
@@ -52,6 +93,7 @@ class Questions extends Component {
           className={ correct }
           onClick={ this.handleClickClassName }
           data-testid="correct-answer"
+          id="correct-answer"
           type="button"
           disabled={ disable }
         >
@@ -78,7 +120,7 @@ class Questions extends Component {
 }
 
 Questions.propTypes = {
-  resp: PropTypes.string.isRequired,
+  resp: PropTypes.objectOf(propTypes.string).isRequired,
 };
 
 export default Questions;

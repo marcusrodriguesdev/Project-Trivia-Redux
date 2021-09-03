@@ -18,6 +18,15 @@ class Login extends Component {
 
   componentDidMount() {
     this.token();
+    const playerScore = {
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(playerScore));
   }
 
   validateEmailAndUser() {
