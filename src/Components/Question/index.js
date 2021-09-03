@@ -33,7 +33,8 @@ class Question extends React.Component {
       medium: 2,
       easy: 1,
     };
-    const total = 10 + (timer * pontDifficulty[difficulty]);
+    const TEN_NUMBER = 10;
+    const total = TEN_NUMBER + (timer * pontDifficulty[difficulty]);
     const stateLocal = JSON.parse(localStorage.getItem('state'));
     const newLocal = { ...stateLocal, player: { ...stateLocal.player, score: total } };
     localStorage.setItem('state', JSON.stringify(newLocal));
@@ -91,7 +92,7 @@ Question.propTypes = {
   question: PropTypes.string.isRequired,
   correctAnswer: PropTypes.string.isRequired,
   isTimer: PropTypes.bool.isRequired,
-
+  difficulty: PropTypes.string.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
