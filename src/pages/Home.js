@@ -27,12 +27,13 @@ class Home extends React.Component {
     const { results } = re2;
     this.setState({
       questions: [...results],
+      difficulty: results[0].difficulty,
       loading: false,
     });
   }
 
   render() {
-    const { questions, loading } = this.state;
+    const { questions, loading, difficulty } = this.state;
     const question = questions[0];
     if (loading) {
       return (
@@ -46,6 +47,7 @@ class Home extends React.Component {
         question={ question.question }
         correctAnswer={ question.correct_answer }
         incorrectAnswers={ question.incorrect_answers }
+        difficulty={ difficulty }
       />
     );
   }

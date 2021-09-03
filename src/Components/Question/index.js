@@ -6,15 +6,15 @@ import './Question.css';
 class Question extends React.Component {
   constructor(props) {
     super(props);
-
     const { correctAnswer } = this.props;
     this.state = {
       correctAnswerIdentifier: correctAnswer,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.calcPonts = this.calcPonts.bind(this);
   }
 
-  handleClick() {
+  handleClick({ target: { dataset: { testid } } }) {
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => {
       const { dataset: { testid } } = button;
@@ -22,6 +22,18 @@ class Question extends React.Component {
         ? button.classList.add('answer-correct')
         : button.classList.add('answer-wrong');
     });
+    if (testid === 'correct-answer') { this.calcPonts(); }
+  }
+
+  calcPonts() {
+    const { difficulty } = this.props;
+    const pontDifficulty = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    // // Para terminar a implementação desse requisito é necesssario o timer
+    // const total = 10 + (timer * pontDifficulty[difficulty]);
   }
 
   render() {
