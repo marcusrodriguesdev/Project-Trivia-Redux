@@ -32,8 +32,8 @@
 
 .login-form-container {
   display: flex;
-  justify-content: center;
   height: 50vh;
+  justify-content: center;
 }
 
 .login-form {
@@ -83,5 +83,5 @@
 }
 
 .btn-settings:enabled:hover {
-  background-color: rgb(160, 77, 255)
+  background-color: rgb(160, 77, 255);
 }
