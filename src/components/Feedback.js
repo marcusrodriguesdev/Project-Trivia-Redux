@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 // import Header from './Header';
 
 class Feedback extends Component {
-  feedbackMessage() {
-    const { assertions } = this.props;
+  feedbackMessage(assertions) {
     const MIN_TO_BE_GOOD = 3;
     if (assertions >= MIN_TO_BE_GOOD) {
       return <h3 data-testid="feedback-text">Mandou bem!</h3>;
@@ -15,10 +14,27 @@ class Feedback extends Component {
   }
 
   render() {
+    const { assertions, score, history } = this.props;
     return (
       <div className="App">
         {/* <Header /> */}
-        { this.feedbackMessage() }
+        { this.feedbackMessage(assertions) }
+        <h4>
+          {'Placar Final: '}
+          <span data-testid="feedback-total-score">{score}</span>
+        </h4>
+        <h4>
+          {'Acertou '}
+          <span data-testid="feedback-total-question">{assertions}</span>
+          { assertions === 1 ? ' questão' : ' questões'}
+        </h4>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => history.push('/') }
+        >
+          Jogar novamente
+        </button>
       </div>
     );
   }
@@ -26,10 +42,13 @@ class Feedback extends Component {
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  history: PropTypes.shape(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = ({ player }) => ({
   assertions: player.assertions,
+  score: player.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
