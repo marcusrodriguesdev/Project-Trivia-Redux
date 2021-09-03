@@ -3,6 +3,7 @@ import NameInput from '../components/NameInput';
 import EmailInput from '../components/EmailInput';
 import logo from '../trivia.png';
 import PlayButton from '../components/PlayButton';
+import ConfigButton from '../components/ConfigButton';
 
 class Login extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class Login extends Component {
             playerName={ name }
             playerEmail={ email }
           />
+          <ConfigButton />
         </header>
       </div>
     );
