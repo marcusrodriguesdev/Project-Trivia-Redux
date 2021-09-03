@@ -14,15 +14,13 @@ class Question extends React.Component {
     this.calcPonts = this.calcPonts.bind(this);
   }
 
-  handleClick({ target: { dataset: { testid } } }) {
+  handleClick({ target }) {
+    const { correctAnswer } = this.props;
     const AllButtons = document.querySelectorAll('button');
-    AllButtons.forEach((button) => {
-      const { dataset: { testid } } = button;
-      return testid === 'correct-answer'
-        ? button.classList.add('answer-correct')
-        : button.classList.add('answer-wrong');
-    });
-    if (testid === 'correct-answer') { this.calcPonts(); }
+    AllButtons.forEach((button) => (correctAnswer === button.innerText
+      ? button.classList.add('answer-correct')
+      : button.classList.add('answer-wrong')));
+    if (target.innerText === 'correct-answer') { this.calcPonts(); }
   }
 
   calcPonts() {
