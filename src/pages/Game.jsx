@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Header from '../components/Header'
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Header from '../components/Header';
 
 import { fecthApiThunk } from '../Redux/action';
 // import AnswerBoolean from '../components/AnswerBoolean';

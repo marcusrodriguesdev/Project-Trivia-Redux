@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fecthApiToken from '../services/fetchApiToken';
+import { userLogin } from '../Redux/action/index';
 // import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -18,7 +20,10 @@ class Login extends React.Component {
   }
 
   async onFecthToken() {
-    const { history } = this.props;
+    const { history, setUser } = this.props;
+    const { name, email } = this.state;
+    const user = { name, email };
+    setUser(user);
     const token = await fecthApiToken();
 
     localStorage.setItem('token', JSON.stringify(token));
@@ -93,8 +98,13 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(userLogin(user)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
-  history: PropTypes.objectOf(String).isRequired,
-};
+  history: PropTypes.objectOf(String),
+  setUser: PropTypes.func,
+}.isRequired;
