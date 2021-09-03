@@ -9,9 +9,9 @@ import Game from './pages/Game';
 export default function App() {
   return (
     <Switch>
-        <Route exact path="/" component={ Login } />
-        <Route exact path="/config" component={ ConfigScreen } />
-        <Route exact path="/jogar" component={ Game } />
-      </Switch>
+      <Route exact path="/" component={ Login } />
+      <Route exact path="/config" component={ ConfigScreen } />
+      <Route exact path="/jogar" component={ Game } />
+    </Switch>
   );
 }
