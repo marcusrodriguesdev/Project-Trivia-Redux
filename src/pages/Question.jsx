@@ -23,7 +23,6 @@ class Question extends Component {
   handleEmailConversion() {
     const { gravatarEmail } = this.props;
     const emailHash = md5(gravatarEmail).toString();
-    console.log(emailHash);
     const response = `https://www.gravatar.com/avatar/${emailHash}`;
     return response;
   }

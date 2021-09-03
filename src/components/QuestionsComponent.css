@@ -1,0 +1,12 @@
+button {
+  padding: 2px 4px;
+  margin: 2px;
+}
+
+.correct {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.incorrect {
+  border: 3px solid rgb(255, 0, 0);
+}
