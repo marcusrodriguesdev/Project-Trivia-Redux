@@ -25,6 +25,10 @@ class Feedback extends React.Component {
           <h2 data-testid="header-score">{ score }</h2>
           <p data-testid="feedback-text">{ this.assertionsVerify(assertions) }</p>
         </header>
+        <section>
+          <p data-testid="feedback-total-score">{score}</p>
+          <p data-testid="feedback-total-question">{ assertions }</p>
+        </section>
       </div>
     );
   }
