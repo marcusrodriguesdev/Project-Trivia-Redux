@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../App.css';
 
 class game extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class game extends Component {
 
   render() {
     const { data } = this.state;
-    const loading = <span className="loading">Loading...</span>;
+    const loading = <div className="loading">Loading...</div>;
 
     if (data === '') {
       return loading;
