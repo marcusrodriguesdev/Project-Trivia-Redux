@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
 import getToken from '../redux/actions';
@@ -45,7 +46,7 @@ class Login extends Component {
           <p>
             LOGIN
           </p>
-          <form>
+          <form onSubmit={ this.onClick }>
             <label htmlFor="name">
               Nome:
               <input
@@ -70,12 +71,17 @@ class Login extends Component {
             </label>
             <button
               data-testid="btn-play"
-              type="button"
-              onClick={ (this.handleChange, this.onClick) }
+              type="submit"
+              onClick={ (this.handleChange) }
               disabled={ isDisable }
             >
               Jogar
             </button>
+            <Link to="/setings">
+              <button type="button" data-testid="btn-settings">
+                Configurações
+              </button>
+            </Link>
           </form>
         </header>
       </div>
