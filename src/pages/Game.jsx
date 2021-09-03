@@ -14,7 +14,10 @@ class Game extends Component {
     };
 
     this.fetchTriviaGame = this.fetchTriviaGame.bind(this);
+    this.nextButton = this.nextButton.bind(this);
     this.teste = this.teste.bind(this);
+    this.teste2 = this.teste2.bind(this);
+    this.teste3 = this.teste3.bind(this);
   }
 
   componentDidMount() {
@@ -24,20 +27,69 @@ class Game extends Component {
   async fetchTriviaGame() {
     const { endpoint, token } = this.props;
     const response = await fetchTrivia(endpoint, token);
-    console.log(response);
+    // console.log(response);
     this.setState({
       trivia: [...response],
       isLoading: false,
     });
   }
 
+  nextButton() {
+    const { trivia } = this.state;
+    let { index } = this.state;
+    // console.log(trivia.length);
+
+    if (index < trivia.length - 1) {
+      index += 1;
+      this.setState({
+        index,
+      });
+    }
+  }
+
+  teste2({ incorrect_answers: incorrectAnswers, correct_answer: correctAnswer }) {
+    const allAnswers = [...incorrectAnswers, correctAnswer];
+    return allAnswers;
+  }
+
+  teste3(array) {
+    // Esse código foi tirado do StackOverFlow. Ele serve para randomizar um array
+    // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
+    let currentIndex = array.length;
+    let randomIndex;
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
+
   teste() {
-    const { trivia, index, isLoading } = this.state;
-    return isLoading ? <p>Loading...</p> : <p>{trivia[index].category}</p>;
+    const { trivia, index } = this.state;
+    let newArray = this.teste2(trivia[index]);
+    // console.log(newArray);
+    // const randomArray = this.teste3(newArray);
+    // console.log(randomArray);
+    newArray = newArray.map((element) => <button>{element}</button>);
+    console.log(newArray);
+
+    return (
+      <div>
+        <p data-test-id="question-category">{trivia[index].category}</p>
+        <p data-test-id="question-text">{trivia[index].question}</p>
+        {/* {randomArray.map((answe, i) => <button type="button" key={ i }>{answe}</button>)} */}
+        { newArray.map((element) => <span>{element}</span>)}
+        <button type="button" onClick={ this.nextButton }>clicar</button>
+      </div>
+    );
   }
 
   render() {
     const { name, image } = this.props;
+    const { isLoading } = this.state;
     return (
       <>
         <header>
@@ -47,7 +99,7 @@ class Game extends Component {
         </header>
 
         <section>
-          { this.teste() }
+          { isLoading ? <p>Loading...</p> : this.teste() }
 
         </section>
       </>
