@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import md5 from 'crypto-js/md5';
 import { getQuestionThunk } from '../redux/actions';
 import QuestionsComponent from '../components/QuestionsComponent';
-import md5 from 'crypto-js/md5';
-
 
 class Game extends React.Component {
   componentDidMount() {
@@ -41,7 +40,7 @@ const mapStateToProps = ({ user: { token, name, email }, results: { questions } 
   questions,
   token,
   name,
-  email
+  email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -49,4 +48,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
-

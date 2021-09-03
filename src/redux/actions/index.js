@@ -5,7 +5,6 @@ export const SET_QUESTION = 'SET_QUESTION';
 export const SET_NAME = 'SET_NAME';
 export const SET_EMAIL = 'SET_EMAIL';
 
-
 export const getToken = (payload) => ({
   type: GET_TOKEN,
   payload,
