@@ -60,6 +60,7 @@ class Questions extends Component {
   handleClickClassName({ target }) {
     const { resp, player, playerStatus: { score, assertions } } = this.props;
     const { seconds } = this.state;
+    // boo
     if (target.id === 'correct-answer') {
       const { difficulty } = resp[0];
       const pointsFromDifficulty = this.checkDifficulty(difficulty);
