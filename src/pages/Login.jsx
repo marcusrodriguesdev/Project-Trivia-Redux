@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getToken } from '../actions';
+import { getToken, saveName } from '../actions';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      /* name: '',
-      email: '', */
+      name: '',
       validName: false,
       validEmail: false,
     };
@@ -49,7 +48,8 @@ class Login extends Component {
 
   render() {
     const { getTokenProps } = this.props;
-    const { validEmail, validName } = this.state;
+    const { getPlayerName } = this.props;
+    const { validEmail, validName, name } = this.state;
     return (
       <div>
         <form>
@@ -69,7 +69,7 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link to="/game">
+          <Link onClick={ () => (getPlayerName(name)) } to="/game">
             <button
               disabled={ !validName || !validEmail }
               type="button"
@@ -95,9 +95,11 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getTokenProps: () => dispatch(getToken()),
+  getPlayerName: (name) => dispatch(saveName(name)),
 });
 
 Login.propTypes = {
+  getPlayerName: PropTypes.func.isRequired,
   getTokenProps: PropTypes.func.isRequired,
 };
 
