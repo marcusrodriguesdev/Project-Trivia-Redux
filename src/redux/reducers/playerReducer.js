@@ -10,7 +10,9 @@ export default function playerReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case SET_PLAYER:
     return {
-      payload,
+      name: action.payload.name,
+      email: action.payload.email,
+      avatar: action.payload.avatar,
     };
   default:
     return state;

@@ -1,11 +1,15 @@
 import { createStore } from 'redux';
-import { componentWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import rootReducer from '../reducers';
 
 const store = createStore(
   rootReducer,
-  componentWithDevTools(),
+  composeWithDevTools(),
 );
 
 export default store;
+
+if (window.Cypress) {
+  window.store = store;
+}
