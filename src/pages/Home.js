@@ -30,8 +30,6 @@ class Home extends React.Component {
 
   setCurrentQuestion(index) {
     const { questions } = this.state;
-    console.log(questions);
-    console.log(questions[index]);
     this.setState({
       currentQuestion: questions[index],
     });
@@ -58,22 +56,23 @@ class Home extends React.Component {
   }
 
   nextClick() {
-    const { currentQuestionIndex, currentQuestion } = this.state;
-    this.setCurrentQuestion(currentQuestionIndex + 1);
+    const { currentQuestionIndex } = this.state;
     const newQuestionIndex = currentQuestionIndex + 1;
-    this.setState({
-      currentQuestionIndex: newQuestionIndex,
-    });
-    if (currentQuestion[newQuestionIndex] === undefined) {
+    if (newQuestionIndex === 5) {
       this.setState({
         currentQuestionIndex: 0,
       });
+      this.setCurrentQuestion(0);
+    } else {
+      this.setState({
+        currentQuestionIndex: newQuestionIndex,
+      });
+      this.setCurrentQuestion(newQuestionIndex);
     }
   }
 
   render() {
     const { loading, answerClicked, currentQuestion } = this.state;
-    console.log(currentQuestion);
     if (loading) {
       return (
         <div>carregando...</div>
