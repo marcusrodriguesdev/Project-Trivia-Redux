@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import fetchApi from '../services/api';
 import QuestionsComponent from '../components/QuestionsComponent';
+import { setScoreAndAssertions as setScoreAndAssertionsAction } from '../actions';
 
 class Question extends Component {
   constructor(props) {
@@ -13,6 +14,8 @@ class Question extends Component {
 
     this.state = {
       loading: true,
+      timer: 30,
+      index: 0,
     };
   }
 
@@ -29,16 +32,36 @@ class Question extends Component {
   }
 
   async handleQuestions() {
-    const { results } = await fetchApi('https://opentdb.com/api.php?amount=5');
+    const { token } = this.props;
+    const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
+    const { results } = await fetchApi(url);
     this.setState({
-      resultsApi: results,
+      questions: results,
       loading: false,
     });
   }
 
+  handleClickCorrectAnswer() {
+    const value = 10;
+    const { score, gravatarEmail, name, assertions, setScoreAndAssertions } = this.props;
+    const { questions, index, timer } = this.state;
+    const { difficulty } = questions[index];
+    const difficultyTable = { hard: 3, medium: 2, easy: 1 };
+    const newScore = score + value + (difficultyTable[difficulty] * timer);
+    const newAssertions = assertions + 1;
+    const player = {
+      name,
+      assertions: newAssertions,
+      score: { newScore },
+      gravatarEmail,
+    };
+    localStorage.setItem('state', player);
+    setScoreAndAssertions({ assertions, score });
+  }
+
   render() {
     const { name, score } = this.props;
-    const { resultsApi, loading } = this.state;
+    const { questions, loading, index } = this.state;
     return (
       <>
         <header>
@@ -50,7 +73,11 @@ class Question extends Component {
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
-        {!loading && <QuestionsComponent question={ resultsApi } />}
+        {!loading
+        && <QuestionsComponent
+          question={ questions[index] }
+          handleClick={ this.handleClickCorrectAnswer }
+        />}
       </>
     );
   }
@@ -60,12 +87,20 @@ Question.propTypes = {
   gravatarEmail: PropTypes.string,
   name: PropTypes.string,
   score: PropTypes.number,
+  assertions: PropTypes.number,
+  token: PropTypes.string,
 }.isRequired;
 
-const mapStateToProps = ({ login }) => ({
-  gravatarEmail: login.gravatarEmail,
-  name: login.name,
-  score: login.score,
+const mapStateToProps = ({ player }) => ({
+  gravatarEmail: player.gravatarEmail,
+  name: player.name,
+  score: player.score,
+  assertions: player.assertions,
+  token: player.token,
 });
 
-export default connect(mapStateToProps, null)(Question);
+const mapDispatchToProps = (dispatch) => ({
+  setScoreAndAssertions: (payload) => dispatch(setScoreAndAssertionsAction(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
