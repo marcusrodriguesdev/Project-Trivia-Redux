@@ -10,8 +10,7 @@ export class Game extends React.Component {
   }
 
   render() {
-    const { player, token } = this.props;
-    // const { perguntas } = this.state;
+    const { player, questions } = this.props;
     return (
       <div>
         <header>
@@ -19,15 +18,29 @@ export class Game extends React.Component {
           <h4 data-testid="header-player-name">
             Nome:
             {player.nome}
-          </h4>
-          <h4 data-testid="header-score">
-            Score: 0
+            {' '}
+            <span data-testid="header-score">
+              Score: 0
+            </span>
           </h4>
         </header>
         <div>
-          <h3>
-            {console.log(token)}
+          <p data-testid="question-category">
+            Categoria:
+            {questions[0].category}
+          </p>
+          <h3 data-testid="question-text">
+            {questions[0].question}
           </h3>
+          <ul>
+            <li data-testid="correct-answer">
+              {questions[0].correct_answer}
+            </li>
+            {questions[0].incorrect_answers.map((answer, index) => (
+              <li key="index" data-testid={ `wrong-answer-${index}` }>
+                {answer}
+              </li>))}
+          </ul>
         </div>
       </div>);
   }
@@ -38,11 +51,11 @@ Game.propTypes = {
     avatar: PropTypes.string,
     nome: PropTypes.string,
   }).isRequired,
-  token: PropTypes.string.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  token: state.user.token,
+  questions: state.user.questions,
   player: state.user.player,
 });
 

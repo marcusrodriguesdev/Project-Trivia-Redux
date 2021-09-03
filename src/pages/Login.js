@@ -3,10 +3,10 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setPlayerInfo, setPlayerToken } from '../actions';
+import { setPlayerInfo, setPlayerQuestions } from '../actions';
 import '../App.css';
 import logo from '../trivia.png';
-import { fetchPlayerImg, fetchPlayerToken } from '../services/apiHelper';
+import { fetchPlayerImg, fetchPlayerToken, fetchQuestions } from '../services/apiHelper';
 
 class Login extends React.Component {
   constructor() {
@@ -24,15 +24,13 @@ class Login extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     const { history, sendToken, sendPlayer } = this.props;
     const { email } = this.state;
-    fetchPlayerToken()
-      .then(({ token }) => {
-        sendToken(token);
-        localStorage.setItem('token', token);
-        history.push('/game');
-      });
+    const token = await fetchPlayerToken();
+    const questions = await fetchQuestions(token);
+    localStorage.setItem('token', token);
+    sendToken(questions);
 
     const emailHash = md5(email).toString();
     fetchPlayerImg(emailHash)
@@ -41,6 +39,7 @@ class Login extends React.Component {
           avatar: url,
         }, () => {
           sendPlayer(this.state);
+          history.push('/game');
         });
       });
   }
@@ -94,7 +93,7 @@ class Login extends React.Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  sendToken: (payload) => dispatch(setPlayerToken(payload)),
+  sendToken: (payload) => dispatch(setPlayerQuestions(payload)),
   sendPlayer: (payload) => dispatch(setPlayerInfo(payload)),
 });
 
