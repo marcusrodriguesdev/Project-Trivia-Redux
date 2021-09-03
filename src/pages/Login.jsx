@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
 import getToken from '../redux/actions';
@@ -90,4 +91,4 @@ const mapDispatchToProps = (dispatch) => ({
   tokenData: (token) => dispatch(getToken(token)),
 });
 
-export default (null, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
