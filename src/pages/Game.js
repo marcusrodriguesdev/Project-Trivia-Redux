@@ -7,9 +7,20 @@ export class Game extends React.Component {
     super(props);
     this.state = {
       clicked: false,
+      timer: 30,
     };
 
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { timer } = this.state;
+    const ONE_SECOND = 1000;
+    if (timer > 0) {
+      setInterval(() => (
+        this.setState((prevstate) => ({ timer: prevstate.timer - 1 }))
+      ), ONE_SECOND);
+    }
   }
 
   handleClick() {
@@ -19,44 +30,48 @@ export class Game extends React.Component {
   }
 
   answersRender(questions) {
-    const { clicked } = this.state;
+    const { clicked, timer } = this.state;
     return (
       <ul>
-        <label
+        <button
+          type="button"
+          onClick={ this.handleClick }
           data-testid="correct-answer"
-          htmlFor="correct"
+          disabled={ timer <= 0 ? true : clicked }
+          id="correct"
           className={ clicked ? 'green-border' : '' }
+          name="answer"
         >
-          <input type="radio" id="correct" name="answer" onClick={ this.handleClick } />
           {questions[0].correct_answer}
-          <br />
-        </label>
+        </button>
+        <br />
         {questions[0].incorrect_answers.map((answer, index) => (
-          <label
-            data-testid="wrong-answer"
-            htmlFor={ index }
-            key={ index }
-            className={ clicked ? 'red-border' : '' }
-          >
-            <input
-              type="radio"
+          <>
+            <button
+              type="button"
+              disabled={ timer <= 0 ? true : clicked }
               id={ index }
+              className={ clicked ? 'red-border' : '' }
               name="answer"
               key={ index }
               data-testid={ `wrong-answer-${index}` }
               onClick={ this.handleClick }
-            />
-            {answer}
+            >
+              {answer}
+            </button>
             <br />
-          </label>))}
+          </>
+        ))}
       </ul>
     );
   }
 
   render() {
     const { player, questions } = this.props;
+    const { timer } = this.state;
     return (
       <div>
+        <p>{ `${timer > 0 ? timer : 0}` }</p>
         <header>
           <img alt="avatar" data-testid="header-profile-picture" src={ player.avatar } />
           <h4 data-testid="header-player-name">
