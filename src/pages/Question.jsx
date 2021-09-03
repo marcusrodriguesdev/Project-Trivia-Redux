@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { MD5 } from 'crypto-js/md5';
+import md5 from 'crypto-js/md5';
 import fetchApi from '../services/api';
 import QuestionsComponent from '../components/QuestionsComponent';
 
@@ -22,7 +22,8 @@ class Question extends Component {
 
   handleEmailConversion() {
     const { gravatarEmail } = this.props;
-    const emailHash = MD5(gravatarEmail).toString();
+    const emailHash = md5(gravatarEmail).toString();
+    console.log(emailHash);
     const response = `https://www.gravatar.com/avatar/${emailHash}`;
     return response;
   }
@@ -42,7 +43,7 @@ class Question extends Component {
       <>
         <header>
           <img
-            src={ this.handleEmailConversion }
+            src={ this.handleEmailConversion() }
             alt="avatar"
             data-testid="header-profile-picture"
           />
