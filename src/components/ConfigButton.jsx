@@ -16,7 +16,7 @@ class ConfigButton extends Component {
           { name }
         </button>
       </Link>
-    )
+    );
   }
 }
 
