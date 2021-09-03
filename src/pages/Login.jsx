@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { userLogin, requestTokenThunk } from '../actions';
+import { userLogin, requestTokenThunk, requestGravatarThunk } from '../actions';
 import ConfigButton from '../components/ConfigButton';
 
 class Login extends React.Component {
@@ -27,14 +27,16 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { fetchToken, token } = this.props;
+    const { email, name } = this.state;
+    const { fetchToken, token, gravatarAvatar, userLog } = this.props;
     fetchToken();
+    userLog({ email, name });
     localStorage.setItem('token', token);
+    gravatarAvatar(email);
   }
 
   render() {
     const { email, name } = this.state;
-    const { userEmail } = this.props;
     const minLength = 1;
 
     const emailIsValid = () => {
@@ -63,7 +65,6 @@ class Login extends React.Component {
           onChange={ this.handleLogin }
         />
         <Link
-          onClick={ () => (userEmail(email)) }
           to="/game"
         >
           <button
@@ -81,14 +82,20 @@ class Login extends React.Component {
 }
 
 const mapDispatchtoProps = (dispatch) => ({
-  userEmail: (email) => dispatch(userLogin(email)),
+  userLog: ({ name, email }) => dispatch(userLogin({ name, email })),
   fetchToken: () => dispatch(requestTokenThunk()),
+  gravatarAvatar: (email) => dispatch(requestGravatarThunk(email)),
+});
+
+const mapStateToProps = (state) => ({
+  email: state.loginReducer.email,
 });
 
 Login.propTypes = {
-  userEmail: PropTypes.func.isRequired,
+  userLog: PropTypes.func.isRequired,
   fetchToken: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  gravatarAvatar: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchtoProps)(Login);
+export default connect(mapStateToProps, mapDispatchtoProps)(Login);

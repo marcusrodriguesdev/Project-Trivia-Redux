@@ -1,8 +1,11 @@
+import { MD5 } from 'crypto-js';
+
 export const LOGIN = 'LOGIN';
 export const LOADING = 'LOADING';
 export const USER_LOGIN = 'USER_LOGIN';
 export const ADD_TRIVIA = 'ADD_TRIVIA';
 export const ADD_TOKEN = 'ADD_TOKEN';
+export const FETCH_GRAVATAR = 'FETCH_GRAVATAR';
 
 export const loading = () => ({
   type: LOADING,
@@ -18,11 +21,14 @@ export const addToken = (payload) => ({
   payload,
 });
 
-export const userLogin = (email) => ({
+export const userLogin = ({ name, email }) => ({
   type: LOGIN,
-  user: {
-    email,
-  },
+  payload: { name, email },
+});
+
+export const fetchGravatar = (payload) => ({
+  type: FETCH_GRAVATAR,
+  payload,
 });
 
 export const requestTokenThunk = () => async (dispatch) => {
@@ -41,4 +47,11 @@ export const addTriviaThunk = () => async (dispatch) => {
   const triviaGame = await response.json();
   const { results } = triviaGame;
   dispatch(addTrivia(results));
+};
+
+export const requestGravatarThunk = (email) => (dispatch) => {
+  const userEmail = MD5(email).toString();
+  const page = `https://www.gravatar.com/avatar/${userEmail}`;
+  console.log(page);
+  dispatch(fetchGravatar(page));
 };
