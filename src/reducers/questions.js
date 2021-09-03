@@ -1,16 +1,17 @@
-import { GET_QUESTIONS, FETCH_API_TRIVIA } from '../actions';
+import { GET_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
-  questions: [],
-  isFetching: false,
+  questionsApi: [],
+  questionIndex: 0,
+  isFetching: true,
 };
 
 const questionsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case (GET_QUESTIONS):
-    return ({ ...state, questions: [...action.payload.questions], isFetching: false });
-  case (FETCH_API_TRIVIA):
-    return ({ ...state, isFetching: action.payload.isFetching });
+    return ({ ...state,
+      questionsApi: [...action.payload.questions],
+      isFetching: false });
   default:
     return state;
   }
