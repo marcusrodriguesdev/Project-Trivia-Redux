@@ -34,7 +34,7 @@ class game extends Component {
 
   render() {
     const { data, answers } = this.state;
-    const loading = <div className="loading">Loading...</div>;
+    const loading = <div className="loading">Loading</div>;
 
     if (data === '' || answers === []) {
       return loading;
