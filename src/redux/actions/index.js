@@ -2,10 +2,17 @@ import { fetchTriviaToken } from '../../services/API';
 
 export const SET_DATA_USER = 'CLICK_BUTTON_LOGIN';
 
+export const SET_TIMER = 'SET_TIMER';
+
 export const SET_TOKEN = 'SET_TOKEN';
 
 export const setData = (payload) => ({
   type: SET_DATA_USER,
+  payload,
+});
+
+export const setTimer = (payload) => ({
+  type: SET_TIMER,
   payload,
 });
 
