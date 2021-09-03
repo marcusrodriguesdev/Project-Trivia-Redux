@@ -5,16 +5,16 @@ import './index.css';
 
 import { BrowserRouter } from 'react-router-dom';
 
+import store from './Redux/store';
 import App from './App';
-import store from './Redux/store/index';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <Provider store={ store }>
-    <BrowserRouter>
+  <BrowserRouter>
+    <Provider store={ store }>
       <App />
-    </BrowserRouter>
-  </Provider>,
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root'),
 );
 

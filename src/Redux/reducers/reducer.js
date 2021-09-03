@@ -1,7 +1,7 @@
 import { FETCH_API, FETCH_API_ERROR } from '../action';
 
 const INITIAL_STATE = {
-  token: [],
+  questions: [],
   error: '',
 };
 
@@ -11,7 +11,7 @@ const reducer = (state = INITIAL_STATE, action) => {
   case FETCH_API:
     return {
       ...state,
-      token: payload,
+      questions: payload,
     };
   case FETCH_API_ERROR:
     return {
