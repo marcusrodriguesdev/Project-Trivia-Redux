@@ -10,6 +10,7 @@ class Button extends Component {
         onClick={ onClick }
         disabled={ disabled }
         id={ id }
+        className={ id }
         data-testid={ dataTest }
       >
         {text}
