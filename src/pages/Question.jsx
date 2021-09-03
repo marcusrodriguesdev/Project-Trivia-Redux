@@ -11,24 +11,44 @@ class Question extends Component {
     super(props);
     this.handleEmailConversion = this.handleEmailConversion.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
+    this.timerQuestion = this.timerQuestion.bind(this);
+    this.handleTime = this.handleTime.bind(this);
+    this.handleClickCorrectAnswer = this.handleClickCorrectAnswer.bind(this);
 
     this.state = {
       loading: true,
       timer: 30,
       index: 0,
+      disableButton: false,
     };
   }
 
   componentDidMount() {
     this.handleQuestions();
+    this.timerQuestion();
   }
 
   handleEmailConversion() {
     const { gravatarEmail } = this.props;
     const emailHash = md5(gravatarEmail).toString();
-    console.log(emailHash);
     const response = `https://www.gravatar.com/avatar/${emailHash}`;
     return response;
+  }
+
+  handleTime() {
+    this.setState((old) => ({ timer: old.timer - 1 }));
+  }
+
+  timerQuestion() {
+    const maxTime = 1000;
+    const timerInterval = setInterval(() => {
+      const { timer } = this.state;
+      this.handleTime();
+      if (timer === 1) {
+        clearInterval(timerInterval);
+        this.setState({ disableButton: true });
+      }
+    }, maxTime);
   }
 
   async handleQuestions() {
@@ -49,19 +69,21 @@ class Question extends Component {
     const difficultyTable = { hard: 3, medium: 2, easy: 1 };
     const newScore = score + value + (difficultyTable[difficulty] * timer);
     const newAssertions = assertions + 1;
-    const player = {
-      name,
-      assertions: newAssertions,
-      score: { newScore },
-      gravatarEmail,
+    const playerInfo = {
+      player: {
+        name,
+        assertions: newAssertions,
+        score: newScore,
+        gravatarEmail,
+      },
     };
-    localStorage.setItem('state', player);
+    localStorage.setItem('state', JSON.stringify(playerInfo));
     setScoreAndAssertions({ assertions, score });
   }
 
   render() {
     const { name, score } = this.props;
-    const { questions, loading, index } = this.state;
+    const { questions, loading, index, disableButton, timer } = this.state;
     return (
       <>
         <header>
@@ -70,6 +92,10 @@ class Question extends Component {
             alt="avatar"
             data-testid="header-profile-picture"
           />
+          <h1>
+            TEMPO:
+            {timer}
+          </h1>
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
@@ -77,6 +103,7 @@ class Question extends Component {
         && <QuestionsComponent
           question={ questions[index] }
           handleClick={ this.handleClickCorrectAnswer }
+          buttonDisable={ disableButton }
         />}
       </>
     );
