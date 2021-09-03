@@ -6,6 +6,8 @@ import Header from '../Components/Header';
 import { fetchQuestions } from '../Services/api';
 import Questions from '../Components/Questions';
 
+import '../Styles/global.css';
+
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
