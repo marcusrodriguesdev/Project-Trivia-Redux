@@ -8,6 +8,9 @@ export class Game extends React.Component {
     this.state = {
       clicked: false,
       timer: 30,
+      questionNumber: 0,
+      PlayerScore: 0,
+      PlayerAssertions: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -21,16 +24,68 @@ export class Game extends React.Component {
         this.setState((prevstate) => ({ timer: prevstate.timer - 1 }))
       ), ONE_SECOND);
     }
+
+    // Set localstorage default
+    const { PlayerAssertions, PlayerScore } = this.state;
+    const { player } = this.props;
+
+    const localStorageObj = {
+      player: {
+        name: player.nome,
+        assertions: PlayerAssertions,
+        score: PlayerScore,
+        gravatarEmail: player.email,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(localStorageObj));
   }
 
-  handleClick() {
+  handleClick({ target }) {
+    const { timer, questionNumber } = this.state;
+    const { questions } = this.props;
+    const { difficulty } = questions[questionNumber];
+    const baseScore = 10;
+
+    const obj = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    if (target.name === 'correct-answer') {
+      this.setState((prevstate) => (
+        { PlayerScore: prevstate.PlayerScore + baseScore + (timer * obj[difficulty]),
+          PlayerAssertions: prevstate.PlayerAssertions + 1,
+        }));
+    }
+
     this.setState({
       clicked: true,
+    },
+    () => {
+      this.updateLocalStorage();
     });
   }
 
+  updateLocalStorage() {
+    const { PlayerAssertions, PlayerScore } = this.state;
+    const { player } = this.props;
+
+    const localStorageObj = {
+      player: {
+        name: player.nome,
+        assertions: PlayerAssertions,
+        score: PlayerScore,
+        gravatarEmail: player.email,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(localStorageObj));
+  }
+
   answersRender(questions) {
-    const { clicked, timer } = this.state;
+    const { clicked, timer, questionNumber } = this.state;
     return (
       <ul>
         <button
@@ -40,19 +95,20 @@ export class Game extends React.Component {
           disabled={ timer <= 0 ? true : clicked }
           id="correct"
           className={ clicked ? 'green-border' : '' }
-          name="answer"
+          name="correct-answer"
         >
-          {questions[0].correct_answer}
+          {' '}
+          {questions[questionNumber].correct_answer}
         </button>
         <br />
-        {questions[0].incorrect_answers.map((answer, index) => (
+        {questions[questionNumber].incorrect_answers.map((answer, index) => (
           <>
             <button
               type="button"
               disabled={ timer <= 0 ? true : clicked }
               id={ index }
               className={ clicked ? 'red-border' : '' }
-              name="answer"
+              name="wrong-answer"
               key={ index }
               data-testid={ `wrong-answer-${index}` }
               onClick={ this.handleClick }
@@ -68,7 +124,7 @@ export class Game extends React.Component {
 
   render() {
     const { player, questions } = this.props;
-    const { timer } = this.state;
+    const { timer, questionNumber, PlayerScore } = this.state;
     return (
       <div>
         <p>{ `${timer > 0 ? timer : 0}` }</p>
@@ -79,17 +135,18 @@ export class Game extends React.Component {
             {player.nome}
             {' '}
             <span data-testid="header-score">
-              Score: 0
+              Score:
+              { PlayerScore }
             </span>
           </h4>
         </header>
         <div>
           <p data-testid="question-category">
             Categoria:
-            {questions[0].category}
+            {questions[questionNumber].category}
           </p>
           <h3 data-testid="question-text">
-            {questions[0].question}
+            {questions[questionNumber].question}
           </h3>
           { this.answersRender(questions) }
         </div>
@@ -101,6 +158,7 @@ Game.propTypes = {
   player: PropTypes.shape({
     avatar: PropTypes.string,
     nome: PropTypes.string,
+    email: PropTypes.string,
   }).isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
