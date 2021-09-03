@@ -124,3 +124,6 @@ Alternatives.propTypes = {
 };
 
 export default connect(mapStateToProps)(Alternatives);
+
+// commit
+i
