@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import FeedbackMsg from '../components/FeedbackMsg';
 
 class Feedback extends Component {
   render() {
@@ -12,7 +13,7 @@ class Feedback extends Component {
           <h2 data-testid="header-player-name">{ name }</h2>
           <span data-testid="header-score">{ score }</span>
         </header>
-        Feedback
+        <FeedbackMsg />
       </div>
     );
   }
