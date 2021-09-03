@@ -18,12 +18,12 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results } = this.props;
+    const { results, gravatarURL, name } = this.props;
     return (
       <div>
         <header>
-          <img src="" alt="" data-testid="header-profile-picture" />
-          <p data-testid="header-player-name">Nome</p>
+          <img src={ gravatarURL } alt="" data-testid="header-profile-picture" />
+          <p data-testid="header-player-name">{name}</p>
           <p data-testid="header-score">0</p>
         </header>
         <div>
@@ -58,10 +58,14 @@ class Game extends React.Component {
 Game.propTypes = {
   addTrivia: PropTypes.func.isRequired,
   results: PropTypes.objectOf(PropTypes.any).isRequired,
+  gravatarURL: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   results: state.triviaReducer.results,
+  gravatarURL: state.gravatar.gravatarURL,
+  name: state.loginReducer.name,
 });
 
 const mapDispatchToProps = (dispatch) => ({
