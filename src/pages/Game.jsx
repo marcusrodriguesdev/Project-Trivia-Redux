@@ -73,6 +73,8 @@ class Game extends Component {
   }
 
   render() {
+    const { results } = this.props;
+    if (!results) return <span>Loading</span>;
     return (
       <div className="main-content">
         <div className="question-box">
