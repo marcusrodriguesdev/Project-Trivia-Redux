@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Header from '../Components/Header';
-import Question from '../Components/Question';
+import Header from '../components/header';
+import Question from '../components/question';
 import { fetchTriviaQuestions } from '../services/API';
 
 class Home extends React.Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
       questions: [],
       loading: true,
     };
 
     this.fetchAndStoreQuestions = this.fetchAndStoreQuestions.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +30,11 @@ class Home extends React.Component {
       questions: [...results],
       loading: false,
     });
+  }
+
+  handleClick() {
+    const { history } = this.props;
+    history.push('/ranking');
   }
 
   render() {
@@ -50,6 +55,9 @@ class Home extends React.Component {
           correctAnswer={ question.correct_answer }
           incorrectAnswers={ question.incorrect_answers }
         />
+        <button type="button" data-testid="btn-ranking" onClick={ this.handleClick }>
+          Ranking
+        </button>
       </>
     );
   }
@@ -63,4 +71,5 @@ export default connect(mapStateToProps)(Home);
 
 Home.propTypes = {
   token: PropTypes.string.isRequired,
+  history: PropTypes.func.isRequired,
 };

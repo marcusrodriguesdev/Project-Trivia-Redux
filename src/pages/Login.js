@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../trivia.png';
 import { setDataUser, fetchToken } from '../redux/actions';
-import ButtonConfig from '../Components/ButtonConfig';
+import ButtonConfig from '../components/buttonConfig';
 
 // requisito 1
 class Login extends React.Component {
