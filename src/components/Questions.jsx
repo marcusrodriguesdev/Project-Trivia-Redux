@@ -22,6 +22,7 @@ class Questions extends Component {
       visibilit: 'hide',
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
+    this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
     this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
   }
@@ -61,6 +62,7 @@ class Questions extends Component {
   }
 
   handleClickClassName({ target }) {
+    this.handleClickClassNameHelper(target.name);
     const { resp, player, playerStatus: { score, assertions } } = this.props;
     const { seconds } = this.state;
 
@@ -83,16 +85,16 @@ class Questions extends Component {
     }
   }
 
-  // handleClickClassName({ target: { name } }) {
-  //   this.setState({ incorrect: 'incorrect', correct: 'correct' });
-  //   const teste = name;
-  //   console.log(teste);
-  //   if (teste === 'correct' || teste === 'incorrect') {
-  //     this.setState({
-  //       visibilit: 'show',
-  //     });
-  //   }
-  // }
+  handleClickClassNameHelper(a) {
+    this.setState({ incorrect: 'incorrect', correct: 'correct' });
+    const teste = a;
+    console.log(teste);
+    if (teste === 'correct' || teste === 'incorrect') {
+      this.setState({
+        visibilit: 'show',
+      });
+    }
+  }
 
   nextQuestion() {
     this.setState((estadoAnterior) => ({
