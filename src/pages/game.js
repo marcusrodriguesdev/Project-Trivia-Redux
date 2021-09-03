@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { setLocalStorageThunk, setScore as setScoreAction } from '../actions';
+
 import '../App.css';
 
 class game extends Component {
@@ -7,6 +12,7 @@ class game extends Component {
 
     this.state = {
       data: '',
+      timer: 0,
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
@@ -23,6 +29,22 @@ class game extends Component {
       data: data.results[0],
     });
     return data;
+  }
+
+  handleCorrectAnswer(difficulty) {
+    const DEFAULT_POINTS = 10;
+    const { timer } = this.state;
+    const { setScore, setLocalStorage } = this.props;
+    const difficultyPoints = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    const earnedPoints = DEFAULT_POINTS + (difficultyPoints[difficulty] * timer);
+
+    setScore(earnedPoints);
+    setLocalStorage();
   }
 
   render() {
@@ -51,6 +73,7 @@ class game extends Component {
           <button
             type="button"
             data-testid="correct-answer"
+            onClick={ () => this.handleCorrectAnswer(data.difficulty) }
           >
             {data.correct_answer}
           </button>
@@ -60,4 +83,14 @@ class game extends Component {
   }
 }
 
-export default game;
+game.propTypes = {
+  setScore: PropTypes.func.isRequired,
+  setLocalStorage: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispath) => ({
+  setScore: (score) => dispath(setScoreAction(score)),
+  setLocalStorage: () => dispath(setLocalStorageThunk()),
+});
+
+export default connect(null, mapDispatchToProps)(game);
