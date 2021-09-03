@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getToken } from '../Services/fetchAPI';
 import logo from '../trivia.png';
 // import '../App.css';
 import playAction from '../Redux/Action';
@@ -20,6 +21,7 @@ class Login extends Component {
   }
 
   onClick() {
+    getToken();
     const { playerEmail, playerName } = this.state;
     const { updateNameEmail } = this.props;
     updateNameEmail({ playerEmail, playerName });
