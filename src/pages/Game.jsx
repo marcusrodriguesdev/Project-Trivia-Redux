@@ -6,6 +6,11 @@ import Questions from '../components/Questions';
 import { fetchApi } from '../actions';
 
 class Game extends Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
   componentDidMount() {
     const { fetch } = this.props;
     const token = JSON.parse(localStorage.getItem('token'));
@@ -13,8 +18,7 @@ class Game extends Component {
   }
 
   render() {
-    const { response } = this.props;
-    const { name, email } = this.props;
+    const { response, name, email } = this.props;
     const hashEmail = md5(email).toString();
     return (
       <div>
