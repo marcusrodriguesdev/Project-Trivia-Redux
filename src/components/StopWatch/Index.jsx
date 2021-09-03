@@ -4,7 +4,7 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: 0,
+      time: 30,
       limitTime: false,
     };
     this.limiteTempo = this.limiteTempo.bind(this);
@@ -13,7 +13,7 @@ class Index extends Component {
   componentDidMount() {
     const ONE_SECOND = 1000;
     this.intervalId = setInterval(() => {
-      this.setState((prevState) => ({ time: prevState.time + 1 }));
+      this.setState((prevState) => ({ time: prevState.time - 1 }));
     }, ONE_SECOND);
   }
 
@@ -23,10 +23,10 @@ class Index extends Component {
 
   limiteTempo() {
     const { time, limitTime } = this.state;
-    const LIMIT_SECONDS = 30;
+    const LIMIT_SECONDS = 0;
     if (time === LIMIT_SECONDS) {
       this.setState(({
-        time: 0,
+        time: 30,
         limitTime: true,
       }));
       clearInterval(this.intervalId);
