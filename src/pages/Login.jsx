@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
-import getToken from '../redux/actions';
+import { getToken, getNameAndEmail } from '../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -20,9 +20,13 @@ class Login extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  onClick() {
-    const { tokenData } = this.props;
-    tokenData(fetchToken());
+  async onClick() {
+    const { tokenData, history, addNameAndEmail } = this.props;
+    const response = await fetchToken();
+    tokenData(response);
+    const { name, email } = this.state;
+    addNameAndEmail(name, email);
+    history.push('/game');
   }
 
   handleChange({ target }) {
@@ -89,6 +93,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   tokenData: (token) => dispatch(getToken(token)),
+  addNameAndEmail: (name, email) => dispatch(getNameAndEmail(name, email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
