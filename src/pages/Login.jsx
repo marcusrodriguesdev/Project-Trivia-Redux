@@ -44,7 +44,6 @@ class Login extends React.Component {
 
   render() {
     const { name, email, validation } = this.state;
-
     return (
       <div>
         <form className="main-form">

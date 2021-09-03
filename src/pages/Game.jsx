@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import fecthApiQuestion from '../services/fetchApiQuestions';
+
 import { fecthApiThunk } from '../Redux/action';
 // import AnswerBoolean from '../components/AnswerBoolean';
 // import AnswerMultiple from '../components/AnswerMultiple';
@@ -18,6 +18,7 @@ class Game extends Component {
 
     this.requestApiQuestions = this.requestApiQuestions.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -32,8 +33,15 @@ class Game extends Component {
     setQuestions(token);
   }
 
+  nextQuestion() {
+    const { results } = this.props;
+    const { next } = this.state;
+
+    if (next < results.length - 1) this.setState({ next: next + 1 });
+  }
+
   renderQuestions() {
-    const { getQuestions: results } = this.props;
+    const { results } = this.props;
     const { next } = this.state;
 
     if (results.length > 0) {
@@ -51,6 +59,7 @@ class Game extends Component {
                   <button
                     type="button"
                     data-testid={ `wrong-answer-${index}` }
+                    onClick={ () => console.log(answers) }
                   >
                     { answers }
                   </button>
@@ -83,18 +92,18 @@ class Game extends Component {
         <div className="box-buttons">
           <button
             type="button"
+            onClick={ this.nextQuestion }
           >
             Próximas
           </button>
         </div>
-
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  getQuestions: state.reducer.questions,
+  results: state.reducer.questions,
 });
 
 const mapDisptchToProps = (dispatch) => ({
@@ -105,5 +114,5 @@ export default connect(mapStateToProps, mapDisptchToProps)(Game);
 
 Game.propTypes = {
   setQuestions: PropTypes.func.isRequired,
-  getQuestions: PropTypes.arrayOf(String).isRequired,
+  results: PropTypes.arrayOf(String).isRequired,
 };
