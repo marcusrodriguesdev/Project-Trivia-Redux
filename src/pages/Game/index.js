@@ -34,10 +34,13 @@ class Game extends Component {
   render() {
     const { questionInfo } = this.state;
 
+    const { guessed } = this.props;
+
     return (
       <div>
         <h1>Game</h1>
         {questionInfo.question && <Question questionInfo={ questionInfo } />}
+        {guessed && <button data-testid="btn-next" type="button">Próxima</button>}
       </div>
     );
   }
@@ -45,10 +48,12 @@ class Game extends Component {
 
 Game.propTypes = {
   token: PropTypes.string.isRequired,
+  guessed: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ auth }) => ({
+const mapStateToProps = ({ auth, game }) => ({
   token: auth.token,
+  guessed: game.guessed,
 });
 
 export default connect(mapStateToProps)(Game);
