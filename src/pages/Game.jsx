@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getQuestions as getQuestionsAction } from '../actions';
+// import { getQuestions as getQuestionsAction } from '../actions';
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      alreadyGet: false,
-    };
     this.renderQuestion = this.renderQuestion.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
     this.renderCorrectAnswersButton = this.renderCorrectAnswersButton.bind(this);
@@ -50,12 +47,7 @@ class Game extends Component {
   }
 
   renderQuestion() {
-    const { getQuestions, token, questions } = this.props;
-    const { alreadyGet } = this.state;
-    if (token !== undefined && alreadyGet === false) {
-      getQuestions(token);
-      this.setState({ alreadyGet: true });
-    }
+    const { questions } = this.props;
     if (questions !== undefined) {
       const questionIndex = 0;
       const arrayOfAnswers = [{ id: 0,
@@ -86,20 +78,19 @@ class Game extends Component {
 
   render() {
     const { name } = this.props;
-    console.log(name);
     return (
       <div>
         <header>
-        <img
-          src="https://www.gravatar.com/avatar/"
-          data-testid="header-profile-picture"
-          alt="gravatar"
-        />
-        <h3 data-testid="header-player-name">
-          { name }
-        </h3>
-        <p data-testid="header-score">0</p>
-      </header>
+          <img
+            src="https://www.gravatar.com/avatar/"
+            data-testid="header-profile-picture"
+            alt="gravatar"
+          />
+          <h3 data-testid="header-player-name">
+            { name }
+          </h3>
+          <p data-testid="header-score">0</p>
+        </header>
         {this.renderQuestion()}
       </div>
     );
@@ -108,29 +99,12 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   name: state.player.name,
-  token: state.user.token.token,
-  questions: state.game.questions.results,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (token) => dispatch(getQuestionsAction(token)),
+  questions: state.game.questions,
 });
 
 Game.propTypes = {
-  getQuestions: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  questions: PropTypes.shape({
-    response_code: PropTypes.number,
-    results: PropTypes.shape({
-      category: PropTypes.string,
-      type: PropTypes.string,
-      difficulty: PropTypes.string,
-      question: PropTypes.string,
-      correct_answer: PropTypes.string,
-      incorrect_answers: PropTypes.arrayOf(PropTypes.string),
-    }),
-  }).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps)(Game);

@@ -20,16 +20,20 @@ export const saveToken = (token) => ({
 
 export const getToken = () => async (dispatch) => {
   const response = await fetch('https://opentdb.com/api_token.php?command=request');
-  const objResponse = await response.json();
-  localStorage.setItem('token', objResponse.token);
-  dispatch(saveToken(objResponse));
+  const objToken = await response.json();
+  dispatch(saveToken(objToken));
+  localStorage.setItem('token', objToken.token);
+  const response2 = await fetch(`https://opentdb.com/api.php?amount=5&token=${objToken.token}`);
+  const objQuestions = await response2.json();
+  console.log(objQuestions);
+  dispatch(saveQuestions(objQuestions));
 };
 
-export const getQuestions = (token) => async (dispatch) => {
-  const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-  const objResponse = await response.json();
-  return dispatch(saveQuestions(objResponse));
-};
+// export const getQuestions = (token) => async (dispatch) => {
+//   const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+//   const objResponse = await response.json();
+//   return dispatch(saveQuestions(objResponse));
+// };
 
 export const saveName = (name) => ({
   type: SAVE_NAME,
