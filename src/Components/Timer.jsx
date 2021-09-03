@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Timer extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { time: {}, seconds: 30 };
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
@@ -15,6 +15,9 @@ class Timer extends React.Component {
     this.startTimer();
   }
 
+  // componentWillUnmount() {
+  // }
+  // ENVIAR PARA O REDUX O TEMPO ATUAL
   secondsToTime(secs) {
     const seconds = Math.ceil(secs);
     const obj = {
