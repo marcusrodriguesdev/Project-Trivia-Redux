@@ -73,3 +73,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
+
+// me aceite, pr, pfv!
