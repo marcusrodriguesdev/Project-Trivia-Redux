@@ -24,21 +24,17 @@
   background-color: rgb(40, 44, 52);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   justify-content: space-between;
   padding: 2em;
   width: 100%;
 }
 
-.App-body header .App-header {
-  height: auto;
-  width: auto;
+.login-form-container {
+  display: flex;
+  justify-content: center;
+  height: 50vh;
 }
-
-/* .App-header img {
-  height: 10em;
-  width: 15em;
-} */
 
 .login-form {
   align-items: center;
@@ -47,7 +43,7 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
   display: flex;
   flex-direction: column;
-  height: 20%;
+  height: 100%;
   justify-content: space-between;
   padding: 2em;
   width: 20em;
@@ -76,8 +72,16 @@
   cursor: pointer;
 }
 
+.btn-play:enabled:hover {
+  background-color: rgb(0, 235, 176);
+}
+
 .btn-settings {
   background-color: rgb(144, 46, 255);
   color: rgb(248, 248, 248);
   cursor: pointer;
+}
+
+.btn-settings:enabled:hover {
+  background-color: rgb(160, 77, 255)
 }
