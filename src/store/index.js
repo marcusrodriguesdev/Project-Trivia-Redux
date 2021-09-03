@@ -7,7 +7,7 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(
     applyMiddleware(thunk),
-  )
+  ),
 );
 
 if (window.Cypress) {
