@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setPlayerToken } from '../actions';
+import { setPlayerInfo, setPlayerToken } from '../actions';
 import '../App.css';
 import logo from '../trivia.png';
+import { fetchPlayerImg, fetchPlayerToken } from '../services/apiHelper';
 
 class Login extends React.Component {
   constructor() {
@@ -23,14 +25,24 @@ class Login extends React.Component {
   }
 
   handleSubmit() {
-    const { history, sendToken } = this.props;
-    fetch('https://opentdb.com/api_token.php?command=request')
-      .then((response) => response.json())
+    const { history, sendToken, sendPlayer } = this.props;
+    const { email } = this.state;
+    fetchPlayerToken()
       .then(({ token }) => {
         sendToken(token);
         localStorage.setItem('token', token);
+        history.push('/game');
       });
-    history.push('/game');
+
+    const emailHash = md5(email).toString();
+    fetchPlayerImg(emailHash)
+      .then(({ url }) => {
+        this.setState({
+          avatar: url,
+        }, () => {
+          sendPlayer(this.state);
+        });
+      });
   }
 
   render() {
@@ -83,13 +95,15 @@ class Login extends React.Component {
 }
 const mapDispatchToProps = (dispatch) => ({
   sendToken: (payload) => dispatch(setPlayerToken(payload)),
+  sendPlayer: (payload) => dispatch(setPlayerInfo(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }).isRequired,
+  sendPlayer: PropTypes.func.isRequired,
   sendToken: PropTypes.func.isRequired,
 };
