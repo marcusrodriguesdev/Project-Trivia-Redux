@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Gravatar from '../gravatar';
+import Gravatar from '../Gravatar';
 
 class Header extends Component {
   render() {

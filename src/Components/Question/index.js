@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import shuffleList from '../../services/suffleList';
+import './Question.css';
 
 class Question extends React.Component {
   constructor(props) {
@@ -10,6 +11,15 @@ class Question extends React.Component {
     this.state = {
       correctAnswerIdentifier: correctAnswer,
     };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const { correctAnswer } = this.props;
+    const AllButtons = document.querySelectorAll('button');
+    AllButtons.forEach((button) => (correctAnswer === button.innerText
+      ? button.classList.add('answer-correct')
+      : button.classList.add('answer-wrong')));
   }
 
   render() {
@@ -31,6 +41,7 @@ class Question extends React.Component {
           if (element === correctAnswerIdentifier) {
             return (
               <button
+                onClick={ this.handleClick }
                 type="button"
                 data-testid="correct-answer"
                 key={ element }
@@ -41,6 +52,7 @@ class Question extends React.Component {
           }
           return (
             <button
+              onClick={ this.handleClick }
               type="button"
               data-testid="wrong-answer"
               key={ element }
