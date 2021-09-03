@@ -30,10 +30,18 @@ class Login extends Component {
 
   handlePlayButton() {
     const { getToken, token, history, setUser } = this.props;
+
     getToken();
     setUser(this.state);
+    // LocalStorage não funciona, não recebe nada de 'token'
     localStorage.setItem('token', token);
     history.push('/trivia');
+  }
+
+  handleSettingsButton() {
+    const { history } = this.props;
+
+    history.push('/settings');
   }
 
   canBeSubmitted() {
@@ -43,11 +51,6 @@ class Login extends Component {
     if (email.match(emailValidInput) && name.length > 0) {
       return true;
     }
-  }
-
-  handleSettingsButton() {
-    const { history } = this.props;
-    history.push('/settings');
   }
 
   render() {
