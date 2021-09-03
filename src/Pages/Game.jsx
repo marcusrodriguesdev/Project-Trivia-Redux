@@ -81,5 +81,6 @@ class Game extends React.Component {
     );
   }
 }
+// teste
 
 export default Game;
