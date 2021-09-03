@@ -25,6 +25,13 @@ export const userLogin = (email) => ({
   },
 });
 
+export const userName = (name) => ({
+  type: LOGIN,
+  user: {
+    name,
+  },
+});
+
 export const requestTokenThunk = () => async (dispatch) => {
   const url = 'https://opentdb.com/api_token.php?command=request';
   dispatch(loading());
