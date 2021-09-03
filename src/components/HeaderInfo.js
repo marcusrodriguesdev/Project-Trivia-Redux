@@ -19,7 +19,7 @@ class HeaderInfo extends React.Component {
           data-testid="header-profile-picture"
         />
         <h4 data-testid="header-player-name">
-          User:
+          User :
           { name }
         </h4>
         <h5 data-testid="header-score">
