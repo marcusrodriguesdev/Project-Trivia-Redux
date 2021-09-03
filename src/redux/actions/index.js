@@ -2,6 +2,12 @@ import fetchToken from '../../services/tokenAPI';
 
 export const REQUEST_TOKEN_SUCCESS = 'REQUEST_TOKEN_SUCCESS';
 export const REQUEST_TOKEN_ERROR = 'REQUEST_TOKEN_ERROR';
+export const LOGIN = 'LOGIN';
+
+export const login = (payload) => ({
+  type: LOGIN,
+  payload,
+});
 
 const requestTokenSuccess = (payload) => ({
   type: REQUEST_TOKEN_SUCCESS,
