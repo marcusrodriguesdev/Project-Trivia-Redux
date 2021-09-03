@@ -51,34 +51,44 @@ class Login extends Component {
     const { getPlayerName } = this.props;
     const { validEmail, validName, name } = this.state;
     return (
-      <form>
-        <label htmlFor="name">
-          <input
-            type="text"
-            id="name"
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          <input
-            type="text"
-            id="email"
-            data-testid="input-gravatar-email"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <Link onClick={ () => (getPlayerName(name)) } to="/game">
+      <div>
+        <form>
+          <label htmlFor="name">
+            <input
+              type="text"
+              id="name"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            <input
+              type="text"
+              id="email"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <Link onClick={ () => (getPlayerName(name)) } to="/game">
+            <button
+              disabled={ !validName || !validEmail }
+              type="button"
+              data-testid="btn-play"
+              onClick={ getTokenProps }
+            >
+              Jogar
+            </button>
+          </Link>
+        </form>
+        <Link to="/settings">
           <button
-            disabled={ !validName || !validEmail }
             type="button"
-            data-testid="btn-play"
-            onClick={ getTokenProps }
+            data-testid="btn-settings"
           >
-            Jogar
+            Configurações
           </button>
         </Link>
-      </form>
+      </div>
     );
   }
 }
