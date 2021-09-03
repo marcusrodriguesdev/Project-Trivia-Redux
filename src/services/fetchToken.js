@@ -4,8 +4,9 @@ const fetchToken = async () => {
   const response = await fetch(apiToken);
   const data = await response.json();
   const { token } = data;
-  // console.log(token);
+  console.log(data);
   localStorage.setItem('token', token);
+  return token;
 };
 
 export default fetchToken;

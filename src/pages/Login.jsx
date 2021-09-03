@@ -50,7 +50,7 @@ class Login extends Component {
           <p>
             LOGIN
           </p>
-          <form onSubmit={ this.onClick }>
+          <form>
             <label htmlFor="name">
               Nome:
               <input
@@ -75,8 +75,8 @@ class Login extends Component {
             </label>
             <button
               data-testid="btn-play"
-              type="submit"
-              onClick={ (this.handleChange) }
+              type="button"
+              onClick={ this.onClick }
               disabled={ isDisable }
             >
               Jogar
