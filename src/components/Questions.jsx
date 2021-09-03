@@ -59,7 +59,8 @@ class Questions extends Component {
 
   render() {
     // embaralhar questões incorretas/ sort
-    const { correct, incorrect, seconds, disable, numberQuestion, visibilit } = this.state;
+    const { correct, incorrect, seconds, disable,
+      numberQuestion, visibilit } = this.state;
     const { resp } = this.props;
     return (
       <div>
