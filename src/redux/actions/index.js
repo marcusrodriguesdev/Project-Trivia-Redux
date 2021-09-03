@@ -1,9 +1,15 @@
-const ACTIONS = {
+export const ACTIONS = {
   GET_TOKEN: 'GET_TOKEN',
 };
 
-const getToken = (token) => ({
+export const getToken = (token) => ({
   type: ACTIONS.GET_TOKEN, token,
 });
 
-export default (ACTIONS, getToken);
+export const getNameAndEmail = (name, email) => ({
+  type: 'NAME_EMAIL',
+  name,
+  email,
+});
+
+// export default (ACTIONS, getToken, getNameAndEmail);
