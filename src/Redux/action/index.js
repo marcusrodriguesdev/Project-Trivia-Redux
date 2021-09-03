@@ -2,6 +2,7 @@ import fecthApiQuestion from '../../services/fetchApiQuestions';
 
 export const FETCH_API = 'SET_FETCH_API';
 export const FETCH_API_ERROR = 'SET_FETCH_API';
+export const USER_LOGIN = 'USER_LOGIN';
 
 export const setFetchApiSuccess = (payload) => ({
   type: FETCH_API,
@@ -10,6 +11,11 @@ export const setFetchApiSuccess = (payload) => ({
 
 export const setFetchApiError = (payload) => ({
   type: FETCH_API_ERROR,
+  payload,
+});
+
+export const userLogin = (payload) => ({
+  type: 'USER_LOGIN',
   payload,
 });
 
