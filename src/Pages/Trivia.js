@@ -6,15 +6,18 @@ import Header from '../Components/Header';
 import { fetchQuestions } from '../Services/api';
 import Questions from '../Components/Questions';
 
+let index = 0;
+
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      questions: [],
+      questionsInfo: [],
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -24,21 +27,37 @@ class Trivia extends React.Component {
   async fetchQuestions() {
     const { token } = this.props;
 
-    const questions = await fetchQuestions(token);
+    const questionsInfo = await fetchQuestions(token);
 
     this.setState({
-      questions,
+      questionsInfo,
     });
   }
 
+  handleClick() {
+    index += 1;
+    console.log(index);
+  }
+
   render() {
-    const { questions } = this.state;
+    const { questionsInfo } = this.state;
 
     return (
       <div>
         <Header />
         <main>
-          { questions.map((...info) => (<Questions key={ info } questions={ info } />)) }
+          {
+            questionsInfo.filter((...info) => (
+              info[1] === index
+            )).map((question) => <Questions key={ index } question={ question } />)
+          }
+
+          {/* {
+            console.log(questions.filter(
+              (question) => (question[1] === index),
+            ))
+          } */}
+          <button type="submit" onClick={ this.handleClick }>Próxima</button>
         </main>
       </div>
     );

@@ -15,19 +15,19 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
+    const { question } = this.props;
     const {
       category,
       correct_answer: correct,
       incorrect_answers: incorrect,
       difficulty,
-      question,
-    } = questions[0];
+      question: questionText,
+    } = question;
 
     return (
       <main>
         <h1 data-testid="question-category">{category}</h1>
-        <h2 data-testid="question-text">{question}</h2>
+        <h2 data-testid="question-text">{questionText}</h2>
         <h3>{difficulty}</h3>
         <CorrectAnswer correct={ correct } />
         { incorrect.map((
@@ -39,7 +39,7 @@ class Questions extends React.Component {
 }
 
 Questions.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  question: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default (Questions);
