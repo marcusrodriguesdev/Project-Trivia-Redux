@@ -23,9 +23,18 @@ class Trivia extends Component {
     const { token } = this.props;
     const triviaURL = `https://opentdb.com/api.php?amount=5&token=${token}`;
     const response = await (await fetch(triviaURL)).json();
-    this.setState({
-      results: response.results,
-    });
+    console.log(response.response_code);
+    if (response.response_code === '0') {
+      this.setState({
+        results: response.results,
+      });
+    } else {
+      const newResponse = await (await fetch(triviaURL)).json();
+      console.log(response.response_code);
+      this.setState({
+        results: newResponse.results,
+      });
+    }
   }
 
   randomizeArray(array) {
