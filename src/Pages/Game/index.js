@@ -39,7 +39,7 @@ class Game extends Component {
     const answers = [...questions[questionNumber].incorrect_answers,
       questions[questionNumber].correct_answer];
     const index = -1;
-    let id = index;
+    let id = index; // Key do map
     return answers.sort().map((answer) => {
       if (answer === questions[questionNumber].correct_answer) {
         return <button type="button" data-testid="correct-answer">{ answer }</button>;
