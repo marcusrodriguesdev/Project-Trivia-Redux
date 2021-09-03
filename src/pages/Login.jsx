@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { tokenActionThunk } from '../actions';
+import { tokenActionThunk, setPlayerValueAction } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -45,8 +45,8 @@ class Login extends React.Component {
   }
 
   buttonChange() {
-    const { history, token } = this.props;
-
+    const { history, token, setPlayerValue } = this.props;
+    setPlayerValue(this.state);
     localStorage.token = token;
     history.push('/game');
   }
@@ -104,6 +104,7 @@ const mapStateToProps = ({ token }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  setPlayerValue: (payload) => dispatch(setPlayerValueAction(payload)),
   tokenRequest: () => dispatch(tokenActionThunk()),
 });
 
