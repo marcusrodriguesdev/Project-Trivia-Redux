@@ -4,7 +4,7 @@ class ranking extends Component {
   render() {
     return (
       <div className="App">
-        tela de ranking
+        tela de ranking 2
       </div>
     );
   }
