@@ -28,4 +28,9 @@ ConfigButton.propTypes = ({
   disable: PropTypes.bool,
 }).isRequired;
 
+ConfigButton.defaultProps = {
+  link: '',
+  disable: false,
+};
+
 export default ConfigButton;
