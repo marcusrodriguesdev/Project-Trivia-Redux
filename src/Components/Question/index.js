@@ -15,13 +15,11 @@ class Question extends React.Component {
   }
 
   handleClick() {
+    const { correctAnswer } = this.props;
     const AllButtons = document.querySelectorAll('button');
-    AllButtons.forEach((button) => {
-      const { dataset: { testid } } = button;
-      return testid === 'correct-answer'
-        ? button.classList.add('answer-correct')
-        : button.classList.add('answer-wrong');
-    });
+    AllButtons.forEach((button) => (correctAnswer === button.innerText
+      ? button.classList.add('answer-correct')
+      : button.classList.add('answer-wrong')));
   }
 
   render() {
