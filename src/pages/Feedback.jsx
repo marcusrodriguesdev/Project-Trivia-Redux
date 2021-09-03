@@ -21,16 +21,25 @@ class Feedback extends React.Component {
     return (
       <div>
         <header>
-          <img src={ `https://www.gravatar.com/avatar/${hashEmail}` } alt="Gravatar" data-testid="header-profile-picture" />
-          <h2 data-testid="header-player-name">{ name }</h2>
-          <h2 data-testid="header-score">{ score }</h2>
-          <p data-testid="feedback-text">{ this.assertionsVerify(assertions) }</p>
+          <img
+            src={ `https://www.gravatar.com/avatar/${hashEmail}` }
+            alt="Gravatar"
+            data-testid="header-profile-picture"
+          />
+          <h2 data-testid="header-player-name">{name}</h2>
+          <h2 data-testid="header-score">{score}</h2>
+          <p data-testid="feedback-text">{this.assertionsVerify(assertions)}</p>
         </header>
         <section>
           <p data-testid="feedback-total-score">{score}</p>
-          <p data-testid="feedback-total-question">{ assertions }</p>
+          <p data-testid="feedback-total-question">{assertions}</p>
         </section>
-        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        <Link to="/" data-testid="btn-play-again">
+          Jogar novamente
+        </Link>
+        <Link to="/ranking" data-testid="btn-ranking">
+          <button type="button">Ver Ranking</button>
+        </Link>
       </div>
     );
   }

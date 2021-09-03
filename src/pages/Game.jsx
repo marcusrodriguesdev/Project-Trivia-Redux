@@ -33,11 +33,6 @@ class Game extends Component {
           <h2 data-testid="header-score">{totalPoints}</h2>
         </header>
         {response && <Questions resp={ response } />}
-        <Link to="/ranking">
-          <button type="button" data-testid="btn-ranking">
-            Ver Ranking
-          </button>
-        </Link>
       </div>
     );
   }
