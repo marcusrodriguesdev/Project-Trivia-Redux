@@ -21,7 +21,6 @@ class Header extends Component {
     const gravatarEmail = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${gravatarEmail}`;
     const response = await fetch(gravatarURL);
-    console.log(response.url);
     this.setState({
       imgURL: response.url,
     });
