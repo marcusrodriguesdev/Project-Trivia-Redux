@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Input from '../components/Input';
 import logo from '../trivia.png';
+import { getTokenApi } from '../actions';
 
 class login extends Component {
   constructor(props) {
@@ -22,6 +26,8 @@ class login extends Component {
 
   render() {
     const { name, email } = this.state;
+    const { getApiToken, tokenValue } = this.props;
+    console.log(tokenValue);
     return (
       <div className="App">
         <header className="App-header">
@@ -43,13 +49,18 @@ class login extends Component {
               testId="input-gravatar-email"
             />
 
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ !(name && email) }
-            >
-              Jogar
-            </button>
+            <Link to="/game">
+              <button
+                type="button"
+                data-testid="btn-play"
+                disabled={ !(name && email) }
+                onClick={ () => {
+                  getApiToken();
+                } }
+              >
+                Jogar
+              </button>
+            </Link>
           </div>
         </header>
       </div>
@@ -57,4 +68,13 @@ class login extends Component {
   }
 }
 
-export default login;
+login.propTypes = {
+  getApiToken: PropTypes.func.isRequired,
+  tokenValue: PropTypes.string.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getApiToken: () => dispatch(getTokenApi()),
+});
+
+export default connect(null, mapDispatchToProps)(login);
