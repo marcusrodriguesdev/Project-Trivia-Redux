@@ -5,7 +5,7 @@ class game extends Component {
     super(props);
 
     this.state = {
-      data: {},
+      data: '',
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
@@ -26,26 +26,34 @@ class game extends Component {
 
   render() {
     const { data } = this.state;
+    const loading = <span className="loading">Loading...</span>;
+
+    if (data === '') {
+      return loading;
+    }
     return (
       <div className="App">
         Tela de jogo
         <div className="question-board">
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
-          <h3>{data.incorrect_answers}</h3>
-          {/* <ol>
-            {data.incorrect_answers
-              .map(((answer, index) => (
-                <li key={ index }>
-                  <button
-                    type="button"
-                    data-testid={ `wrong-answer${index}` }
-                  >
-                    { answer }
-                  </button>
-                </li>
-              )))}
-          </ol> */}
+          {data.incorrect_answers
+            .map(((answer, index) => (
+              <button
+                type="button"
+                data-testid={ `wrong-answer${index}` }
+                key={ index }
+              >
+                { answer }
+              </button>
+            )))}
+          <button
+            type="button"
+            data-testid="correct-answer
+"
+          >
+            {data.correct_answer}
+          </button>
         </div>
       </div>
     );
