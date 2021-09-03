@@ -7,7 +7,7 @@ class Header extends Component {
   render() {
     const { user, score, email } = this.props;
     return (
-      <header>
+      <header data-testId="header-player-name">
         <Gravatar email={ email } />
         <span data-testId="header-player-game">{user}</span>
         <span data-testId="header-score">{score}</span>
