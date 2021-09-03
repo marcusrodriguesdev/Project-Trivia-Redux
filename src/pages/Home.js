@@ -11,30 +11,65 @@ class Home extends React.Component {
 
     this.state = {
       questions: [],
+      currentQuestionIndex: 0,
+      currentQuestion: {},
       loading: true,
+      answerClicked: false,
     };
 
     this.fetchAndStoreQuestions = this.fetchAndStoreQuestions.bind(this);
+    this.answerClick = this.answerClick.bind(this);
+    this.nextClick = this.nextClick.bind(this);
+    this.setCurrentQuestion = this.setCurrentQuestion.bind(this);
   }
 
   componentDidMount() {
     this.fetchAndStoreQuestions();
   }
 
+  setCurrentQuestion(index) {
+    const { questions } = this.state;
+    console.log(questions);
+    console.log(questions[index]);
+    this.setState({
+      currentQuestion: questions[index],
+    });
+  }
+
   async fetchAndStoreQuestions() {
     const { token } = this.props;
-    console.log(token);
+    const { currentQuestionIndex } = this.state;
     const re2 = await fetchTriviaQuestions(token);
     const { results } = re2;
     this.setState({
       questions: [...results],
       loading: false,
     });
+    this.setCurrentQuestion(currentQuestionIndex);
+  }
+
+  answerClick() {
+    this.setState({
+      answerClicked: true,
+    });
+  }
+
+  nextClick() {
+    const { currentQuestionIndex, currentQuestion } = this.state;
+    this.setCurrentQuestion(currentQuestionIndex + 1);
+    this.setState({
+      currentQuestionIndex: currentQuestionIndex + 1,
+    });
+    if (currentQuestion[currentQuestionIndex + 1] === undefined) {
+      this.setState({
+        currentQuestionIndex: 0,
+      });
+    }
   }
 
   render() {
-    const { questions, loading } = this.state;
-    const question = questions[0];
+    const { loading, answerClicked, currentQuestion } = this.state;
+    console.log(currentQuestion);
     if (loading) {
       return (
         <div>carregando...</div>
@@ -44,11 +79,14 @@ class Home extends React.Component {
       <>
         <Header />
         <Question
-          key={ question.question }
-          category={ question.category }
-          question={ question.question }
-          correctAnswer={ question.correct_answer }
-          incorrectAnswers={ question.incorrect_answers }
+          key={ currentQuestion.question }
+          category={ currentQuestion.category }
+          question={ currentQuestion.question }
+          correctAnswer={ currentQuestion.correct_answer }
+          incorrectAnswers={ currentQuestion.incorrect_answers }
+          answerClick={ this.answerClick }
+          answerClicked={ answerClicked }
+          nextClick={ this.nextClick }
         />
       </>
     );

@@ -7,26 +7,35 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
 
-    const { correctAnswer } = this.props;
+    const { correctAnswer, answerClicked } = this.props;
     this.state = {
       correctAnswerIdentifier: correctAnswer,
+      answerClicked,
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    const { correctAnswer } = this.props;
+    const { correctAnswer, answerClick } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
+    answerClick();
+  }
+
+  renderNexButton() {
+    const { nextClick } = this.props;
+    return (
+      <button type="button" data-testid="btn-next" onClick={ nextClick }>Próxima</button>
+    );
   }
 
   render() {
     const { category, question, correctAnswer, incorrectAnswers } = this.props;
     const answerList = [correctAnswer, ...incorrectAnswers];
     const shuffledList = shuffleList(answerList);
-    const { correctAnswerIdentifier } = this.state;
+    const { correctAnswerIdentifier, answerClicked } = this.state;
     return (
       <div>
         <div data-testid="question-category">
@@ -61,6 +70,7 @@ class Question extends React.Component {
             </button>
           );
         }) }
+        { answerClicked ? this.renderNexButton() : undefined }
       </div>
     );
   }
@@ -71,6 +81,9 @@ Question.propTypes = {
   question: PropTypes.string.isRequired,
   correctAnswer: PropTypes.string.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  answerClicked: PropTypes.bool.isRequired,
+  answerClick: PropTypes.func.isRequired,
+  nextClick: PropTypes.func.isRequired,
 };
 
 export default Question;
