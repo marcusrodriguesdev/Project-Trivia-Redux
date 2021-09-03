@@ -8,6 +8,7 @@ class Login extends React.Component {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.loginValidator = this.loginValidator.bind(this);
+    this.handleClickConfig = this.handleClickConfig.bind(this);
     this.buttonChange = this.buttonChange.bind(this);
 
     this.state = {
@@ -25,6 +26,12 @@ class Login extends React.Component {
   handleChange({ target }) {
     const { value, id } = target;
     this.setState({ [id]: value }, () => this.loginValidator());
+  }
+
+  handleClickConfig() {
+    const { history } = this.props;
+
+    history.push('/config');
   }
 
   loginValidator() {
@@ -75,6 +82,13 @@ class Login extends React.Component {
           type="button"
         >
           Entrar
+        </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleClickConfig }
+        >
+          Configurações
         </button>
       </form>
     );
