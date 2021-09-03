@@ -32,8 +32,11 @@ class Question extends React.Component {
       medium: 2,
       easy: 1,
     };
-    // // Para terminar a implementação desse requisito é necesssario o timer
+    // Para terminar a implementação desse requisito é necesssario o timer
     // const total = 10 + (timer * pontDifficulty[difficulty]);
+    // const stateLocal = JSON.parse(localStorage.getItem('state'));
+    // const newLocal = { ...stateLocal, score: total };
+    // localStorage.setItem('state', JSON.stringify(newLocal));
   }
 
   render() {
