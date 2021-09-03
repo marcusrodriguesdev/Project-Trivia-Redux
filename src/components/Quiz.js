@@ -6,6 +6,14 @@ import fetchToken from '../redux/actions/fetch/fetchToken';
 import randomize from '../tools/randomize';
 
 class Quiz extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showCorrect: false,
+    };
+    this.changeBorder = this.changeBorder.bind(this);
+  }
+
   componentDidMount() {
     const { getQuiz, token } = this.props;
     console.log(token);
@@ -13,26 +21,36 @@ class Quiz extends Component {
     getQuiz(token, quantity);
   }
 
+  changeBorder() {
+    this.setState({
+      showCorrect: true,
+    });
+  }
+
   render() {
     const { questions, loading } = this.props;
     const [question] = questions;
+    const { showCorrect } = this.state;
     if (loading) { return <p>Loading...</p>; }
     const alternatives = [
-      ...question.incorrect_answers.map((alt, index) => ({ correct: false, alt, index })),
-      { correct: true, alt: question.correct_answer }];
+      ...question.incorrect_answers
+        .map((alt, index) => ({ correct: false, alt, index, isCorrect: 'wrong-answer' })),
+      { correct: true, alt: question.correct_answer, isCorrect: 'correct-border' }];
     const randomIndex = randomize(alternatives.length, alternatives.length - 1);
     return (
       <div className="question">
-        <h1 data-testid="question-category">{questions[0].category}</h1>
-        <p data-testid="question-text">{questions[0].question}</p>
+        <h1 data-testid="question-category">{question.category}</h1>
+        <p data-testid="question-text">{question.question}</p>
         <div className="alternatives">
           {randomIndex.map((index) => {
-            const { correct, alt, index: i } = alternatives[index];
+            const { correct, alt, index: i, isCorrect } = alternatives[index];
             return (
               <button
                 type="button"
                 key={ alt }
                 data-testid={ correct ? 'correct-answer' : `wrong-answer${i}` }
+                className={ showCorrect ? isCorrect : '' }
+                onClick={ this.changeBorder }
               >
                 {alt}
               </button>
