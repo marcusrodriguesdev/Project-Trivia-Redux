@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import fetchGravatar from '../redux/actions/fetch/fetchGravatar';
 
 class Header extends Component {
   render() {
@@ -24,9 +25,13 @@ const mapStateToProps = (state) => ({
   playerName: state.user.name,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  pushGravatar: (state) => dispatch(fetchGravatar(state)),
+});
+
 Header.propTypes = {
   email: PropTypes.string,
   playerName: PropTypes.string,
 }.isRequired;
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
