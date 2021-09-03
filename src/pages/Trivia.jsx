@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import GamePage from './GamePage';
+// import Question from '../components/Question';
+// import Alternatives from '../components/Alternatives';
 
 class Trivia extends React.Component {
   setToken() {
@@ -15,6 +18,7 @@ class Trivia extends React.Component {
     return (
       <div>
         <Header />
+        <GamePage />
       </div>
     );
   }
