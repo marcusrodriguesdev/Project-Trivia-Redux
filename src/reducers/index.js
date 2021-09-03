@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import ranking from './ranking';
+import login from './login';
 
-const rootReducer = combineReducers({ ranking });
+const rootReducer = combineReducers({ login });
 
 export default rootReducer;
