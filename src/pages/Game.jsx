@@ -9,6 +9,7 @@ class Game extends React.Component {
     return (
       <div>
         <header>
+          {/* { // utilizando o md5 } */}
           <img src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` } alt="profile" data-testid="header-profile-picture" />
           <p data-testid="header-player-name">{ name }</p>
           <p data-testid="header-score">0</p>
