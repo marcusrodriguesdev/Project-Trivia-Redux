@@ -17,27 +17,26 @@ class Question extends React.Component {
   }
 
   handleClick({ target }) {
-    const { correctAnswer, setTimeGlobal } = this.props;
+    const { correctAnswer } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
-    if (target.innerText === correctAnswer) { this.calcPonts(); }
-    setTimeGlobal(true);
+    if (target.innerText === 'correct-answer') { this.calcPonts(); }
   }
 
   calcPonts() {
     const { difficulty } = this.props;
-    const timer = document.querySelector('#timer').innerText;
     const pontDifficulty = {
       hard: 3,
       medium: 2,
       easy: 1,
     };
-    const total = 10 + (timer * pontDifficulty[difficulty]);
-    const stateLocal = JSON.parse(localStorage.getItem('state'));
-    const newLocal = { ...stateLocal, score: total };
-    localStorage.setItem('state', JSON.stringify(newLocal));
+    // Para terminar a implementação desse requisito é necesssario o timer
+    // const total = 10 + (timer * pontDifficulty[difficulty]);
+    // const stateLocal = JSON.parse(localStorage.getItem('state'));
+    // const newLocal = { ...stateLocal, score: total };
+    // localStorage.setItem('state', JSON.stringify(newLocal));
   }
 
   render() {
@@ -100,6 +99,7 @@ const MapStateToProps = (state) => ({
 });
 
 const MapDispachToProps = (dispatch) => ({
+
   setTimeGlobal: (payload) => dispatch(setTimer(payload)),
 });
 

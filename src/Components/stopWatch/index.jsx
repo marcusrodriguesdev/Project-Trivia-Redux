@@ -37,7 +37,7 @@ class StopWatch extends Component {
     const { time } = this.state;
     return (
       <div>
-        <h1 id="timer">{time}</h1>
+        <h1>{time}</h1>
       </div>
     );
   }
