@@ -5,7 +5,7 @@ import Input from '../Components/Input';
 import Button from '../Components/Button';
 import fetchAPI from '../services/fetchAPI';
 import logo from '../trivia.png';
-import { saveToken } from '../Redux/Action/index';
+import { addName, saveToken } from '../Redux/Action';
 
 class Login extends Component {
   constructor(props) {
@@ -47,7 +47,10 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { history, getToken } = this.props;
+    const { history, getName, getToken } = this.props;
+    const { name } = this.state;
+
+    getName(name);
 
     const data = await fetchAPI();
 
@@ -107,6 +110,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   getToken: (token) => dispatch(saveToken(token)),
+  getName: (name) => dispatch(addName(name)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
