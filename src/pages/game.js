@@ -7,9 +7,13 @@ class game extends Component {
 
     this.state = {
       data: '',
+      tighten: false,
+      id: 0,
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
+    this.clickingState = this.clickingState.bind(this);
+    this.changingId = this.changingId.bind(this);
   }
 
   componentDidMount() {
@@ -20,14 +24,36 @@ class game extends Component {
     const response = await fetch('https://opentdb.com/api.php?amount=5');
     const data = await response.json();
     this.setState({
-      data: data.results[0],
+      data: data.results,
     });
     return data;
   }
 
+  clickingState() {
+    this.setState({
+      tighten: true,
+    });
+  }
+
+  changingId() {
+    const { id, data } = this.state;
+    const soma = id + 1;
+    if (soma < data.length) {
+      this.setState({
+        id: soma,
+        tighten: false,
+      });
+    }
+  }
+
   render() {
-    const { data } = this.state;
+    const { data, tighten, id } = this.state;
     const loading = <div className="loading">Loading...</div>;
+    const buttonNext = (
+      <button data-testid="btn-next" type="submit" onClick={ this.changingId }>
+        Próximo
+      </button>
+    );
 
     if (data === '') {
       return loading;
@@ -36,14 +62,15 @@ class game extends Component {
       <div className="App">
         Tela de jogo
         <div className="question-board">
-          <h1 data-testid="question-category">{data.category}</h1>
-          <h2 data-testid="question-text">{data.question}</h2>
-          {data.incorrect_answers
+          <h1 data-testid="question-category">{data[id].category}</h1>
+          <h2 data-testid="question-text">{data[id].question}</h2>
+          {data[id].incorrect_answers
             .map(((answer, index) => (
               <button
                 type="button"
                 data-testid={ `wrong-answer${index}` }
                 key={ index }
+                onClick={ this.clickingState }
               >
                 { answer }
               </button>
@@ -51,9 +78,11 @@ class game extends Component {
           <button
             type="button"
             data-testid="correct-answer"
+            onClick={ this.clickingState }
           >
-            {data.correct_answer}
+            {data[id].correct_answer}
           </button>
+          { tighten && buttonNext }
         </div>
       </div>
     );

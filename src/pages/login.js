@@ -26,8 +26,7 @@ class login extends Component {
 
   render() {
     const { name, email } = this.state;
-    const { getApiToken, tokenValue } = this.props;
-    console.log(tokenValue);
+    const { getApiToken } = this.props;
     return (
       <div className="App">
         <header className="App-header">
@@ -73,7 +72,6 @@ login.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   getApiToken: PropTypes.func.isRequired,
-  tokenValue: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
