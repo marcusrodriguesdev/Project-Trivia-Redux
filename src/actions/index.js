@@ -6,6 +6,14 @@ const actionLogin = (user, email) => ({
   },
 });
 
+export const actionPlayerScore = (assertions, score) => ({
+  type: 'ACTION_PLAYER_SCORE',
+  payload: {
+    assertions,
+    score,
+  },
+});
+
 export const beginFetch = () => ({
   type: 'BEGIN_FETCH',
 });
