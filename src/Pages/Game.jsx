@@ -75,8 +75,25 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions, actualQuestion, questionsLoaded } = this.state;
+    const { questions, actualQuestion, questionsLoaded, answered } = this.state;
     const constRandomNumber = 0.5;
+    const maxQuestionsNumber = 4;
+    const button = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => {
+          if (actualQuestion < maxQuestionsNumber) {
+            this.setState((prevState) => ({
+              actualQuestion: prevState.actualQuestion + 1,
+              answered: false,
+            }));
+          }
+        } }
+      >
+        Próxima Questão
+      </button>
+    );
     return (
       <>
         <Header />
@@ -94,6 +111,7 @@ class Game extends React.Component {
           <ul>
             {this.alternatives().sort(() => constRandomNumber - Math.random())}
           </ul>
+          { answered && button }
         </fieldset>
       </>
     );
