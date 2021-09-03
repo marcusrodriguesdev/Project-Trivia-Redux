@@ -34,7 +34,7 @@ class Game extends Component {
   }
 
   renderAnswers() {
-    const { questions, questionNumber } = this.state;
+    const { questions, questionNumber } = this.state; // Testando o git hub
 
     const answers = [...questions[questionNumber].incorrect_answers,
       questions[questionNumber].correct_answer];
