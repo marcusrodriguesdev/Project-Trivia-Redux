@@ -13,7 +13,6 @@ export default function App() {
       </header> */}
       <Switch>
         <Route exact path="/" component={ Login } />
-        <Route exact path="/config" component={ ConfigWindow } />
         <Route path="/config" component={ ConfigWindow } />
         <Route path="/game" component={ GameScreen } />
       </Switch>
