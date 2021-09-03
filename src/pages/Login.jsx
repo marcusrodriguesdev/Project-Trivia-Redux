@@ -2,7 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
-import { getTokenThunk } from '../redux/actions';
+import {
+  getTokenThunk,
+  setEmail as setEmailAction,
+  setName as setNameAction 
+} from '../redux/actions';
 import ConfigButton from '../components/ConfigButton';
 // import trivia from '../trivia.png';
 
@@ -37,8 +41,11 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { fetchToken } = this.props;
+    const { fetchToken, setName, setEmail } = this.props;
+    const { name, email } = this.state;
     fetchToken();
+    setName(name);
+    setEmail(email);
   }
 
   render() {
@@ -89,6 +96,8 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(getTokenThunk()),
+  setName: (payload) => dispatch(setNameAction(payload)),
+  setEmail: (payload) => dispatch(setEmailAction(payload)),
 });
 
 Login.propTypes = {
