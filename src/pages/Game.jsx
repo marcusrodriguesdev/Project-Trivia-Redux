@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import Questions from '../components/Questions';
 import { fetchApi } from '../actions';
 
 class Game extends Component {
@@ -12,7 +13,8 @@ class Game extends Component {
   }
 
   render() {
-    const { name, email, response } = this.props;
+    const { response } = this.props;
+    const { name, email } = this.props;
     const hashEmail = md5(email).toString();
     return (
       <div>
@@ -21,11 +23,7 @@ class Game extends Component {
           <h2 data-testid="header-player-name">{ name }</h2>
           <h2 data-testid="header-score">0</h2>
         </header>
-        {response
-          ? <div>
-            <p data-testid="question-category">{response[0].category}</p>
-          </div>
-          : null }
+        {response && <Questions resp={ response } />}
       </div>
     );
   }
@@ -36,7 +34,8 @@ Game.propTypes = {
   fetch: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   response: PropTypes.string.isRequired,
-}
+};
+
 const mapStateToProps = (state) => ({
   name: state.login.user,
   email: state.login.email,

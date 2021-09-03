@@ -16,11 +16,8 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange({ target }) {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+  componentDidMount() {
+    this.token();
   }
 
   validateEmailAndUser() {
@@ -32,13 +29,23 @@ class Login extends Component {
     return true;
   }
 
-  async handleSubmit(userr, emaill) {
-    const { userEmailAction } = this.props;
-    userEmailAction(userr, emaill);
+  async token() {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const tokien = await response.json();
     const tokienData = tokien.token;
     localStorage.setItem('token', JSON.stringify(tokienData));
+  }
+
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  async handleSubmit(userr, emaill) {
+    const { userEmailAction } = this.props;
+    userEmailAction(userr, emaill);
   }
 
   render() {
