@@ -1,5 +1,5 @@
 import fetchToken from '../../services/tokenAPI';
-import fetchTrivia from '../../services/triviaAPI';
+// import fetchTrivia from '../../services/triviaAPI';
 
 export const REQUEST_TOKEN_SUCCESS = 'REQUEST_TOKEN_SUCCESS';
 export const REQUEST_TOKEN_ERROR = 'REQUEST_TOKEN_ERROR';
@@ -23,9 +23,9 @@ const requestTokenError = (payload) => ({
   payload,
 });
 
-const requestTrivia = () => ({
-  type: REQUEST_QUESTIONS,
-});
+// const requestTrivia = () => ({
+//   type: REQUEST_QUESTIONS,
+// });
 
 const requestTriviaSuccess = (payload) => ({
   type: REQUEST_QUESTIONS_SUCCESS,
