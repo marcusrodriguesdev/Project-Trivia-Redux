@@ -3,6 +3,7 @@ const ADD_EMAIL = 'ADD_EMAIL';
 const SAVE_TOKEN = 'SAVE_TOKEN';
 const RESQUEST_QUESTION_SUCESS = 'RESQUEST_QUESTION_SUCESS';
 const LOADING = 'LOADING';
+const SET_IS_CLICKED = 'SET_IS_CLICKED';
 
 export const ALL_ACTIONS = {
   ADD_NAME,
@@ -10,6 +11,7 @@ export const ALL_ACTIONS = {
   SAVE_TOKEN,
   RESQUEST_QUESTION_SUCESS,
   LOADING,
+  SET_IS_CLICKED,
 };
 
 export const addName = (name) => ({
@@ -44,3 +46,7 @@ export const fetchAPIThunk = (token) => async (dispatch) => {
     console.log(error.message);
   }
 };
+export const setIsClicked = () => ({
+  type: ALL_ACTIONS.SET_IS_CLICKED,
+  payload: true,
+});
