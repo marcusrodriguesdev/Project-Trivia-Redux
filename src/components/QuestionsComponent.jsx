@@ -3,16 +3,25 @@ import React from 'react';
 
 export default class QuestionsComponent extends React.Component {
   render() {
-    const { question } = this.props;
+    const { question, buttonDisable } = this.props;
     return (
       <div>
         <p data-testid="question-category">{question[0].category}</p>
         <p data-testid="question-text">{question[0].question}</p>
-        <button data-testid="correct-answer" type="button">
+        <button
+          data-testid="correct-answer"
+          type="button"
+          disabled={ buttonDisable }
+        >
           {question[0].correct_answer}
         </button>
         {question[0].incorrect_answers.map((incorrect, index) => (
-          <button key={ index } data-testid={ `wrong-answer-${index}` } type="button">
+          <button
+            key={ index }
+            data-testid={ `wrong-answer-${index}` }
+            type="button"
+            disabled={ buttonDisable }
+          >
             {incorrect}
           </button>
         ))}
@@ -23,4 +32,5 @@ export default class QuestionsComponent extends React.Component {
 
 QuestionsComponent.propTypes = {
   question: PropTypes.arrayOf.isRequired,
+  buttonDisable: PropTypes.bool.isRequired,
 };

@@ -10,22 +10,42 @@ class Question extends Component {
     super(props);
     this.handleEmailConversion = this.handleEmailConversion.bind(this);
     this.handleQuestions = this.handleQuestions.bind(this);
+    this.timerQuestion = this.timerQuestion.bind(this);
+    this.handleTime = this.handleTime.bind(this);
 
     this.state = {
       loading: true,
+      timer: 30,
+      disableButton: false,
     };
   }
 
   componentDidMount() {
     this.handleQuestions();
+    this.timerQuestion();
   }
 
   handleEmailConversion() {
     const { gravatarEmail } = this.props;
     const emailHash = md5(gravatarEmail).toString();
-    console.log(emailHash);
     const response = `https://www.gravatar.com/avatar/${emailHash}`;
     return response;
+  }
+
+  handleTime() {
+    this.setState((old) => ({ timer: old.timer - 1 }));
+  }
+
+  timerQuestion() {
+    const maxTime = 1000;
+    const timerInterval = setInterval(() => {
+      const { timer } = this.state;
+      this.handleTime();
+      if (timer === 1) {
+        clearInterval(timerInterval);
+        this.setState({ disableButton: true });
+      }
+    }, maxTime);
   }
 
   async handleQuestions() {
@@ -38,7 +58,7 @@ class Question extends Component {
 
   render() {
     const { name, score } = this.props;
-    const { resultsApi, loading } = this.state;
+    const { resultsApi, disableButton, timer, loading } = this.state;
     return (
       <>
         <header>
@@ -47,10 +67,17 @@ class Question extends Component {
             alt="avatar"
             data-testid="header-profile-picture"
           />
+          <h1>
+            TEMPO:
+            {timer}
+          </h1>
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
-        {!loading && <QuestionsComponent question={ resultsApi } />}
+        {!loading && <QuestionsComponent
+          question={ resultsApi }
+          buttonDisable={ disableButton }
+        />}
       </>
     );
   }
