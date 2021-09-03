@@ -1,9 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../css/Alternatives.css';
 
 import { connect } from 'react-redux';
 
 class Alternatives extends React.Component {
+  showCorrectAnswer() {
+    const correct = document.querySelector('.correct');
+    correct.className = 'correct correct-answer';
+
+    const incorrect = document.querySelectorAll('.incorrect');
+    incorrect.forEach((item) => {
+      item.className = 'incorrect incorrect-answer';
+      return item;
+    });
+  }
+
   displayAnswer() {
     const { questions: { results } } = this.props;
     const {
@@ -14,16 +26,20 @@ class Alternatives extends React.Component {
       <div>
         <button
           type="button"
-          key="alternative"
           data-testid="correct-answer"
+          className="correct"
+          onClick={ this.showCorrectAnswer }
         >
           { correctAnswer }
         </button>
         {incorrectAnswer.map((wrongAnswer, index) => (
           <button
             type="button"
-            key="alternative"
+            key={ index }
             data-testid={ `wrong-answer-${index}` }
+            id="wrong-answer"
+            onClick={ this.showCorrectAnswer }
+            className="incorrect"
           >
             { wrongAnswer }
           </button>))}
