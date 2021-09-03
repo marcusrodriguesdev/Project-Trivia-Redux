@@ -20,7 +20,7 @@ class CorrectAnswer extends React.Component {
 }
 
 CorrectAnswer.propTypes = {
-  disabled: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
   correct: PropTypes.string.isRequired,
   btnClass: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,

@@ -20,7 +20,7 @@ class WrongAnswers extends React.Component {
 
 WrongAnswers.propTypes = {
   index: PropTypes.number.isRequired,
-  disabled: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
   answers: PropTypes.string.isRequired,
   btnClass: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,

@@ -11,6 +11,10 @@ function triviaReducer(state = INITIAL_STATE, action) {
       ...state,
       ...action.payload,
     };
+  case ACTIONS.GET_TOKEN:
+    return {
+      ...state,
+    };
   case ACTIONS.GET_TOKEN_SUCCESS:
     return {
       ...state,
