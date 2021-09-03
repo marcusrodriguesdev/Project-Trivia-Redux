@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {
   getTokenThunk,
   setEmail as setEmailAction,
-  setName as setNameAction 
+  setName as setNameAction,
 } from '../redux/actions';
 import ConfigButton from '../components/ConfigButton';
 // import trivia from '../trivia.png';
@@ -102,6 +102,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   fetchToken: PropTypes.func,
+  setName: PropTypes.func,
+  setEmail: PropTypes.func,
 }.isRequired;
 
 export default connect(null, mapDispatchToProps)(Login);
