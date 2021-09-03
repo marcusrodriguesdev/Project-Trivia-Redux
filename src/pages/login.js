@@ -27,8 +27,7 @@ class login extends Component {
 
   handleOnClick() {
     const { getApiToken, propSetEmail } = this.props;
-    const { email } = this.state;
-    propSetEmail(email);
+    propSetEmail(this.state);
     getApiToken();
   }
 

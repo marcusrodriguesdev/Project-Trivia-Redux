@@ -10,26 +10,22 @@ class HeaderInfo extends React.Component {
 
   render() {
     const { propGravatarEmail } = this.props;
-    const { /* name */ assertions, score, gravatarEmail } = propGravatarEmail;
+    const { name, score, gravatarEmail } = propGravatarEmail;
     return (
       <div>
-        <h4 data-testid="header-player-name">
-          User:
-          { gravatarEmail }
-        </h4>
-        <h5>
-          Assertions:
-          { assertions }
-        </h5>
-        <h5 data-testid="header-score">
-          Score:
-          { score }
-        </h5>
         <img
           src={ gravatarEmail }
           alt="gravatar"
           data-testid="header-profile-picture"
         />
+        <h4 data-testid="header-player-name">
+          User:
+          { name }
+        </h4>
+        <h5 data-testid="header-score">
+          Score:
+          { score }
+        </h5>
       </div>
     );
   }
