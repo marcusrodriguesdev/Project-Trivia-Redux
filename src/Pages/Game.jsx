@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../Components/Header';
+import Timer from '../Components/Timer';
 
 class Game extends React.Component {
   constructor() {
@@ -8,9 +9,13 @@ class Game extends React.Component {
       questions: [],
       actualQuestion: 0,
       questionsLoaded: false,
+      disabled: false,
       answered: false,
+      buttonShow: false,
     };
+    this.switchButton = this.switchButton.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.callButton = this.callButton.bind(this);
   }
 
   componentDidMount() {
@@ -30,14 +35,29 @@ class Game extends React.Component {
       });
   }
 
+  switchButton() {
+    this.setState((previousState) => ({
+      disabled: !previousState.disabled,
+      buttonShow: true,
+    }));
+  }
+
+  callButton() {
+    this.handleClick();
+    this.setState({
+      disabled: true,
+    });
+  }
+
   handleClick() {
     this.setState({
       answered: true,
+      buttonShow: true,
     });
   }
 
   alternatives() {
-    const { questions, actualQuestion, questionsLoaded, answered } = this.state;
+    const { questions, actualQuestion, questionsLoaded, answered, disabled } = this.state;
     let wrongAnswers = [];
     if (questionsLoaded) {
       wrongAnswers = questions[actualQuestion].incorrect_answers
@@ -45,16 +65,16 @@ class Game extends React.Component {
           <li key={ index }>
             <button
               data-testid={ `wrong-answer-${index}` }
+              disabled={ disabled }
               type="button"
               className={ answered ? 'wrong' : '' }
-              onClick={ this.handleClick }
+              onClick={ this.callButton }
             >
               { questionsLoaded && this.b64toutf8(answer) }
             </button>
           </li>
         ));
     }
-
     return (
       [
         ...wrongAnswers,
@@ -64,7 +84,8 @@ class Game extends React.Component {
               type="button"
               data-testid="correct-answer"
               className={ answered ? 'correct' : '' }
-              onClick={ this.handleClick }
+              onClick={ this.callButton }
+              disabled={ disabled }
             >
               { questionsLoaded
                && this.b64toutf8(questions[actualQuestion].correct_answer) }
@@ -81,8 +102,8 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions, actualQuestion, questionsLoaded, answered } = this.state;
-    const constRandomNumber = 0.5;
+    const { questions, actualQuestion,
+      questionsLoaded, buttonShow, disabled } = this.state;
     const maxQuestionsNumber = 4;
     const button = (
       <button
@@ -93,6 +114,8 @@ class Game extends React.Component {
             this.setState((prevState) => ({
               actualQuestion: prevState.actualQuestion + 1,
               answered: false,
+              disabled: false,
+              buttonShow: false,
             }));
           }
         } }
@@ -103,6 +126,7 @@ class Game extends React.Component {
     return (
       <>
         <Header />
+        { !disabled && <Timer switchButton={ this.switchButton } />}
         <fieldset>
           <h1
             data-testid="question-category"
@@ -115,9 +139,9 @@ class Game extends React.Component {
             { questionsLoaded && this.b64toutf8(questions[actualQuestion].question) }
           </h2>
           <ul>
-            {this.alternatives().sort(() => constRandomNumber - Math.random())}
+            {this.alternatives()}
           </ul>
-          { answered && button }
+          { buttonShow && button }
         </fieldset>
       </>
     );
