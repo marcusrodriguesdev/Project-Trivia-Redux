@@ -35,8 +35,9 @@ class Question extends React.Component {
     };
     const total = 10 + (timer * pontDifficulty[difficulty]);
     const stateLocal = JSON.parse(localStorage.getItem('state'));
-    const newLocal = { ...stateLocal, score: total };
+    const newLocal = { ...stateLocal, player: { ...stateLocal.player, score: total } };
     localStorage.setItem('state', JSON.stringify(newLocal));
+    console.log(Object.keys(localStorage));
   }
 
   render() {

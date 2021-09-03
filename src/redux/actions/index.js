@@ -30,7 +30,7 @@ export const fetchToken = () => async (dispatch) => {
 export const setDataUser = (payload) => (dispatch) => {
   const { user, email } = payload;
   const local = JSON.parse(localStorage.getItem('state'));
-  const newLocal = { ...local, name: user, email };
+  const newLocal = { player: { ...local.player, name: user, gravatarEmail: email } };
   localStorage.setItem('state', JSON.stringify(newLocal));
   dispatch(setData(payload));
 };

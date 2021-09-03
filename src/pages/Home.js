@@ -20,6 +20,19 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.fetchAndStoreQuestions();
+    this.setLocalStorageInitial();
+  }
+
+  setLocalStorageInitial() {
+    const state = {
+      player: {
+        name: '',
+        assertions: '',
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async fetchAndStoreQuestions() {
