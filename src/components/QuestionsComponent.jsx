@@ -19,8 +19,8 @@ export default class QuestionsComponent extends React.Component {
   }
 
   render() {
+    const { question, buttonDisable } = this.props;
     const { clicked } = this.state;
-    const { question } = this.props;
     return (
       <div>
         <p data-testid="question-category">{question[0].category}</p>
@@ -28,6 +28,7 @@ export default class QuestionsComponent extends React.Component {
         <button
           data-testid="correct-answer"
           type="button"
+          disabled={ buttonDisable }
           className={ clicked && 'correct' }
           onClick={ this.handleClicked }
         >
@@ -38,6 +39,7 @@ export default class QuestionsComponent extends React.Component {
             key={ index }
             data-testid={ `wrong-answer-${index}` }
             type="button"
+            disabled={ buttonDisable }
             className={ clicked && 'incorrect' }
             onClick={ this.handleClicked }
           >
@@ -51,4 +53,5 @@ export default class QuestionsComponent extends React.Component {
 
 QuestionsComponent.propTypes = {
   question: PropTypes.arrayOf.isRequired,
+  buttonDisable: PropTypes.bool.isRequired,
 };
