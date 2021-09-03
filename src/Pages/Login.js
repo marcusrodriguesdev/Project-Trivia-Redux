@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getToken } from '../Services/fetchAPI';
+// import { getToken } from '../Services/fetchAPI';
 import logo from '../trivia.png';
 // import '../App.css';
-import playAction from '../Redux/Action';
+import playAction, { getTokenThunk } from '../Redux/Action';
 
 class Login extends Component {
   constructor(props) {
@@ -21,10 +21,9 @@ class Login extends Component {
   }
 
   onClick() {
-    getToken();
-    console.log(getToken());
     const { playerEmail, playerName } = this.state;
-    const { updateNameEmail } = this.props;
+    const { updateNameEmail, sendTokenToState } = this.props;
+    sendTokenToState();
     updateNameEmail({ playerEmail, playerName });
   }
 
@@ -94,11 +93,13 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  sendTokenToState: PropTypes.func.isRequired,
   updateNameEmail: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   updateNameEmail: (payload) => dispatch(playAction(payload)),
+  sendTokenToState: () => dispatch(getTokenThunk()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
