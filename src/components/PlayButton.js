@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 
 import { fetchTokenThunk } from '../redux/actions';
+import { Link } from 'react-router-dom';
 
 class PlayButton extends Component {
   constructor() {
@@ -15,13 +16,14 @@ class PlayButton extends Component {
     const { fetchToken, history, token } = this.props;
     await fetchToken();
     localStorage.setItem('token', token);
-    history.push('/jogar');
+    // history.push('/game');
   }
 
   render() {
     const { buttonCheck } = this.props;
     return (
       <div>
+       <Link to="/game">
         <button
           type="button"
           disabled={ buttonCheck }
@@ -30,6 +32,7 @@ class PlayButton extends Component {
         >
           Jogar!
         </button>
+       </Link>
       </div>
     );
   }
