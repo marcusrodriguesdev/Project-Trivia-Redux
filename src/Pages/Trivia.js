@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Button from '../Components/Button';
 import Header from '../Components/Header';
+import Timer from '../Components/Timer';
 import '../Styles/trivia.css';
+import { setIsClicked } from '../Redux/Action';
 
 class Trivia extends Component {
   constructor() {
@@ -12,9 +14,7 @@ class Trivia extends Component {
     this.state = {
       results: [],
       loading: true,
-      isClicked: false,
     };
-
     this.renderQuestionAndAnswers = this.renderQuestionAndAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -52,13 +52,13 @@ class Trivia extends Component {
   }
 
   handleClick() {
-    this.setState({
-      isClicked: true,
-    });
+    const { toggleDisabled } = this.props;
+    toggleDisabled();
   }
 
   renderQuestionAndAnswers() {
-    const { results, isClicked } = this.state;
+    const { results } = this.state;
+    const { isClicked } = this.props;
     const {
       question,
       category,
@@ -115,6 +115,7 @@ class Trivia extends Component {
     return (
       <div>
         <Header />
+        <Timer handleClick={ this.handleClick } />
         {this.renderQuestionAndAnswers()}
       </div>
     );
@@ -125,8 +126,13 @@ Trivia.propTypes = {
   token: PropTypes.string,
 }.isRequired;
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user, trivia }) => ({
   token: user.token,
+  isClicked: trivia.isClicked,
 });
 
-export default connect(mapStateToProps)(Trivia);
+const mapDispatchToProps = (dispatch) => ({
+  toggleDisabled: () => dispatch(setIsClicked()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
