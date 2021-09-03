@@ -51,9 +51,7 @@ class game extends Component {
   }
 
   render() {
-    const { data, timer } = this.state;
-    const loading = <div className="loading">Loading...</div>;
-    const { data, answers } = this.state;
+    const { data, answers, timer } = this.state;
     const loading = <div className="loading">Loading</div>;
 
     if (data === '' || answers === []) {
@@ -65,7 +63,7 @@ class game extends Component {
         <div className="question-board">
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
-          {data.incorrect_answers
+          {answers
             .map(((answer, index) => (
               <button
                 type="button"
@@ -86,27 +84,6 @@ class game extends Component {
           <div>
             { timer }
           </div>
-          {answers.map((answer, index) => (
-            answer === data.correct_answer
-              ? (
-                <button
-                  key={ index }
-                  type="button"
-                  data-testid="correct-answer"
-                >
-                  { answer }
-                </button>
-              )
-              : (
-                <button
-                  key={ index }
-                  type="button"
-                  data-testid={ `wrong-answer${index}` }
-                >
-                  { answer }
-                </button>
-              )
-          ))}
         </div>
       </div>
     );
