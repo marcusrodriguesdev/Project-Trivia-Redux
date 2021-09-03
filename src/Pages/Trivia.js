@@ -4,18 +4,16 @@ import { connect } from 'react-redux';
 
 import Header from '../Components/Header';
 import { fetchQuestions } from '../Services/api';
-
-const CryptoJS = require('crypto-js');
+import Questions from '../Components/Questions';
 
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      questions: {},
+      questions: [],
     };
 
-    this.fetchAvatar = this.fetchAvatar.bind(this);
     this.fetchQuestions = this.fetchQuestions.bind(this);
   }
 
@@ -33,15 +31,6 @@ class Trivia extends React.Component {
     });
   }
 
-  fetchAvatar() {
-    const { email } = this.props;
-    const hashGerada = CryptoJS.MD5(email).toString();
-
-    const fetchApi = (`https://www.gravatar.com/avatar/${hashGerada}`);
-
-    return fetchApi;
-  }
-
   render() {
     const { questions } = this.state;
 
@@ -49,22 +38,18 @@ class Trivia extends React.Component {
       <div>
         <Header />
         <main>
-          <h1 data-testid="question-category">categoria</h1>
-          <p data-testid="question-text">texto</p>
-          <button type="submit">alternativas</button>
+          { questions.map((...info) => (<Questions key={ info } questions={ info } />)) }
         </main>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user: { email }, trivia: { token } }) => ({
+const mapStateToProps = ({ trivia: { token } }) => ({
   token,
-  email,
 });
 
 Trivia.propTypes = {
-  email: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
 };
 
