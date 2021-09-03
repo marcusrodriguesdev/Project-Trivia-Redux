@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import Timer from '../components/Timer';
 import '../App.css';
 
 class Game extends Component {
@@ -9,16 +10,22 @@ class Game extends Component {
     super(props);
 
     this.state = {
+      time: 30,
       questionIndex: 0,
       questions: [],
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
+    this.setTimer = this.setTimer.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     this.saveQuestions();
+  }
+
+  setTimer(callback) {
+    this.setState((prevState) => ({ time: prevState.time - 1 }), callback);
   }
 
   handleClick() {
@@ -40,7 +47,8 @@ class Game extends Component {
   }
 
   renderQuestions() {
-    const { questions, questionIndex } = this.state;
+    const { questions, questionIndex, time } = this.state;
+    const disabled = time === 0;
     const { category,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
@@ -51,6 +59,7 @@ class Game extends Component {
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
         <button
+          disabled={ disabled }
           type="button"
           data-testid="correct-answer"
           className="correct-btn"
@@ -60,6 +69,7 @@ class Game extends Component {
         </button>
         {incorrectAnswer.map((answer, index) => (
           <button
+            disabled={ disabled }
             onClick={ this.handleClick }
             className="wrong-btn"
             type="button"
@@ -75,7 +85,7 @@ class Game extends Component {
 
   render() {
     const { name, email } = this.props;
-    const { questions } = this.state;
+    const { questions, time } = this.state;
     const isFetching = questions.length === 0;
     const emailHash = md5(email).toString();
     return (
@@ -89,6 +99,7 @@ class Game extends Component {
           <span data-testid="header-player-name">{ name }</span>
           <span data-testid="header-score">0</span>
         </header>
+        <Timer setTimer={ this.setTimer } time={ time } />
         { !isFetching && this.renderQuestions() }
       </>
     );
