@@ -23,7 +23,7 @@ class PlayButton extends Component {
     const { buttonCheck } = this.props;
     return (
       <div>
-        <Link to="/jogar">
+        <Link to="/play">
           <button
             type="button"
             disabled={ buttonCheck }

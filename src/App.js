@@ -11,7 +11,7 @@ export default function App() {
     <Switch>
       <Route exact path="/" component={ Login } />
       <Route exact path="/config" component={ ConfigScreen } />
-      <Route exact path="/jogar" component={ Game } />
+      <Route exact path="/play" component={ Game } />
     </Switch>
   );
 }
