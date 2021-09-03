@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getTokenThunk } from '../redux/actions';
+import ConfigButton from '../components/ConfigButton';
 // import trivia from '../trivia.png';
 
 class Login extends React.Component {
@@ -67,18 +68,20 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <Link
-          to="/game"
-        >
-          <button
-            type="button"
-            disabled={ !validEmail || !validName }
-            data-testid="btn-play"
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
-        </Link>
+        <ConfigButton
+          link="/game"
+          test="btn-play"
+          name="Jogar"
+          onClick={ this.handleClick }
+          disable={ !validEmail || !validName }
+        />
+        <ConfigButton
+          link="/config"
+          test="btn-settings"
+          name="Configurações"
+          onClick={ null }
+          disable={ false }
+        />
       </form>
     );
   }
