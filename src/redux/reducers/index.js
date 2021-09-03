@@ -6,6 +6,7 @@ const INICIAL_STATE = {
   name: '',
   email: '',
   image: '',
+  endpoint: 'https://opentdb.com/api.php?amount=5&token=',
 };
 
 export default function reducer(state = INICIAL_STATE, action) {

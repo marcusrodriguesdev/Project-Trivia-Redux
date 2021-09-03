@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
-import { getToken, getNameAndEmail, getImage } from '../redux/actions';
 import fetchImage from '../services/fetchImage';
+import { getToken, getNameAndEmail, getImage } from '../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -88,7 +88,7 @@ class Login extends Component {
             >
               Jogar
             </button>
-            <Link to="/setings">
+            <Link to="/settings">
               <button type="button" data-testid="btn-settings">
                 Configurações
               </button>
