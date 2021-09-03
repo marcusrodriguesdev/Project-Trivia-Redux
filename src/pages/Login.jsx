@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { userLogin } from '../actions';
+import { userLogin, requestTokenThunk } from '../actions';
 import ConfigButton from '../components/ConfigButton';
 
 class Login extends React.Component {
@@ -10,6 +10,8 @@ class Login extends React.Component {
     super(props);
 
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+
     this.state = {
       name: '',
       email: '',
@@ -22,6 +24,12 @@ class Login extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  handleClick() {
+    const { fetchToken, token } = this.props;
+    fetchToken();
+    localStorage.setItem('token', token);
   }
 
   render() {
@@ -62,7 +70,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             type="button"
             disabled={ !(emailIsValid() && nameIsValid) }
-            // onClick={ this.handleClick }
+            onClick={ () => this.handleClick() }
           >
             Jogar
           </button>
@@ -74,10 +82,13 @@ class Login extends React.Component {
 
 const mapDispatchtoProps = (dispatch) => ({
   userEmail: (email) => dispatch(userLogin(email)),
+  fetchToken: () => dispatch(requestTokenThunk()),
 });
 
 Login.propTypes = {
   userEmail: PropTypes.func.isRequired,
+  fetchToken: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 export default connect(null, mapDispatchtoProps)(Login);
