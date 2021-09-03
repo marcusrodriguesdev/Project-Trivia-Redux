@@ -19,7 +19,7 @@ class Game extends React.Component {
           <img
             data-testid="header-profile-picture"
             src={ avatarPadrao }
-            alt="Avatar"
+            alt="Gravatar"
           />
         </header>
         <Question />
