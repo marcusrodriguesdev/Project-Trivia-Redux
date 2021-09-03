@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import './Questions.css';
 import { actionPlayerScore } from '../actions';
 
@@ -20,6 +21,7 @@ class Questions extends Component {
       disable: false,
       numberQuestion: 0,
       visibilit: 'hide',
+      redirect: false,
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
@@ -97,17 +99,24 @@ class Questions extends Component {
   }
 
   nextQuestion() {
+    const { numberQuestion } = this.state;
+    const question = 4;
+    if (numberQuestion === question) {
+      this.setState({ redirect: true });
+    }
     this.setState((estadoAnterior) => ({
       numberQuestion: estadoAnterior.numberQuestion + 1,
       seconds: 30,
+      correct: null,
+      incorrect: null,
     }));
   }
 
   render() {
-    // embaralhar questões incorretas/ sort
-    const { correct, incorrect, seconds, disable,
+    const { redirect, correct, incorrect, seconds, disable,
       numberQuestion, visibilit } = this.state;
     const { resp } = this.props;
+    if (redirect === true) { return <Redirect to="/feedback" />; }
     return (
       <div>
         <seconds>{seconds}</seconds>
