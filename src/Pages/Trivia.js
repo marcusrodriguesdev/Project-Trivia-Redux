@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Header from '../Components/Header';
 import { fetchQuestions } from '../Services/api';
 import Questions from '../Components/Questions';
-import Timer from '../Components/Timer';
 
 import '../Styles/global.css';
 
@@ -48,7 +47,6 @@ class Trivia extends React.Component {
     return (
       <div>
         <Header />
-        <Timer />
         <main>
           {
             questionsInfo.filter((...info) => (

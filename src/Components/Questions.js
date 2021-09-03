@@ -11,10 +11,30 @@ class Questions extends React.Component {
 
     this.state = {
       answered: false,
+      timer: 30,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const ONE_SECOND = 1000;
+    this.interval = setInterval(
+      () => this.setState((previousTime) => ({ timer: previousTime.timer - 1 }), () => {
+        const { timer, answered } = this.state;
+        const maximumTime = 0;
+        if (timer === maximumTime) {
+          clearInterval(this.interval);
+          this.setState({ answered: !answered });
+        }
+      }),
+      ONE_SECOND,
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   handleSubmit(event) {
@@ -29,7 +49,7 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { answered } = this.state;
+    const { answered, timer } = this.state;
     const { question } = this.props;
     const {
       category,
@@ -44,6 +64,10 @@ class Questions extends React.Component {
 
     return (
       <main>
+        <p>
+          Tempo:
+          { timer }
+        </p>
         <h1 data-testid="question-category">{category}</h1>
         <h2 data-testid="question-text">{questionText}</h2>
         <h3>{difficulty}</h3>
@@ -75,3 +99,7 @@ Questions.propTypes = {
 };
 
 export default (Questions);
+
+// https://www.youtube.com/watch?v=NAx76xx40jM
+// https://www.youtube.com/watch?v=sWKz9aLovjY
+// https://www.youtube.com/watch?v=RwlFyS1Rhew
