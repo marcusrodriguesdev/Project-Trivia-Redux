@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ConfigButton from './ConfigButton';
 
 class QuestionsComponent extends React.Component {
   render() {
     const { questions } = this.props;
-    console.log('tela question', questions[0]);
     return (
       <div>
         <fieldset>
@@ -16,14 +16,16 @@ class QuestionsComponent extends React.Component {
           </h2>
           <ol>
             <li>
-              <button type="button" data-testid="wrong-answer">
-                { questions[0].incorrect_answers }
-              </button>
+              {(questions[0].incorrect_answers).map((incorrect, index) => (
+                <ConfigButton
+                  key={ index }
+                  test={ `wrong-answer-${index}` }
+                  name={ incorrect }
+                />
+              ))}
             </li>
             <li>
-              <button type="button" data-testid="correct-awswer">
-                { questions[0].correct_answer }
-              </button>
+              <ConfigButton test="correct-answer" name={ questions[0].correct_answer } />
             </li>
           </ol>
         </fieldset>
