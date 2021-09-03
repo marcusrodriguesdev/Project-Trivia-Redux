@@ -1,12 +1,14 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
+import GamePage from './pages/GamePage';
 import Login from './pages/Login';
 
 export default function App() {
   return (
     <Switch>
-      <Route path="/" component={ Login } />
+      <Route exact path="/" component={ Login } />
+      <Route path="/gamepage" component={ GamePage } />
     </Switch>
   );
 }

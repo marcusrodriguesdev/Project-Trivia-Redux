@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
@@ -53,12 +54,14 @@ class Login extends React.Component {
           name="email"
           change={ this.handleChange }
         />
-        <Button
-          label="Jogar"
-          type="button"
-          testid="btn-play"
-          disable={ btnStatus }
-        />
+        <Link to="/gamepage">
+          <Button
+            label="Jogar"
+            type="button"
+            testid="btn-play"
+            disable={ btnStatus }
+          />
+        </Link>
       </div>
     );
   }
