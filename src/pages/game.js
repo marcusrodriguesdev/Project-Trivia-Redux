@@ -33,8 +33,8 @@ class game extends Component {
 
   handleCorrectAnswer(difficulty) {
     const DEFAULT_POINTS = 10;
-    const { timer } = this.state;
     const { setScore, setLocalStorage } = this.props;
+    const { timer } = this.state;
     const difficultyPoints = {
       easy: 1,
       medium: 2,
