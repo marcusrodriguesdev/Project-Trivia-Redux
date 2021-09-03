@@ -49,8 +49,7 @@ class game extends Component {
             )))}
           <button
             type="button"
-            data-testid="correct-answer
-"
+            data-testid="correct-answer"
           >
             {data.correct_answer}
           </button>

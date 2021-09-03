@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Input from '../components/Input';
 import logo from '../trivia.png';
 
@@ -12,12 +13,18 @@ class login extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.redirectToGamePage = this.redirectToGamePage.bind(this);
   }
 
   handleChange({ target }) {
     this.setState({
       [target.name]: target.value,
     });
+  }
+
+  redirectToGamePage() {
+    const { history } = this.props;
+    history.push('/game');
   }
 
   render() {
@@ -47,6 +54,7 @@ class login extends Component {
               type="button"
               data-testid="btn-play"
               disabled={ !(name && email) }
+              onClick={ this.redirectToGamePage }
             >
               Jogar
             </button>
@@ -56,5 +64,11 @@ class login extends Component {
     );
   }
 }
+
+login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default login;
