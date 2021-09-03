@@ -6,6 +6,10 @@ export const getToken = (token) => ({
   type: ACTIONS.GET_TOKEN, token,
 });
 
+export const getImage = (image) => ({
+  type: 'IMAGE', image,
+});
+
 export const getNameAndEmail = (name, email) => ({
   type: 'NAME_EMAIL',
   name,

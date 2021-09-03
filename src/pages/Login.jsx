@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
-import { getToken, getNameAndEmail } from '../redux/actions';
+import { getToken, getNameAndEmail, getImage } from '../redux/actions';
+import fetchImage from '../services/fetchImage';
 
 class Login extends Component {
   constructor(props) {
@@ -22,11 +23,17 @@ class Login extends Component {
   }
 
   async onClick() {
-    const { tokenData, history, addNameAndEmail } = this.props;
+    const { tokenData, history, addNameAndEmail, addImage } = this.props;
+    const { name, email } = this.state;
+
     const response = await fetchToken();
     tokenData(response);
-    const { name, email } = this.state;
+
+    const responseImage = await fetchImage(email);
+    addImage(responseImage);
+
     addNameAndEmail(name, email);
+
     history.push('/game');
   }
 
@@ -95,11 +102,17 @@ class Login extends Component {
 
 Login.propTypes = {
   tokenData: PropTypes.func.isRequired,
+  addNameAndEmail: PropTypes.func.isRequired,
+  addImage: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   tokenData: (token) => dispatch(getToken(token)),
   addNameAndEmail: (name, email) => dispatch(getNameAndEmail(name, email)),
+  addImage: (image) => dispatch(getImage(image)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

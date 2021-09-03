@@ -5,6 +5,7 @@ const INICIAL_STATE = {
   token: '',
   name: '',
   email: '',
+  image: '',
 };
 
 export default function reducer(state = INICIAL_STATE, action) {
@@ -13,6 +14,8 @@ export default function reducer(state = INICIAL_STATE, action) {
     return { ...state, token: action.token };
   case 'NAME_EMAIL':
     return { ...state, name: action.name, email: action.email };
+  case 'IMAGE':
+    return { ...state, image: action.image };
   default:
     return state;
   }
