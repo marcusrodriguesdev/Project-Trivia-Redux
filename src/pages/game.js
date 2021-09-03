@@ -41,7 +41,7 @@ class game extends Component {
     }
     return (
       <div className="App">
-        Tela de jogo
+        Tela do jogo
         <div className="question-board">
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
