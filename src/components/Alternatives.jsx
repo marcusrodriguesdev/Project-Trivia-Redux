@@ -9,22 +9,28 @@ class Alternatives extends React.Component {
     super(props);
     this.state = {
       next: false,
+      questionNumber: 0,
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.hideNextButton = this.hideNextButton.bind(this);
     this.showCorrectAnswer = this.showCorrectAnswer.bind(this);
     this.displayAnswer = this.displayAnswer.bind(this);
     this.showNextQuestion = this.showNextQuestion.bind(this);
+    this.removeClass = this.removeClass.bind(this);
   }
 
-  handleClick() {
+  hideNextButton() {
     this.setState((previousValue) => ({
       next: !previousValue.next,
     }));
   }
 
   showNextQuestion() {
-    this.handleClick();
-    this.displayAnswer();
+    this.hideNextButton();
+    this.removeClass();
+    // this.displayAnswer();
+    this.setState((prev) => ({
+      questionNumber: prev.questionNumber + 1,
+    }));
   }
 
   showCorrectAnswer() {
@@ -36,15 +42,28 @@ class Alternatives extends React.Component {
       item.className = 'incorrect incorrect-answer';
       return item;
     });
-    this.handleClick();
+    this.hideNextButton();
+  }
+
+  removeClass() {
+    const correct = document.querySelector('.correct');
+    correct.className = 'correct default';
+
+    const incorrect = document.querySelectorAll('.incorrect');
+    incorrect.forEach((item) => {
+      item.className = 'incorrect default';
+      return item;
+    });
+    // this.hideNextButton();
   }
 
   displayAnswer() {
     const { questions: { results } } = this.props;
+    const { questionNumber } = this.state;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
-    } = results[0];
+    } = results[questionNumber];
     console.log(results);
     return (
       <div>
