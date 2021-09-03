@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import logo from '../trivia.png';
-import '../App.css';
+// import '../App.css';
+import playAction from '../Redux/Action';
 
 class Login extends Component {
   constructor(props) {
@@ -13,17 +16,13 @@ class Login extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateButton = this.validateButton.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
-  validateButton() {
-    const { playerName, playerEmail } = this.state;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
-    if (emailRegex.test(playerEmail) && playerName) {
-      console.log(this.state);
-      this.setState({
-        playButton: true,
-      });
-    }
+  onClick() {
+    const { playerEmail, playerName } = this.state;
+    const { updateNameEmail } = this.props;
+    updateNameEmail({ playerEmail, playerName });
   }
 
   handleChange({ target }) {
@@ -31,6 +30,30 @@ class Login extends Component {
       [target.name]: target.value,
     });
     this.validateButton();
+  }
+
+  validateButton() {
+    const { playerName, playerEmail } = this.state;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
+    if (emailRegex.test(playerEmail) && playerName) {
+      this.setState({
+        playButton: true,
+      });
+    }
+  }
+
+  returnButton() {
+    return (
+      <Link to="/game">
+        <button
+          type="button"
+          data-testid="btn-play"
+          onClick={ this.onClick }
+        >
+          Jogar
+        </button>
+      </Link>
+    );
   }
 
   render() {
@@ -53,7 +76,9 @@ class Login extends Component {
             name="playerEmail"
             value={ playerEmail }
           />
-          {playButton ? <button type="button" data-testid="btn-play">Jogar</button>
+          {playButton
+            ? this.returnButton()
+
             : <button type="button" data-testid="btn-play" disabled>Jogar</button>}
         </header>
 
@@ -65,4 +90,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  updateNameEmail: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  updateNameEmail: (payload) => dispatch(playAction(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

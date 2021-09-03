@@ -1,18 +1,23 @@
-// import { PLAY } from '../Action';
+import { PLAY } from '../Action';
 
-const INITIAL_STATE = { player: {
+const INITIAL_STATE = {
   // eslint-disable-next-line no-restricted-globals
   name: '',
-  assertions: '',
-  score: '',
+  assertions: 0,
+  score: 0,
   gravatarEmail: '',
-} };
+};
 
-function playerReducer(state = INITIAL_STATE, action) {
-  switch (action) {
+function player(state = INITIAL_STATE, action) {
+  switch (action.type) {
+  case PLAY:
+    return { ...state,
+      name: action.payload.playerName,
+      gravatarEmail: action.payload.playerEmail };
+
   default:
     return state;
   }
 }
 
-export default playerReducer;
+export default player;
