@@ -55,3 +55,13 @@
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.loading {
+  align-items: center;
+  background-color: white;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+}

@@ -48,13 +48,6 @@ class login extends Component {
               onChange={ this.handleChange }
               testId="input-gravatar-email"
             />
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ !(name && email) }
-            >
-              Jogar
-            </button>
             <button type="button" data-testid="btn-settings">
               <Link to="/gameConfig"> Config </Link>
             </button>
@@ -63,9 +56,7 @@ class login extends Component {
                 type="button"
                 data-testid="btn-play"
                 disabled={ !(name && email) }
-                onClick={ () => {
-                  getApiToken();
-                } }
+                onClick={ () => { getApiToken(); } }
               >
                 Jogar
               </button>
@@ -78,6 +69,9 @@ class login extends Component {
 }
 
 login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   getApiToken: PropTypes.func.isRequired,
   tokenValue: PropTypes.string.isRequired,
 };
