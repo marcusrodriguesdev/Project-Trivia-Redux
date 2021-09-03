@@ -17,12 +17,13 @@ class Question extends React.Component {
   }
 
   handleClick({ target }) {
-    const { correctAnswer } = this.props;
+    const { correctAnswer, setTimeGlobal } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
     if (target.innerText === correctAnswer) { this.calcPonts(); }
+    setTimeGlobal(true);
   }
 
   calcPonts() {
@@ -38,7 +39,6 @@ class Question extends React.Component {
     const stateLocal = JSON.parse(localStorage.getItem('state'));
     const newLocal = { ...stateLocal, player: { ...stateLocal.player, score: total } };
     localStorage.setItem('state', JSON.stringify(newLocal));
-    console.log(Object.keys(localStorage));
   }
 
   render() {
@@ -101,7 +101,6 @@ const MapStateToProps = (state) => ({
 });
 
 const MapDispachToProps = (dispatch) => ({
-
   setTimeGlobal: (payload) => dispatch(setTimer(payload)),
 });
 
