@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Question from '../../components/Question';
 
 import { getQuestion } from '../../services/questionApi';
+import Timer from '../../components/Timer';
 
 class Game extends Component {
   constructor(props) {
@@ -12,13 +13,21 @@ class Game extends Component {
 
     this.state = {
       questionInfo: {},
+      timeOver: false,
     };
 
     this.fetchQuestion = this.fetchQuestion.bind(this);
+    this.setTimeOver = this.setTimeOver.bind(this);
   }
 
   componentDidMount() {
     this.fetchQuestion();
+  }
+
+  setTimeOver() {
+    this.setState({
+      timeOver: true,
+    });
   }
 
   async fetchQuestion() {
@@ -32,14 +41,18 @@ class Game extends Component {
   }
 
   render() {
-    const { questionInfo } = this.state;
+    const { questionInfo, timeOver } = this.state;
 
     const { guessed } = this.props;
 
     return (
       <div>
         <h1>Game</h1>
-        {questionInfo.question && <Question questionInfo={ questionInfo } />}
+        <Timer setTimeOver={ this.setTimeOver } />
+        {questionInfo.question && <Question
+          timeOver={ timeOver }
+          questionInfo={ questionInfo }
+        />}
         {guessed && <button data-testid="btn-next" type="button">Próxima</button>}
       </div>
     );

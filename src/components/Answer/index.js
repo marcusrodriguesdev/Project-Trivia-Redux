@@ -7,7 +7,7 @@ import './style.css';
 
 class Answer extends Component {
   render() {
-    const { answer, index, guessed, guess } = this.props;
+    const { answer, index, guessed, guess, timeOver } = this.props;
 
     const testId = answer.isCorrect
       ? 'correct-answer'
@@ -26,6 +26,7 @@ class Answer extends Component {
         key={ answer }
         className={ className }
         onClick={ () => guess() }
+        disabled={ timeOver }
       >
         {answer.text}
       </button>
@@ -34,6 +35,7 @@ class Answer extends Component {
 }
 
 Answer.propTypes = {
+  timeOver: PropTypes.bool.isRequired,
   answer: PropTypes.shape({
     isCorrect: PropTypes.bool.isRequired,
     text: PropTypes.string.isRequired,

@@ -63,7 +63,7 @@ class Question extends Component {
   }
 
   render() {
-    const { questionInfo } = this.props;
+    const { questionInfo, timeOver } = this.props;
     const { shuffledAnswers } = this.state;
 
     return (
@@ -76,6 +76,7 @@ class Question extends Component {
             {shuffledAnswers.map((answer, index) => (
               <Answer
                 key={ answer.text }
+                timeOver={ timeOver }
                 answer={ answer }
                 index={ index }
               />
@@ -88,6 +89,7 @@ class Question extends Component {
 }
 
 Question.propTypes = {
+  timeOver: PropTypes.bool.isRequired,
   questionInfo: PropTypes.shape({
     category: PropTypes.string.isRequired,
     question: PropTypes.string.isRequired,
