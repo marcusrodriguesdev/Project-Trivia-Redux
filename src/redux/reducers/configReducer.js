@@ -8,7 +8,7 @@ export default function configReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case SET_CONFIG:
     return {
-      payload,
+      config: action.payload,
     };
   default:
     return state;

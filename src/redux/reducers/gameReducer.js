@@ -8,7 +8,7 @@ export default function gameReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case SET_GAME_ROUND:
     return {
-      payload,
+      game: action.payload,
     };
   default:
     return state;
