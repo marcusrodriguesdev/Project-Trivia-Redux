@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import { getToken, logged } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.validateButton = this.validateButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   validateButton() {
@@ -33,8 +36,17 @@ class Login extends React.Component {
     });
   }
 
+  handleClick() {
+    const { token, history, getInfo } = this.props;
+    const { name } = this.state;
+    token();
+    getInfo(name);
+    history.push('/trivia');
+  }
+
   render() {
     const { btnStatus } = this.state;
+    const { history } = this.props;
 
     return (
       <div>
@@ -54,17 +66,34 @@ class Login extends React.Component {
           name="email"
           change={ this.handleChange }
         />
-        <Link to="/gamepage">
-          <Button
-            label="Jogar"
-            type="button"
-            testid="btn-play"
-            disable={ btnStatus }
-          />
-        </Link>
+        <Button
+          label="Jogar"
+          type="button"
+          click={ this.handleClick }
+          testid="btn-play"
+          disable={ btnStatus }
+        />
+        <Button
+          label="Configurações"
+          testid="btn-settings"
+          click={ () => history.push('/settings') }
+        />
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  token: () => dispatch(getToken()),
+  getInfo: (value) => dispatch(logged(value)),
+});
+
+Login.propTypes = {
+  getInfo: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  token: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
