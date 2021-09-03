@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getTokenThunk } from '../redux/actions';
-import Input from '../components/Input';
 // import trivia from '../trivia.png';
 
 class Login extends React.Component {
@@ -18,7 +17,6 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.renderInputs = this.renderInputs.bind(this);
   }
 
   handleChange({ target }) {
@@ -42,43 +40,33 @@ class Login extends React.Component {
     fetchToken();
   }
 
-  renderInputs() {
-    const { name, email } = this.state;
-
-    return (
-
-      <div>
-        <Input
-          labelTitle=""
-          testID="input-gravatar-email"
-          placeholder="exemplo@exemplo.com"
-          type="email"
-          name="email"
-          id="email"
-          value={ email }
-          onChange={ this.handleChange }
-        />
-
-        <Input
-          labelTitle=""
-          testID="input-player-name"
-          placeholder=""
-          type="name"
-          name="name"
-          id="name"
-          value={ name }
-          onChange={ this.handleChange }
-        />
-      </div>
-    );
-  }
-
   render() {
-    const { validEmail, validName } = this.state;
+    const { name, email, validEmail, validName } = this.state;
     return (
     //   <img src={ trivia } alt="trivia" />
       <form>
-        {this.renderInputs()}
+        <label htmlFor="email">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            data-testid="input-gravatar-email"
+            value={ email }
+            onChange={ this.handleChange }
+            placeholder="exemplo@exemplo.com"
+          />
+        </label>
+
+        <label htmlFor="name">
+          <input
+            type="name"
+            id="name"
+            name="name"
+            data-testid="input-player-name"
+            value={ name }
+            onChange={ this.handleChange }
+          />
+        </label>
         <Link
           to="/game"
         >
