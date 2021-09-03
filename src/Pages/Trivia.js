@@ -11,10 +11,12 @@ class Trivia extends React.Component {
     super(props);
 
     this.state = {
-      questions: [],
+      questionsInfo: [],
+      index: 0,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -24,21 +26,33 @@ class Trivia extends React.Component {
   async fetchQuestions() {
     const { token } = this.props;
 
-    const questions = await fetchQuestions(token);
+    const questionsInfo = await fetchQuestions(token);
 
     this.setState({
-      questions,
+      questionsInfo,
     });
   }
 
+  handleClick() {
+    this.setState(({ index }) => ({
+      index: index + 1,
+    }));
+  }
+
   render() {
-    const { questions } = this.state;
+    const { questionsInfo, index } = this.state;
 
     return (
       <div>
         <Header />
         <main>
-          { questions.map((...info) => (<Questions key={ info } questions={ info } />)) }
+          {
+            questionsInfo.filter((...info) => (
+              info[1] === index
+            )).map((question) => <Questions key={ index } question={ question } />)
+          }
+
+          <button type="submit" onClick={ this.handleClick }>Próxima</button>
         </main>
       </div>
     );
