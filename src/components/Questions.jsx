@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import './Questions.css';
 
 class Questions extends Component {
@@ -12,6 +13,7 @@ class Questions extends Component {
       disable: false,
       numberQuestion: 0,
       visibilit: 'hide',
+      redirect: false,
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
@@ -51,17 +53,25 @@ class Questions extends Component {
   }
 
   nextQuestion() {
+    const { numberQuestion } = this.state;
+    const question = 4;
+    if (numberQuestion === question) {
+      this.setState({ redirect: true });
+    }
     this.setState((estadoAnterior) => ({
       numberQuestion: estadoAnterior.numberQuestion + 1,
       seconds: 30,
+      correct: null,
+      incorrect: null,
     }));
   }
 
   render() {
     // embaralhar questões incorretas/ sort
-    const { correct, incorrect, seconds, disable,
+    const { redirect, correct, incorrect, seconds, disable,
       numberQuestion, visibilit } = this.state;
     const { resp } = this.props;
+    if (redirect === true) { return <Redirect to="/feedback" />; }
     return (
       <div>
         <seconds>{seconds}</seconds>
@@ -110,6 +120,7 @@ class Questions extends Component {
 
 Questions.propTypes = {
   resp: PropTypes.string.isRequired,
+  // numberQuestion: PropTypes.number.isRequired,
 };
 
 export default Questions;
