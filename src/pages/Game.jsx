@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import { Link } from 'react-router-dom';
 import Questions from '../components/Questions';
 import { fetchApi } from '../actions';
 
@@ -23,11 +24,20 @@ class Game extends Component {
     return (
       <div>
         <header>
-          <img src={ `https://www.gravatar.com/avatar/${hashEmail}` } alt="Gravatar" data-testid="header-profile-picture" />
-          <h2 data-testid="header-player-name">{ name }</h2>
+          <img
+            src={ `https://www.gravatar.com/avatar/${hashEmail}` }
+            alt="Gravatar"
+            data-testid="header-profile-picture"
+          />
+          <h2 data-testid="header-player-name">{name}</h2>
           <h2 data-testid="header-score">{totalPoints}</h2>
         </header>
         {response && <Questions resp={ response } />}
+        <Link to="/ranking">
+          <button type="button" data-testid="btn-ranking">
+            Ver Ranking
+          </button>
+        </Link>
       </div>
     );
   }
