@@ -1,0 +1,12 @@
+#root {
+  --correct-answer-color: rgb(6, 240, 15);
+  --wrong-answer-color: rgb(255, 0, 0);
+}
+
+#correct-answer:disabled {
+  border: 3px solid var(--correct-answer-color);
+}
+
+#wrong-answer:disabled {
+  border: 3px solid var(--wrong-answer-color);
+}

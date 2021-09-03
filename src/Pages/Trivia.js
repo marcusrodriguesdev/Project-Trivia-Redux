@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Button from '../Components/Button';
 import Header from '../Components/Header';
+import '../Styles/trivia.css';
 
 class Trivia extends Component {
   constructor() {
@@ -11,9 +12,11 @@ class Trivia extends Component {
     this.state = {
       results: [],
       loading: true,
+      isClicked: false,
     };
 
     this.renderQuestionAndAnswers = this.renderQuestionAndAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -48,8 +51,14 @@ class Trivia extends Component {
     return array;
   }
 
+  handleClick() {
+    this.setState({
+      isClicked: true,
+    });
+  }
+
   renderQuestionAndAnswers() {
-    const { results } = this.state;
+    const { results, isClicked } = this.state;
     const {
       question,
       category,
@@ -75,6 +84,8 @@ class Trivia extends Component {
                     text={ correct }
                     id="correct-answer"
                     dataTest="correct-answer"
+                    onClick={ this.handleClick }
+                    disabled={ isClicked }
                   />
                 )
                 : (
@@ -83,6 +94,8 @@ class Trivia extends Component {
                     text={ answer }
                     id="wrong-answer"
                     dataTest={ `wrong-answer-${secondIndex}` }
+                    onClick={ this.handleClick }
+                    disabled={ isClicked }
                   />
                 )
             ))
