@@ -8,6 +8,7 @@ class game extends Component {
     this.state = {
       data: '',
       timer: 30,
+      answers: [],
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
@@ -37,8 +38,14 @@ class game extends Component {
   async fetchAPI() {
     const response = await fetch('https://opentdb.com/api.php?amount=5');
     const data = await response.json();
+
+    const incorrectAnswers = data.results[0].incorrect_answers;
+    const correctAswer = data.results[0].correct_answer;
+    const allAnswers = [...incorrectAnswers, correctAswer];
+
     this.setState({
       data: data.results[0],
+      answers: allAnswers.sort(),
     });
     return data;
   }
@@ -46,13 +53,15 @@ class game extends Component {
   render() {
     const { data, timer } = this.state;
     const loading = <div className="loading">Loading...</div>;
+    const { data, answers } = this.state;
+    const loading = <div className="loading">Loading</div>;
 
-    if (data === '') {
+    if (data === '' || answers === []) {
       return loading;
     }
     return (
       <div className="App">
-        Tela de jogo
+        Tela do jogo
         <div className="question-board">
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
@@ -77,6 +86,27 @@ class game extends Component {
           <div>
             { timer }
           </div>
+          {answers.map((answer, index) => (
+            answer === data.correct_answer
+              ? (
+                <button
+                  key={ index }
+                  type="button"
+                  data-testid="correct-answer"
+                >
+                  { answer }
+                </button>
+              )
+              : (
+                <button
+                  key={ index }
+                  type="button"
+                  data-testid={ `wrong-answer${index}` }
+                >
+                  { answer }
+                </button>
+              )
+          ))}
         </div>
       </div>
     );
