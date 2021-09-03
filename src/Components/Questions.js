@@ -13,16 +13,18 @@ class Questions extends React.Component {
   }
 
   render() {
+    const { questions } = this.props;
+
     const {
       category,
-      correct,
+      correct_answer,
       difficulty,
-      incorrect,
+      incorrect_answers,
       question,
       type,
-    } = this.props;
-    const { handleSubmit } = this;
-
+    } = questions;
+    const { handleSubmit } = this.props;
+    console.log(questions[0].incorrect_answers);
     return (
       <main>
         <h1 data-testid="question-category">{category}</h1>
@@ -33,17 +35,27 @@ class Questions extends React.Component {
           data-testid="correct-answer"
           onClick={ handleSubmit }
         >
-          {correct}
+          {questions[0].correct_answer}
 
         </button>
-        <button
+        {/* <button
+          type="submit"
+          data-testid={ `wrong-answer-${incorrect_answers}` }
+          onClick={ handleSubmit }
+        >
+          {incorrect_answers}
+
+        </button> */}
+        { questions[0].incorrect_answers.map((incorrect, index) => (<button
+          key={ index }
           type="submit"
           data-testid={ `wrong-answer-${incorrect}` }
           onClick={ handleSubmit }
         >
           {incorrect}
 
-        </button>
+        </button>))}
+
         <p>{type}</p>
       </main>
     );
