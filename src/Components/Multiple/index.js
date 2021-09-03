@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../Button';
+import { setIsClicked } from '../../Redux/Action';
+import '../../Styles/trivia.css';
 
 class Multiple extends Component {
   constructor() {
@@ -10,11 +12,11 @@ class Multiple extends Component {
     this.state = {
       result: [],
       loading: true,
-      isClicked: false,
     };
 
     this.fetchTriviaAPI = this.fetchTriviaAPI.bind(this);
     this.renderQuestionAndAnswers = this.renderQuestionAndAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -49,8 +51,14 @@ class Multiple extends Component {
     return array;
   }
 
+  handleClick() {
+    const { toggleDisabled } = this.props;
+    toggleDisabled();
+  }
+
   renderQuestionAndAnswers() {
-    const { result, isClicked } = this.state;
+    const { result } = this.state;
+    const { isClicked } = this.props;
     const {
       question,
       category,
@@ -117,8 +125,13 @@ Multiple.propTypes = {
   token: PropTypes.string,
 }.isRequired;
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user, trivia }) => ({
   token: user.token,
+  isClicked: trivia.isClicked,
 });
 
-export default connect(mapStateToProps)(Multiple);
+const mapDispatchToProps = (dispatch) => ({
+  toggleDisabled: () => dispatch(setIsClicked()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Multiple);

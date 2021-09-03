@@ -15,7 +15,6 @@ class Trivia extends Component {
     this.state = {
       isVisible: false,
     };
-    this.handleClick = this.handleClick.bind(this);
     this.getRanking = this.getRanking.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
   }
@@ -28,12 +27,6 @@ class Trivia extends Component {
 
   nextQuestion() {
     this.renderQuestionAndAnswers();
-  }
-
-  handleClick() {
-    this.setState({
-      isVisible: true,
-    });
   }
 
   render() {
@@ -57,7 +50,7 @@ class Trivia extends Component {
             onClick={ this.getRanking }
           />
         </div>
-        <Timer handleClick={ this.handleClick } />
+        <Timer />
       </div>
     );
   }
