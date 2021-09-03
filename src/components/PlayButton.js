@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
 import { fetchTokenThunk, setNameAction, setEmailAction } from '../redux/actions';
 
 class PlayButton extends Component {
@@ -16,7 +15,6 @@ class PlayButton extends Component {
     const { fetchToken, token, setEmail, setName, playerName, playerEmail } = this.props;
     setEmail(playerEmail);
     setName(playerName);
-    const { fetchToken, token } = this.props;
     await fetchToken();
     localStorage.setItem('token', token);
   }
