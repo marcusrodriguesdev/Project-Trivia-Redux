@@ -10,8 +10,8 @@ class Login extends React.Component {
 
     this.handleLogin = this.handleLogin.bind(this);
     this.state = {
+      name: '',
       email: '',
-      password: '',
     };
   }
 
@@ -24,7 +24,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email, password } = this.state;
+    const { email, name } = this.state;
     const { userEmail } = this.props;
     const minLength = 1;
 
@@ -34,7 +34,7 @@ class Login extends React.Component {
       return validEmail;
     };
 
-    const passwordIsValid = password.length >= minLength;
+    const nameIsValid = name.length >= minLength;
 
     return (
       <div>
@@ -52,19 +52,19 @@ class Login extends React.Component {
           data-testid="input-player-name"
           type="text"
           name="name"
-          value={ password }
+          value={ name }
           placeholder="amelhorsenhae12345"
           onChange={ this.handleLogin }
         />
         <Link
           onClick={ () => (userEmail(email)) }
-          to="/carteira"
+          to="/game"
         >
 
           <button
             data-testid="btn-play"
             type="button"
-            disabled={ !(emailIsValid() && passwordIsValid) }
+            disabled={ !(emailIsValid() && nameIsValid) }
           >
             Jogar
           </button>
