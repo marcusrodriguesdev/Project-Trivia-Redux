@@ -28,3 +28,31 @@
   flex-direction: column;
   width: 50%;
 }
+
+.question-answers {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-top: 2em;
+  width: 100%;
+}
+
+.question-answers button {
+  display: flex;
+  flex-direction: column;
+  height: 20px;
+  margin-top: 1em;
+  width: 100%;
+}
+
+.question-answers button:hover {
+  filter: brightness(120%);
+}
+
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrong-answer {
+  border: 3px solid red(255, 0, 0);
+}

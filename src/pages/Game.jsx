@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
+import PropTypes from 'prop-types';
 
 import { fecthApiThunk } from '../Redux/action';
-// import AnswerBoolean from '../components/AnswerBoolean';
-// import AnswerMultiple from '../components/AnswerMultiple';
+import Header from '../components/Header';
 
 import '../styles/main.css';
 
@@ -20,6 +18,7 @@ class Game extends Component {
     this.requestApiQuestions = this.requestApiQuestions.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.validateAnswers = this.validateAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -32,6 +31,10 @@ class Game extends Component {
     const getToken = localStorage.getItem('token');
     const token = JSON.parse(getToken);
     setQuestions(token);
+  }
+
+  validateAnswers() {
+
   }
 
   nextQuestion() {
@@ -48,57 +51,49 @@ class Game extends Component {
     if (results.length > 0) {
       return (
         <div className="question-box">
-          <div>
+          <div className="container-question">
             <h2 data-testid="question-category">{ results[next].category }</h2>
             <h3 data-testid="question-text">{ results[next].question }</h3>
-            <p data-testid="correct-answer">{ results[next].correct_answer }</p>
           </div>
+
           <div className="question-answers">
+            <button
+              type="button"
+              data-testid="correct-answer"
+            >
+              { results[next].correct_answer }
+            </button>
             {
               results[0].incorrect_answers.map((answers, index) => (
-                <div key={ index }>
-                  <button
-                    type="button"
-                    data-testid={ `wrong-answer-${index}` }
-                    onClick={ () => console.log(answers) }
-                  >
-                    { answers }
-                  </button>
-                </div>
+                <button
+                  key={ index }
+                  type="button"
+                  data-testid={ `wrong-answer-${index}` }
+                  onClick={ () => console.log(answers) }
+                >
+                  { answers }
+                </button>
               ))
             }
           </div>
+
         </div>
       );
     }
   }
 
   render() {
-    const { results } = this.props;
-    if (!results) return <span>Loading</span>;
     return (
       <div className="main-content">
         <Header />
-        <div className="question-box">
-          <div className="container-question">
-            {
-              this.renderQuestions()
-            }
-          </div>
-
-          <div className="question-answers">
-            {/* <AnswerBoolean answers={} />
-            <AnswerMultiple answers={} /> */}
-          </div>
-
-        </div>
+        { this.renderQuestions() }
 
         <div className="box-buttons">
           <button
             type="button"
             onClick={ this.nextQuestion }
           >
-            Próximas
+            Próxima
           </button>
         </div>
       </div>
