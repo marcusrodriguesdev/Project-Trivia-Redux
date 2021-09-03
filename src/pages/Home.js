@@ -1,5 +1,5 @@
 import React from 'react';
-// import Home from './Home';
+import Header from '../components/header';
 
 // requisito 1
 class Home extends React.Component {
@@ -7,6 +7,7 @@ class Home extends React.Component {
     return (
 
       <div>
+        <Header />
         <h1>Xablau</h1>
         <p>Home</p>
       </div>
