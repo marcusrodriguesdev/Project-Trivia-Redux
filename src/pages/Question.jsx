@@ -2,11 +2,22 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { MD5 } from 'crypto-js/md5';
+import fetchApi from '../services/api';
+import QuestionsComponent from '../components/QuestionsComponent';
 
 class Question extends Component {
   constructor(props) {
     super(props);
     this.handleEmailConversion = this.handleEmailConversion.bind(this);
+    this.handleQuestions = this.handleQuestions.bind(this);
+
+    this.state = {
+      loading: true,
+    };
+  }
+
+  componentDidMount() {
+    this.handleQuestions();
   }
 
   handleEmailConversion() {
@@ -16,18 +27,30 @@ class Question extends Component {
     return response;
   }
 
+  async handleQuestions() {
+    const { results } = await fetchApi('https://opentdb.com/api.php?amount=5');
+    this.setState({
+      resultsApi: results,
+      loading: false,
+    });
+  }
+
   render() {
     const { name, score } = this.props;
+    const { resultsApi, loading } = this.state;
     return (
-      <header>
-        <img
-          src={ this.handleEmailConversion }
-          alt="avatar"
-          data-testid="header-profile-picture"
-        />
-        <h2 data-testid="header-player-name">{ name }</h2>
-        <h3 data-testid="header-score">{ score }</h3>
-      </header>
+      <>
+        <header>
+          <img
+            src={ this.handleEmailConversion }
+            alt="avatar"
+            data-testid="header-profile-picture"
+          />
+          <h2 data-testid="header-player-name">{ name }</h2>
+          <h3 data-testid="header-score">{ score }</h3>
+        </header>
+        {!loading && <QuestionsComponent question={ resultsApi } />}
+      </>
     );
   }
 }
