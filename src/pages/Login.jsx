@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
 import { getToken, getNameAndEmail } from '../redux/actions';
@@ -75,11 +76,16 @@ class Login extends Component {
             <button
               data-testid="btn-play"
               type="button"
-              onClick={ (this.handleChange, this.onClick) }
+              onClick={ this.onClick }
               disabled={ isDisable }
             >
               Jogar
             </button>
+            <Link to="/setings">
+              <button type="button" data-testid="btn-settings">
+                Configurações
+              </button>
+            </Link>
           </form>
         </header>
       </div>
