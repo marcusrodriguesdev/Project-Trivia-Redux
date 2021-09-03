@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveName, saveEmail } from '../actions/index';
+import { saveName, saveEmail, saveToken as saveTokenAction } from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -26,7 +26,9 @@ class Login extends React.Component {
 
   async saveTokenInLocalStorage() {
     const token = await this.getToken();
+    const { saveToken } = this.props;
     localStorage.setItem('token', token);
+    saveToken(token);
   }
 
   handleChange({ target }) {
@@ -101,13 +103,15 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  saveUserEmail: PropTypes.func.isRequired,
-  saveUserName: PropTypes.func.isRequired,
-};
+  saveUserEmail: PropTypes.func,
+  saveUserName: PropTypes.func,
+  saveToken: PropTypes.func,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   saveUserName: (state) => dispatch(saveName(state)),
   saveUserEmail: (state) => dispatch(saveEmail(state)),
+  saveToken: (token) => dispatch(saveTokenAction(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
