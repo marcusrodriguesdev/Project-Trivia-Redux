@@ -19,8 +19,8 @@ class Login extends React.Component {
 
   async onFecthToken() {
     const { history } = this.props;
-
     const token = await fecthApiToken();
+
     localStorage.setItem('token', JSON.stringify(token));
     history.push('/Game');
   }
@@ -44,7 +44,6 @@ class Login extends React.Component {
 
   render() {
     const { name, email, validation } = this.state;
-
     return (
       <div>
         <form className="main-form">
@@ -97,5 +96,5 @@ class Login extends React.Component {
 export default Login;
 
 Login.propTypes = {
-  history: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(String).isRequired,
 };
