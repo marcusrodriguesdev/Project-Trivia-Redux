@@ -12,7 +12,7 @@ export default class NameInput extends Component {
           value={ value }
           type="text"
           id="name-input"
-          name="nameInput"
+          name="name"
           onChange={ handleChange }
         />
       </label>
