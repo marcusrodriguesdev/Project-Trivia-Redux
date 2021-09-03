@@ -1,7 +1,10 @@
-import { SET_TOKEN } from '../actions';
+import { SET_TOKEN, SET_TIMER } from '../actions';
 
 const INITIAL_STATE = {
   token: {},
+  stopWatch: {
+    isTimer: false,
+  },
 };
 
 const game = (state = INITIAL_STATE, action) => {
@@ -11,6 +14,11 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       token: { ...payload },
+    };
+  case SET_TIMER:
+    return {
+      ...state,
+      stopWatch: { ...state.stopWatch, isTimer: payload },
     };
   default:
     return state;

@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import shuffleList from '../../services/suffleList';
 import './Question.css';
+import { setTimer } from '../../redux/actions';
 
 class Question extends React.Component {
   constructor(props) {
@@ -32,7 +34,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { category, question, correctAnswer, incorrectAnswers } = this.props;
+    const { isTimer, category, question, correctAnswer, incorrectAnswers } = this.props;
     const answerList = [correctAnswer, ...incorrectAnswers];
     const shuffledList = shuffleList(answerList);
     const { correctAnswerIdentifier, answerClicked } = this.state;
@@ -54,6 +56,7 @@ class Question extends React.Component {
                 type="button"
                 data-testid="correct-answer"
                 key={ element }
+                disabled={ isTimer }
               >
                 {element}
               </button>
@@ -65,6 +68,7 @@ class Question extends React.Component {
               type="button"
               data-testid="wrong-answer"
               key={ element }
+              disabled={ isTimer }
             >
               {element}
             </button>
@@ -80,10 +84,21 @@ Question.propTypes = {
   category: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,
   correctAnswer: PropTypes.string.isRequired,
+  isTimer: PropTypes.bool.isRequired,
+
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
   answerClicked: PropTypes.bool.isRequired,
   answerClick: PropTypes.func.isRequired,
   nextClick: PropTypes.func.isRequired,
 };
 
-export default Question;
+const MapStateToProps = (state) => ({
+  isTimer: state.game.stopWatch.isTimer,
+});
+
+const MapDispachToProps = (dispatch) => ({
+
+  setTimeGlobal: (payload) => dispatch(setTimer(payload)),
+});
+
+export default connect(MapStateToProps, MapDispachToProps)(Question);

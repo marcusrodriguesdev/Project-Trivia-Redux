@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 import Question from '../Components/Question';
 import { fetchTriviaQuestions } from '../services/API';
+import StopWatch from '../Components/stopWatch';
 
 class Home extends React.Component {
   constructor() {
@@ -88,6 +89,7 @@ class Home extends React.Component {
           answerClicked={ answerClicked }
           nextClick={ this.nextClick }
         />
+        <StopWatch />
       </>
     );
   }
