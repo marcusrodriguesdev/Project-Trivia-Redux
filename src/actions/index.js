@@ -1,2 +1,10 @@
-// export const LOADING = 'LOADING';
-// export const USER_LOGIN = 'USER_LOGIN';
+export const LOGIN = 'LOGIN';
+
+const userLogin = (email) => ({
+  type: LOGIN,
+  user: {
+    email,
+  },
+});
+
+export default userLogin;
