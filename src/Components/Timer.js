@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { noTime } from '../Actions/timeractions';
 
 class Timer extends Component {
   constructor() {
     super();
+
     this.state = {
       timer: 30,
     };
@@ -16,14 +14,10 @@ class Timer extends Component {
     this.interval = setInterval(
       () => this.setState((previousTime) => ({ timer: previousTime.timer - 1 }), () => {
         const { timer } = this.state;
-        const { changeTimer } = this.props;
         const maximumTime = 0;
-        let timeOff = false;
         if (timer === maximumTime) {
           clearInterval(this.interval);
-          timeOff = true;
         }
-        changeTimer({ timer, timeOff });
       }),
       ONE_SECOND,
     );
@@ -46,23 +40,7 @@ class Timer extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  timer: state.timerReducer.time,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  changeTimer: (timer) => dispatch(noTime(timer)),
-});
-
-Timer.propTypes = {
-  changeTimer: PropTypes.func,
-};
-
-Timer.defaultProps = {
-  changeTimer: () => {},
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Timer);
+export default Timer;
 
 // https://www.youtube.com/watch?v=NAx76xx40jM
 // https://www.youtube.com/watch?v=sWKz9aLovjY

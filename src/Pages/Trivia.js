@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Timer from '../components/Timer';
 import { connect } from 'react-redux';
 
 import Header from '../Components/Header';
 import { fetchQuestions } from '../Services/api';
 import Questions from '../Components/Questions';
+import Timer from '../Components/Timer';
 
 import '../Styles/global.css';
 
@@ -17,8 +17,7 @@ class Trivia extends React.Component {
       questionsInfo: [],
       index: 0,
     };
-    const { timeOff } = this.props;
-    
+
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -66,13 +65,10 @@ class Trivia extends React.Component {
 
 const mapStateToProps = ({ trivia: { token } }) => ({
   token,
-  timer: state.timerReducer.time,
-  timeOff: state.timerReducer.timeOff,
 });
 
 Trivia.propTypes = {
   token: PropTypes.string.isRequired,
-  timeOff: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Trivia);
