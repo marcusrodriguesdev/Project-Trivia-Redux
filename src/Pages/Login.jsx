@@ -16,6 +16,11 @@ class Login extends Component {
     this.saveLocalStorage = this.saveLocalStorage.bind(this);
   }
 
+  componentDidMount() {
+    const { fetchToken } = this.props;
+    fetchToken();
+  }
+
   handleChanges({ target: { name, value } }) {
     this.setState({
       [name]: value,
@@ -23,14 +28,12 @@ class Login extends Component {
   }
 
   saveLocalStorage() {
-    const { fetchToken } = this.props;
     const { username, email } = this.state;
     const storage = { name: username };
     const gravatar = md5(email).toString();
     const gravatarStorage = { picture: gravatar };
     localStorage.setItem('ranking', JSON.stringify(gravatarStorage));
     localStorage.setItem('player', JSON.stringify(storage));
-    fetchToken();
   }
 
   render() {
