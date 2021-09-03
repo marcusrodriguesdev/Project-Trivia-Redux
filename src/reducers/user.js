@@ -1,17 +1,16 @@
-import { SET_EMAIL, SET_PLAYER_TOKEN } from '../actions';
+import { SET_PLAYER_INFO, SET_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
-  email: '',
-  nome: '',
-  token: '',
+  player: {},
+  questions: '',
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case SET_EMAIL:
-    return { ...state, email: action.payload.email, nome: action.payload.nome };
-  case SET_PLAYER_TOKEN:
-    return { ...state, token: action.payload };
+  case SET_PLAYER_INFO:
+    return { ...state, player: action.payload };
+  case SET_QUESTIONS:
+    return { ...state, questions: action.payload };
   default:
     return state;
   }

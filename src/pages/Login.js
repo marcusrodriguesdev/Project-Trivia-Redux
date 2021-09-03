@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setPlayerToken } from '../actions';
+import { setPlayerInfo, setPlayerQuestions } from '../actions';
 import '../App.css';
 import logo from '../trivia.png';
+import { fetchPlayerImg, fetchPlayerToken, fetchQuestions } from '../services/apiHelper';
 
 class Login extends React.Component {
   constructor() {
@@ -22,15 +24,24 @@ class Login extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit() {
-    const { history, sendToken } = this.props;
-    fetch('https://opentdb.com/api_token.php?command=request')
-      .then((response) => response.json())
-      .then(({ token }) => {
-        sendToken(token);
-        localStorage.setItem('token', token);
+  async handleSubmit() {
+    const { history, sendToken, sendPlayer } = this.props;
+    const { email } = this.state;
+    const token = await fetchPlayerToken();
+    const questions = await fetchQuestions(token);
+    localStorage.setItem('token', token);
+    sendToken(questions);
+
+    const emailHash = md5(email).toString();
+    fetchPlayerImg(emailHash)
+      .then(({ url }) => {
+        this.setState({
+          avatar: url,
+        }, () => {
+          sendPlayer(this.state);
+          history.push('/game');
+        });
       });
-    history.push('/game');
   }
 
   render() {
@@ -82,14 +93,16 @@ class Login extends React.Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  sendToken: (payload) => dispatch(setPlayerToken(payload)),
+  sendToken: (payload) => dispatch(setPlayerQuestions(payload)),
+  sendPlayer: (payload) => dispatch(setPlayerInfo(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }).isRequired,
+  sendPlayer: PropTypes.func.isRequired,
   sendToken: PropTypes.func.isRequired,
 };
