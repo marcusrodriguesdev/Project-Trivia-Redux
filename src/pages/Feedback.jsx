@@ -16,8 +16,8 @@ class Feedback extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  avatar: state.player.name,
-  name: state.player.email,
+  avatar: state.player.gravatarEmail,
+  name: state.player.name,
   score: state.player.score,
 });
 
