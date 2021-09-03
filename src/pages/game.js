@@ -7,6 +7,7 @@ class game extends Component {
 
     this.state = {
       data: '',
+      timer: 30,
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
@@ -14,6 +15,23 @@ class game extends Component {
 
   componentDidMount() {
     this.fetchAPI();
+    const miliseconds = 1000;
+    this.intervalId = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }));
+    }, miliseconds);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.setTimerLimit(prevState);
+  }
+
+  setTimerLimit(prevState) {
+    const timeLimit = 0;
+    if (prevState.timer === timeLimit) {
+      this.setState({ timer: 0 });
+    }
   }
 
   async fetchAPI() {
@@ -26,7 +44,7 @@ class game extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, timer } = this.state;
     const loading = <div className="loading">Loading...</div>;
 
     if (data === '') {
@@ -44,6 +62,7 @@ class game extends Component {
                 type="button"
                 data-testid={ `wrong-answer${index}` }
                 key={ index }
+                disabled={ timer === 0 }
               >
                 { answer }
               </button>
@@ -51,9 +70,13 @@ class game extends Component {
           <button
             type="button"
             data-testid="correct-answer"
+            disabled={ timer === 0 }
           >
             {data.correct_answer}
           </button>
+          <div>
+            { timer }
+          </div>
         </div>
       </div>
     );
