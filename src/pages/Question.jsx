@@ -82,7 +82,19 @@ class Question extends Component {
   }
 
   render() {
-    const { name, score } = this.props;
+    const { name, score, assertions, gravatarEmail } = this.props;
+    const playerInfo = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail,
+      },
+    };
+    if (!localStorage.getItem('state')) {
+      localStorage.setItem('state', JSON.stringify(playerInfo));
+    }
+
     const { questions, loading, index, disableButton, timer } = this.state;
     return (
       <>
