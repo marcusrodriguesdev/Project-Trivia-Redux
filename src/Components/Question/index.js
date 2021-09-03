@@ -42,7 +42,7 @@ class Question extends React.Component {
           return (
             <button
               type="button"
-              data-testid="incorrect-answer"
+              data-testid="wrong-answer"
               key={ element }
             >
               {element}

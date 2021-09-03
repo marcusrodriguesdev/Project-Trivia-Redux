@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Question from '../Components/Question';
-import { fetchTriviaQuestions, fetchTriviaToken } from '../services/API';
+import { fetchTriviaQuestions } from '../services/API';
 
 class Home extends React.Component {
   constructor() {
@@ -19,8 +21,8 @@ class Home extends React.Component {
   }
 
   async fetchAndStoreQuestions() {
-    const re = await fetchTriviaToken();
-    const { token } = re;
+    const { token } = this.props;
+    console.log(token);
     const re2 = await fetchTriviaQuestions(token);
     const { results } = re2;
     this.setState({
@@ -49,4 +51,12 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+  token: state.game.token.token,
+});
+
+export default connect(mapStateToProps)(Home);
+
+Home.propTypes = {
+  token: PropTypes.string.isRequired,
+};
