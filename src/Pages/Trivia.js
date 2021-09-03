@@ -10,6 +10,7 @@ class Trivia extends Component {
 
     this.state = {
       results: [],
+      loading: true,
     };
 
     this.renderQuestionAndAnswers = this.renderQuestionAndAnswers.bind(this);
@@ -23,16 +24,16 @@ class Trivia extends Component {
     const { token } = this.props;
     const triviaURL = `https://opentdb.com/api.php?amount=5&token=${token}`;
     const response = await (await fetch(triviaURL)).json();
-    console.log(response.response_code);
     if (response.response_code === '0') {
       this.setState({
-        results: response.results,
+        results: response.results[0],
+        loading: false,
       });
     } else {
       const newResponse = await (await fetch(triviaURL)).json();
-      console.log(response.response_code);
       this.setState({
-        results: newResponse.results,
+        results: newResponse.results[0],
+        loading: false,
       });
     }
   }
@@ -49,21 +50,24 @@ class Trivia extends Component {
 
   renderQuestionAndAnswers() {
     const { results } = this.state;
-    if (results.length > 0) {
-      return results.map(({
-        question,
-        category,
-        correct_answer: correctAnswer,
-        incorrect_answers: wrongAnswer,
-      }, index) => {
-        const answersArray = [correctAnswer, ...wrongAnswer];
-        const randomAnswerArray = this.randomizeArray(answersArray);
-        const correct = randomAnswerArray.find((text) => text === correctAnswer);
-        return (
-          <div key={ index }>
-            <p data-testid="question-category">{ category }</p>
-            <p data-testid="question-text">{ question }</p>
-            { randomAnswerArray.map((answer, secondIndex) => (
+    const {
+      question,
+      category,
+      correct_answer: correctAnswer,
+      incorrect_answers: wrongAnswer,
+    } = results;
+
+    if (wrongAnswer.length > 0) {
+      const answersArray = [correctAnswer, ...wrongAnswer];
+      const randomAnswerArray = this.randomizeArray(answersArray);
+      const correct = randomAnswerArray.find((text) => text === correctAnswer);
+
+      return (
+        <>
+          <p data-testid="question-category">{category}</p>
+          <p data-testid="question-text">{question}</p>
+          {
+            randomAnswerArray.map((answer, secondIndex) => (
               correct === answer
                 ? (
                   <Button
@@ -81,17 +85,24 @@ class Trivia extends Component {
                     dataTest={ `wrong-answer-${secondIndex}` }
                   />
                 )
-            ))}
-          </div>);
-      });
+            ))
+          }
+        </>
+      );
     }
   }
 
   render() {
+    const { loading } = this.state;
+    if (loading) {
+      return (
+        <p>Carregando...</p>
+      );
+    }
     return (
       <div>
         <Header />
-        { this.renderQuestionAndAnswers() }
+        {this.renderQuestionAndAnswers()}
       </div>
     );
   }
