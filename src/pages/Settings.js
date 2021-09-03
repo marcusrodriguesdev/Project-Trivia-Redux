@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-export default class Game extends React.Component {
+export default class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -9,6 +9,6 @@ export default class Game extends React.Component {
   }
 
   render() {
-    return (<div>Welcome</div>);
+    return (<h2 data-testid="settings-title">Settings</h2>);
   }
 }
