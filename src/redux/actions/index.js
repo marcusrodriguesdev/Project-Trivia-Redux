@@ -1,4 +1,4 @@
-import getToken from '../../Services/getToken';
+import { fetchTriviaToken } from '../../services/API';
 
 export const SET_DATA_USER = 'CLICK_BUTTON_LOGIN';
 
@@ -15,7 +15,7 @@ export const setGame = (payload) => ({
 });
 
 export const fetchToken = () => async (dispatch) => {
-  const token = await getToken();
+  const token = await fetchTriviaToken();
   localStorage.setItem('token', JSON.stringify(token));
   dispatch(setGame(token));
 };

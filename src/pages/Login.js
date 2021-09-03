@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../trivia.png';
-import { setDataUser } from '../redux/actions';
+import { setDataUser, fetchToken } from '../redux/actions';
 import ButtonConfig from '../components/ButtonConfig/Index';
 
 // requisito 1
@@ -33,8 +33,10 @@ class Login extends React.Component {
     });
   }
 
-  handleClick() {
-    const { history, setData } = this.props;
+  async handleClick(event) {
+    const { history, setData, setToken } = this.props;
+    event.preventDefault();
+    await setToken();
     history.push('/game');
     const userData = this.state;
     delete userData.emailValidation;
@@ -92,6 +94,7 @@ class Login extends React.Component {
 
 const mapDispatchToPros = (dispatch) => ({
   setData: (payload) => dispatch(setDataUser(payload)),
+  setToken: () => dispatch(fetchToken()),
 });
 
 export default connect(null, mapDispatchToPros)(Login);
@@ -99,4 +102,5 @@ export default connect(null, mapDispatchToPros)(Login);
 Login.propTypes = {
   history: PropTypes.objectOf(String).isRequired,
   setData: PropTypes.func.isRequired,
+  setToken: PropTypes.func.isRequired,
 };
