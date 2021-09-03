@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../Components/Header';
+import Timer from '../Components/Timer';
 
 class Game extends React.Component {
   constructor() {
@@ -8,7 +9,9 @@ class Game extends React.Component {
       questions: [],
       actualQuestion: 0,
       questionsLoaded: false,
+      disabled: false,
     };
+    this.switchButton = this.switchButton.bind(this);
   }
 
   componentDidMount() {
@@ -28,14 +31,25 @@ class Game extends React.Component {
       });
   }
 
+  switchButton() {
+    this.setState((previousState) => ({
+      disabled: !previousState.disabled,
+      /* answered: !previousState.answered, */
+    }));
+  }
+
   alternatives() {
-    const { questions, actualQuestion, questionsLoaded } = this.state;
+    const { questions, actualQuestion, questionsLoaded, disabled } = this.state;
     let wrongAnswers = [];
     if (questionsLoaded) {
       wrongAnswers = questions[actualQuestion].incorrect_answers
         .map((answer, index) => (
           <li key={ index }>
-            <button data-testid={ `wrong-answer-${index}` } type="button">
+            <button
+              data-testid={ `wrong-answer-${index}` }
+              disabled={ disabled }
+              type="button"
+            >
               { questionsLoaded && answer }
             </button>
           </li>
@@ -47,7 +61,7 @@ class Game extends React.Component {
         ...wrongAnswers,
         (
           <li key="4">
-            <button type="button" data-testid="correct-answer">
+            <button type="button" data-testid="correct-answer" disabled={ disabled }>
               { questionsLoaded && questions[actualQuestion].correct_answer }
             </button>
           </li>
@@ -62,6 +76,7 @@ class Game extends React.Component {
     return (
       <>
         <Header />
+        <Timer switchButton={ this.switchButton } />
         <fieldset>
           <h1
             data-testid="question-category"
