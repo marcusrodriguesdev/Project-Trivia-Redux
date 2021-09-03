@@ -10,9 +10,12 @@ class Questions extends Component {
       incorrect: null,
       seconds: 30,
       disable: false,
+      numberQuestion: 0,
+      visibilit: 'hide',
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -36,31 +39,48 @@ class Questions extends Component {
       disable: true });
   }
 
-  handleClickClassName() {
+  handleClickClassName({ target: { name } }) {
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
+    const teste = name;
+    console.log(teste);
+    if (teste === 'correct' || teste === 'incorrect') {
+      this.setState({
+        visibilit: 'show',
+      });
+    }
+  }
+
+  nextQuestion() {
+    this.setState((estadoAnterior) => ({
+      numberQuestion: estadoAnterior.numberQuestion + 1,
+      seconds: 30,
+    }));
   }
 
   render() {
-    const { correct, incorrect, seconds, disable } = this.state;
+    // embaralhar questões incorretas/ sort
+    const { correct, incorrect, seconds, disable, numberQuestion, visibilit } = this.state;
     const { resp } = this.props;
     return (
       <div>
         <seconds>{seconds}</seconds>
-        <p data-testid="question-category">{resp[0].category}</p>
-        <p data-testid="question-text">{resp[0].question}</p>
+        <p data-testid="question-category">{resp[numberQuestion].category}</p>
+        <p data-testid="question-text">{resp[numberQuestion].question}</p>
         <button
           className={ correct }
+          name="correct"
           onClick={ this.handleClickClassName }
           data-testid="correct-answer"
           type="button"
           disabled={ disable }
         >
-          {resp[0].correct_answer}
+          {resp[numberQuestion].correct_answer}
         </button>
-        {resp[0].incorrect_answers
+        {resp[numberQuestion].incorrect_answers
           .map((element, index) => (
             <div key={ index }>
               <button
+                name="incorrect"
                 className={ incorrect }
                 onClick={ this.handleClickClassName }
                 type="button"
@@ -72,6 +92,16 @@ class Questions extends Component {
               </button>
             </div>
           ))}
+        <div>
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+            className={ seconds === 0 ? 'show' : visibilit }
+          >
+            Próxima
+          </button>
+        </div>
       </div>
     );
   }

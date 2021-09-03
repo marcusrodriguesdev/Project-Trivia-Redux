@@ -5,3 +5,12 @@
 .incorrect {
   border: 3px solid red;
 }
+
+.hide {
+  display: none;
+}
+
+.show {
+  background-color: aqua;
+}
+
