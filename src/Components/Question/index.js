@@ -8,36 +8,43 @@ import { setTimer } from '../../redux/actions';
 class Question extends React.Component {
   constructor(props) {
     super(props);
-
-    const { correctAnswer, answerClicked } = this.props;
+    const { correctAnswer } = this.props;
     this.state = {
       correctAnswerIdentifier: correctAnswer,
-      answerClicked,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.calcPonts = this.calcPonts.bind(this);
   }
 
-  handleClick() {
-    const { correctAnswer, answerClick } = this.props;
+  handleClick({ target }) {
+    const { correctAnswer } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
-    answerClick();
+    if (target.innerText === correctAnswer) { this.calcPonts(); }
   }
 
-  renderNexButton() {
-    const { nextClick } = this.props;
-    return (
-      <button type="button" data-testid="btn-next" onClick={ nextClick }>Próxima</button>
-    );
+  calcPonts() {
+    const { difficulty } = this.props;
+    const timer = document.querySelector('#timer').innerHTML;
+    const pontDifficulty = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const TEN_NUMBER = 10;
+    const total = TEN_NUMBER + (timer * pontDifficulty[difficulty]);
+    const stateLocal = JSON.parse(localStorage.getItem('state'));
+    const newLocal = { ...stateLocal, player: { ...stateLocal.player, score: total } };
+    localStorage.setItem('state', JSON.stringify(newLocal));
   }
 
   render() {
     const { isTimer, category, question, correctAnswer, incorrectAnswers } = this.props;
     const answerList = [correctAnswer, ...incorrectAnswers];
     const shuffledList = shuffleList(answerList);
-    const { correctAnswerIdentifier, answerClicked } = this.state;
+    const { correctAnswerIdentifier } = this.state;
     return (
       <div>
         <div data-testid="question-category">
@@ -74,7 +81,6 @@ class Question extends React.Component {
             </button>
           );
         }) }
-        { answerClicked ? this.renderNexButton() : undefined }
       </div>
     );
   }
@@ -85,11 +91,8 @@ Question.propTypes = {
   question: PropTypes.string.isRequired,
   correctAnswer: PropTypes.string.isRequired,
   isTimer: PropTypes.bool.isRequired,
-
+  difficulty: PropTypes.string.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
-  answerClicked: PropTypes.bool.isRequired,
-  answerClick: PropTypes.func.isRequired,
-  nextClick: PropTypes.func.isRequired,
 };
 
 const MapStateToProps = (state) => ({
@@ -97,7 +100,6 @@ const MapStateToProps = (state) => ({
 });
 
 const MapDispachToProps = (dispatch) => ({
-
   setTimeGlobal: (payload) => dispatch(setTimer(payload)),
 });
 

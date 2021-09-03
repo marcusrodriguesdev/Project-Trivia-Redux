@@ -12,65 +12,44 @@ class Home extends React.Component {
 
     this.state = {
       questions: [],
-      currentQuestionIndex: 0,
-      currentQuestion: {},
       loading: true,
-      answerClicked: false,
     };
 
     this.fetchAndStoreQuestions = this.fetchAndStoreQuestions.bind(this);
-    this.answerClick = this.answerClick.bind(this);
-    this.nextClick = this.nextClick.bind(this);
-    this.setCurrentQuestion = this.setCurrentQuestion.bind(this);
   }
 
   componentDidMount() {
     this.fetchAndStoreQuestions();
+    this.setLocalStorageInitial();
   }
 
-  setCurrentQuestion(index) {
-    const { questions } = this.state;
-    console.log(questions);
-    console.log(questions[index]);
-    this.setState({
-      currentQuestion: questions[index],
-    });
+  setLocalStorageInitial() {
+    const state = {
+      player: {
+        name: '',
+        assertions: '',
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async fetchAndStoreQuestions() {
     const { token } = this.props;
-    const { currentQuestionIndex } = this.state;
+    console.log(token);
     const re2 = await fetchTriviaQuestions(token);
     const { results } = re2;
     this.setState({
       questions: [...results],
+      difficulty: results[0].difficulty,
       loading: false,
     });
-    this.setCurrentQuestion(currentQuestionIndex);
-  }
-
-  answerClick() {
-    this.setState({
-      answerClicked: true,
-    });
-  }
-
-  nextClick() {
-    const { currentQuestionIndex, currentQuestion } = this.state;
-    this.setCurrentQuestion(currentQuestionIndex + 1);
-    this.setState({
-      currentQuestionIndex: currentQuestionIndex + 1,
-    });
-    if (currentQuestion[currentQuestionIndex + 1] === undefined) {
-      this.setState({
-        currentQuestionIndex: 0,
-      });
-    }
   }
 
   render() {
-    const { loading, answerClicked, currentQuestion } = this.state;
-    console.log(currentQuestion);
+    const { questions, loading, difficulty } = this.state;
+    const question = questions[0];
     if (loading) {
       return (
         <div>carregando...</div>
@@ -80,14 +59,12 @@ class Home extends React.Component {
       <>
         <Header />
         <Question
-          key={ currentQuestion.question }
-          category={ currentQuestion.category }
-          question={ currentQuestion.question }
-          correctAnswer={ currentQuestion.correct_answer }
-          incorrectAnswers={ currentQuestion.incorrect_answers }
-          answerClick={ this.answerClick }
-          answerClicked={ answerClicked }
-          nextClick={ this.nextClick }
+          key={ question.question }
+          category={ question.category }
+          question={ question.question }
+          correctAnswer={ question.correct_answer }
+          incorrectAnswers={ question.incorrect_answers }
+          difficulty={ difficulty }
         />
         <StopWatch />
       </>
