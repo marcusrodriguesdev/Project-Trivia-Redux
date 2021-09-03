@@ -20,6 +20,12 @@ class Login extends Component {
     this.handlePlayButton = this.handlePlayButton.bind(this);
   }
 
+  componentDidMount() {
+    const { getToken } = this.props;
+
+    getToken();
+  }
+
   handleChange({ target }) {
     const { value, name } = target;
 
@@ -29,11 +35,10 @@ class Login extends Component {
   }
 
   handlePlayButton() {
-    const { getToken, token, history, setUser } = this.props;
+    const { token, history, setUser } = this.props;
 
-    getToken();
     setUser(this.state);
-    // LocalStorage não funciona, não recebe nada de 'token'
+    console.log(token);
     localStorage.setItem('token', token);
     history.push('/trivia');
   }
