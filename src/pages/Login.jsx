@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import logo from '../trivia.png';
+import fetchToken from '../services/fetchToken';
+import getToken from '../redux/actions';
 
-export default class Login extends Component {
-  constructor() {
-    super();
+class Login extends Component {
+  constructor(props) {
+    super(props);
+
     this.state = {
       name: '',
       email: '',
       isDisable: true,
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.infoCheck = this.infoCheck.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    const { tokenData } = this.props;
+    tokenData(fetchToken());
   }
 
   handleChange({ target }) {
@@ -59,7 +70,7 @@ export default class Login extends Component {
             <button
               data-testid="btn-play"
               type="button"
-              onClick={ this.handleClick }
+              onClick={ (this.handleChange, this.onClick) }
               disabled={ isDisable }
             >
               Jogar
@@ -70,3 +81,13 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  tokenData: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  tokenData: (token) => dispatch(getToken(token)),
+});
+
+export default (null, mapDispatchToProps)(Login);
