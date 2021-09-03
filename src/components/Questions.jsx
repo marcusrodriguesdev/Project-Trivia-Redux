@@ -47,7 +47,6 @@ class Questions extends Component {
       disable: true });
   }
 
-
   checkDifficulty(e) {
     switch (e) {
     case 'hard':
@@ -64,7 +63,7 @@ class Questions extends Component {
   handleClickClassName({ target }) {
     const { resp, player, playerStatus: { score, assertions } } = this.props;
     const { seconds } = this.state;
-    // boo
+
     if (target.id === 'correct-answer') {
       const { difficulty } = resp[0];
       const pointsFromDifficulty = this.checkDifficulty(difficulty);
@@ -82,18 +81,18 @@ class Questions extends Component {
       localStorage.setItem('state', JSON.stringify(playerScore));
       player(1, sum);
     }
-
-
-  handleClickClassName({ target: { name } }) {
-    this.setState({ incorrect: 'incorrect', correct: 'correct' });
-    const teste = name;
-    console.log(teste);
-    if (teste === 'correct' || teste === 'incorrect') {
-      this.setState({
-        visibilit: 'show',
-      });
-    }
   }
+
+  // handleClickClassName({ target: { name } }) {
+  //   this.setState({ incorrect: 'incorrect', correct: 'correct' });
+  //   const teste = name;
+  //   console.log(teste);
+  //   if (teste === 'correct' || teste === 'incorrect') {
+  //     this.setState({
+  //       visibilit: 'show',
+  //     });
+  //   }
+  // }
 
   nextQuestion() {
     this.setState((estadoAnterior) => ({
