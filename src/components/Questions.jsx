@@ -109,6 +109,7 @@ class Questions extends Component {
       seconds: 30,
       correct: null,
       incorrect: null,
+      visibilit: 'hide',
     }));
   }
 
