@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 class Question extends React.Component {
   displayQuestion() {
-    const { questions: { results } } = this.props;
-    const { question, category } = results[0];
+    const { questions: { results }, index } = this.props;
+    const { question, category } = results[index];
     return (
       <div>
         <p data-testid="question-category">{ category }</p>
@@ -27,6 +27,7 @@ class Question extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.gamePage.questions,
   loading: state.loading.loading,
+  index: state.gamePage.index,
 });
 
 Question.propTypes = {
@@ -34,6 +35,7 @@ Question.propTypes = {
   questions: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Question);

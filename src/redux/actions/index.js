@@ -3,11 +3,13 @@ export const LOGGED_INFO = 'LOGGED_INFO';
 export const LOADING = 'LOADING';
 export const GET_TOKEN = 'GET_TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
+export const INDEX = 'INDEX';
 
 export const logged = (payload) => ({ type: LOGGED_INFO, payload });
 export const getApi = (payload) => ({ type: GET_TOKEN, payload });
 export const getQuestions = (payload) => ({ type: GET_QUESTIONS, payload });
 export const loading = () => ({ type: LOADING });
+export const setIndex = () => ({ type: INDEX });
 
 export function getToken() {
   return async (dispatch) => {

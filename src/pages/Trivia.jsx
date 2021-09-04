@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import GamePage from './GamePage';
-// import Question from '../components/Question';
-// import Alternatives from '../components/Alternatives';
 
 class Trivia extends React.Component {
   setToken() {
@@ -13,12 +11,13 @@ class Trivia extends React.Component {
   }
 
   render() {
+    const { history } = this.props;
     this.setToken();
 
     return (
       <div>
         <Header />
-        <GamePage />
+        <GamePage history={ history } />
       </div>
     );
   }
@@ -30,6 +29,9 @@ const mapStateToProps = (state) => ({
 
 Trivia.propTypes = {
   savedToken: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, null)(Trivia);

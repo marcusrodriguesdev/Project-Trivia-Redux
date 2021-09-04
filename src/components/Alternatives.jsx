@@ -4,40 +4,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Alternatives extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      seconds: 30,
-    };
-  }
-
-  componentDidMount() {
-    const ONE_SECOND = 1000;
-    this.countDown = setInterval(() => {
-      this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
-    }, ONE_SECOND);
-  }
-
-  componentDidUpdate() {
-    const { seconds } = this.state;
-    if (seconds === 0) {
-      clearInterval(this.countDown);
-    }
-  }
-
   displayAnswer() {
-    const { seconds } = this.state;
-    const { questions: { results } } = this.props;
+    const { questions: { results }, seconds, index: counter } = this.props;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
-    } = results[0];
+    } = results[counter];
     return (
       <div>
-        <p>{ seconds }</p>
         <button
           type="button"
-          key="alternative"
           data-testid="correct-answer"
           disabled={ seconds === 0 }
         >
@@ -46,7 +22,7 @@ class Alternatives extends React.Component {
         {incorrectAnswer.map((wrongAnswer, index) => (
           <button
             type="button"
-            key="alternative"
+            key={ index }
             data-testid={ `wrong-answer-${index}` }
             disabled={ seconds === 0 }
           >
@@ -69,6 +45,7 @@ class Alternatives extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.gamePage.questions,
   loading: state.loading.loading,
+  index: state.gamePage.index,
 });
 
 Alternatives.propTypes = {
@@ -76,6 +53,8 @@ Alternatives.propTypes = {
   questions: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
+  seconds: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Alternatives);
