@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setTime } from '../../redux/actions/gameActions';
 
 class Timer extends Component {
   constructor() {
@@ -23,10 +25,11 @@ class Timer extends Component {
 
   countDown() {
     const { timer } = this.state;
-    const { setTimeOver } = this.props;
+    const { setTimeOver, setTimeRedux } = this.props;
     this.setState({
       timer: timer - 1,
     });
+    setTimeRedux(timer - 1);
     if (timer === 1) {
       clearInterval(this.interval);
       setTimeOver();
@@ -44,6 +47,11 @@ class Timer extends Component {
 
 Timer.propTypes = {
   setTimeOver: PropTypes.func.isRequired,
+  setTimeRedux: PropTypes.func.isRequired,
 };
 
-export default Timer;
+const mapDispatchToProps = (dispatch) => ({
+  setTimeRedux: (time) => dispatch(setTime(time)),
+});
+
+export default connect(null, mapDispatchToProps)(Timer);

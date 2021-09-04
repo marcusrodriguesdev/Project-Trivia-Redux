@@ -6,7 +6,6 @@ import { MD5 } from 'crypto-js';
 import { fetchToken, setGravatar, setPlayerData } from '../../redux/actions';
 
 import './style.css';
-import Header from '../../components/Header';
 
 class Login extends Component {
   constructor() {
@@ -54,7 +53,7 @@ class Login extends Component {
       player: {
         name,
         assertions: '',
-        score: '',
+        score: 0,
         gravatarEmail,
       },
     });
@@ -73,7 +72,6 @@ class Login extends Component {
 
     return (
       <div>
-        <Header />
         <form className="login-form">
           <input
             data-testid="input-player-name"

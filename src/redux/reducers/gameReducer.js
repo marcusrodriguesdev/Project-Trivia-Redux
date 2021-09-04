@@ -2,6 +2,8 @@ import GAME_ACTIONS from '../actions/gameActions';
 
 const INITIAL_STATE = {
   guessed: false,
+  score: 0,
+  time: 30,
   questions: [],
   questionIndex: 0,
   isFetching: false,
@@ -14,6 +16,10 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return { ...state, guessed: true };
   case GAME_ACTIONS.NEXT_QUESTION:
     return { ...state, guessed: false };
+  case GAME_ACTIONS.INCREASE_SCORE:
+    return { ...state, score: state.score + action.payload };
+  case GAME_ACTIONS.SET_TIME:
+    return { ...state, time: action.payload };
   case GAME_ACTIONS.REQUEST_API:
     return { ...state, isFetching: true };
   case GAME_ACTIONS.FAILED_REQUEST:

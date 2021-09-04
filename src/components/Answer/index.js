@@ -7,7 +7,16 @@ import './style.css';
 
 class Answer extends Component {
   render() {
-    const { answer, index, guessed, guess, timeOver } = this.props;
+    const {
+      answer,
+      index,
+      guessed,
+      guess,
+      timeOver,
+      checkAnswer,
+      questionInfo,
+    } = this.props;
+    const { difficulty } = questionInfo;
 
     const testId = answer.isCorrect
       ? 'correct-answer'
@@ -25,7 +34,10 @@ class Answer extends Component {
         type="button"
         key={ answer }
         className={ className }
-        onClick={ () => guess() }
+        onClick={ () => {
+          guess();
+          checkAnswer(answer, difficulty);
+        } }
         disabled={ timeOver }
       >
         {answer.text}
@@ -35,14 +47,18 @@ class Answer extends Component {
 }
 
 Answer.propTypes = {
-  timeOver: PropTypes.bool.isRequired,
   answer: PropTypes.shape({
     isCorrect: PropTypes.bool.isRequired,
     text: PropTypes.string.isRequired,
   }).isRequired,
-  index: PropTypes.number.isRequired,
-  guessed: PropTypes.bool.isRequired,
+  checkAnswer: PropTypes.func.isRequired,
   guess: PropTypes.func.isRequired,
+  guessed: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired,
+  questionInfo: PropTypes.shape({
+    difficulty: PropTypes.string.isRequired,
+  }).isRequired,
+  timeOver: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
