@@ -4,7 +4,9 @@ import Header from '../Components/Header';
 class Feedback extends React.Component {
   render() {
     return (
-      <Header />
+      <div data-testid="feedback-text">
+        <Header />
+      </div>
     );
   }
 }

@@ -36,9 +36,10 @@ class Trivia extends React.Component {
   }
 
   handleClick() {
-    this.setState(({ index }) => ({
-      index: index + 1,
-    }));
+    const { index, questionsInfo } = this.state;
+    const { history } = this.props;
+    if (index < questionsInfo.length - 1) return this.setState({ index: index + 1 });
+    return history.push('/feedback');
   }
 
   render() {
@@ -54,7 +55,13 @@ class Trivia extends React.Component {
             )).map((question) => <Questions key={ index } question={ question } />)
           }
 
-          <button type="submit" onClick={ this.handleClick }>Próxima</button>
+          <button
+            type="submit"
+            data-testid="btn-next"
+            onClick={ this.handleClick }
+          >
+            Próxima
+          </button>
         </main>
       </div>
     );
@@ -67,6 +74,9 @@ const mapStateToProps = ({ trivia: { token } }) => ({
 
 Trivia.propTypes = {
   token: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(Trivia);

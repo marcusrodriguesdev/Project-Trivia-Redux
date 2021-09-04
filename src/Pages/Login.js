@@ -38,7 +38,7 @@ class Login extends Component {
     const { token, history, setUser } = this.props;
 
     setUser(this.state);
-    console.log(token);
+
     localStorage.setItem('token', token);
     history.push('/trivia');
   }

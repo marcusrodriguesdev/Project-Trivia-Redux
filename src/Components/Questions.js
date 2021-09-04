@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import WrongAnswers from './WrongAnswers';
 import CorrectAnswer from './CorrectAnswer';
+import { setTrivia } from '../Actions';
 
 import '../Styles/trivia.css';
 
@@ -12,10 +15,12 @@ class Questions extends React.Component {
     this.state = {
       answered: false,
       timer: 30,
+      points: 10,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleCorrectBtn = this.handleCorrectBtn.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +53,15 @@ class Questions extends React.Component {
     this.setState({ answered: !answered });
   }
 
+  handleCorrectBtn(event) {
+    const { answered, points } = this.state;
+    const { savePoints } = this.props;
+
+    event.preventDefault();
+    this.setState({ answered: !answered });
+    savePoints(points);
+  }
+
   render() {
     const { answered, timer } = this.state;
     const { question } = this.props;
@@ -73,7 +87,7 @@ class Questions extends React.Component {
         <h3>{difficulty}</h3>
         <CorrectAnswer
           correct={ correct }
-          handleClick={ this.handleClick }
+          handleClick={ this.handleCorrectBtn }
           btnClass={ btnCorrectClass }
           disabled={ btnDisabled }
         />
@@ -96,9 +110,14 @@ class Questions extends React.Component {
 
 Questions.propTypes = {
   question: PropTypes.arrayOf(PropTypes.string).isRequired,
+  savePoints: PropTypes.func.isRequired,
 };
 
-export default (Questions);
+const mapDispatchToProps = (dispatch) => ({
+  savePoints: (points) => dispatch(setTrivia(points)),
+});
+
+export default connect(null, mapDispatchToProps)(Questions);
 
 // https://www.youtube.com/watch?v=NAx76xx40jM
 // https://www.youtube.com/watch?v=sWKz9aLovjY
