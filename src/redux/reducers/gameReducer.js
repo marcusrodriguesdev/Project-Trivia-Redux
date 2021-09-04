@@ -4,6 +4,10 @@ const INITIAL_STATE = {
   guessed: false,
   score: 0,
   time: 30,
+  questions: [],
+  questionIndex: 0,
+  isFetching: false,
+  error: '',
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {
@@ -16,6 +20,12 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return { ...state, score: state.score + action.payload };
   case GAME_ACTIONS.SET_TIME:
     return { ...state, time: action.payload };
+  case GAME_ACTIONS.REQUEST_API:
+    return { ...state, isFetching: true };
+  case GAME_ACTIONS.FAILED_REQUEST:
+    return { ...state, isFetching: false, error: action.payload };
+  case GAME_ACTIONS.SET_QUESTIONS:
+    return { ...state, isFetching: false, questions: action.payload };
   default:
     return state;
   }

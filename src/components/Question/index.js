@@ -31,10 +31,7 @@ class Question extends Component {
 
   combineAnswers() {
     const { questionInfo } = this.props;
-    const {
-      incorrect_answers: incorrectAnswers,
-      correct_answer: correctAnswer,
-    } = questionInfo;
+    const { incorrectAnswers, correctAnswer } = questionInfo;
 
     const combinedAnswers = [...incorrectAnswers, correctAnswer];
 
@@ -121,9 +118,9 @@ Question.propTypes = {
   increaseGlobalScore: PropTypes.func.isRequired,
   questionInfo: PropTypes.shape({
     category: PropTypes.string.isRequired,
-    correct_answer: PropTypes.string.isRequired,
-    incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
     question: PropTypes.string.isRequired,
+    correctAnswer: PropTypes.string.isRequired,
+    incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   time: PropTypes.number.isRequired,
   timeOver: PropTypes.bool.isRequired,

@@ -9,8 +9,19 @@ export const getToken = async () => {
   return data.token;
 };
 
-export const getQuestion = async (token) => {
-  const { data } = await axios(`${QUESTION_ENDPOINT}&token=${token}`);
+export const getQuestions = async (token) => {
+  const { data } = await axios(
+    `${QUESTION_ENDPOINT}&token=${token}&encode=url3986`,
+  );
 
-  return data.results[0];
+  const decodedResults = data.results.map((questionInfo) => ({
+    question: decodeURIComponent(questionInfo.question),
+    correctAnswer: decodeURIComponent(questionInfo.correct_answer),
+    category: decodeURIComponent(questionInfo.category),
+    incorrectAnswers: questionInfo.incorrect_answers.map((answer) => (
+      decodeURIComponent(answer)
+    )),
+  }));
+
+  return decodedResults;
 };
