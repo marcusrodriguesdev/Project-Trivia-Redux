@@ -9,8 +9,7 @@ const avatarPadrao = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710
 class Game extends React.Component {
   render() {
     const { playerName } = this.props;
-
-    // const emailMD5 = md5(playerEmail).toString()     ;
+    // const emailMD5 = md5(playerEmail).toString();
 
     return (
       <div>
