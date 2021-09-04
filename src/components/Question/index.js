@@ -118,9 +118,10 @@ Question.propTypes = {
   increaseGlobalScore: PropTypes.func.isRequired,
   questionInfo: PropTypes.shape({
     category: PropTypes.string.isRequired,
-    question: PropTypes.string.isRequired,
     correctAnswer: PropTypes.string.isRequired,
+    correct_answer: PropTypes.string.isRequired,
     incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    question: PropTypes.string.isRequired,
   }).isRequired,
   time: PropTypes.number.isRequired,
   timeOver: PropTypes.bool.isRequired,
