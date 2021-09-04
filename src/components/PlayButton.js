@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { fetchTokenThunk, setNameAction, setEmailAction } from '../redux/actions';
+import { fetchTokenThunk, setNameAction,
+  fetchQuestionThunk, setEmailAction } from '../redux/actions';
 
 class PlayButton extends Component {
   constructor(props) {
@@ -12,18 +13,20 @@ class PlayButton extends Component {
   }
 
   async handleClick() {
-    const { fetchToken, token, setEmail, setName, playerName, playerEmail } = this.props;
+    const { fetchToken, fetchQuestion, token, setEmail, setName,
+      playerName, playerEmail } = this.props;
     setEmail(playerEmail);
     setName(playerName);
     await fetchToken();
     localStorage.setItem('token', token);
+    await fetchQuestion(token);
   }
 
   render() {
     const { buttonCheck } = this.props;
     return (
       <div>
-        <Link to="/play">
+        <Link to="/game">
           <button
             type="button"
             disabled={ buttonCheck }
@@ -42,15 +45,18 @@ const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(fetchTokenThunk()),
   setName: (payload) => dispatch(setNameAction(payload)),
   setEmail: (payload) => dispatch(setEmailAction(payload)),
+  fetchQuestion: (results) => dispatch(fetchQuestionThunk(results)),
 });
 
 const mapStateToProps = (state) => ({
   token: state.myReducer.token,
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
 
 PlayButton.propTypes = {
+  fetchQuestion: Proptypes.func.isRequired,
   fetchToken: Proptypes.func.isRequired,
   token: Proptypes.string.isRequired,
   buttonCheck: Proptypes.func.isRequired,
