@@ -59,16 +59,13 @@ class PageGame extends React.Component {
   }
 
   render() {
-    const { counter } = this.state;
-    const { results } = this.props;
-    const { name } = this.props;
-    const { imgPath } = this.state;
+    const { counter, imgPath } = this.state;
+    const { results, name } = this.props;
 
     if (results.length) {
       return (
         <div>
           <header>
-            {console.log(imgPath)}
             <img
               data-testid="header-profile-picture"
               alt="gravatar img"
