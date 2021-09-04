@@ -8,7 +8,6 @@ import { setTimer } from '../../redux/actions';
 class Question extends React.Component {
   constructor(props) {
     super(props);
-
     const { correctAnswer } = this.props;
     this.state = {
       correctAnswerIdentifier: correctAnswer,
@@ -31,14 +30,29 @@ class Question extends React.Component {
     });
   }
 
-  handleClick() {
-    const { correctAnswer, answerClick, setTimeGlobal } = this.props;
+  handleClick({ target }) {
+    const { correctAnswer, setTimeGlobal } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
-    answerClick();
     setTimeGlobal(true);
+    if (target.innerText === correctAnswer) { this.calcPonts(); }
+  }
+
+  calcPonts() {
+    const { difficulty } = this.props;
+    const timer = document.querySelector('#timer').innerHTML;
+    const pontDifficulty = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const TEN_NUMBER = 10;
+    const total = TEN_NUMBER + (timer * pontDifficulty[difficulty]);
+    const stateLocal = JSON.parse(localStorage.getItem('state'));
+    const newLocal = { ...stateLocal, player: { ...stateLocal.player, score: total } };
+    localStorage.setItem('state', JSON.stringify(newLocal));
   }
 
   renderNexButton() {
@@ -108,9 +122,9 @@ Question.propTypes = {
   correctAnswer: PropTypes.string.isRequired,
   isTimer: PropTypes.bool.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
-  answerClick: PropTypes.func.isRequired,
   nextClick: PropTypes.func.isRequired,
   setTimeGlobal: PropTypes.func.isRequired,
+  difficulty: PropTypes.string.isRequired,
 };
 
 const MapStateToProps = (state) => ({
@@ -118,7 +132,6 @@ const MapStateToProps = (state) => ({
 });
 
 const MapDispachToProps = (dispatch) => ({
-
   setTimeGlobal: (payload) => dispatch(setTimer(payload)),
 });
 

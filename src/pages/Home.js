@@ -15,17 +15,16 @@ class Home extends React.Component {
       currentQuestionIndex: 0,
       currentQuestion: {},
       loading: true,
-      answerClicked: false,
     };
 
     this.fetchAndStoreQuestions = this.fetchAndStoreQuestions.bind(this);
-    this.answerClick = this.answerClick.bind(this);
     this.nextClick = this.nextClick.bind(this);
     this.setCurrentQuestion = this.setCurrentQuestion.bind(this);
   }
 
   componentDidMount() {
     this.fetchAndStoreQuestions();
+    this.setLocalStorageInitial();
   }
 
   setCurrentQuestion(index) {
@@ -33,6 +32,18 @@ class Home extends React.Component {
     this.setState({
       currentQuestion: questions[index],
     });
+  }
+
+  setLocalStorageInitial() {
+    const state = {
+      player: {
+        name: '',
+        assertions: '',
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async fetchAndStoreQuestions() {
@@ -49,16 +60,10 @@ class Home extends React.Component {
     });
   }
 
-  answerClick() {
-    this.setState({
-      answerClicked: true,
-    });
-  }
-
   nextClick() {
-    const { currentQuestionIndex } = this.state;
+    const { currentQuestionIndex, questions } = this.state;
     const newQuestionIndex = currentQuestionIndex + 1;
-    if (newQuestionIndex === 5) {
+    if (newQuestionIndex === questions.length) {
       this.setState({
         currentQuestionIndex: 0,
       });
@@ -72,12 +77,13 @@ class Home extends React.Component {
   }
 
   render() {
-    const { loading, answerClicked, currentQuestion } = this.state;
+    const { loading, currentQuestion } = this.state;
     if (loading) {
       return (
         <div>carregando...</div>
       );
     }
+
     return (
       <>
         <Header />
@@ -88,8 +94,8 @@ class Home extends React.Component {
           correctAnswer={ currentQuestion.correct_answer }
           incorrectAnswers={ currentQuestion.incorrect_answers }
           answerClick={ this.answerClick }
-          answerClicked={ answerClicked }
           nextClick={ this.nextClick }
+          difficulty={ currentQuestion.difficulty }
         />
         <StopWatch />
       </>
