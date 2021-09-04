@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import '../gameButton.css';
 
 class game extends Component {
   constructor(props) {
@@ -7,9 +8,11 @@ class game extends Component {
 
     this.state = {
       data: '',
+      paintInput: false,
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -25,8 +28,14 @@ class game extends Component {
     return data;
   }
 
+  handleClick() {
+    this.setState({
+      paintInput: true,
+    });
+  }
+
   render() {
-    const { data } = this.state;
+    const { data, paintInput } = this.state;
     const loading = <div className="loading">Loading...</div>;
 
     if (data === '') {
@@ -35,22 +44,26 @@ class game extends Component {
     return (
       <div className="App">
         Tela de jogo
-        <div className="question-board">
+        <div className={ paintInput ? 'show' : 'question-board' }>
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
           {data.incorrect_answers
             .map(((answer, index) => (
               <button
                 type="button"
+                className="wrong"
                 data-testid={ `wrong-answer${index}` }
                 key={ index }
+                onClick={ this.handleClick }
               >
-                { answer }
+                {answer}
               </button>
             )))}
           <button
             type="button"
+            className="correct"
             data-testid="correct-answer"
+            onClick={ this.handleClick }
           >
             {data.correct_answer}
           </button>
