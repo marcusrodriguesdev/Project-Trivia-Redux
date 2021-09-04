@@ -33,8 +33,6 @@ class login extends Component {
 
   render() {
     const { name, email } = this.state;
-    const { tokenValue } = this.props;
-    console.log(tokenValue);
     return (
       <div className="App">
         <header className="App-header">
@@ -55,9 +53,11 @@ class login extends Component {
               onChange={ this.handleChange }
               testId="input-gravatar-email"
             />
-            <button type="button" data-testid="btn-settings">
-              <Link to="/gameConfig"> Config </Link>
-            </button>
+            <Link to="/gameConfig">
+              <button type="button" data-testid="btn-settings">
+                Config
+              </button>
+            </Link>
             <Link to="/game">
               <button
                 type="button"
@@ -80,7 +80,6 @@ login.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   getApiToken: PropTypes.func.isRequired,
-  tokenValue: PropTypes.string.isRequired,
   propSetEmail: PropTypes.func.isRequired,
 };
 
