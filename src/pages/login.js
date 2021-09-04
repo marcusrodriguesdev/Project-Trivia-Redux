@@ -33,8 +33,6 @@ class login extends Component {
 
   render() {
     const { name, email } = this.state;
-    const { tokenValue } = this.props;
-    console.log(tokenValue);
     return (
       <div className="App">
         <header className="App-header">
@@ -80,7 +78,6 @@ login.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   getApiToken: PropTypes.func.isRequired,
-  tokenValue: PropTypes.string.isRequired,
   propSetEmail: PropTypes.func.isRequired,
 };
 
