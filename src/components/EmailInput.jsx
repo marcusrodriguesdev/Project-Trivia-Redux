@@ -12,7 +12,7 @@ export default class EmailInput extends Component {
           value={ value }
           type="email"
           id="email-input"
-          name="emailInput"
+          name="email"
           onChange={ handleChange }
         />
       </label>
