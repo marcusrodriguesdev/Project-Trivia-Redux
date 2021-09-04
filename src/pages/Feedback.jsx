@@ -32,22 +32,25 @@ class Feedback extends Component {
 
   render() {
     const { name, score, assertions } = this.props;
+    const state = JSON.parse(localStorage.getItem('state'));
     return (
       <>
         <header>
           <img
             src={ this.handleEmailConversion() }
             alt="avatar"
-            ata-testid="header-profile-picture"
+            data-testid="header-profile-picture"
           />
-          <h1
-            data-testid="header-player-name"
-          >
+          <h1 data-testid="header-player-name">
             { name }
+          </h1>
+          <h1 data-testid="header-score">
+            { score }
           </h1>
           <h2 data-testid="feedback-total-score">{ score }</h2>
           <h1 data-testid="feedback-total-question">{assertions}</h1>
           <h1 data-testid="feedback-text">{ this.handleFeedbackMessage() }</h1>
+          {console.log(typeof state.player.score)}
         </header>
         <button
           data-testid="btn-play-again"
@@ -68,11 +71,11 @@ Feedback.propTypes = ({
   assertions: PropTypes.number,
 }.isRequired);
 
-const mapStateToProps = ({ login }) => ({
-  gravatarEmail: login.gravatarEmail,
-  name: login.name,
-  score: login.score,
-  assertions: login.assertions,
+const mapStateToProps = ({ player }) => ({
+  gravatarEmail: player.gravatarEmail,
+  name: player.name,
+  score: player.score,
+  assertions: player.assertions,
 });
 
 export default connect(mapStateToProps)(Feedback);
