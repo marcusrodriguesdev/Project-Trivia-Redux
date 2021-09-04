@@ -6,6 +6,7 @@ const ACTIONS = {
   GET_TOKEN: 'GET_TOKEN',
   GET_TOKEN_SUCCESS: 'GET_TOKEN_SUCCESS',
   GET_TOKEN_ERROR: 'GET_TOKEN_ERROR',
+  SHOW_BUTTON: 'SHOW_BUTTON',
 };
 
 export const setUser = (payload) => ({
@@ -15,6 +16,11 @@ export const setUser = (payload) => ({
 
 export const setTrivia = (payload) => ({
   type: ACTIONS.SET_TRIVIA,
+  payload,
+});
+
+export const showButton = (payload) => ({
+  type: ACTIONS.SHOW_BUTTON,
   payload,
 });
 

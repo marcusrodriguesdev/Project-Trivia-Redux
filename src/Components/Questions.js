@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import WrongAnswers from './WrongAnswers';
 import CorrectAnswer from './CorrectAnswer';
-import { setTrivia } from '../Actions';
+import { setTrivia, showButton } from '../Actions';
 
 import '../Styles/trivia.css';
 
@@ -16,6 +16,7 @@ class Questions extends React.Component {
       answered: false,
       timer: 30,
       points: 10,
+      showButton: true,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,6 +39,12 @@ class Questions extends React.Component {
     );
   }
 
+  componentDidUpdate() {
+    const { name, statePoints, email } = this.props;
+    const player = { name, score: statePoints, gravatarEmail: email };
+    localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -48,18 +55,22 @@ class Questions extends React.Component {
 
   handleClick(event) {
     const { answered } = this.state;
+    const { showNextButton } = this.props;
 
     event.preventDefault();
     this.setState({ answered: !answered });
+    showNextButton(this.state);
+    clearInterval(this.interval);
   }
 
-  handleCorrectBtn(event) {
-    const { answered, points } = this.state;
+  handleCorrectBtn() {
+    const { answered } = this.state;
     const { savePoints } = this.props;
 
-    event.preventDefault();
     this.setState({ answered: !answered });
-    savePoints(points);
+
+    savePoints(this.state);
+    clearInterval(this.interval);
   }
 
   render() {
@@ -111,13 +122,24 @@ class Questions extends React.Component {
 Questions.propTypes = {
   question: PropTypes.arrayOf(PropTypes.string).isRequired,
   savePoints: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  statePoints: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  showNextButton: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  savePoints: (points) => dispatch(setTrivia(points)),
+const mapStateToProps = ({ user: { email, name }, trivia: { points } }) => ({
+  email,
+  name,
+  statePoints: points,
 });
 
-export default connect(null, mapDispatchToProps)(Questions);
+const mapDispatchToProps = (dispatch) => ({
+  savePoints: (state) => dispatch(setTrivia(state)),
+  showNextButton: (state) => dispatch(showButton(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 // https://www.youtube.com/watch?v=NAx76xx40jM
 // https://www.youtube.com/watch?v=sWKz9aLovjY
