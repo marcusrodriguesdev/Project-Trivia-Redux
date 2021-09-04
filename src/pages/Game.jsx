@@ -69,19 +69,22 @@ class Game extends Component {
 
   teste() {
     const { trivia, index } = this.state;
+    console.log(trivia[index]);
     let newArray = this.teste2(trivia[index]);
     // console.log(newArray);
-    // const randomArray = this.teste3(newArray);
-    // console.log(randomArray);
-    newArray = newArray.map((element) => <button>{element}</button>);
+    newArray = newArray
+      .map((element, indic) => (indic < newArray.length - 1
+        ? <button type="button" data-testid={ `wrong-answer-${indic}` }>{element}</button>
+        : <button type="button" data-testid="correct-answer">{element}</button>));
     console.log(newArray);
+    this.teste3(newArray);
+    // console.log(randomArray);
 
     return (
       <div>
         <p data-test-id="question-category">{trivia[index].category}</p>
         <p data-test-id="question-text">{trivia[index].question}</p>
-        {/* {randomArray.map((answe, i) => <button type="button" key={ i }>{answe}</button>)} */}
-        { newArray.map((element) => <span>{element}</span>)}
+        { newArray.map((element, ordem) => <span key={ ordem }>{element}</span>)}
         <button type="button" onClick={ this.nextButton }>clicar</button>
       </div>
     );
@@ -110,6 +113,8 @@ class Game extends Component {
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
+  endpoint: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
