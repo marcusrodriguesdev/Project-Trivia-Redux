@@ -2,6 +2,7 @@ import { ALL_ACTIONS } from '../Action';
 
 const INITIAL_STATE = {
   isClicked: false,
+  timer: 30,
 };
 
 const triviaReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -10,6 +11,11 @@ const triviaReducer = (state = INITIAL_STATE, { type, payload }) => {
     return {
       ...state,
       isClicked: payload,
+    };
+  case ALL_ACTIONS.UPDATE_TIMER:
+    return {
+      ...state,
+      timer: payload,
     };
   default:
     return state;

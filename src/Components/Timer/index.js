@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setIsClicked } from '../../Redux/Action';
+import { setIsClicked, updateTimer } from '../../Redux/Action';
 
 class Timer extends Component {
   constructor() {
@@ -45,20 +45,28 @@ class Timer extends Component {
 
   render() {
     const { timer } = this.state;
+    const { newTime, globalTime } = this.props;
+    newTime(timer);
+
     return (
       <div>
-        { timer }
+        { globalTime }
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ trivia }) => ({
+  globalTime: trivia.timer,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   toggleDisabled: () => dispatch(setIsClicked()),
+  newTime: (time) => dispatch(updateTimer(time)),
 });
 
 Timer.propTypes = {
   toggleDisabled: PropTypes.func,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Timer);
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

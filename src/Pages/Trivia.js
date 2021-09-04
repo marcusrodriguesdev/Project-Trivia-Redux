@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Button from '../Components/Button';
 import Header from '../Components/Header';
+import Multiple from '../Components/Multiple';
 import Timer from '../Components/Timer';
 import '../Styles/trivia.css';
 import { setIsClicked } from '../Redux/Action';
@@ -12,111 +13,44 @@ class Trivia extends Component {
     super();
 
     this.state = {
-      results: [],
-      loading: true,
+      isVisible: false,
     };
-    this.renderQuestionAndAnswers = this.renderQuestionAndAnswers.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.getRanking = this.getRanking.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
-  componentDidMount() {
-    this.fetchTriviaAPI();
+  getRanking() {
+    const { history } = this.props;
+
+    history.push('/ranking');
   }
 
-  async fetchTriviaAPI() {
-    const { token } = this.props;
-    const triviaURL = `https://opentdb.com/api.php?amount=5&token=${token}`;
-    const response = await (await fetch(triviaURL)).json();
-    if (response.response_code === '0') {
-      this.setState({
-        results: response.results[0],
-        loading: false,
-      });
-    } else {
-      const newResponse = await (await fetch(triviaURL)).json();
-      this.setState({
-        results: newResponse.results[0],
-        loading: false,
-      });
-    }
-  }
-
-  randomizeArray(array) {
-    for (let index = array.length - 1; index > 0; index -= 1) {
-      const secondIndex = Math.floor(Math.random() * (index + 1));
-      const tempNumber = array[index];
-      array[index] = array[secondIndex];
-      array[secondIndex] = tempNumber;
-    }
-    return array;
-  }
-
-  handleClick() {
-    const { toggleDisabled } = this.props;
-    toggleDisabled();
-  }
-
-  renderQuestionAndAnswers() {
-    const { results } = this.state;
-    const { isClicked } = this.props;
-    const {
-      question,
-      category,
-      correct_answer: correctAnswer,
-      incorrect_answers: wrongAnswer,
-    } = results;
-
-    if (wrongAnswer.length > 0) {
-      const answersArray = [correctAnswer, ...wrongAnswer];
-      const randomAnswerArray = this.randomizeArray(answersArray);
-      const correct = randomAnswerArray.find((text) => text === correctAnswer);
-
-      return (
-        <>
-          <p data-testid="question-category">{category}</p>
-          <p data-testid="question-text">{question}</p>
-          {
-            randomAnswerArray.map((answer, secondIndex) => (
-              correct === answer
-                ? (
-                  <Button
-                    key={ secondIndex }
-                    text={ correct }
-                    id="correct-answer"
-                    dataTest="correct-answer"
-                    onClick={ this.handleClick }
-                    disabled={ isClicked }
-                  />
-                )
-                : (
-                  <Button
-                    key={ secondIndex }
-                    text={ answer }
-                    id="wrong-answer"
-                    dataTest={ `wrong-answer-${secondIndex}` }
-                    onClick={ this.handleClick }
-                    disabled={ isClicked }
-                  />
-                )
-            ))
-          }
-        </>
-      );
-    }
+  nextQuestion() {
+    this.renderQuestionAndAnswers();
   }
 
   render() {
-    const { loading } = this.state;
-    if (loading) {
-      return (
-        <p>Carregando...</p>
-      );
-    }
+    const { isVisible } = this.state;
+
     return (
       <div>
         <Header />
-        <Timer handleClick={ this.handleClick } />
-        {this.renderQuestionAndAnswers()}
+        <Multiple />
+        { isVisible
+        && <Button
+          text="Próxima"
+          dataTest="btn-next"
+          onClick={ this.nextQuestion }
+        />}
+        <div>
+          <Button
+            text="Ver Ranking"
+            id="btn-ranking"
+            dataTest="btn-ranking"
+            onClick={ this.getRanking }
+          />
+        </div>
+        <Timer />
       </div>
     );
   }
