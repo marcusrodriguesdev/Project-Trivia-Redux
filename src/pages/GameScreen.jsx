@@ -8,12 +8,16 @@ class GameScreen extends React.Component {
     super();
     this.randomAnswer = this.randomAnswer.bind(this);
     this.clickChange = this.clickChange.bind(this);
+    this.countdown = this.countdown.bind(this);
+    this.timer = this.timer.bind(this);
 
     this.state = {
       answers: [],
       correctAnswer: '',
       rigthBorder: '',
       wrongBorder: '',
+      disable: false,
+      countdown: 30,
     };
   }
 
@@ -21,6 +25,8 @@ class GameScreen extends React.Component {
     const { token, requestQuestions } = this.props;
     await requestQuestions(token);
     this.randomAnswer();
+    this.countdown();
+    this.timer();
   }
 
   randomAnswer() {
@@ -48,9 +54,32 @@ class GameScreen extends React.Component {
     this.setState({ rigthBorder: 'green-border', wrongBorder: 'red-border' });
   }
 
+  timer() {
+    const TIME_LEFT = 30000;
+
+    setTimeout(() => {
+      this.setState({ disable: true });
+    }, TIME_LEFT);
+  }
+
+  countdown() {
+    const TIME_UPDATE = 1000;
+    this.timeout = setInterval(() => {
+      const { countdown } = this.state;
+      this.setState({ countdown: countdown - 1 });
+    }, TIME_UPDATE);
+  }
+
   render() {
     const { quest } = this.props;
-    const { answers, correctAnswer, rigthBorder, wrongBorder } = this.state;
+    const {
+      answers,
+      correctAnswer,
+      rigthBorder,
+      wrongBorder,
+      disable,
+      countdown,
+    } = this.state;
     const loading = <h1>loading</h1>;
     if (!quest.results) return loading;
 
@@ -58,6 +87,8 @@ class GameScreen extends React.Component {
       <div>
         <h1 data-testid="question-category">{ quest.results[0].category }</h1>
         <p data-testid="question-text">{ quest.results[0].question }</p>
+        <h3>{ countdown }</h3>
+        { disable && clearInterval(this.timeout)}
         { answers && answers.map((answer, index) => {
           if (answer === correctAnswer) {
             return (
@@ -65,6 +96,7 @@ class GameScreen extends React.Component {
                 data-testid="correct-answer"
                 key={ answer }
                 type="button"
+                disabled={ disable }
                 className={ rigthBorder }
                 onClick={ this.clickChange }
               >
@@ -76,6 +108,7 @@ class GameScreen extends React.Component {
             <button
               data-testid={ `wrong-answer-${index}` }
               key={ answer }
+              disabled={ disable }
               className={ wrongBorder }
               onClick={ this.clickChange }
               type="button"
