@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
-import { requestTokenThunk } from '../redux/actions';
+import { login, requestTokenThunk } from '../redux/actions';
 import fetchToken from '../services/tokenAPI';
 
 class Login extends React.Component {
@@ -13,6 +13,7 @@ class Login extends React.Component {
     this.state = {
       nome: '',
       email: '',
+      score: 0,
       disabled: true,
     };
 
@@ -46,11 +47,14 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { history, getToken } = this.props;
+    const { history, getToken, getUser } = this.props;
+    // const { nome, email } = this.state;
 
     const data = await fetchToken();
     getToken(data.token);
     localStorage.setItem('token', JSON.stringify(data.token));
+    getUser(this.state);
+    // getUser(email);
     history.push('/game');
     // r2
   }
@@ -109,6 +113,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(requestTokenThunk()),
+  getUser: (payload) => dispatch(login(payload)),
 });
 
 const mapStateToProps = (state) => ({
@@ -120,6 +125,7 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  getUser: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

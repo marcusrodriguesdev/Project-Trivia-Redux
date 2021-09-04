@@ -1,7 +1,7 @@
 import { REQUEST_TOKEN_SUCCESS, REQUEST_TOKEN_ERROR } from '../actions/index';
 
 const INITIAL_STATE = {
-  token: {},
+  token: '',
   error: null,
 };
 
