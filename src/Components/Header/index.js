@@ -8,7 +8,6 @@ class Header extends Component {
     super();
     this.state = {
       imgURL: '',
-      score: 0,
     };
   }
 
@@ -27,8 +26,8 @@ class Header extends Component {
   }
 
   render() {
-    const { name } = this.props;
-    const { imgURL, score } = this.state;
+    const { name, score } = this.props;
+    const { imgURL } = this.state;
     return (
       <header>
         <img data-testid="header-profile-picture" src={ imgURL } alt="gravatar" />
@@ -41,6 +40,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   name: state.user.name,
+  result: state.trivia.result,
+  score: state.trivia.score,
 });
 
 Header.propTypes = {

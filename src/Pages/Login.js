@@ -6,6 +6,7 @@ import Button from '../Components/Button';
 import fetchAPI from '../services/fetchAPI';
 import logo from '../trivia.png';
 import { addName, saveToken } from '../Redux/Action';
+import { saveToLocalStorage, setPlayerInLocalStorage } from '../helpers/localStorage';
 
 class Login extends Component {
   constructor(props) {
@@ -55,7 +56,8 @@ class Login extends Component {
     const data = await fetchAPI();
 
     getToken(data.token);
-    localStorage.setItem('token', JSON.stringify(data.token));
+    saveToLocalStorage(data.token, 'token');
+    setPlayerInLocalStorage();
 
     history.push('/trivia');
   }
