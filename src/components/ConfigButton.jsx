@@ -29,7 +29,7 @@ ConfigButton.propTypes = ({
 }).isRequired;
 
 ConfigButton.defaultProps = {
-  link: '',
+  // link: '',
   disable: false,
 };
 

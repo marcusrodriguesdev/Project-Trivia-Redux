@@ -1,10 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ConfigButton from './ConfigButton';
+// import ConfigButton from './ConfigButton';
+
+import './Questions.css';
 
 class QuestionsComponent extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      answerSelected: false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      answerSelected: true,
+    });
+  }
+
   render() {
     const { questions } = this.props;
+    const { answerSelected } = this.state;
     return (
       <div>
         <fieldset>
@@ -15,17 +33,29 @@ class QuestionsComponent extends React.Component {
             { questions[0].question }
           </h2>
           <ol>
-            <li>
+            <li classNme="incorrect">
               {(questions[0].incorrect_answers).map((incorrect, index) => (
-                <ConfigButton
+                <button
+                  type="button"
+                  className={ answerSelected && 'incorrect' }
                   key={ index }
-                  test={ `wrong-answer-${index}` }
+                  data-testid={ `wrong-answer-${index}` }
                   name={ incorrect }
-                />
+                  onClick={ this.handleClick }
+                >
+                  { incorrect }
+                </button>
               ))}
             </li>
             <li>
-              <ConfigButton test="correct-answer" name={ questions[0].correct_answer } />
+              <button
+                type="button"
+                className={ answerSelected && 'correct' }
+                data-testid="correct-answer"
+                onClick={ this.handleClick }
+              >
+                { questions[0].correct_answer }
+              </button>
             </li>
           </ol>
         </fieldset>
