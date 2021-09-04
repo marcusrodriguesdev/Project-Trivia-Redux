@@ -1,4 +1,5 @@
 import React from 'react';
+import '../App.css';
 
 const trivialink = 'https://opentdb.com/api.php?amount=5&token=';
 
@@ -40,6 +41,21 @@ class Question extends React.Component {
     });
   }
 
+  borderColor({ target }) {
+    if (target.id === 'correta') {
+      target.className = 'green-border';
+      document.querySelectorAll('#incorreta').forEach((button) => {
+        button.className = 'red-border';
+      });
+    }
+    if (target.id === 'incorreta') {
+      document.querySelectorAll('#incorreta').forEach((button) => {
+        button.className = 'red-border';
+      });
+      document.getElementById('correta').className = 'green-border';
+    }
+  }
+
   correctAnswer(alternative, index) {
     return (
       <button
@@ -47,6 +63,7 @@ class Question extends React.Component {
         type="button"
         data-testid="correct-answer"
         key={ index }
+        onClick={ this.borderColor }
       >
         {alternative}
       </button>
@@ -56,10 +73,11 @@ class Question extends React.Component {
   incorrectAnswer(alternative, index) {
     return (
       <button
-        id="correta"
+        id="incorreta"
         type="button"
         data-testid={ `wrong-answer-${index}` }
         key={ index }
+        onClick={ this.borderColor }
       >
         {alternative}
       </button>
