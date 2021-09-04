@@ -4,7 +4,7 @@ export const ACTIONS = {
   SET_SCORE: 'SET_SCORE',
 };
 
-export const setEmail = (email) => ({ type: ACTIONS.SET_EMAIL, payload: email });
+export const setEmail = (payload) => ({ type: ACTIONS.SET_EMAIL, payload });
 
 export const getToken = (token) => ({ type: ACTIONS.GET_TOKEN, payload: token });
 
@@ -23,8 +23,6 @@ export function getTokenApi() {
 
 export function setLocalStorageThunk() {
   return async (_, getState) => {
-    const { player } = getState();
-
-    localStorage.setItem('state', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify(getState()));
   };
 }
