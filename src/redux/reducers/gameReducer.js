@@ -2,14 +2,20 @@ import GAME_ACTIONS from '../actions/gameActions';
 
 const INITIAL_STATE = {
   guessed: false,
+  score: 0,
+  time: 30,
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case GAME_ACTIONS.GUESS:
-    return { guessed: true };
+    return { ...state, guessed: true };
   case GAME_ACTIONS.NEXT_QUESTION:
-    return { guessed: false };
+    return { ...state, guessed: false };
+  case GAME_ACTIONS.INCREASE_SCORE:
+    return { ...state, score: state.score + action.payload };
+  case GAME_ACTIONS.SET_TIME:
+    return { ...state, time: action.payload };
   default:
     return state;
   }

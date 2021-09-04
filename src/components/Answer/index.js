@@ -7,7 +7,15 @@ import './style.css';
 
 class Answer extends Component {
   render() {
-    const { answer, index, guessed, guess, timeOver } = this.props;
+    const {
+      answer,
+      index,
+      guessed,
+      guess,
+      timeOver,
+      checkAnswer,
+      questionInfo: { difficulty },
+    } = this.props;
 
     const testId = answer.isCorrect
       ? 'correct-answer'
@@ -25,7 +33,10 @@ class Answer extends Component {
         type="button"
         key={ answer }
         className={ className }
-        onClick={ () => guess() }
+        onClick={ () => {
+          guess();
+          checkAnswer(answer, difficulty);
+        } }
         disabled={ timeOver }
       >
         {answer.text}
