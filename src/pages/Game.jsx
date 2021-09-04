@@ -13,6 +13,9 @@ class Game extends Component {
 
     this.state = {
       next: 0,
+      wrong: '',
+      correct: '',
+      disabled: false,
     };
 
     this.requestApiQuestions = this.requestApiQuestions.bind(this);
@@ -34,7 +37,11 @@ class Game extends Component {
   }
 
   validateAnswers() {
-
+    this.setState({
+      wrong: 'wrong-answer-css ',
+      correct: 'correct-answer-css ',
+      disabled: true,
+    });
   }
 
   nextQuestion() {
@@ -46,11 +53,13 @@ class Game extends Component {
 
   renderQuestions() {
     const { results } = this.props;
-    const { next } = this.state;
+    const { next, wrong, correct, disabled } = this.state;
 
     if (results.length > 0) {
       return (
+
         <div className="question-box">
+
           <div className="container-question">
             <h2 data-testid="question-category">{ results[next].category }</h2>
             <h3 data-testid="question-text">{ results[next].question }</h3>
@@ -58,23 +67,32 @@ class Game extends Component {
 
           <div className="question-answers">
             <button
+              name="correct-answer"
+              className={ correct }
               type="button"
               data-testid="correct-answer"
+              disabled={ disabled }
+              onClick={ this.validateAnswers }
             >
               { results[next].correct_answer }
             </button>
+
             {
               results[0].incorrect_answers.map((answers, index) => (
                 <button
+                  name="wrong-answer"
                   key={ index }
                   type="button"
+                  className={ wrong }
+                  disabled={ disabled }
                   data-testid={ `wrong-answer-${index}` }
-                  onClick={ () => console.log(answers) }
+                  onClick={ this.validateAnswers }
                 >
                   { answers }
                 </button>
               ))
             }
+
           </div>
 
         </div>
@@ -83,6 +101,9 @@ class Game extends Component {
   }
 
   render() {
+    const { results } = this.props;
+    if (!results) return <span>Loading</span>;
+
     return (
       <div className="main-content">
         <Header />
