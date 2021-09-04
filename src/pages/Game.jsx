@@ -47,54 +47,59 @@ class Game extends Component {
   nextQuestion() {
     const { results } = this.props;
     const { next } = this.state;
-
     if (next < results.length - 1) this.setState({ next: next + 1 });
+    this.setState({
+      wrong: '',
+      correct: '',
+      disabled: false,
+    });
   }
 
   renderQuestions() {
     const { results } = this.props;
     const { next, wrong, correct, disabled } = this.state;
-
     if (results.length > 0) {
       return (
-
         <div className="question-box">
-
           <div className="container-question">
             <h2 data-testid="question-category">{ results[next].category }</h2>
             <h3 data-testid="question-text">{ results[next].question }</h3>
           </div>
-
           <div className="question-answers">
-            <button
-              name="correct-answer"
-              className={ correct }
-              type="button"
-              data-testid="correct-answer"
-              disabled={ disabled }
-              onClick={ this.validateAnswers }
-            >
-              { results[next].correct_answer }
-            </button>
-
             {
-              results[0].incorrect_answers.map((answers, index) => (
-                <button
-                  name="wrong-answer"
-                  key={ index }
-                  type="button"
-                  className={ wrong }
-                  disabled={ disabled }
-                  data-testid={ `wrong-answer-${index}` }
-                  onClick={ this.validateAnswers }
-                >
-                  { answers }
-                </button>
-              ))
+              [...results[0].incorrect_answers, results[next].correct_answer]
+                .sort()
+                .map((answers, index) => {
+                  if (answers === results[next].correct_answer) {
+                    return (
+                      <button
+                        className={ correct }
+                        type="button"
+                        disabled={ disabled }
+                        onClick={ this.validateAnswers }
+                        id={ answers }
+                        key={ index }
+                        data-testid="correct-answer"
+                      >
+                        { answers }
+                      </button>
+                    );
+                  } return (
+                    <button
+                      key={ index }
+                      type="button"
+                      className={ wrong }
+                      disabled={ disabled }
+                      onClick={ this.validateAnswers }
+                      id={ answers }
+                      data-testid={ `wrong-answer-${index}` }
+                    >
+                      { answers }
+                    </button>
+                  );
+                })
             }
-
           </div>
-
         </div>
       );
     }
