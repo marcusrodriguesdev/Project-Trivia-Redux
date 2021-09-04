@@ -5,14 +5,8 @@ import Header from '../components/Header';
 import GamePage from './GamePage';
 
 class Trivia extends React.Component {
-  setToken() {
-    const { savedToken } = this.props;
-    localStorage.setItem('token', savedToken);
-  }
-
   render() {
     const { history } = this.props;
-    this.setToken();
 
     return (
       <div>
@@ -28,7 +22,6 @@ const mapStateToProps = (state) => ({
 });
 
 Trivia.propTypes = {
-  savedToken: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,

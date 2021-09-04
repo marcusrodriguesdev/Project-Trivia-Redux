@@ -3,23 +3,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Alternatives from '../components/Alternatives';
 import Question from '../components/Question';
-import { fetchQuestions as fetchQuestionsAction, setIndex } from '../redux/actions/index';
+import { fetchQuestions as fetchQuestionsAction } from '../redux/actions/index';
 
 class GamePage extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       next: false,
       questionNumber: 0,
-      seconds: 5,
+      seconds: 30,
     };
 
     this.toggleNextButton = this.toggleNextButton.bind(this);
     this.applyColor = this.applyColor.bind(this);
     this.showNextQuestion = this.showNextQuestion.bind(this);
     this.removeColor = this.removeColor.bind(this);
-    this.changeIndex = this.changeIndex.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
@@ -43,25 +42,6 @@ class GamePage extends React.Component {
     }, ONE_SECOND);
   }
 
-  changeIndex() {
-    const { index } = this.state;
-    this.setState({ index: index + 1 });
-  }
-
-  handleClick() {
-    const { getIndex, index, history } = this.props;
-    const LIMIT = 4;
-    if (index === LIMIT) {
-      history.push('/feedback');
-    } else {
-      getIndex();
-      this.setState({
-        seconds: 5,
-      });
-      this.updateSeconds();
-    }
-  }
-
   applyColor() {
     const correct = document.querySelector('.correct');
     correct.className = 'correct correct-answer';
@@ -72,6 +52,7 @@ class GamePage extends React.Component {
       return item;
     });
 
+    clearInterval(this.countDown);
     this.toggleNextButton();
   }
 
@@ -95,10 +76,20 @@ class GamePage extends React.Component {
   }
 
   showNextQuestion() {
+    const { history } = this.props;
+    const { questionNumber } = this.state;
+    const LIMIT = 4;
     this.removeColor();
-    this.setState((prev) => ({
-      questionNumber: prev.questionNumber + 1,
-    }));
+
+    if (questionNumber === LIMIT) {
+      history.push('/feedback');
+    } else {
+      this.setState((prev) => ({
+        questionNumber: prev.questionNumber + 1,
+        seconds: 30,
+      }));
+      this.updateSeconds();
+    }
   }
 
   render() {
@@ -114,6 +105,7 @@ class GamePage extends React.Component {
           applyColor={ this.applyColor }
           questionNumber={ questionNumber }
           seconds={ seconds }
+          next={ next }
         />
 
         <div>
@@ -122,7 +114,6 @@ class GamePage extends React.Component {
               type="button"
               onClick={ this.showNextQuestion }
               data-testid="btn-next"
-              // onClick={ this.handleClick }
             >
               Proxima
             </button>) }
@@ -134,20 +125,13 @@ class GamePage extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: () => dispatch(fetchQuestionsAction()),
-  getIndex: () => dispatch(setIndex()),
-});
-
-const mapStateToProps = (state) => ({
-  index: state.gamePage.index,
 });
 
 GamePage.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
-  getIndex: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
+export default connect(null, mapDispatchToProps)(GamePage);

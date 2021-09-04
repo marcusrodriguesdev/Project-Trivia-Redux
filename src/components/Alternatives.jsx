@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 class Alternatives extends React.Component {
   displayAnswer(applyColor) {
-    const { questions: { results }, seconds, questionNumber } = this.props;
+    const { questions: { results }, seconds, questionNumber, next } = this.props;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
@@ -17,7 +17,7 @@ class Alternatives extends React.Component {
         <button
           type="button"
           data-testid="correct-answer"
-          disabled={ seconds === 0 }
+          disabled={ seconds === 0 || next }
           className="correct"
           onClick={ applyColor }
         >
@@ -32,6 +32,7 @@ class Alternatives extends React.Component {
             id="wrong-answer"
             onClick={ applyColor }
             className="incorrect"
+            disabled={ seconds === 0 || next }
           >
             { wrongAnswer }
           </button>))}
@@ -63,6 +64,7 @@ Alternatives.propTypes = {
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
   seconds: PropTypes.number.isRequired,
+  next: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Alternatives);

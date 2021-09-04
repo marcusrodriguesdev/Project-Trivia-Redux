@@ -1,20 +1,21 @@
 const questionsAPI = 'https://opentdb.com/api.php?amount=5';
-export const LOGGED_INFO = 'LOGGED_INFO';
-export const LOADING = 'LOADING';
-export const GET_TOKEN = 'GET_TOKEN';
-export const GET_QUESTIONS = 'GET_QUESTIONS';
-export const INDEX = 'INDEX';
+export const actions = {
+  LOGGED_INFO: 'LOGGED_INFO',
+  LOADING: 'LOADING',
+  GET_TOKEN: 'GET_TOKEN',
+  GET_QUESTIONS: 'GET_QUESTIONS',
+};
 
-export const logged = (payload) => ({ type: LOGGED_INFO, payload });
-export const getApi = (payload) => ({ type: GET_TOKEN, payload });
-export const getQuestions = (payload) => ({ type: GET_QUESTIONS, payload });
-export const loading = () => ({ type: LOADING });
-export const setIndex = () => ({ type: INDEX });
+export const logged = (payload) => ({ type: actions.LOGGED_INFO, payload });
+export const getApi = (payload) => ({ type: actions.GET_TOKEN, payload });
+export const getQuestions = (payload) => ({ type: actions.GET_QUESTIONS, payload });
+export const loading = () => ({ type: actions.LOADING });
 
 export function getToken() {
   return async (dispatch) => {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const result = await response.json();
+    localStorage.setItem('token', result.token);
     dispatch(getApi(result));
   };
 }
