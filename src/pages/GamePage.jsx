@@ -9,9 +9,15 @@ class GamePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      next: false,
+      questionNumber: 0,
       seconds: 5,
     };
 
+    this.toggleNextButton = this.toggleNextButton.bind(this);
+    this.applyColor = this.applyColor.bind(this);
+    this.showNextQuestion = this.showNextQuestion.bind(this);
+    this.removeColor = this.removeColor.bind(this);
     this.changeIndex = this.changeIndex.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -56,20 +62,71 @@ class GamePage extends React.Component {
     }
   }
 
-  render() {
-    const { seconds } = this.state;
+  applyColor() {
+    const correct = document.querySelector('.correct');
+    correct.className = 'correct correct-answer';
 
+    const incorrect = document.querySelectorAll('.incorrect');
+    incorrect.forEach((item) => {
+      item.className = 'incorrect incorrect-answer';
+      return item;
+    });
+
+    this.toggleNextButton();
+  }
+
+  removeColor() {
+    const correct = document.querySelector('.correct');
+    correct.className = 'correct default';
+
+    const incorrect = document.querySelectorAll('.incorrect');
+    incorrect.forEach((item) => {
+      item.className = 'incorrect default';
+      return item;
+    });
+
+    this.toggleNextButton();
+  }
+
+  toggleNextButton() {
+    this.setState((previousValue) => ({
+      next: !previousValue.next,
+    }));
+  }
+
+  showNextQuestion() {
+    this.removeColor();
+    this.setState((prev) => ({
+      questionNumber: prev.questionNumber + 1,
+    }));
+  }
+
+  render() {
+    const { next, questionNumber, seconds } = this.state;
     return (
       <div>
         <p>{ seconds }</p>
-        <Question />
-        <Alternatives seconds={ seconds } />
-        <button
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Proxima
-        </button>
+        <Question
+          questionNumber={ questionNumber }
+        />
+
+        <Alternatives
+          applyColor={ this.applyColor }
+          questionNumber={ questionNumber }
+          seconds={ seconds }
+        />
+
+        <div>
+          { next && (
+            <button
+              type="button"
+              onClick={ this.showNextQuestion }
+              data-testid="btn-next"
+              // onClick={ this.handleClick }
+            >
+              Proxima
+            </button>) }
+        </div>
       </div>
     );
   }
