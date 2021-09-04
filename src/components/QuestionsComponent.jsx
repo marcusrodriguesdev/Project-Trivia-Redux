@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Redirect } from 'react-router';
 
 import './QuestionsComponent.css';
 
@@ -10,6 +11,7 @@ export default class QuestionsComponent extends React.Component {
     this.handleClicked = this.handleClicked.bind(this);
     this.renderNextBtn = this.renderNextBtn.bind(this);
     this.handleClickCorrect = this.handleClickCorrect.bind(this);
+    this.handleNext = this.handleNext.bind(this);
 
     this.state = {
       clicked: false,
@@ -26,6 +28,12 @@ export default class QuestionsComponent extends React.Component {
     handleClick();
   }
 
+  handleNext() {
+    const { handleNextQuestion } = this.props;
+    handleNextQuestion();
+    this.setState({ clicked: false });
+  }
+
   renderNextBtn() {
     const { clicked } = this.state;
     if (clicked) {
@@ -33,6 +41,7 @@ export default class QuestionsComponent extends React.Component {
         <button
           data-testid="btn-next"
           type="button"
+          onClick={ this.handleNext }
         >
           Próxima
         </button>
@@ -41,8 +50,12 @@ export default class QuestionsComponent extends React.Component {
   }
 
   render() {
-    const { question, buttonDisable } = this.props;
+    const { question, buttonDisable, index } = this.props;
     const { clicked } = this.state;
+    const four = 4;
+    if (index > four) {
+      return <Redirect to="/feedback" />;
+    }
     return (
       <div>
         <p data-testid="question-category">{question.category}</p>
@@ -56,10 +69,10 @@ export default class QuestionsComponent extends React.Component {
         >
           {question.correct_answer}
         </button>
-        {question.incorrect_answers.map((incorrect, index) => (
+        {question.incorrect_answers.map((incorrect, number) => (
           <button
-            key={ index }
-            data-testid={ `wrong-answer-${index}` }
+            key={ number }
+            data-testid={ `wrong-answer-${number}` }
             type="button"
             disabled={ buttonDisable }
             className={ clicked && 'incorrect' }
@@ -75,7 +88,9 @@ export default class QuestionsComponent extends React.Component {
 }
 
 QuestionsComponent.propTypes = {
-  question: PropTypes.objectOf.isRequired,
-  handleClick: PropTypes.func.isRequired,
   buttonDisable: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  handleNextQuestion: PropTypes.func.isRequired,
+  question: PropTypes.objectOf().isRequired,
+  index: PropTypes.number.isRequired,
 };

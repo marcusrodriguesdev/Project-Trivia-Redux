@@ -14,6 +14,7 @@ class Question extends Component {
     this.timerQuestion = this.timerQuestion.bind(this);
     this.handleTime = this.handleTime.bind(this);
     this.handleClickCorrectAnswer = this.handleClickCorrectAnswer.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
 
     this.state = {
       loading: true,
@@ -78,7 +79,11 @@ class Question extends Component {
       },
     };
     localStorage.setItem('state', JSON.stringify(playerInfo));
-    setScoreAndAssertions({ assertions, score });
+    setScoreAndAssertions({ assertions: newAssertions, score: newScore });
+  }
+
+  handleNextQuestion() {
+    this.setState((old) => ({ index: old.index + 1, timer: 30 }));
   }
 
   render() {
@@ -115,7 +120,9 @@ class Question extends Component {
         && <QuestionsComponent
           question={ questions[index] }
           handleClick={ this.handleClickCorrectAnswer }
+          handleNextQuestion={ this.handleNextQuestion }
           buttonDisable={ disableButton }
+          index={ index }
         />}
       </>
     );
