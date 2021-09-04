@@ -22,6 +22,7 @@ class Alternatives extends React.Component {
         >
           { correctAnswer }
         </button>
+
         {incorrectAnswer.map((wrongAnswer, index) => (
           <button
             type="button"

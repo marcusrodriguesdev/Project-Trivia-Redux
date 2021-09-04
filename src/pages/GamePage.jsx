@@ -54,7 +54,6 @@ class GamePage extends React.Component {
     this.setState((previousValue) => ({
       next: !previousValue.next,
     }));
-    console.log('TIC');
   }
 
   showNextQuestion() {
