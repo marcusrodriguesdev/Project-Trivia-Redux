@@ -16,4 +16,8 @@ export const getNameAndEmail = (name, email) => ({
   email,
 });
 
+export const getScore = (score) => ({
+  type: 'SCORE', score,
+});
+
 // export default (ACTIONS, getToken, getNameAndEmail);

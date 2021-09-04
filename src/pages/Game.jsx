@@ -100,10 +100,8 @@ class Game extends Component {
           <p data-testid="header-player-name">{name}</p>
           <p data-testid="header-score">Placar: 0</p>
         </header>
-
         <section>
           { isLoading ? <p>Loading...</p> : this.teste() }
-
         </section>
       </>
     );
