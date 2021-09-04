@@ -6,6 +6,11 @@ const actionLogin = (user, email) => ({
   },
 });
 
+export const actionForScores = (score) => ({
+  type: 'ARRAY_SCORE',
+  score,
+});
+
 export const actionPlayerScore = (assertions, score) => ({
   type: 'ACTION_PLAYER_SCORE',
   payload: {
