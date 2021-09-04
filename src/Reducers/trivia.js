@@ -3,6 +3,7 @@ import ACTIONS from '../Actions/index';
 const INITIAL_STATE = {
   token: '',
   points: 0,
+  showButton: false,
 };
 
 function triviaReducer(state = INITIAL_STATE, action) {
@@ -10,7 +11,13 @@ function triviaReducer(state = INITIAL_STATE, action) {
   case ACTIONS.SET_TRIVIA:
     return {
       ...state,
-      points: state.points + action.payload,
+      points: state.points + action.payload.points,
+      showButton: action.payload.showButton,
+    };
+  case ACTIONS.SHOW_BUTTON:
+    return {
+      ...state,
+      showButton: action.payload.showButton,
     };
   case ACTIONS.GET_TOKEN:
     return {

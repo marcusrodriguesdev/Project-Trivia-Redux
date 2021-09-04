@@ -7,6 +7,7 @@ import { fetchQuestions } from '../Services/api';
 import Questions from '../Components/Questions';
 
 import '../Styles/global.css';
+import { showButton as showBtnAction } from '../Actions';
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Trivia extends React.Component {
     this.state = {
       questionsInfo: [],
       index: 0,
+      showButton: false,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
@@ -38,12 +40,20 @@ class Trivia extends React.Component {
   handleClick() {
     const { index, questionsInfo } = this.state;
     const { history } = this.props;
-    if (index < questionsInfo.length - 1) return this.setState({ index: index + 1 });
+    if (index < questionsInfo.length - 1) return this.usualNextClick();
     return history.push('/feedback');
+  }
+
+  usualNextClick() {
+    const { index } = this.state;
+    const { hideButton } = this.props;
+    this.setState({ index: index + 1 });
+    hideButton(this.state);
   }
 
   render() {
     const { questionsInfo, index } = this.state;
+    const { showButton } = this.props;
 
     return (
       <div>
@@ -55,21 +65,27 @@ class Trivia extends React.Component {
             )).map((question) => <Questions key={ index } question={ question } />)
           }
 
-          <button
-            type="submit"
-            data-testid="btn-next"
-            onClick={ this.handleClick }
-          >
-            Próxima
-          </button>
+          { showButton && (
+            <button
+              type="submit"
+              data-testid="btn-next"
+              onClick={ this.handleClick }
+            >
+              Próxima
+            </button>) }
         </main>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ trivia: { token } }) => ({
+const mapStateToProps = ({ trivia: { token, showButton } }) => ({
   token,
+  showButton,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  hideButton: (state) => dispatch(showBtnAction(state)),
 });
 
 Trivia.propTypes = {
@@ -77,6 +93,8 @@ Trivia.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  showButton: PropTypes.bool.isRequired,
+  hideButton: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Trivia);
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);

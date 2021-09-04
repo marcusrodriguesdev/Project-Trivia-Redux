@@ -12,8 +12,8 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    const { name, points } = this.props;
-    const player = { name, score: points };
+    const { name, points, email } = this.props;
+    const player = { name, score: points, gravatarEmail: email };
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
