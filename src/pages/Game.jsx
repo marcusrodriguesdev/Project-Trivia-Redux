@@ -82,8 +82,8 @@ class Game extends Component {
 
     return (
       <div>
-        <p data-test-id="question-category">{trivia[index].category}</p>
-        <p data-test-id="question-text">{trivia[index].question}</p>
+        <p data-testid="question-category">{trivia[index].category}</p>
+        <p data-testid="question-text">{trivia[index].question}</p>
         { newArray.map((element, ordem) => <span key={ ordem }>{element}</span>)}
         <button type="button" onClick={ this.nextButton }>clicar</button>
       </div>
