@@ -10,7 +10,7 @@ class Game extends React.Component {
   render() {
     const { playerName } = this.props;
 
-    // const emailMD5 = md5(playerEmail).toString();
+    // const emailMD5 = md5(playerEmail).toString()     ;
 
     return (
       <div>
