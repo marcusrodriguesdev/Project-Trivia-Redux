@@ -12,15 +12,26 @@ class Home extends React.Component {
 
     this.state = {
       questions: [],
+      currentQuestionIndex: 0,
+      currentQuestion: {},
       loading: true,
     };
 
     this.fetchAndStoreQuestions = this.fetchAndStoreQuestions.bind(this);
+    this.nextClick = this.nextClick.bind(this);
+    this.setCurrentQuestion = this.setCurrentQuestion.bind(this);
   }
 
   componentDidMount() {
     this.fetchAndStoreQuestions();
     this.setLocalStorageInitial();
+  }
+
+  setCurrentQuestion(index) {
+    const { questions } = this.state;
+    this.setState({
+      currentQuestion: questions[index],
+    });
   }
 
   setLocalStorageInitial() {
@@ -37,34 +48,54 @@ class Home extends React.Component {
 
   async fetchAndStoreQuestions() {
     const { token } = this.props;
-    console.log(token);
+    const { currentQuestionIndex } = this.state;
     const re2 = await fetchTriviaQuestions(token);
     const { results } = re2;
     this.setState({
       questions: [...results],
-      difficulty: results[0].difficulty,
+    });
+    this.setCurrentQuestion(currentQuestionIndex);
+    this.setState({
       loading: false,
     });
   }
 
+  nextClick() {
+    const { currentQuestionIndex, questions } = this.state;
+    const newQuestionIndex = currentQuestionIndex + 1;
+    if (newQuestionIndex === questions.length) {
+      this.setState({
+        currentQuestionIndex: 0,
+      });
+      this.setCurrentQuestion(0);
+    } else {
+      this.setState({
+        currentQuestionIndex: newQuestionIndex,
+      });
+      this.setCurrentQuestion(newQuestionIndex);
+    }
+  }
+
   render() {
-    const { questions, loading, difficulty } = this.state;
-    const question = questions[0];
+    const { loading, currentQuestion } = this.state;
     if (loading) {
       return (
         <div>carregando...</div>
       );
     }
+
     return (
       <>
         <Header />
         <Question
-          key={ question.question }
-          category={ question.category }
-          question={ question.question }
-          correctAnswer={ question.correct_answer }
-          incorrectAnswers={ question.incorrect_answers }
-          difficulty={ difficulty }
+          key={ currentQuestion.question }
+          category={ currentQuestion.category }
+          question={ currentQuestion.question }
+          correctAnswer={ currentQuestion.correct_answer }
+          incorrectAnswers={ currentQuestion.incorrect_answers }
+          answerClick={ this.answerClick }
+          nextClick={ this.nextClick }
+          difficulty={ currentQuestion.difficulty }
         />
         <StopWatch />
       </>

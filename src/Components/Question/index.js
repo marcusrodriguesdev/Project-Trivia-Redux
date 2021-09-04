@@ -11,17 +11,32 @@ class Question extends React.Component {
     const { correctAnswer } = this.props;
     this.state = {
       correctAnswerIdentifier: correctAnswer,
+      answerList: [],
     };
     this.handleClick = this.handleClick.bind(this);
-    this.calcPonts = this.calcPonts.bind(this);
+    this.setAnswersList = this.setAnswersList.bind(this);
+  }
+
+  componentDidMount() {
+    const { correctAnswer, incorrectAnswers } = this.props;
+    const answerList = [correctAnswer, ...incorrectAnswers];
+    const shuffledList = shuffleList(answerList);
+    this.setAnswersList(shuffledList);
+  }
+
+  setAnswersList(list) {
+    this.setState({
+      answerList: list,
+    });
   }
 
   handleClick({ target }) {
-    const { correctAnswer } = this.props;
+    const { correctAnswer, setTimeGlobal } = this.props;
     const AllButtons = document.querySelectorAll('button');
     AllButtons.forEach((button) => (correctAnswer === button.innerText
       ? button.classList.add('answer-correct')
       : button.classList.add('answer-wrong')));
+    setTimeGlobal(true);
     if (target.innerText === correctAnswer) { this.calcPonts(); }
   }
 
@@ -40,11 +55,25 @@ class Question extends React.Component {
     localStorage.setItem('state', JSON.stringify(newLocal));
   }
 
+  renderNexButton() {
+    const { nextClick, setTimeGlobal } = this.props;
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => {
+          nextClick();
+          setTimeGlobal(false);
+        } }
+      >
+        Próxima
+      </button>
+    );
+  }
+
   render() {
-    const { isTimer, category, question, correctAnswer, incorrectAnswers } = this.props;
-    const answerList = [correctAnswer, ...incorrectAnswers];
-    const shuffledList = shuffleList(answerList);
-    const { correctAnswerIdentifier } = this.state;
+    const { category, question, isTimer } = this.props;
+    const { correctAnswerIdentifier, answerList } = this.state;
     return (
       <div>
         <div data-testid="question-category">
@@ -55,7 +84,7 @@ class Question extends React.Component {
           Pergunta:
           { question }
         </div>
-        { shuffledList.map((element) => {
+        { answerList.map((element) => {
           if (element === correctAnswerIdentifier) {
             return (
               <button
@@ -81,6 +110,7 @@ class Question extends React.Component {
             </button>
           );
         }) }
+        { isTimer ? this.renderNexButton() : undefined }
       </div>
     );
   }
@@ -91,8 +121,10 @@ Question.propTypes = {
   question: PropTypes.string.isRequired,
   correctAnswer: PropTypes.string.isRequired,
   isTimer: PropTypes.bool.isRequired,
-  difficulty: PropTypes.string.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  nextClick: PropTypes.func.isRequired,
+  setTimeGlobal: PropTypes.func.isRequired,
+  difficulty: PropTypes.string.isRequired,
 };
 
 const MapStateToProps = (state) => ({
