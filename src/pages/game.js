@@ -110,7 +110,6 @@ class game extends Component {
                   data-testid="correct-answer"
                   disabled={ timer === 0 }
                   onClick={ () => this.handleCorrectAnswer(data.difficulty) }
-                  style={ { backgroundColor: 'red' } }
                 >
                   { answer }
                 </button>
