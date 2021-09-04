@@ -1,29 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../css/Alternatives.css';
 
 import { connect } from 'react-redux';
 
 class Alternatives extends React.Component {
-  displayAnswer() {
-    const { questions: { results } } = this.props;
+  displayAnswer(applyColor) {
+    const { questions: { results }, questionNumber } = this.props;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
-    } = results[0];
+    } = results[questionNumber];
+
     return (
       <div>
         <button
           type="button"
-          key="alternative"
           data-testid="correct-answer"
+          className="correct"
+          onClick={ applyColor }
         >
           { correctAnswer }
         </button>
+
         {incorrectAnswer.map((wrongAnswer, index) => (
           <button
             type="button"
-            key="alternative"
+            key={ index }
             data-testid={ `wrong-answer-${index}` }
+            id="wrong-answer"
+            onClick={ applyColor }
+            className="incorrect"
           >
             { wrongAnswer }
           </button>))}
@@ -32,10 +39,10 @@ class Alternatives extends React.Component {
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, applyColor } = this.props;
     return (
       <div>
-        {!loading && this.displayAnswer()}
+        {!loading && this.displayAnswer(applyColor)}
       </div>
     );
   }
@@ -47,7 +54,9 @@ const mapStateToProps = (state) => ({
 });
 
 Alternatives.propTypes = {
+  applyColor: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  questionNumber: PropTypes.number.isRequired,
   questions: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
