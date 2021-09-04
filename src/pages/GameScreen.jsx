@@ -7,10 +7,13 @@ class GameScreen extends React.Component {
   constructor() {
     super();
     this.randomAnswer = this.randomAnswer.bind(this);
+    this.clickChange = this.clickChange.bind(this);
 
     this.state = {
       answers: [],
       correctAnswer: '',
+      rigthBorder: '',
+      wrongBorder: '',
     };
   }
 
@@ -41,9 +44,13 @@ class GameScreen extends React.Component {
     this.setState({ answers: arrayAnswers, correctAnswer });
   }
 
+  clickChange() {
+    this.setState({ rigthBorder: 'green-border', wrongBorder: 'red-border' });
+  }
+
   render() {
     const { quest } = this.props;
-    const { answers, correctAnswer } = this.state;
+    const { answers, correctAnswer, rigthBorder, wrongBorder } = this.state;
     const loading = <h1>loading</h1>;
     if (!quest.results) return loading;
 
@@ -58,13 +65,21 @@ class GameScreen extends React.Component {
                 data-testid="correct-answer"
                 key={ answer }
                 type="button"
+                className={ rigthBorder }
+                onClick={ this.clickChange }
               >
                 { answer }
               </button>
             );
           }
           return (
-            <button data-testid={ `wrong-answer-${index}` } key={ answer } type="button">
+            <button
+              data-testid={ `wrong-answer-${index}` }
+              key={ answer }
+              className={ wrongBorder }
+              onClick={ this.clickChange }
+              type="button"
+            >
               { answer }
             </button>
           );
