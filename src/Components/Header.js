@@ -11,6 +11,12 @@ class Header extends React.Component {
     this.fetchAvatar = this.fetchAvatar.bind(this);
   }
 
+  componentDidMount() {
+    const { name, points } = this.props;
+    const player = { name, score: points };
+    localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
   fetchAvatar() {
     const { email } = this.props;
     const hashGerada = CryptoJS.MD5(email).toString();
@@ -21,7 +27,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { name } = this.props;
+    const { name, points } = this.props;
     return (
       <header>
         <img
@@ -29,23 +35,23 @@ class Header extends React.Component {
           src={ this.fetchAvatar() }
           alt="Foto de perfil do Usuario"
         />
-        <p>
-          <span data-testid="header-player-name">{ name }</span>
-          <span data-testid="header-score"> 0 </span>
-        </p>
+        <p data-testid="header-player-name">{ name }</p>
+        <p data-testid="header-score">{ points }</p>
       </header>
     );
   }
 }
 
-const mapStateToProps = ({ user: { email, name } }) => ({
+const mapStateToProps = ({ user: { email, name }, trivia: { points } }) => ({
   email,
   name,
+  points,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  points: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
