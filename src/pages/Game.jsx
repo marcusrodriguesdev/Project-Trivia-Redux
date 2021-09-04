@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
+import PropTypes from 'prop-types';
 
 import { fecthApiThunk } from '../Redux/action';
-// import AnswerBoolean from '../components/AnswerBoolean';
-// import AnswerMultiple from '../components/AnswerMultiple';
+import Header from '../components/Header';
 
 import '../styles/main.css';
 
@@ -15,11 +13,15 @@ class Game extends Component {
 
     this.state = {
       next: 0,
+      wrong: '',
+      correct: '',
+      disabled: false,
     };
 
     this.requestApiQuestions = this.requestApiQuestions.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.validateAnswers = this.validateAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -34,38 +36,68 @@ class Game extends Component {
     setQuestions(token);
   }
 
+  validateAnswers() {
+    this.setState({
+      wrong: 'wrong-answer-css ',
+      correct: 'correct-answer-css ',
+      disabled: true,
+    });
+  }
+
   nextQuestion() {
     const { results } = this.props;
     const { next } = this.state;
-
     if (next < results.length - 1) this.setState({ next: next + 1 });
+    this.setState({
+      wrong: '',
+      correct: '',
+      disabled: false,
+    });
   }
 
   renderQuestions() {
     const { results } = this.props;
-    const { next } = this.state;
-
+    const { next, wrong, correct, disabled } = this.state;
     if (results.length > 0) {
       return (
         <div className="question-box">
-          <div>
+          <div className="container-question">
             <h2 data-testid="question-category">{ results[next].category }</h2>
             <h3 data-testid="question-text">{ results[next].question }</h3>
-            <p data-testid="correct-answer">{ results[next].correct_answer }</p>
           </div>
           <div className="question-answers">
             {
-              results[0].incorrect_answers.map((answers, index) => (
-                <div key={ index }>
-                  <button
-                    type="button"
-                    data-testid={ `wrong-answer-${index}` }
-                    onClick={ () => console.log(answers) }
-                  >
-                    { answers }
-                  </button>
-                </div>
-              ))
+              [...results[0].incorrect_answers, results[next].correct_answer]
+                .sort()
+                .map((answers, index) => {
+                  if (answers === results[next].correct_answer) {
+                    return (
+                      <button
+                        className={ correct }
+                        type="button"
+                        disabled={ disabled }
+                        onClick={ this.validateAnswers }
+                        id={ answers }
+                        key={ index }
+                        data-testid="correct-answer"
+                      >
+                        { answers }
+                      </button>
+                    );
+                  } return (
+                    <button
+                      key={ index }
+                      type="button"
+                      className={ wrong }
+                      disabled={ disabled }
+                      onClick={ this.validateAnswers }
+                      id={ answers }
+                      data-testid={ `wrong-answer-${index}` }
+                    >
+                      { answers }
+                    </button>
+                  );
+                })
             }
           </div>
         </div>
@@ -76,29 +108,18 @@ class Game extends Component {
   render() {
     const { results } = this.props;
     if (!results) return <span>Loading</span>;
+
     return (
       <div className="main-content">
         <Header />
-        <div className="question-box">
-          <div className="container-question">
-            {
-              this.renderQuestions()
-            }
-          </div>
-
-          <div className="question-answers">
-            {/* <AnswerBoolean answers={} />
-            <AnswerMultiple answers={} /> */}
-          </div>
-
-        </div>
+        { this.renderQuestions() }
 
         <div className="box-buttons">
           <button
             type="button"
             onClick={ this.nextQuestion }
           >
-            Próximas
+            Próxima
           </button>
         </div>
       </div>
