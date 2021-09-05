@@ -1,9 +1,9 @@
-import { SET_PLAYER_VALUE } from '../actions/index';
+import { SET_PLAYER_VALUE, SCORE_TYPE } from '../actions/index';
 
 const INITIAL_STATE = {
   name: '',
   assertions: '',
-  score: '',
+  score: 0,
   gravatarEmail: '',
 };
 
@@ -14,6 +14,11 @@ const player = (state = INITIAL_STATE, action) => {
       ...state,
       name: action.payload.name,
       gravatarEmail: action.payload.email,
+    };
+  case SCORE_TYPE:
+    return {
+      ...state,
+      score: action.payload.score,
     };
   default:
     return state;
