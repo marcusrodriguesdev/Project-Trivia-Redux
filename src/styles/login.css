@@ -24,6 +24,7 @@
 }
 
 .main-form input {
+  border: 6px solid rgb(21, 134, 82);
   box-sizing: border-box;
   font-size: 20px;
   margin: 10px;
