@@ -3,10 +3,16 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 
 class Feedback extends React.Component {
-  handleButton() {
+  handlePlayAgainBtn() {
     const { history } = this.props;
 
     history.push('/');
+  }
+
+  handleRankingBtn() {
+    const { history } = this.props;
+
+    history.push('/ranking');
   }
 
   render() {
@@ -17,11 +23,17 @@ class Feedback extends React.Component {
           <button
             type="button"
             data-testid="btn-play-again"
-            onClick={ this.handleButton.bind(this) }
+            onClick={ this.handlePlayAgainBtn.bind(this) }
           >
             Jogar novamente
           </button>
-
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.handleRankingBtn.bind(this) }
+          >
+            Ver ranking
+          </button>
         </main>
       </div>
     );
