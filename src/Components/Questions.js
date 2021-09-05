@@ -29,10 +29,12 @@ class Questions extends React.Component {
     this.interval = setInterval(
       () => this.setState((previousTime) => ({ timer: previousTime.timer - 1 }), () => {
         const { timer, answered } = this.state;
+        const { showNextButton } = this.props;
         const maximumTime = 0;
         if (timer === maximumTime) {
           clearInterval(this.interval);
           this.setState({ answered: !answered });
+          showNextButton(this.state);
         }
       }),
       ONE_SECOND,
@@ -120,7 +122,7 @@ class Questions extends React.Component {
 }
 
 Questions.propTypes = {
-  question: PropTypes.arrayOf(PropTypes.string).isRequired,
+  question: PropTypes.shape().isRequired,
   savePoints: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   statePoints: PropTypes.number.isRequired,
