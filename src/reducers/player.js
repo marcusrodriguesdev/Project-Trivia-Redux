@@ -2,7 +2,7 @@ import { SET_PLAYER_VALUE, SCORE_TYPE } from '../actions/index';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -19,6 +19,7 @@ const player = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.payload.score,
+      assertions: state.assertions + 1,
     };
   default:
     return state;

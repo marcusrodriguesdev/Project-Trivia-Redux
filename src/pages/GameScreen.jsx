@@ -75,8 +75,8 @@ class GameScreen extends React.Component {
       default:
         score = NUMBER_POINTS + (countdown * 1);
       }
-      this.localStorageUpdate(score);
       scoreUpdater(score);
+      this.localStorageUpdate(score);
     }
 
     this.setState({
@@ -91,10 +91,14 @@ class GameScreen extends React.Component {
 
     if (localStorage.state) {
       const state = JSON.parse(localStorage.state);
-      const { score: stateScore } = state.player;
+      const { score: stateScore, assertions: assertionsState } = state.player;
 
       const playerObject = {
-        player: { ...state.player, assertions, score: score + stateScore },
+        player: {
+          ...state.player,
+          assertions: assertions + assertionsState,
+          score: score + stateScore,
+        },
       };
 
       localStorage.state = JSON.stringify(playerObject);
@@ -192,7 +196,7 @@ class GameScreen extends React.Component {
   }
 
   render() {
-    this.localStorageUpdate();
+    if (!localStorage.state) this.localStorageUpdate();
     const { disable } = this.state;
     const { quest } = this.props;
     if (!quest.results) return <h1>loading</h1>;
