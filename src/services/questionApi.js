@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import shuffleAnswers from '../utils/shuffleAnswers';
+
 const TOKEN_ENDPOINT = 'https://opentdb.com/api_token.php?command=request';
 const QUESTION_ENDPOINT = 'https://opentdb.com/api.php?amount=5';
 
@@ -14,14 +16,19 @@ export const getQuestions = async (token) => {
     `${QUESTION_ENDPOINT}&token=${token}&encode=url3986`,
   );
 
-  const decodedResults = data.results.map((questionInfo) => ({
-    question: decodeURIComponent(questionInfo.question),
-    correctAnswer: decodeURIComponent(questionInfo.correct_answer),
-    category: decodeURIComponent(questionInfo.category),
-    incorrectAnswers: questionInfo.incorrect_answers.map((answer) => (
-      decodeURIComponent(answer)
-    )),
-  }));
+  const decodedResults = data.results.map((questionInfo) => {
+    const shuffledAnswers = shuffleAnswers(
+      questionInfo.incorrect_answers,
+      questionInfo.correct_answer,
+    );
+
+    return {
+      question: decodeURIComponent(questionInfo.question),
+      category: decodeURIComponent(questionInfo.category),
+      correctAnswer: decodeURIComponent(questionInfo.correct_answer),
+      shuffledAnswers,
+    };
+  });
 
   return decodedResults;
 };

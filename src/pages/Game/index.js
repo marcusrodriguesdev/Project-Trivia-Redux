@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import Question from '../../components/Question';
 import Timer from '../../components/Timer';
 
-import { fetchQuestionsThunk } from '../../redux/actions/gameActions';
+import {
+  fetchQuestionsThunk,
+  nextQuestion as nextQuestionAction,
+} from '../../redux/actions/gameActions';
 
 class Game extends Component {
   constructor(props) {
@@ -16,6 +19,7 @@ class Game extends Component {
     };
 
     this.setTimeOver = this.setTimeOver.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +34,16 @@ class Game extends Component {
     });
   }
 
+  handleNextQuestion() {
+    const { history, nextQuestion, questionIndex, questions } = this.props;
+
+    if (questionIndex < questions.length - 1) {
+      nextQuestion();
+    } else {
+      history.push('/feedback');
+    }
+  }
+
   render() {
     const { timeOver } = this.state;
 
@@ -38,7 +52,7 @@ class Game extends Component {
     return (
       <div>
         <h1>Game</h1>
-        <Timer setTimeOver={ this.setTimeOver } />
+        <Timer key={ questionIndex } setTimeOver={ this.setTimeOver } />
         {questions.length && (
           <Question
             timeOver={ timeOver }
@@ -46,7 +60,11 @@ class Game extends Component {
           />
         )}
         {guessed && (
-          <button data-testid="btn-next" type="button">
+          <button
+            data-testid="btn-next"
+            type="button"
+            onClick={ this.handleNextQuestion }
+          >
             Próxima
           </button>
         )}
@@ -58,8 +76,12 @@ class Game extends Component {
 Game.propTypes = {
   guessed: PropTypes.bool.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   questionIndex: PropTypes.number.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
@@ -70,6 +92,7 @@ const mapStateToProps = ({ game }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: () => dispatch(fetchQuestionsThunk()),
+  nextQuestion: () => dispatch(nextQuestionAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

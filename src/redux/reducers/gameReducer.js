@@ -13,7 +13,11 @@ const gameReducer = (state = INITIAL_STATE, action) => {
   case GAME_ACTIONS.GUESS:
     return { ...state, guessed: true };
   case GAME_ACTIONS.NEXT_QUESTION:
-    return { ...state, guessed: false };
+    return {
+      ...state,
+      guessed: false,
+      questionIndex: state.questionIndex + 1,
+    };
   case GAME_ACTIONS.REQUEST_API:
     return { ...state, isFetching: true };
   case GAME_ACTIONS.FAILED_REQUEST:
