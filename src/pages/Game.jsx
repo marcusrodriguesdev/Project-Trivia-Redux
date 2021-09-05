@@ -115,17 +115,21 @@ class Game extends Component {
   }
 
   nextQuestion() {
-    const { results } = this.props;
+    const { results, history } = this.props;
     const { next } = this.state;
-    if (next < results.length - 1) this.setState((prev) => ({ next: prev.next + 1 }));
-    this.setState({
-      wrong: '',
-      correct: '',
-      disabled: false,
-      time: 30,
-    });
-
-    this.createClock();
+    if (next < results.length - 1) {
+      this.setState((prev) => ({
+        next: prev.next + 1,
+      }));
+      this.setState({
+        wrong: '',
+        correct: '',
+        disabled: false,
+        time: 30,
+      });
+      this.createClock();
+    }
+    if (next + 1 > results.length - 1) history.push('/feedback');
   }
 
   renderQuestions() {
@@ -220,4 +224,5 @@ Game.propTypes = {
   setQuestions: PropTypes.func.isRequired,
   results: PropTypes.arrayOf(String).isRequired,
   user: PropTypes.objectOf(String).isRequired,
+  history: PropTypes.objectOf(String).isRequired,
 };

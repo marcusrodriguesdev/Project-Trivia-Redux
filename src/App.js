@@ -6,6 +6,7 @@ import './App.css';
 import Game from './pages/Game';
 
 import Login from './pages/Login';
+import Feedback from './pages/Feedback';
 
 export default class App extends React.Component {
   constructor() {
@@ -18,8 +19,9 @@ export default class App extends React.Component {
       <div className="App">
         <Switch>
           <Route exact path="/" component={ Login } />
-          <Route path="/settings" component={ Settings } />
+          <Route exact path="/settings" component={ Settings } />
           <Route exact path="/game" component={ Game } />
+          <Route exact path="/feedback" component={ Feedback } />
         </Switch>
       </div>
     );
