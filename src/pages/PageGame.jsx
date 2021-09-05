@@ -9,10 +9,15 @@ class PageGame extends React.Component {
     this.state = {
       counter: 0,
       imgPath: '',
+      styleButtons: {
+        correct: { border: '' },
+        incorrect: { border: '' },
+      },
     };
 
     this.questionsSort = this.questionsSort.bind(this);
     this.handleImg = this.handleImg.bind(this);
+    this.handleQuestionClick = this.handleQuestionClick.bind(this);
   }
 
   async componentDidMount() {
@@ -27,11 +32,20 @@ class PageGame extends React.Component {
     });
   }
 
+  handleQuestionClick() {
+    this.setState({
+      styleButtons: {
+        correct: { border: '3px solid rgb(6, 240, 15)' },
+        incorrect: { border: '3px solid red' },
+      },
+    });
+  }
+
   // referencs https://flaviocopes.com/how-to-shuffle-array-javascript/
   questionsSort() {
     const initialNumber = -1;
     const maxRange = 0.5;
-    const { counter } = this.state;
+    const { counter, styleButtons } = this.state;
     const { results } = this.props;
     let incorrectAnswersIndex = initialNumber;
     let allAnswers = [results[counter].correct_answer,
@@ -42,11 +56,23 @@ class PageGame extends React.Component {
       <div>
         {allAnswers.map((answer) => {
           if (answer === results[counter].correct_answer) {
-            return (<button type="button" data-testid="correct-answer">{answer}</button>);
+            return (
+              <button
+                onClick={ this.handleQuestionClick }
+                style={ styleButtons.correct }
+                className="correct-answer"
+                type="button"
+                data-testid="correct-answer"
+              >
+                {answer}
+              </button>);
           }
           incorrectAnswersIndex += 1;
           return (
             <button
+              onClick={ this.handleQuestionClick }
+              style={ styleButtons.incorrect }
+              className="wrong-answer"
               type="button"
               key={ incorrectAnswersIndex }
               data-testid={ `wrong-answer-${incorrectAnswersIndex}` }
