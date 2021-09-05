@@ -28,6 +28,7 @@ class Question extends React.Component {
 
   componentDidMount() {
     this.getTriviaApiResponse();
+    this.timeToRespond();
   }
 
   async getTriviaApiResponse() {
@@ -41,19 +42,18 @@ class Question extends React.Component {
     });
   }
 
-  borderColor({ target }) {
-    if (target.id === 'correta') {
-      target.className = 'green-border';
-      document.querySelectorAll('#incorreta').forEach((button) => {
-        button.className = 'red-border';
-      });
-    }
-    if (target.id === 'incorreta') {
-      document.querySelectorAll('#incorreta').forEach((button) => {
-        button.className = 'red-border';
-      });
-      document.getElementById('correta').className = 'green-border';
-    }
+  borderColor() {
+    document.querySelectorAll('#incorreta').forEach((button) => {
+      button.className = 'red-border';
+    });
+    document.getElementById('correta').className = 'green-border';
+  }
+
+  timeToRespond() {
+    const THIRTY_SECONDS = 30000;
+    setInterval(() => document.querySelectorAll('button').forEach((button) => {
+      button.disabled = true;
+    }), THIRTY_SECONDS);
   }
 
   correctAnswer(alternative, index) {
