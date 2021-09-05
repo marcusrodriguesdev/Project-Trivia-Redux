@@ -11,6 +11,8 @@ class GameScreen extends React.Component {
     this.countdown = this.countdown.bind(this);
     this.timer = this.timer.bind(this);
     this.localStorageUpdate = this.localStorageUpdate.bind(this);
+    this.renderButtons = this.renderButtons.bind(this);
+    this.nextAnswer = this.nextAnswer.bind(this);
 
     this.state = {
       answers: [],
@@ -19,6 +21,7 @@ class GameScreen extends React.Component {
       wrongBorder: '',
       disable: false,
       countdown: 30,
+      index: 0,
     };
   }
 
@@ -31,10 +34,11 @@ class GameScreen extends React.Component {
   }
 
   randomAnswer() {
+    const { index: questIndex } = this.state;
     const { quest } = this.props;
     const {
       incorrect_answers: incorrectAnswer,
-      correct_answer: correctAnswer } = quest.results[0];
+      correct_answer: correctAnswer } = quest.results[questIndex];
     const arrayLength = incorrectAnswer.length + 1;
     const arrayAnswers = Array(arrayLength).fill('');
     const randomNumber = Math.floor(Math.random() * arrayLength);
@@ -53,9 +57,9 @@ class GameScreen extends React.Component {
 
   clickChange({ target }) {
     const { id } = target;
-    const { countdown } = this.state;
+    const { countdown, index } = this.state;
     const { quest, scoreUpdater } = this.props;
-    const { difficulty } = quest.results[0];
+    const { difficulty } = quest.results[index];
     const NUMBER_POINTS = 10;
     const HARD_POINTS = 3;
     let score = 0;
@@ -75,7 +79,11 @@ class GameScreen extends React.Component {
       scoreUpdater(score);
     }
 
-    this.setState({ rigthBorder: 'green-border', wrongBorder: 'red-border' });
+    this.setState({
+      rigthBorder: 'green-border',
+      wrongBorder: 'red-border',
+      disable: true,
+    });
   }
 
   localStorageUpdate(score = 0) {
@@ -112,8 +120,28 @@ class GameScreen extends React.Component {
     }, TIME_UPDATE);
   }
 
-  render() {
-    this.localStorageUpdate();
+  nextAnswer() {
+    const { history } = this.props;
+    const { index } = this.state;
+    const INDEX_LIMIT = 4;
+
+    if (index < INDEX_LIMIT) {
+      this.setState({
+        index: index + 1,
+        disable: false,
+        countdown: 30,
+        rigthBorder: '',
+        wrongBorder: '',
+      }, () => {
+        this.randomAnswer();
+        this.countdown();
+      });
+    } else {
+      history.push('/feedback');
+    }
+  }
+
+  renderButtons() {
     const { quest } = this.props;
     const {
       answers,
@@ -122,12 +150,12 @@ class GameScreen extends React.Component {
       wrongBorder,
       disable,
       countdown,
+      index: questIndex,
     } = this.state;
-    if (!quest.results) return <h1>loading</h1>;
     return (
       <div>
-        <h1 data-testid="question-category">{ quest.results[0].category }</h1>
-        <p data-testid="question-text">{ quest.results[0].question }</p>
+        <h1 data-testid="question-category">{ quest.results[questIndex].category }</h1>
+        <p data-testid="question-text">{ quest.results[questIndex].question }</p>
         <h3>{ countdown }</h3>
         { disable && clearInterval(this.timeout)}
         { answers && answers.map((answer, index) => {
@@ -159,6 +187,28 @@ class GameScreen extends React.Component {
             </button>
           );
         }) }
+      </div>
+    );
+  }
+
+  render() {
+    this.localStorageUpdate();
+    const { disable } = this.state;
+    const { quest } = this.props;
+    if (!quest.results) return <h1>loading</h1>;
+
+    return (
+      <div>
+        { this.renderButtons() }
+        { disable
+          && (
+            <button
+              data-testid="btn-next"
+              onClick={ this.nextAnswer }
+              type="button"
+            >
+              Próxima
+            </button>)}
       </div>
     );
   }
