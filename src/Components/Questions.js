@@ -16,6 +16,7 @@ class Questions extends React.Component {
       answered: false,
       timer: 30,
       points: 10,
+      assertionsAdd: 1,
       showButton: true,
     };
 
@@ -42,8 +43,8 @@ class Questions extends React.Component {
   }
 
   componentDidUpdate() {
-    const { name, statePoints, email } = this.props;
-    const player = { name, score: statePoints, gravatarEmail: email };
+    const { name, statePoints, email, assertions } = this.props;
+    const player = { name, score: statePoints, gravatarEmail: email, assertions };
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
@@ -128,12 +129,14 @@ Questions.propTypes = {
   statePoints: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   showNextButton: PropTypes.func.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ user: { email, name }, trivia: { points } }) => ({
+const mapStateToProps = ({ user: { email, name }, trivia: { points, assertions } }) => ({
   email,
   name,
   statePoints: points,
+  assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../Components/Header';
 
 class Feedback extends React.Component {
@@ -16,10 +17,14 @@ class Feedback extends React.Component {
   }
 
   render() {
+    const { assertions } = this.props;
+    const standardValue = 3;
+    const message = assertions < standardValue ? 'Podia ser melhor...' : 'Mandou bem!';
     return (
       <div data-testid="feedback-text">
         <Header />
         <main>
+          <p data-testid="feedback-text">{ message }</p>
           <button
             type="button"
             data-testid="btn-play-again"
@@ -44,6 +49,11 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
-export default Feedback;
+const mapStateToProps = ({ trivia: { assertions } }) => ({
+  assertions,
+});
+
+export default connect(mapStateToProps)(Feedback);
