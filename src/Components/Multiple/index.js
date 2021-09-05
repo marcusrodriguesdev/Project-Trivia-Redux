@@ -1,121 +1,129 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import Button from '../Button';
-import { setIsClicked } from '../../Redux/Action';
+import {
+  changeVisibility,
+  fetchAPIThunk,
+  setIsClicked,
+  updateScore as updateScoreAction,
+} from '../../Redux/Action';
 import '../../Styles/trivia.css';
+import { updateAssertionsAndScore } from '../../helpers/localStorage';
 
+const MAX_INDEX = 4;
 class Multiple extends Component {
   constructor() {
     super();
 
     this.state = {
-      result: [],
-      loading: true,
+      index: 0,
+      redirect: false,
     };
 
-    this.fetchTriviaAPI = this.fetchTriviaAPI.bind(this);
     this.renderQuestionAndAnswers = this.renderQuestionAndAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
+    this.requestAPI = this.requestAPI.bind(this);
   }
 
   componentDidMount() {
-    this.fetchTriviaAPI();
+    this.requestAPI();
   }
 
-  async fetchTriviaAPI() {
-    const { token } = this.props;
-    const triviaURL = `https://opentdb.com/api.php?amount=5&token=${token}`;
-    const response = await (await fetch(triviaURL)).json();
-    if (response.response_code === '0') {
-      this.setState({
-        result: response.results[0],
-        loading: false,
-      });
+  requestAPI() {
+    const { fetchAPI, token } = this.props;
+    fetchAPI(token);
+  }
+
+  handleClick({ target: { id } }) {
+    const { toggleDisabled, toggleVisibility, result } = this.props;
+    const { index } = this.state;
+    toggleDisabled();
+    toggleVisibility();
+    if (id === 'correct-answer') {
+      const TEN = 10;
+      const { updateScore, seconds } = this.props;
+      const { difficultyLevel } = result[index];
+      updateAssertionsAndScore(difficultyLevel, seconds);
+      const score = 0;
+      const totalScore = score + (TEN + (difficultyLevel * seconds));
+      updateScore(totalScore);
+    }
+  }
+
+  changeQuestion() {
+    const { toggleDisabled, toggleVisibility } = this.props;
+    const { index } = this.state;
+    if (index < MAX_INDEX) {
+      this.setState((prevState) => ({
+        index: prevState.index + 1,
+      }));
     } else {
-      const newResponse = await (await fetch(triviaURL)).json();
-      this.setState({
-        result: newResponse.results[0],
-        loading: false,
-      });
+      this.setState({ redirect: true });
     }
-  }
-
-  randomizeArray(array) {
-    for (let index = array.length - 1; index > 0; index -= 1) {
-      const secondIndex = Math.floor(Math.random() * (index + 1));
-      const tempNumber = array[index];
-      array[index] = array[secondIndex];
-      array[secondIndex] = tempNumber;
-    }
-    return array;
-  }
-
-  handleClick() {
-    const { toggleDisabled } = this.props;
+    toggleVisibility();
     toggleDisabled();
   }
 
   renderQuestionAndAnswers() {
-    const { result } = this.state;
-    const { isClicked } = this.props;
-    const {
-      question,
-      category,
-      correct_answer: correctAnswer,
-      incorrect_answers: wrongAnswer,
-    } = result;
+    const { isClicked, result } = this.props;
+    const { index } = this.state;
 
-    if (wrongAnswer.length > 0) {
-      const answersArray = [correctAnswer, ...wrongAnswer];
-      const randomAnswerArray = this.randomizeArray(answersArray);
-      const correct = randomAnswerArray.find((text) => text === correctAnswer);
-
+    if (result.length) {
+      const { category, question, answers, correctAnswer } = result[index];
+      const correct = answers.find((text) => text === correctAnswer);
       return (
         <>
           <p data-testid="question-category">{category}</p>
           <p data-testid="question-text">{question}</p>
-          {
-            randomAnswerArray.map((answer, secondIndex) => (
-              correct === answer
-                ? (
-                  <Button
-                    key={ secondIndex }
-                    text={ correct }
-                    id="correct-answer"
-                    dataTest="correct-answer"
-                    onClick={ this.handleClick }
-                    disabled={ isClicked }
-                  />
-                )
-                : (
-                  <Button
-                    key={ secondIndex }
-                    text={ answer }
-                    id="wrong-answer"
-                    dataTest={ `wrong-answer-${secondIndex}` }
-                    onClick={ this.handleClick }
-                    disabled={ isClicked }
-                  />
-                )
-            ))
-          }
+          { answers.map((answer, mapIndex) => (
+            correct === answer
+              ? (
+                <Button
+                  key={ mapIndex }
+                  text={ correct }
+                  id="correct-answer"
+                  dataTest="correct-answer"
+                  onClick={ this.handleClick }
+                  disabled={ isClicked }
+                />
+              )
+              : (
+                <Button
+                  key={ mapIndex }
+                  text={ answer }
+                  id="wrong-answer"
+                  dataTest={ `wrong-answer-${index}` }
+                  onClick={ this.handleClick }
+                  disabled={ isClicked }
+                />
+              )
+          )) }
         </>
       );
     }
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, isVisible } = this.props;
+    const { redirect } = this.state;
     if (loading) {
       return (
         <p>Carregando...</p>
       );
     }
-
+    if (redirect) return <Redirect to="/feedback" />;
     return (
       <>
         { this.renderQuestionAndAnswers() }
+        { isVisible
+        && <Button
+          text="Próxima"
+          dataTest="btn-next"
+          onClick={ this.changeQuestion }
+        />}
       </>
     );
   }
@@ -125,13 +133,20 @@ Multiple.propTypes = {
   token: PropTypes.string,
 }.isRequired;
 
-const mapStateToProps = ({ user, trivia }) => ({
+const mapStateToProps = ({ user, trivia, timer }) => ({
   token: user.token,
   isClicked: trivia.isClicked,
+  result: trivia.result,
+  isVisible: trivia.isVisible,
+  loading: trivia.loading,
+  seconds: timer.seconds,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   toggleDisabled: () => dispatch(setIsClicked()),
+  fetchAPI: (token) => dispatch(fetchAPIThunk(token)),
+  toggleVisibility: () => dispatch(changeVisibility()),
+  updateScore: (score) => dispatch(updateScoreAction(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multiple);

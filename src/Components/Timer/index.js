@@ -1,30 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setIsClicked, updateTimer } from '../../Redux/Action';
+import {
+  changeVisibility,
+  getSeconds as getSecondsAction,
+  setIsClicked,
+  toggleStatusCronometer,
+} from '../../Redux/Action';
 
 class Timer extends Component {
-  constructor() {
-    super();
-    this.setTime = this.setTime.bind(this);
+  constructor(props) {
+    super(props);
 
     this.state = {
-      timer: 30,
-      refInterval: null,
+      seconds: props.seconds,
     };
+
+    this.setTime = this.setTime.bind(this);
   }
 
   componentDidMount() {
     this.setTime();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const { timer, refInterval } = nextState;
-    const { toggleDisabled } = nextProps;
-
-    if (timer < 0) {
-      clearInterval(refInterval);
+  shouldComponentUpdate(_, prevState) {
+    const {
+      toggleDisabled,
+      toggleVisibility,
+    } = this.props;
+    const MIN_SECONDS = 0;
+    if (prevState.seconds < MIN_SECONDS) {
+      clearInterval(this.interval);
       toggleDisabled();
+      toggleVisibility();
       return false;
     }
     return true;
@@ -32,37 +40,36 @@ class Timer extends Component {
 
   setTime() {
     const ONE_SEC = 1000;
-
-    const interval = setInterval(() => {
+    this.interval = setInterval(() => {
       this.setState((prevState) => ({
-        timer: prevState.timer - 1,
+        seconds: prevState.seconds - 1,
       }));
     }, ONE_SEC);
-    this.setState({
-      refInterval: interval,
-    });
   }
 
   render() {
-    const { timer } = this.state;
-    const { newTime, globalTime } = this.props;
-    newTime(timer);
+    const { seconds } = this.state;
+    const { getSeconds } = this.props;
+    getSeconds(seconds);
 
     return (
       <div>
-        { globalTime }
+        { seconds }
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ trivia }) => ({
-  globalTime: trivia.timer,
+const mapStateToProps = ({ timer }) => ({
+  statusCronometer: timer.statusCronometer,
+  seconds: timer.seconds,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  toggleVisibility: () => dispatch(changeVisibility()),
   toggleDisabled: () => dispatch(setIsClicked()),
-  newTime: (time) => dispatch(updateTimer(time)),
+  getSeconds: (seconds) => dispatch(getSecondsAction(seconds)),
+  setStatusCronometer: (status) => dispatch(toggleStatusCronometer(status)),
 });
 
 Timer.propTypes = {
