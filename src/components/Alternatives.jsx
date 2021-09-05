@@ -53,7 +53,6 @@ class Alternatives extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.gamePage.questions,
   loading: state.loading.loading,
-  index: state.gamePage.index,
 });
 
 Alternatives.propTypes = {

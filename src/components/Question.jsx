@@ -27,7 +27,6 @@ class Question extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.gamePage.questions,
   loading: state.loading.loading,
-  index: state.gamePage.index,
 });
 
 Question.propTypes = {
