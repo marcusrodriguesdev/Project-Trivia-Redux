@@ -1,5 +1,6 @@
 export const TOKEN_TYPE = 'token';
 export const QUEST_TYPE = 'quest';
+export const SCORE_TYPE = 'score';
 export const SET_PLAYER_VALUE = 'SET_PLAYER_VALUE';
 
 export const tokenAction = (token) => ({
@@ -14,6 +15,11 @@ export const setPlayerValueAction = (payload) => ({
 export const questAction = (quest) => ({
   type: QUEST_TYPE,
   payload: { quest },
+});
+
+export const scoreAction = (score) => ({
+  type: SCORE_TYPE,
+  payload: { score },
 });
 
 export const tokenActionThunk = () => async (dispatch) => {

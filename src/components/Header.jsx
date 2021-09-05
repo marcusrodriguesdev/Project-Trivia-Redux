@@ -24,7 +24,7 @@ class Header extends React.Component {
 
   render() {
     const { hash } = this.state;
-    const { player: { name, gravatarEmail } } = this.props;
+    const { player: { name, score, gravatarEmail } } = this.props;
     if (!name && !gravatarEmail) {
       return (
         <header>
@@ -45,9 +45,12 @@ class Header extends React.Component {
           <h1>HEADER</h1>
         </div>
         <div>
-          <h2 data-testid="header-player-name">{name}</h2>
-          <h2>{gravatarEmail}</h2>
-          <h2 data-testid="header-score">0</h2>
+          <span data-testid="header-player-name">{name}</span>
+          <p>
+            Points:
+            { ' ' }
+            <span data-testid="header-score">{score}</span>
+          </p>
         </div>
       </header>
     );
@@ -58,6 +61,7 @@ Header.propTypes = {
   player: PropTypes.shape({
     name: PropTypes.string,
     gravatarEmail: PropTypes.string,
+    score: PropTypes.number,
   }).isRequired,
 };
 
