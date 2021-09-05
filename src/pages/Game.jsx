@@ -15,6 +15,7 @@ class Game extends Component {
 
     this.state = {
       next: 0,
+      score: 0,
       wrong: '',
       correct: '',
       disabled: false,
@@ -100,6 +101,7 @@ class Game extends Component {
           gravatarEmail: email,
         } };
         localStorage.setItem('state', JSON.stringify(player));
+        this.setState({ score: player.player.score });
       });
     }
   }
@@ -183,7 +185,7 @@ class Game extends Component {
   }
 
   render() {
-    const { disabled, time } = this.state;
+    const { disabled, time, score } = this.state;
 
     const { results } = this.props;
     if (!results) return <span>Loading...</span>;
@@ -191,7 +193,7 @@ class Game extends Component {
     return (
       <div className="main-content">
         <span>{ time }</span>
-        <Header />
+        <Header score={ score } />
         { this.renderQuestions() }
         <div className="box-buttons">
           <button

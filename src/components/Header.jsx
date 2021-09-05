@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 class Header extends Component {
   render() {
-    const { name, email } = this.props;
+    const { name, email, score } = this.props;
     // const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     const profileAvatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     return (
@@ -16,7 +16,7 @@ class Header extends Component {
           alt="profile avatar"
         />
         <p data-testid="header-player-name">{ name }</p>
-        <span data-testid="header-score">0</span>
+        <span data-testid="header-score">{ score }</span>
       </header>
     );
   }
@@ -30,6 +30,7 @@ const mapStateToProps = (state) => ({
 Header.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
