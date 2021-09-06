@@ -16,35 +16,12 @@ class Question extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      shuffledAnswers: [],
-    };
-
-    this.combineAnswers = this.combineAnswers.bind(this);
-    this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
-  componentDidMount() {
-    this.combineAnswers();
-  }
-
-  combineAnswers() {
-    const { questionInfo } = this.props;
-    const { incorrectAnswers, correctAnswer } = questionInfo;
-
-    const combinedAnswers = [...incorrectAnswers, correctAnswer];
-
-    this.shuffleAnswers(combinedAnswers, correctAnswer);
-  }
-
   checkAnswer({ text }, dificulty) {
-    const {
-      questionInfo,
-      time,
-      increaseGlobalScore,
-    } = this.props;
-    const { correct_answer: correctAnswer } = questionInfo;
+    const { questionInfo, time, increaseGlobalScore } = this.props;
+    const { correctAnswer } = questionInfo;
     const baseScore = 10;
 
     if (text === correctAnswer) {
@@ -56,39 +33,9 @@ class Question extends Component {
     }
   }
 
-  shuffleAnswers(answers, correctAnswer) {
-    const selectedAnswers = {};
-    const tempAnswers = [];
-
-    for (let i = 0; i < answers.length; i += 1) {
-      let randomIndex = this.pickRandomIndex(answers.length);
-
-      while (selectedAnswers[randomIndex]) {
-        randomIndex = this.pickRandomIndex(answers.length);
-      }
-
-      selectedAnswers[randomIndex] = true;
-
-      const pickedAnswer = answers[randomIndex];
-
-      tempAnswers.push({
-        isCorrect: pickedAnswer === correctAnswer,
-        text: pickedAnswer,
-      });
-    }
-
-    this.setState({
-      shuffledAnswers: tempAnswers,
-    });
-  }
-
-  pickRandomIndex(max) {
-    return Math.floor(Math.random() * max);
-  }
-
   render() {
     const { questionInfo, timeOver } = this.props;
-    const { shuffledAnswers } = this.state;
+    const { shuffledAnswers } = questionInfo;
 
     return (
       <>
@@ -119,8 +66,7 @@ Question.propTypes = {
   questionInfo: PropTypes.shape({
     category: PropTypes.string.isRequired,
     correctAnswer: PropTypes.string.isRequired,
-    correct_answer: PropTypes.string.isRequired,
-    incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    shuffledAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
     question: PropTypes.string.isRequired,
   }).isRequired,
   time: PropTypes.number.isRequired,
