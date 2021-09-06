@@ -5,11 +5,23 @@ import PropTypes from 'prop-types';
 import Header from '../../components/Header';
 
 class Feedback extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   getAssertions() {
     const local = window.localStorage.getItem('state');
     const parsedLocal = JSON.parse(local);
 
     return parsedLocal.player.assertions;
+  }
+
+  handleClick() {
+    const { history } = this.props;
+
+    history.push('/ranking');
   }
 
   render() {
@@ -31,6 +43,14 @@ class Feedback extends Component {
           {'Respostas corretas: '}
           <span data-testid="feedback-total-question">{assertions}</span>
         </p>
+
+        <button
+          data-testid="btn-ranking"
+          type="button"
+          onClick={ this.handleClick }
+        >
+          Ver Ranking
+        </button>
       </div>
     );
   }
@@ -38,6 +58,9 @@ class Feedback extends Component {
 
 Feedback.propTypes = {
   score: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
