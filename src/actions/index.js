@@ -6,6 +6,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const ADD_TRIVIA = 'ADD_TRIVIA';
 export const ADD_TOKEN = 'ADD_TOKEN';
 export const FETCH_GRAVATAR = 'FETCH_GRAVATAR';
+export const USER_TRY = 'USER_TRY';
 
 export const loading = () => ({
   type: LOADING,
@@ -29,6 +30,10 @@ export const userLogin = ({ name, email }) => ({
 export const fetchGravatar = (payload) => ({
   type: FETCH_GRAVATAR,
   payload,
+});
+
+export const userTry = () => ({
+  type: USER_TRY,
 });
 
 export const requestTokenThunk = () => async (dispatch) => {

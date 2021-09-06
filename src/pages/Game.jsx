@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addTriviaThunk } from '../actions';
+import { addTriviaThunk, userTry } from '../actions';
 
 const INITIAL_STATE = {};
 
@@ -10,6 +10,7 @@ class Game extends React.Component {
     super(props);
 
     this.state = INITIAL_STATE;
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -17,8 +18,13 @@ class Game extends React.Component {
     addTrivia();
   }
 
+  handleClick() {
+    const { addTry } = this.props;
+    addTry();
+  }
+
   render() {
-    const { results, gravatarURL, name } = this.props;
+    const { results, gravatarURL, name, tryUser } = this.props;
     return (
       <div>
         <header>
@@ -33,8 +39,10 @@ class Game extends React.Component {
                 <p data-testid="question-category">{result.category}</p>
                 <p data-testid="question-text">{result.question}</p>
                 <button
+                  className={ tryUser ? 'correct' : '' }
                   type="button"
                   data-testid="correct-answer"
+                  onClick={ this.handleClick }
                 >
                   {result.correct_answer}
                 </button>
@@ -42,8 +50,10 @@ class Game extends React.Component {
                   (wrongResult, index2) => (
                     <button
                       key={ index2 }
+                      className={ tryUser ? 'incorrect' : '' }
                       type="button"
                       data-testid={ `wrong-answer-${index2}` }
+                      onClick={ this.handleClick }
                     >
                       {wrongResult}
                     </button>),
@@ -60,16 +70,20 @@ Game.propTypes = {
   results: PropTypes.objectOf(PropTypes.any).isRequired,
   gravatarURL: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  addTry: PropTypes.func.isRequired,
+  tryUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   results: state.triviaReducer.results,
   gravatarURL: state.gravatar.gravatarURL,
   name: state.loginReducer.name,
+  tryUser: state.triviaReducer.tryUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addTrivia: (localStorage) => dispatch(addTriviaThunk(localStorage)),
+  addTry: () => dispatch(userTry()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
