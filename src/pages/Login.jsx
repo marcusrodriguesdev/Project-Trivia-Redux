@@ -18,7 +18,6 @@ class Login extends Component {
       nameValid: false,
       email: '',
       emailValid: false,
-      
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateInput = this.validateInput.bind(this);
