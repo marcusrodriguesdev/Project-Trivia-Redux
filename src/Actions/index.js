@@ -7,6 +7,7 @@ const ACTIONS = {
   GET_TOKEN_SUCCESS: 'GET_TOKEN_SUCCESS',
   GET_TOKEN_ERROR: 'GET_TOKEN_ERROR',
   SHOW_BUTTON: 'SHOW_BUTTON',
+  CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export const setUser = (payload) => ({
@@ -17,6 +18,10 @@ export const setUser = (payload) => ({
 export const setTrivia = (payload) => ({
   type: ACTIONS.SET_TRIVIA,
   payload,
+});
+
+export const clearState = () => ({
+  type: ACTIONS.CLEAR_STATE,
 });
 
 export const showButton = (payload) => ({

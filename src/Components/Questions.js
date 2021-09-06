@@ -16,6 +16,7 @@ class Questions extends React.Component {
       answered: false,
       timer: 30,
       points: 10,
+      assertionsAdd: 1,
       showButton: true,
     };
 
@@ -29,10 +30,12 @@ class Questions extends React.Component {
     this.interval = setInterval(
       () => this.setState((previousTime) => ({ timer: previousTime.timer - 1 }), () => {
         const { timer, answered } = this.state;
+        const { showNextButton } = this.props;
         const maximumTime = 0;
         if (timer === maximumTime) {
           clearInterval(this.interval);
           this.setState({ answered: !answered });
+          showNextButton(this.state);
         }
       }),
       ONE_SECOND,
@@ -40,8 +43,8 @@ class Questions extends React.Component {
   }
 
   componentDidUpdate() {
-    const { name, statePoints, email } = this.props;
-    const player = { name, score: statePoints, gravatarEmail: email };
+    const { name, score, email, assertions } = this.props;
+    const player = { name, score, gravatarEmail: email, assertions };
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
@@ -120,18 +123,20 @@ class Questions extends React.Component {
 }
 
 Questions.propTypes = {
-  question: PropTypes.arrayOf(PropTypes.string).isRequired,
+  question: PropTypes.shape().isRequired,
   savePoints: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  statePoints: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   showNextButton: PropTypes.func.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ user: { email, name }, trivia: { points } }) => ({
+const mapStateToProps = ({ user: { email, name }, trivia: { points, assertions } }) => ({
   email,
   name,
-  statePoints: points,
+  score: points,
+  assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

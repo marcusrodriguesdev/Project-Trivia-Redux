@@ -9,6 +9,8 @@ import Questions from '../Components/Questions';
 import '../Styles/global.css';
 import { showButton as showBtnAction } from '../Actions';
 
+const CryptoJS = require('crypto-js');
+
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +27,21 @@ class Trivia extends React.Component {
 
   componentDidMount() {
     this.fetchQuestions();
+  }
+
+  componentWillUnmount() {
+    const { name, score, email } = this.props;
+    const hashGerada = CryptoJS.MD5(email).toString();
+    const gravatarSrc = (`https://www.gravatar.com/avatar/${hashGerada}`);
+
+    if (!localStorage.getItem('ranking')) {
+      const ranking = [];
+      ranking.push({ name, score, picture: gravatarSrc });
+      return localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.push({ name, score, picture: gravatarSrc });
+    return localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   async fetchQuestions() {
@@ -79,9 +96,14 @@ class Trivia extends React.Component {
   }
 }
 
-const mapStateToProps = ({ trivia: { token, showButton } }) => ({
+const mapStateToProps = ({
+  trivia: { token, showButton, points },
+  user: { email, name } }) => ({
   token,
   showButton,
+  score: points,
+  email,
+  name,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -95,6 +117,11 @@ Trivia.propTypes = {
   }).isRequired,
   showButton: PropTypes.bool.isRequired,
   hideButton: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
+
+// https://stackoverflow.com/questions/16083919/push-json-objects-to-array-in-localstorage
