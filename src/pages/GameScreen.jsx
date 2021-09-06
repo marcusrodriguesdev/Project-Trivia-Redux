@@ -87,23 +87,23 @@ class GameScreen extends React.Component {
   }
 
   localStorageUpdate(score = 0) {
-    const { player: { name, assertions, gravatarEmail } } = this.props;
+    const { player: { name, gravatarEmail } } = this.props;
 
     if (localStorage.state) {
       const state = JSON.parse(localStorage.state);
-      const { score: stateScore, assertions: assertionsState } = state.player;
+      const { score: stateScore, assertions } = state.player;
 
       const playerObject = {
         player: {
           ...state.player,
-          assertions: assertions + assertionsState,
+          assertions: assertions + 1,
           score: score + stateScore,
         },
       };
 
       localStorage.state = JSON.stringify(playerObject);
     } else {
-      const playerObject = { player: { name, assertions, score: 0, gravatarEmail } };
+      const playerObject = { player: { name, assertions: 0, score: 0, gravatarEmail } };
       localStorage.state = JSON.stringify(playerObject);
     }
   }
