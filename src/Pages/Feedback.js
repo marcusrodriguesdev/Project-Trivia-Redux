@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../Components/Header';
+import { clearState as cleaner } from '../Actions';
 
 class Feedback extends React.Component {
   handlePlayAgainBtn() {
-    const { history } = this.props;
+    const { history, clearState } = this.props;
 
+    clearState();
     history.push('/');
   }
 
@@ -54,6 +56,7 @@ Feedback.propTypes = {
   }).isRequired,
   assertions: PropTypes.number.isRequired,
   points: PropTypes.number.isRequired,
+  clearState: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ trivia: { assertions, points } }) => ({
@@ -61,4 +64,8 @@ const mapStateToProps = ({ trivia: { assertions, points } }) => ({
   points,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  clearState: () => dispatch(cleaner()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

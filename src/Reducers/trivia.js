@@ -21,6 +21,12 @@ function triviaReducer(state = INITIAL_STATE, action) {
       ...state,
       showButton: action.payload.showButton,
     };
+  case ACTIONS.CLEAR_STATE:
+    return {
+      ...state,
+      points: 0,
+      assertions: 0,
+    };
   case ACTIONS.GET_TOKEN:
     return {
       ...state,
