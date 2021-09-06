@@ -17,14 +17,17 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { assertions } = this.props;
+    const { assertions, points } = this.props;
     const standardValue = 3;
     const message = assertions < standardValue ? 'Podia ser melhor...' : 'Mandou bem!';
+    console.log(assertions);
     return (
       <div data-testid="feedback-text">
         <Header />
         <main>
           <p data-testid="feedback-text">{ message }</p>
+          <p data-testid="feedback-total-score">{ points }</p>
+          <p data-testid="feedback-total-question">{ assertions }</p>
           <button
             type="button"
             data-testid="btn-play-again"
@@ -50,10 +53,12 @@ Feedback.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   assertions: PropTypes.number.isRequired,
+  points: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ trivia: { assertions } }) => ({
+const mapStateToProps = ({ trivia: { assertions, points } }) => ({
   assertions,
+  points,
 });
 
 export default connect(mapStateToProps)(Feedback);

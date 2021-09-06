@@ -11,11 +11,11 @@ class Header extends React.Component {
     this.fetchAvatar = this.fetchAvatar.bind(this);
   }
 
-  componentDidMount() {
-    const { name, points, email } = this.props;
-    const player = { name, score: points, gravatarEmail: email };
-    localStorage.setItem('state', JSON.stringify({ player }));
-  }
+  // componentDidMount() {
+  //   const { name, points, email } = this.props;
+  //   const player = { name, score: points, gravatarEmail: email };
+  //   localStorage.setItem('state', JSON.stringify({ player }));
+  // }
 
   fetchAvatar() {
     const { email } = this.props;
