@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 
 import { setGameToken as setGameTokenAction,
-  setPlayer as setPlayerAction } from '../redux/actions';
+  setPlayer as setPlayerAction,
+  setGameRound as setGameRoundAction } from '../redux/actions';
 
-import { getTokenTrivia } from '../services/triviaAPI';
+import { getTokenTrivia, getGameTrivia } from '../services/triviaAPI';
 import getAvatarImg from '../services/gravatarAPI';
 
 const NEGATIVE_ONE = -1;
@@ -31,7 +32,7 @@ class Login extends Component {
 
   async onSubmitForm() {
     const { name, email } = this.state;
-    const { setGameToken, setPlayer } = this.props;
+    const { setGameToken, setPlayer, setGameRound } = this.props;
     const token = await getTokenTrivia();
     setGameToken(token.token);
     this.saveTokenSession(token.token);
@@ -42,8 +43,12 @@ class Login extends Component {
       avatar,
     };
     setPlayer(playerInfo);
+    // requisição à API para buscar o jogo
+    const games = await getGameTrivia(token.token);
+    // gravar o jogo no estado global
+    setGameRound(games.results);
     this.setState({ setupGame: true });
-    // console.log(token.token);
+    console.log(games.results);
   }
 
   validateUserEmail(user) {
@@ -147,6 +152,7 @@ class Login extends Component {
 Login.propTypes = {
   setGameToken: PropTypes.func.isRequired,
   setPlayer: PropTypes.func.isRequired,
+  setGameRound: PropTypes.func.isRequired,
   // token: PropTypes.string.isRequired,
 };
 
@@ -157,6 +163,7 @@ const mapStateToProps = ({ game: { token } }) => ({
 const mapDispatchToProps = (dispatch) => ({
   setGameToken: (token) => dispatch(setGameTokenAction(token)),
   setPlayer: (playerInfo) => dispatch(setPlayerAction(playerInfo)),
+  setGameRound: (games) => dispatch(setGameRoundAction(games)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
