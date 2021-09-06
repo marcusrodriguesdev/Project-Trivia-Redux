@@ -11,11 +11,11 @@ class Header extends React.Component {
     this.fetchAvatar = this.fetchAvatar.bind(this);
   }
 
-  // componentDidMount() {
-  //   const { name, points, email } = this.props;
-  //   const player = { name, score: points, gravatarEmail: email };
-  //   localStorage.setItem('state', JSON.stringify({ player }));
-  // }
+  componentDidMount() {
+    const { name, score, email, assertions } = this.props;
+    const player = { name, score, gravatarEmail: email, assertions };
+    localStorage.setItem('state', JSON.stringify({ player }));
+  }
 
   fetchAvatar() {
     const { email } = this.props;
@@ -27,7 +27,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { name, points } = this.props;
+    const { name, score } = this.props;
     return (
       <header>
         <img
@@ -36,22 +36,24 @@ class Header extends React.Component {
           alt="Foto de perfil do Usuario"
         />
         <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">{ points }</p>
+        <p data-testid="header-score">{ score }</p>
       </header>
     );
   }
 }
 
-const mapStateToProps = ({ user: { email, name }, trivia: { points } }) => ({
+const mapStateToProps = ({ user: { email, name }, trivia: { points, assertions } }) => ({
   email,
   name,
-  points,
+  score: points,
+  assertions,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  points: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

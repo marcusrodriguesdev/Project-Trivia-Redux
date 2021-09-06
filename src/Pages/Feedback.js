@@ -20,7 +20,7 @@ class Feedback extends React.Component {
     const { assertions, points } = this.props;
     const standardValue = 3;
     const message = assertions < standardValue ? 'Podia ser melhor...' : 'Mandou bem!';
-    console.log(assertions);
+
     return (
       <div data-testid="feedback-text">
         <Header />

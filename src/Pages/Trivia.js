@@ -27,6 +27,12 @@ class Trivia extends React.Component {
     this.fetchQuestions();
   }
 
+  // componentWillUnmount() {
+  //   const { name, statePoints, email, assertions } = this.props;
+  //   const player = { name, score: statePoints, gravatarEmail: email, assertions };
+  //   localStorage.setItem('state', JSON.stringify({ player }));
+  // }
+
   async fetchQuestions() {
     const { token } = this.props;
 
