@@ -8,6 +8,7 @@ import Timer from '../../components/Timer';
 import {
   fetchQuestionsThunk,
   nextQuestion as nextQuestionAction,
+  setTime,
 } from '../../redux/actions/gameActions';
 
 class Game extends Component {
@@ -35,10 +36,17 @@ class Game extends Component {
   }
 
   handleNextQuestion() {
-    const { history, nextQuestion, questionIndex, questions } = this.props;
+    const {
+      history,
+      nextQuestion,
+      questionIndex,
+      questions,
+      setTimeRedux,
+    } = this.props;
 
     if (questionIndex < questions.length - 1) {
       nextQuestion();
+      setTimeRedux(30);
     } else {
       history.push('/feedback');
     }
@@ -82,6 +90,7 @@ Game.propTypes = {
   questionIndex: PropTypes.number.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
   nextQuestion: PropTypes.func.isRequired,
+  setTimeRedux: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
@@ -93,6 +102,7 @@ const mapStateToProps = ({ game }) => ({
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: () => dispatch(fetchQuestionsThunk()),
   nextQuestion: () => dispatch(nextQuestionAction()),
+  setTimeRedux: (time) => dispatch(setTime(time)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

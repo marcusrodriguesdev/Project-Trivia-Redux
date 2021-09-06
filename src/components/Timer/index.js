@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setTime } from '../../redux/actions/gameActions';
 
 class Timer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      timer: 30,
-    };
+  constructor(props) {
+    super(props);
+
     this.startTimer = this.startTimer.bind(this);
   }
 
@@ -22,28 +22,38 @@ class Timer extends Component {
   }
 
   countDown() {
-    const { timer } = this.state;
-    const { setTimeOver } = this.props;
-    this.setState({
-      timer: timer - 1,
-    });
-    if (timer === 1) {
+    const { setTimeOver, setTimeRedux, time } = this.props;
+    setTimeRedux(time - 1);
+    if (time === 1) {
       clearInterval(this.interval);
       setTimeOver();
     }
   }
 
   render() {
-    const { timer } = this.state;
+    const { time, guessed } = this.props;
+
+    if (guessed) clearInterval(this.interval);
 
     return (
-      <h2>{timer}</h2>
+      <h2>{time}</h2>
     );
   }
 }
 
 Timer.propTypes = {
   setTimeOver: PropTypes.func.isRequired,
+  setTimeRedux: PropTypes.func.isRequired,
+  time: PropTypes.number.isRequired,
 };
 
-export default Timer;
+const mapStateToProps = ({ game }) => ({
+  time: game.time,
+  guessed: game.guessed,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setTimeRedux: (time) => dispatch(setTime(time)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

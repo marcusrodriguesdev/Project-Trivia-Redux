@@ -26,6 +26,7 @@ export const getQuestions = async (token) => {
       question: decodeURIComponent(questionInfo.question),
       category: decodeURIComponent(questionInfo.category),
       correctAnswer: decodeURIComponent(questionInfo.correct_answer),
+      difficulty: questionInfo.difficulty,
       shuffledAnswers,
     };
   });
