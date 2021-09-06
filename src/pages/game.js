@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { setLocalStorageThunk, setScore as setScoreAction } from '../actions';
 
 import '../App.css';
+import '../gameButton.css';
 import HeaderInfo from '../components/HeaderInfo';
 
 class game extends Component {
@@ -13,6 +14,7 @@ class game extends Component {
 
     this.state = {
       data: '',
+      paintInput: false,
       timer: 30,
       answers: [],
     };
@@ -77,6 +79,7 @@ class game extends Component {
     clearInterval(this.intervalId);
     this.setState({
       timer: 0,
+      paintInput: true,
     });
   }
 
@@ -84,11 +87,12 @@ class game extends Component {
     clearInterval(this.intervalId);
     this.setState({
       timer: 0,
+      paintInput: true,
     });
   }
 
   render() {
-    const { data, answers, timer } = this.state;
+    const { data, answers, timer, paintInput } = this.state;
     const loading = <div className="loading">Loading</div>;
 
     if (data === '' || answers === []) {
@@ -98,36 +102,39 @@ class game extends Component {
       <div className="App">
         <HeaderInfo />
         Tela de jogo
-        <div className="question-board">
+        <div className={ paintInput ? 'show' : 'question-board' }>
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
+
           {answers.map((answer, index) => (
             answer === data.correct_answer
               ? (
                 <button
                   key={ index }
                   type="button"
+                  className="correct"
                   data-testid="correct-answer"
                   disabled={ timer === 0 }
                   onClick={ () => this.handleCorrectAnswer(data.difficulty) }
                 >
-                  { answer }
+                  {answer}
                 </button>
               )
               : (
                 <button
                   key={ index }
                   type="button"
+                  className="wrong"
                   data-testid={ `wrong-answer${index}` }
                   disabled={ timer === 0 }
                   onClick={ this.handleIncorrectAnswer }
                 >
-                  { answer }
+                  {answer}
                 </button>
               )
           ))}
           <div>
-            { timer }
+            {timer}
           </div>
         </div>
       </div>
