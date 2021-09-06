@@ -14,7 +14,7 @@ class GameScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      timer: 30,
+      timer: 5,
       answered: false,
       qIndex: 0,
     };
@@ -151,7 +151,7 @@ class GameScreen extends React.Component {
           index={ index }
           disable={ timer === 0 }
         />))}
-        {answered && <NextQuestionBtn feat1={ this.navQuest } reset={ this.resetBtn } />}
+        {(answered || timer === 0) && <NextQuestionBtn feat1={ this.navQuest } reset={ this.resetBtn } />}
       </div>
     );
   }
