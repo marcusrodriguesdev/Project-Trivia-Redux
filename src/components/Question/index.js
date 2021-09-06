@@ -29,6 +29,7 @@ class Question extends Component {
       increaseGlobalScore(score);
       const local = JSON.parse(window.localStorage.getItem('state'));
       local.player.score += score;
+      local.player.assertions += 1;
       window.localStorage.setItem('state', JSON.stringify(local));
     }
   }

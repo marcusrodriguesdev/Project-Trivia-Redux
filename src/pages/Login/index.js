@@ -52,7 +52,7 @@ class Login extends Component {
     const playerDataString = JSON.stringify({
       player: {
         name,
-        assertions: '',
+        assertions: 0,
         score: 0,
         gravatarEmail,
       },
