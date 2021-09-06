@@ -28,7 +28,7 @@ class Question extends Component {
       const score = baseScore + time * dificulties[dificulty];
       increaseGlobalScore(score);
       const local = JSON.parse(window.localStorage.getItem('state'));
-      local.player.score = score;
+      local.player.score += score;
       window.localStorage.setItem('state', JSON.stringify(local));
     }
   }

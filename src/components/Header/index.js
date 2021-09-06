@@ -3,13 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
-    const { name, gravatarEmail } = this.props;
+    const { name, gravatarEmail, score } = this.props;
     return (
       <>
         <img
@@ -18,7 +13,7 @@ class Header extends React.Component {
           src={ gravatarEmail }
         />
         <h3 data-testid="header-player-name">{name}</h3>
-        <h3 data-testid="header-score">0</h3>
+        <h3 data-testid="header-score">{score}</h3>
       </>
     );
   }
@@ -27,11 +22,13 @@ class Header extends React.Component {
 Header.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  name: state.auth.name,
-  gravatarEmail: state.auth.gravatar,
+const mapStateToProps = ({ auth, game }) => ({
+  name: auth.name,
+  gravatarEmail: auth.gravatar,
+  score: game.score,
 });
 
 export default connect(mapStateToProps)(Header);
