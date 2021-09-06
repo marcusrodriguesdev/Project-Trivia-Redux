@@ -1,5 +1,5 @@
 import React from 'react';
-import { string, func } from 'prop-types';
+import PropTypes from 'prop-types';
 
 const InputCard = ({ labelText, id, name, type, value, onChange }) => (
   <label htmlFor={ id }>
@@ -16,12 +16,12 @@ const InputCard = ({ labelText, id, name, type, value, onChange }) => (
 );
 
 InputCard.propTypes = {
-  labelText: string.isRequired,
-  id: string.isRequired,
-  value: string.isRequired,
-  onChange: func.isRequired,
-  type: string.isRequired,
-  name: string.isRequired,
+  labelText: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default InputCard;
