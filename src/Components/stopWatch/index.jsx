@@ -26,7 +26,8 @@ class StopWatch extends Component {
   resetStopWatch() {
     const { time } = this.state;
     const { resetTime, resetTimeGlobal } = this.props;
-    if (resetTime && time !== 30) {
+    const LIMIT_TIME = 30;
+    if (resetTime && time !== LIMIT_TIME) {
       this.setState({ time: 30 }, () => {
         this.stopWatch();
         resetTimeGlobal(false);
@@ -64,6 +65,8 @@ class StopWatch extends Component {
 StopWatch.propTypes = {
   isTimer: PropTypes.bool.isRequired,
   setTimeGlobal: PropTypes.func.isRequired,
+  resetTimeGlobal: PropTypes.func.isRequired,
+  resetTime: PropTypes.bool.isRequired,
 };
 
 const MapStateToProps = ({ game: { stopWatch: { isTimer, resetTime } } }) => ({

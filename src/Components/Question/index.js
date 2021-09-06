@@ -124,6 +124,7 @@ Question.propTypes = {
   isTimer: PropTypes.bool.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
   nextClick: PropTypes.func.isRequired,
+  resetTimeGlobal: PropTypes.func.isRequired,
   setTimeGlobal: PropTypes.func.isRequired,
   difficulty: PropTypes.string.isRequired,
 };
