@@ -16,19 +16,27 @@ class Feedback extends Component {
       history.push('/ranking');
     } else {
       const { history } = this.props;
-      history.push('/trivia');
+      history.push('/');
     }
   }
 
   render() {
-    const { assertions } = this.props;
+    const { assertions, score } = this.props;
     const THREE = 3;
     return (
       <div>
+        <Header />
         { assertions >= THREE
           ? <p data-testid="feedback-text">Mandou bem!</p>
-          : <p data-testid="feedback-text">Podia ser melhor.</p>}
-        <Header />
+          : <p data-testid="feedback-text">Podia ser melhor...</p>}
+        <p>
+          {'Pontuação final: '}
+          <span data-testid="feedback-total-score">{ score }</span>
+        </p>
+        <p>
+          {'Respostas corretas: '}
+          <span data-testid="feedback-total-question">{ assertions }</span>
+        </p>
         <Button
           text="Jogar novamente"
           id="btn-play-again"
@@ -48,6 +56,7 @@ class Feedback extends Component {
 
 const mapStateToProps = ({ trivia }) => ({
   assertions: trivia.assertions,
+  score: trivia.score,
 });
 
 Feedback.propTypes = {
