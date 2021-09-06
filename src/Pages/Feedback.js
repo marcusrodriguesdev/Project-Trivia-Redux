@@ -27,7 +27,7 @@ class Feedback extends Component {
       <div>
         { assertions >= THREE
           ? <p data-testid="feedback-text">Mandou bem!</p>
-          : <p data-testid="feedback-text">Podia ser melhor...</p>}
+          : <p data-testid="feedback-text">Podia ser melhor.</p>}
         <Header />
         <Button
           text="Jogar novamente"
