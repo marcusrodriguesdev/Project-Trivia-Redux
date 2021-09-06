@@ -9,11 +9,12 @@ import { setIsClicked } from '../Redux/Action';
 
 class Trivia extends Component {
   render() {
+    const { statusCronometer } = this.props;
     return (
       <div>
         <Header />
         <Multiple />
-        <Timer />
+        { statusCronometer === 'on' ? <Timer /> : null }
       </div>
     );
   }
@@ -23,9 +24,10 @@ Trivia.propTypes = {
   token: PropTypes.string,
 }.isRequired;
 
-const mapStateToProps = ({ user, trivia }) => ({
+const mapStateToProps = ({ user, trivia, timer }) => ({
   token: user.token,
   isClicked: trivia.isClicked,
+  statusCronometer: timer.statusCronometer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

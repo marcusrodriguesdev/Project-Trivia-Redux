@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../Components/Header/index';
 import Button from '../Components/Button';
 
-export default class Feedback extends Component {
+class Feedback extends Component {
   constructor() {
     super();
     this.redirectOnClick = this.redirectOnClick.bind(this);
@@ -20,9 +21,13 @@ export default class Feedback extends Component {
   }
 
   render() {
+    const { assertions } = this.props;
+    const THREE = 3;
     return (
       <div>
-        <h2 data-testid="feedback-text">Sou a página de feedback</h2>
+        { assertions >= THREE
+          ? <p data-testid="feedback-text">Mandou bem!</p>
+          : <p data-testid="feedback-text">Podia ser melhor...</p>}
         <Header />
         <Button
           text="Jogar novamente"
@@ -41,6 +46,12 @@ export default class Feedback extends Component {
   }
 }
 
+const mapStateToProps = ({ trivia }) => ({
+  assertions: trivia.assertions,
+});
+
 Feedback.propTypes = {
   history: PropTypes.objectOf(PropTypes.func),
 }.isRequired;
+
+export default connect(mapStateToProps)(Feedback);

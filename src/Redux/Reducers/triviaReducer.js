@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   loading: true,
   isVisible: false,
   score: 0,
+  assertions: 0,
 };
 
 const triviaReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -34,6 +35,11 @@ const triviaReducer = (state = INITIAL_STATE, { type, payload }) => {
     return {
       ...state,
       score: state.score + payload,
+    };
+  case ALL_ACTIONS.COUNT_ASSERTIONS:
+    return {
+      ...state,
+      assertions: payload,
     };
   default:
     return state;
