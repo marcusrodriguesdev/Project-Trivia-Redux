@@ -1,3 +1,11 @@
+@import url( 'https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@700&display=swap' ) ;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
 }
@@ -54,4 +62,59 @@
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+.page-body {
+  align-items: baseline;
+  background-color: rgb(30, 30, 30);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+.game-body {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1366px;
+  min-width: 768px;
+  width: 100%;
+}
+
+.game-column {
+  margin: 30px 0;
+}
+
+.game-header {
+  align-items: center;
+  background-image: url('./image/header-bg.png');
+  display: flex;
+  height: 276px;
+  justify-content: space-between;
+  margin: 20px 0;
+  width: 1120px;
+}
+
+.game-header-profile-picture {
+  background-color: #61dafb;
+  box-shadow: 2px 2px 3px black;
+  height: 80px;
+  margin: 15px 0 0 80px;
+  width: 60px;
+}
+
+.game-header-player-name {
+  color: white;
+  font-family: Arima Madurai , cursive;
+  font-size: 18px;
+  margin: 0 0 0 10px;
+  text-shadow: 1px 1px 3px black;
+}
+
+.game-header-score {
+  color: white;
+  font-family: Arima Madurai , cursive;
+  font-size: 30px;
+  margin: 30px 70px 0 10px;
+  text-shadow: 1px 1px 3px black;
 }

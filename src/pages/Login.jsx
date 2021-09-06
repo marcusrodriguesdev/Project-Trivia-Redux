@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { setGameToken as setGameTokenAction } from '../redux/actions';
+
+import getTokenTrivia from '../services/triviaAPI';
 
 const NEGATIVE_ONE = -1;
 const NUMBER_THREE = 3;
@@ -19,8 +25,13 @@ class Login extends Component {
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
-  onSubmitForm() {
-    console.log('Deu certo');
+  async onSubmitForm() {
+    // const tokenNow = await getTokenTrivia();
+    const { setGameToken } = this.props;
+    const token = await getTokenTrivia();
+    setGameToken(token.token);
+    this.saveTokenSession(token.token);
+    console.log(token.token);
   }
 
   validateUserEmail(user) {
@@ -67,6 +78,10 @@ class Login extends Component {
     this.validateInput(name, value);
   }
 
+  saveTokenSession(token) {
+    localStorage.setItem('token', JSON.stringify(token));
+  }
+
   render() {
     const { name, email, nameValid, emailValid } = this.state;
     const isButtonEnabled = emailValid && nameValid;
@@ -108,4 +123,17 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  setGameToken: PropTypes.func.isRequired,
+  // token: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = ({ game: { token } }) => ({
+  token,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setGameToken: (token) => dispatch(setGameTokenAction(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
