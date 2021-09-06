@@ -17,6 +17,7 @@ class Login extends Component {
       nameValid: false,
       email: '',
       emailValid: false,
+      
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateInput = this.validateInput.bind(this);
@@ -26,7 +27,6 @@ class Login extends Component {
   }
 
   async onSubmitForm() {
-    // const tokenNow = await getTokenTrivia();
     const { setGameToken } = this.props;
     const token = await getTokenTrivia();
     setGameToken(token.token);
