@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Header from '../../components/Header';
+import { resetGame as resetGameAction } from '../../redux/actions/gameActions';
 
 class Feedback extends Component {
   constructor(props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
+    this.handlePlayAgain = this.handlePlayAgain.bind(this);
   }
 
   getAssertions() {
@@ -16,6 +18,12 @@ class Feedback extends Component {
     const parsedLocal = JSON.parse(local);
 
     return parsedLocal.player.assertions;
+  }
+
+  handlePlayAgain() {
+    const { history, resetGame } = this.props;
+    resetGame();
+    history.push('/');
   }
 
   handleClick() {
@@ -51,6 +59,13 @@ class Feedback extends Component {
         >
           Ver Ranking
         </button>
+        <button
+          type="button"
+          onClick={ this.handlePlayAgain }
+          data-testid="btn-play-again"
+        >
+          Jogar novamente
+        </button>
       </div>
     );
   }
@@ -61,10 +76,15 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  resetGame: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
   score: game.score,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  resetGame: () => dispatch(resetGameAction()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
