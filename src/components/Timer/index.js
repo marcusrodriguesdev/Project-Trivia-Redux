@@ -45,6 +45,7 @@ Timer.propTypes = {
   setTimeOver: PropTypes.func.isRequired,
   setTimeRedux: PropTypes.func.isRequired,
   time: PropTypes.number.isRequired,
+  guessed: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({

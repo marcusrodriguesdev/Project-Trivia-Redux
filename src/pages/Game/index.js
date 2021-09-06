@@ -36,6 +36,8 @@ class Game extends Component {
   }
 
   handleNextQuestion() {
+    const DEFAULT_TIME = 30;
+
     const {
       history,
       nextQuestion,
@@ -46,7 +48,7 @@ class Game extends Component {
 
     if (questionIndex < questions.length - 1) {
       nextQuestion();
-      setTimeRedux(30);
+      setTimeRedux(DEFAULT_TIME);
     } else {
       history.push('/feedback');
     }
