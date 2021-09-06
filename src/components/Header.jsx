@@ -35,7 +35,6 @@ class Header extends Component {
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,
-  // email: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
