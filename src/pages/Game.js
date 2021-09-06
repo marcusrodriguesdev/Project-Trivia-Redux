@@ -78,7 +78,7 @@ class Game extends React.Component {
           value={ results[0].correct_answer }
           data-testid="correct-answer"
           onClick={ this.checkAnswer }
-          disabled={ timer === 0 ? true : disabled }
+          disabled={ timer < 1 ? true : disabled }
         >
           { results[0].correct_answer }
         </button>
@@ -91,7 +91,7 @@ class Game extends React.Component {
               value={ answer }
               data-testid={ `wrong-answer-${index}` }
               onClick={ this.checkAnswer }
-              disabled={ timer === 0 ? true : disabled }
+              disabled={ timer < 1 ? true : disabled }
             >
               {answer}
             </button>))}
