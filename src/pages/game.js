@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { setLocalStorageThunk, setScore as setScoreAction } from '../actions';
+
 import '../App.css';
-<<<<<<< HEAD
 import '../gameButton.css';
-=======
 import HeaderInfo from '../components/HeaderInfo';
->>>>>>> 14f2d38b273365d84066c82abe52f7c7ca3badca
 
 class game extends Component {
   constructor(props) {
@@ -12,26 +14,26 @@ class game extends Component {
 
     this.state = {
       data: '',
-<<<<<<< HEAD
       paintInput: false,
-=======
       timer: 30,
       answers: [],
->>>>>>> 14f2d38b273365d84066c82abe52f7c7ca3badca
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleCorrectAnswer = this.handleCorrectAnswer.bind(this);
+    this.handleIncorrectAnswer = this.handleIncorrectAnswer.bind(this);
   }
 
   componentDidMount() {
     this.fetchAPI();
+    const { setLocalStorage } = this.props;
     const miliseconds = 1000;
     this.intervalId = setInterval(() => {
       this.setState((prevState) => ({
         timer: prevState.timer - 1,
       }));
     }, miliseconds);
+    setLocalStorage();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -60,20 +62,38 @@ class game extends Component {
     return data;
   }
 
-  handleClick() {
+  handleCorrectAnswer(difficulty) {
+    const DEFAULT_POINTS = 10;
+    const { setScore, setLocalStorage } = this.props;
+    const { timer } = this.state;
+    const difficultyPoints = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    const score = DEFAULT_POINTS + (difficultyPoints[difficulty] * timer);
+
+    setScore(score);
+    setLocalStorage();
+    clearInterval(this.intervalId);
     this.setState({
+      timer: 0,
+      paintInput: true,
+    });
+  }
+
+  handleIncorrectAnswer() {
+    clearInterval(this.intervalId);
+    this.setState({
+      timer: 0,
       paintInput: true,
     });
   }
 
   render() {
-<<<<<<< HEAD
-    const { data, paintInput } = this.state;
-    const loading = <div className="loading">Loading...</div>;
-=======
-    const { data, answers, timer } = this.state;
+    const { data, answers, timer, paintInput } = this.state;
     const loading = <div className="loading">Loading</div>;
->>>>>>> 14f2d38b273365d84066c82abe52f7c7ca3badca
 
     if (data === '' || answers === []) {
       return loading;
@@ -85,34 +105,34 @@ class game extends Component {
         <div className={ paintInput ? 'show' : 'question-board' }>
           <h1 data-testid="question-category">{data.category}</h1>
           <h2 data-testid="question-text">{data.question}</h2>
-          {answers
-            .map(((answer, index) => (
-              <button
-                type="button"
-                className="wrong"
-                data-testid={ `wrong-answer${index}` }
-                key={ index }
-<<<<<<< HEAD
-                onClick={ this.handleClick }
-=======
-                disabled={ timer === 0 }
->>>>>>> 14f2d38b273365d84066c82abe52f7c7ca3badca
-              >
-                {answer}
-              </button>
-            )))}
-          <button
-            type="button"
-            className="correct"
-            data-testid="correct-answer"
-<<<<<<< HEAD
-            onClick={ this.handleClick }
-=======
-            disabled={ timer === 0 }
->>>>>>> 14f2d38b273365d84066c82abe52f7c7ca3badca
-          >
-            {data.correct_answer}
-          </button>
+
+          {answers.map((answer, index) => (
+            answer === data.correct_answer
+              ? (
+                <button
+                  key={ index }
+                  type="button"
+                  className="correct"
+                  data-testid="correct-answer"
+                  disabled={ timer === 0 }
+                  onClick={ () => this.handleCorrectAnswer(data.difficulty) }
+                >
+                  { answer }
+                </button>
+              )
+              : (
+                <button
+                  key={ index }
+                  type="button"
+                  className="wrong"
+                  data-testid={ `wrong-answer${index}` }
+                  disabled={ timer === 0 }
+                  onClick={ this.handleIncorrectAnswer }
+                >
+                  { answer }
+                </button>
+              )
+          ))}
           <div>
             { timer }
           </div>
@@ -122,4 +142,14 @@ class game extends Component {
   }
 }
 
-export default game;
+game.propTypes = {
+  setScore: PropTypes.func.isRequired,
+  setLocalStorage: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispath) => ({
+  setScore: (score) => dispath(setScoreAction(score)),
+  setLocalStorage: () => dispath(setLocalStorageThunk()),
+});
+
+export default connect(null, mapDispatchToProps)(game);
