@@ -14,7 +14,7 @@ class GameScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      timer: 5,
+      timer: 30,
       answered: false,
       qIndex: 0,
     };
@@ -34,9 +34,7 @@ class GameScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    // const { score } = this.props;
     this.checkUpdate();
-    this.setLocalStorage();
   }
 
   componentWillUnmount() {
@@ -54,8 +52,7 @@ class GameScreen extends React.Component {
 
   setLocalStorage() {
     const { score, name, gravatarEmail, assertions } = this.props;
-    // const { player } = this.state;
-    // this.setState({
+
     const player = {
       player: {
         name,
@@ -76,6 +73,11 @@ class GameScreen extends React.Component {
 
   resetBtn() {
     document.querySelectorAll('.btn').forEach((btn) => { btn.style.border = ''; });
+    this.setState((prevState) => ({
+      ...prevState,
+      timer: 30,
+    }));
+    this.setTimer();
   }
 
   navQuest() {
@@ -117,7 +119,6 @@ class GameScreen extends React.Component {
     this.setState({
       answered: true,
     });
-    this.setLocalStorage();
   }
 
   renderQuestions() {
@@ -143,7 +144,7 @@ class GameScreen extends React.Component {
           onClick={ this.handleClick }
           name="correct"
         />
-        {questions[0].incorrect_answers.map((answer, index) => (<BtnWrong
+        {questions[qIndex].incorrect_answers.map((answer, index) => (<BtnWrong
           name="wrong"
           onClick={ this.handleClick }
           key={ index }
@@ -151,7 +152,12 @@ class GameScreen extends React.Component {
           index={ index }
           disable={ timer === 0 }
         />))}
-        {(answered || timer === 0) && <NextQuestionBtn feat1={ this.navQuest } reset={ this.resetBtn } />}
+        {(answered || timer === 0)
+        && <NextQuestionBtn
+          feat1={ this.navQuest }
+          reset={ this.resetBtn }
+          feat2={ this.setLocalStorage }
+        />}
       </div>
     );
   }

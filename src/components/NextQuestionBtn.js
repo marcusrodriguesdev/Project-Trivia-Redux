@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 
 class NextQuestionBtn extends React.Component {
   render() {
-    const { feat1, reset } = this.props;
+    const { feat1, reset, feat2 } = this.props;
     return (
       <button
         onClick={ () => {
           feat1();
           reset();
+          feat2();
         } }
         type="button"
         data-testid="btn-next"
@@ -21,6 +22,7 @@ class NextQuestionBtn extends React.Component {
 
 NextQuestionBtn.propTypes = {
   feat1: PropTypes.func.isRequired,
+  feat2: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
 };
 
