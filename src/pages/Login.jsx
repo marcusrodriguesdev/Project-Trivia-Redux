@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
-import { setGameToken as setGameTokenAction } from '../redux/actions';
+import { setGameToken as setGameTokenAction,
+  setPlayer as setPlayerAction } from '../redux/actions';
 
-import getTokenTrivia from '../services/triviaAPI';
+import { getTokenTrivia } from '../services/triviaAPI';
+import getAvatarImg from '../services/gravatarAPI';
 
 const NEGATIVE_ONE = -1;
 const NUMBER_THREE = 3;
@@ -18,6 +20,7 @@ class Login extends Component {
       nameValid: false,
       email: '',
       emailValid: false,
+      setupGame: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateInput = this.validateInput.bind(this);
@@ -27,11 +30,20 @@ class Login extends Component {
   }
 
   async onSubmitForm() {
-    const { setGameToken } = this.props;
+    const { name, email } = this.state;
+    const { setGameToken, setPlayer } = this.props;
     const token = await getTokenTrivia();
     setGameToken(token.token);
     this.saveTokenSession(token.token);
-    console.log(token.token);
+    const avatar = getAvatarImg(email);
+    const playerInfo = {
+      name,
+      email,
+      avatar,
+    };
+    setPlayer(playerInfo);
+    this.setState({ setupGame: true });
+    // console.log(token.token);
   }
 
   validateUserEmail(user) {
@@ -83,7 +95,7 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, nameValid, emailValid } = this.state;
+    const { name, email, nameValid, emailValid, setupGame } = this.state;
     const isButtonEnabled = emailValid && nameValid;
     return (
       <div>
@@ -126,6 +138,7 @@ class Login extends Component {
             Configurações
           </button>
         </Link>
+        { setupGame && <Redirect to="/game" /> }
       </div>
     );
   }
@@ -133,6 +146,7 @@ class Login extends Component {
 
 Login.propTypes = {
   setGameToken: PropTypes.func.isRequired,
+  setPlayer: PropTypes.func.isRequired,
   // token: PropTypes.string.isRequired,
 };
 
@@ -142,6 +156,7 @@ const mapStateToProps = ({ game: { token } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setGameToken: (token) => dispatch(setGameTokenAction(token)),
+  setPlayer: (playerInfo) => dispatch(setPlayerAction(playerInfo)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

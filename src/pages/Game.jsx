@@ -31,7 +31,7 @@ class Game extends Component {
 }
 
 const mapStateToProps = (
-  { player: { player: { name, avatar }, score } },
+  { player: { playerInfo: { name, avatar }, score } },
 ) => ({
   name, avatar, score,
 });
