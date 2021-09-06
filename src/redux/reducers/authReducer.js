@@ -1,4 +1,7 @@
-import { SET_TOKEN, REQUEST_TOKEN, SET_GRAVATAR, SET_PLAYER } from '../actions';
+import { SET_TOKEN,
+  REQUEST_TOKEN,
+  SET_GRAVATAR,
+  SET_PLAYER } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
