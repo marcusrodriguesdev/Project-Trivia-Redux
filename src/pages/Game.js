@@ -34,16 +34,28 @@ class Game extends React.Component {
     });
   }
 
-  checkAnswer() {
-    // const { value } = target;
-    // const { questions: { results } } = this.props;
-    // const correctAnswer = results[0].correct_answer;
+  checkAnswer({ target }) {
+    const { value } = target;
+    const { timer } = this.state;
+    const { questions: { results } } = this.props;
+    const correctAnswer = results[0].correct_answer;
+    const questionDifficulty = results[0].difficulty;
+    const TEN_POINTS = 10;
 
-    // if (value === correctAnswer) {
-    //   target.className = 'correct-answer';
-    // } else {
-    //   target.className = 'incorrect-answer';
-    // }
+    const difficulties = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+
+    let score = 0;
+
+    if (correctAnswer === value) {
+      score += TEN_POINTS + (timer * difficulties[questionDifficulty]);
+    }
+
+    console.log(score);
+
     this.setState({
       clicked: true,
     });
@@ -78,7 +90,7 @@ class Game extends React.Component {
           value={ results[0].correct_answer }
           data-testid="correct-answer"
           onClick={ this.checkAnswer }
-          disabled={ timer === 0 ? true : disabled }
+          disabled={ timer < 1 ? true : disabled }
         >
           { results[0].correct_answer }
         </button>
@@ -91,7 +103,7 @@ class Game extends React.Component {
               value={ answer }
               data-testid={ `wrong-answer-${index}` }
               onClick={ this.checkAnswer }
-              disabled={ timer === 0 ? true : disabled }
+              disabled={ timer < 1 ? true : disabled }
             >
               {answer}
             </button>))}
