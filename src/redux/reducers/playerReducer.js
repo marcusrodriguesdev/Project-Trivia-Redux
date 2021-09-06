@@ -1,7 +1,7 @@
 import { SET_PLAYER, ADD_SCORE } from '../actions';
 
 const INITIAL_STATE = {
-  player: {
+  playerInfo: {
     name: '',
     email: '',
     avatar: '',
@@ -13,10 +13,10 @@ export default function playerReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case SET_PLAYER:
     return { ...state,
-      player: {
-        name: action.payload.player.name,
-        email: action.payload.player.email,
-        avatar: action.payload.player.avatar,
+      playerInfo: {
+        name: action.payload.name,
+        email: action.payload.email,
+        avatar: action.payload.avatar,
       },
     };
   case ADD_SCORE:
