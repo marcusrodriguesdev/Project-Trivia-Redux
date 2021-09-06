@@ -6,6 +6,8 @@ export const SET_TIMER = 'SET_TIMER';
 
 export const SET_TOKEN = 'SET_TOKEN';
 
+export const RESET_TIMER = 'RESET_TIMER';
+
 export const setData = (payload) => ({
   type: SET_DATA_USER,
   payload,
@@ -20,6 +22,8 @@ export const setGame = (payload) => ({
   type: SET_TOKEN,
   payload,
 });
+
+export const resetTimer = (payload) => ({ type: RESET_TIMER, payload });
 
 export const fetchToken = () => async (dispatch) => {
   const token = await fetchTriviaToken();

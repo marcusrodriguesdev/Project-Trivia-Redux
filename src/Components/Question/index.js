@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import shuffleList from '../../services/suffleList';
 import './Question.css';
-import { setTimer } from '../../redux/actions';
+import { setTimer, resetTimer } from '../../redux/actions';
 
 class Question extends React.Component {
   constructor(props) {
@@ -56,7 +56,7 @@ class Question extends React.Component {
   }
 
   renderNexButton() {
-    const { nextClick, setTimeGlobal } = this.props;
+    const { nextClick, setTimeGlobal, resetTimeGlobal } = this.props;
     return (
       <button
         type="button"
@@ -64,6 +64,7 @@ class Question extends React.Component {
         onClick={ () => {
           nextClick();
           setTimeGlobal(false);
+          resetTimeGlobal(true);
         } }
       >
         Próxima
@@ -133,6 +134,7 @@ const MapStateToProps = (state) => ({
 
 const MapDispachToProps = (dispatch) => ({
   setTimeGlobal: (payload) => dispatch(setTimer(payload)),
+  resetTimeGlobal: (payload) => dispatch(resetTimer(payload)),
 });
 
 export default connect(MapStateToProps, MapDispachToProps)(Question);

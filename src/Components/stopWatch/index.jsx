@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setTimer } from '../../redux/actions';
+import { resetTimer, setTimer } from '../../redux/actions';
 
 class StopWatch extends Component {
   constructor(props) {
@@ -10,17 +10,35 @@ class StopWatch extends Component {
       time: 30,
     };
     this.limiteTempo = this.limiteTempo.bind(this);
+    this.stopWatch = this.stopWatch.bind(this);
+    this.resetStopWatch = this.resetStopWatch.bind(this);
   }
 
   componentDidMount() {
+    this.stopWatch();
+  }
+
+  componentDidUpdate() {
+    this.resetStopWatch();
+    this.limiteTempo();
+  }
+
+  resetStopWatch() {
+    const { time } = this.state;
+    const { resetTime, resetTimeGlobal } = this.props;
+    if (resetTime && time !== 30) {
+      this.setState({ time: 30 }, () => {
+        this.stopWatch();
+        resetTimeGlobal(false);
+      });
+    }
+  }
+
+  stopWatch() {
     const ONE_SECOND = 1000;
     this.intervalId = setInterval(() => {
       this.setState((prevState) => ({ time: prevState.time - 1 }));
     }, ONE_SECOND);
-  }
-
-  componentDidUpdate() {
-    this.limiteTempo();
   }
 
   limiteTempo() {
@@ -48,15 +66,14 @@ StopWatch.propTypes = {
   setTimeGlobal: PropTypes.func.isRequired,
 };
 
-const MapStateToProps = (state) => ({
-  isTimer: state.game.stopWatch.isTimer,
-
+const MapStateToProps = ({ game: { stopWatch: { isTimer, resetTime } } }) => ({
+  isTimer,
+  resetTime,
 });
 
 const MapDispatchToProps = (dispatch) => ({
-
   setTimeGlobal: (payload) => dispatch(setTimer(payload)),
-
+  resetTimeGlobal: (payload) => dispatch(resetTimer(payload)),
 });
 
 export default connect(MapStateToProps, MapDispatchToProps)(StopWatch);
