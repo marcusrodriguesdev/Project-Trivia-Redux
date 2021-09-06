@@ -27,7 +27,6 @@ class Login extends Component {
   }
 
   async onSubmitForm() {
-    // const tokenNow = await getTokenTrivia();
     const { setGameToken } = this.props;
     const token = await getTokenTrivia();
     setGameToken(token.token);
