@@ -57,11 +57,11 @@ class Login extends Component {
         gravatarEmail,
       },
     });
-    const rankingDataString = JSON.stringify([
-      { name, score: 10, picture: gravatarEmail },
-    ]);
+    // const rankingDataString = JSON.stringify([
+    //   { name, score: 10, picture: gravatarEmail },
+    // ]);
+    // window.localStorage.setItem('ranking', rankingDataString);
     window.localStorage.setItem('state', playerDataString);
-    window.localStorage.setItem('ranking', rankingDataString);
     window.localStorage.setItem('token', token);
     history.push('/game');
   }
