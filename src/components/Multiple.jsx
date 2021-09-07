@@ -12,10 +12,10 @@ class Multiple extends Component {
     this.nextButton = this.nextButton.bind(this);
   }
 
-  clickClassName() {
+  clickClassName(answer) {
     const { endRound } = this.props;
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
-    endRound();
+    endRound(answer);
   }
 
   nextButton() {
@@ -40,7 +40,7 @@ class Multiple extends Component {
           data-testid="correct-answer"
           disabled={ !isEnabled }
           className={ correct }
-          onClick={ this.clickClassName }
+          onClick={ () => this.clickClassName('correct') }
         >
           { answer.answer }
         </button>)
@@ -50,7 +50,7 @@ class Multiple extends Component {
           data-testid={ `wrong-answer-${answer.index}` }
           disabled={ !isEnabled }
           className={ incorrect }
-          onClick={ this.clickClassName }
+          onClick={ () => this.clickClassName('incorrect') }
         >
           { answer.answer }
         </button>);

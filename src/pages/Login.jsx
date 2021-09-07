@@ -48,7 +48,7 @@ class Login extends Component {
     // gravar o jogo no estado global
     setGameRound(games.results);
     this.setState({ setupGame: true });
-    console.log(games.results);
+    // console.log(games.results);
   }
 
   validateUserEmail(user) {
