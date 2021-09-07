@@ -12,28 +12,9 @@ class Multiple extends Component {
   }
 
   clickClassName() {
+    const { endRound } = this.props;
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
-  }
-
-  shuffle(array) {
-    const THREE = 3;
-    const arrayCopy = array;
-    const random = arrayCopy.splice(Math.floor(Math.random() * THREE));
-    return [...random, ...arrayCopy];
-  }
-
-  randomAnswer(question) {
-    const inicialAnswer = [
-      { answer: question.correct_answer,
-        index: -1 },
-      { answer: question.incorrect_answers[0],
-        index: 0 },
-      { answer: question.incorrect_answers[1],
-        index: 1 },
-      { answer: question.incorrect_answers[2],
-        index: 2 },
-    ];
-    return this.shuffle(this.shuffle(this.shuffle(inicialAnswer)));
+    endRound();
   }
 
   renderAnswerButton(answer) {
@@ -91,6 +72,7 @@ Multiple.propTypes = {
   question: PropTypes.string.isRequired,
   currentQuestion: PropTypes.arrayOf({}).isRequired,
   isEnabled: PropTypes.bool.isRequired,
+  endRound: PropTypes.func.isRequired,
 };
 
 export default Multiple;
