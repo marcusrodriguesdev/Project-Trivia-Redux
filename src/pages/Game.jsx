@@ -2,18 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { addScore as addScoreAction } from '../redux/actions';
 import Header from '../components/Header';
 import Multiple from '../components/Multiple';
 import Boolean from '../components/Boolean';
 
 import arabesco from '../image/arabesco-column.png';
 
+const ONE_SECOND = 1000;
+// const ONE_NEGATIVE = -1;
+const ANSWER_CORRECT = 10;
+
 class Game extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       indexQuestion: 0,
       chronometer: 30,
+      assertions: 0,
       isEnabled: true,
       round: [],
       loading: true,
@@ -21,10 +27,21 @@ class Game extends Component {
     this.setRoundState = this.setRoundState.bind(this);
     this.updateIsEnabled = this.updateIsEnabled.bind(this);
     this.endRound = this.endRound.bind(this);
+    this.getCurrentScore = this.getCurrentScore.bind(this);
+    this.addAssertions = this.addAssertions.bind(this);
+    const { name, email } = props;
+    const player = {
+      player: {
+        name,
+        assertions: 0, // assertions é o número de acertos
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    this.savePlayerSession(player);
   }
 
   componentDidMount() {
-    const ONE_SECOND = 1000;
     const { chronometer, isEnabled } = this.state;
     this.chronometerId = setInterval(() => {
       if (chronometer > 0 && isEnabled) {
@@ -55,15 +72,53 @@ class Game extends Component {
     });
   }
 
+  getCurrentScore(time, difficulty) {
+    const difficultyPoints = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    return ANSWER_CORRECT + (time * difficultyPoints[difficulty]);
+  }
+
   updateIsEnabled() {
     this.setState({
       isEnabled: false,
     });
   }
 
-  endRound() {
+  addAssertions() {
+    this.setState((oldState) => ({ assertions: oldState.assertions + 1 }));
+  }
+
+  savePlayerSession(player) {
+    localStorage.setItem('state', JSON.stringify(player));
+  }
+
+  async endRound(answer) {
     this.updateIsEnabled();
     clearInterval(this.chronometerId);
+    const { rounds, addScore, name, email } = this.props;
+    const { chronometer, indexQuestion } = this.state;
+    const { difficulty } = rounds[indexQuestion];
+    let currentScore = 0;
+    if (answer === 'correct') {
+      this.addAssertions();
+      currentScore = this.getCurrentScore(chronometer, difficulty);
+    }
+    await addScore(currentScore); // salvar pontuação no state Global
+    // // salvar pontuação no LocalStorage
+    const { assertions } = this.state;
+    const { score } = this.props;
+    const player = {
+      player: {
+        name,
+        assertions, // assertions é o número de acertos
+        score,
+        gravatarEmail: email,
+      },
+    };
+    this.savePlayerSession(player);
   }
 
   randomAnswer(question) {
@@ -119,9 +174,6 @@ class Game extends Component {
                     />
               }
             </div>
-            <button type="button" onClick={ () => this.endRound() }>
-              Teste
-            </button>
           </div>
           <div className="game-column"><img src={ arabesco } alt="Arabesco" /></div>
         </div>
@@ -131,16 +183,22 @@ class Game extends Component {
 }
 
 const mapStateToProps = (
-  { player: { playerInfo: { name, avatar }, score }, game: { rounds } },
+  { player: { playerInfo: { name, avatar, email }, score }, game: { rounds } },
 ) => ({
-  name, avatar, score, rounds,
+  name, avatar, score, rounds, email,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addScore: (score) => dispatch(addScoreAction(score)),
 });
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   rounds: PropTypes.arrayOf({}).isRequired,
+  addScore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
