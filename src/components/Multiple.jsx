@@ -8,10 +8,10 @@ class Multiple extends Component {
       correct: null,
       incorrect: null,
     };
-    this.handleClickClassName = this.handleClickClassName.bind(this);
+    this.clickClassName = this.clickClassName.bind(this);
   }
 
-  handleClickClassName() {
+  clickClassName() {
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
   }
 
@@ -45,7 +45,7 @@ class Multiple extends Component {
           type="button"
           data-testid="correct-answer"
           className={ correct }
-          onClick={ this.handleClickClassName }
+          onClick={ this.clickClassName }
         >
           { answer.answer }
         </button>)
@@ -54,7 +54,7 @@ class Multiple extends Component {
           type="button"
           data-testid={ `wrong-answer-${answer.index}` }
           className={ incorrect }
-          onClick={ this.handleClickClassName }
+          onClick={ this.clickClassName }
         >
           { answer.answer }
         </button>);
