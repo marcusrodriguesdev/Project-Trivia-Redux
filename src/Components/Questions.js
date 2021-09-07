@@ -15,7 +15,7 @@ class Questions extends React.Component {
     this.state = {
       answered: false,
       timer: 30,
-      points: 10,
+      // points: 10,
       assertionsAdd: 1,
       showButton: true,
     };
@@ -52,6 +52,20 @@ class Questions extends React.Component {
     clearInterval(this.interval);
   }
 
+  getDifficulty(difficulty) {
+    const hard = 3;
+    switch (difficulty) {
+    case 'easy':
+      return 1;
+    case 'medium':
+      return 2;
+    case 'hard':
+      return hard;
+    default:
+      return 0;
+    }
+  }
+
   handleSubmit(event) {
     event.preventDefault();
   }
@@ -67,12 +81,14 @@ class Questions extends React.Component {
   }
 
   handleCorrectBtn() {
-    const { answered } = this.state;
-    const { savePoints } = this.props;
+    const { answered, timer } = this.state;
+    const { savePoints, question: { difficulty } } = this.props;
 
     this.setState({ answered: !answered });
+    const multiplier = (this.getDifficulty(difficulty));
+    const basePoints = 10;
 
-    savePoints(this.state);
+    savePoints({ ...this.state, points: basePoints + (multiplier * timer) });
     clearInterval(this.interval);
   }
 
