@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addTriviaThunk, userTry } from '../actions';
+import { addTriviaThunk, userTry, showNextButton } from '../actions';
 
 const INITIAL_STATE = {};
 
@@ -11,6 +11,7 @@ class Game extends React.Component {
 
     this.state = INITIAL_STATE;
     this.handleClick = this.handleClick.bind(this);
+    this.handleNext = this.handleNext.bind(this);
   }
 
   componentDidMount() {
@@ -19,11 +20,19 @@ class Game extends React.Component {
   }
 
   handleClick() {
+    const { addTry, buttonRender } = this.props;
+    addTry(true);
+    buttonRender();
+  }
+
+  handleNext() {
     const { addTry } = this.props;
-    addTry();
+    addTry(false);
   }
 
   render() {
+    const nextButton = (
+      <button id="javascript" type="button" onClick={ this.handleNext }>Próximo</button>);
     const { results, gravatarURL, name, tryUser } = this.props;
     return (
       <div>
@@ -59,6 +68,7 @@ class Game extends React.Component {
                     </button>),
                 )}
               </div>))}
+          { tryUser && nextButton }
         </div>
       </div>
     );
@@ -72,6 +82,8 @@ Game.propTypes = {
   name: PropTypes.string.isRequired,
   addTry: PropTypes.func.isRequired,
   tryUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  buttonRender: PropTypes.objectOf(PropTypes.any).isRequired,
+  // renderButton: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -79,11 +91,13 @@ const mapStateToProps = (state) => ({
   gravatarURL: state.gravatar.gravatarURL,
   name: state.loginReducer.name,
   tryUser: state.triviaReducer.tryUser,
+  renderButton: state.triviaReducer.renderButton,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addTrivia: (localStorage) => dispatch(addTriviaThunk(localStorage)),
-  addTry: () => dispatch(userTry()),
+  addTry: (param) => dispatch(userTry(param)),
+  buttonRender: () => dispatch(showNextButton()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
