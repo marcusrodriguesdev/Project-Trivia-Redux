@@ -12,7 +12,9 @@ class Boolean extends Component {
   }
 
   clickClassName() {
+    const { endRound } = this.props;
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
+    endRound();
   }
 
   renderAnswerButton(answer) {
@@ -68,6 +70,7 @@ Boolean.propTypes = {
   question: PropTypes.string.isRequired,
   currentQuestion: PropTypes.arrayOf({}).isRequired,
   isEnabled: PropTypes.bool.isRequired,
+  endRound: PropTypes.func.isRequired,
 };
 
 export default Boolean;

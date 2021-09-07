@@ -15,12 +15,12 @@ class Game extends Component {
       indexQuestion: 0,
       chronometer: 30,
       isEnabled: true,
-      // isAnswerCorrect: false,
       round: [],
       loading: true,
     };
     this.setRoundState = this.setRoundState.bind(this);
     this.updateIsEnabled = this.updateIsEnabled.bind(this);
+    this.endRound = this.endRound.bind(this);
   }
 
   componentDidMount() {
@@ -37,7 +37,6 @@ class Game extends Component {
     if (round.length === 0) {
       const result = this.randomAnswer(rounds[indexQuestion]);
       this.setRoundState(result);
-      console.table(result);
     }
   }
 
@@ -60,6 +59,11 @@ class Game extends Component {
     this.setState({
       isEnabled: false,
     });
+  }
+
+  endRound() {
+    this.updateIsEnabled();
+    clearInterval(this.chronometerId);
   }
 
   randomAnswer(question) {
@@ -103,6 +107,7 @@ class Game extends Component {
                       category={ category }
                       question={ question }
                       isEnabled={ isEnabled }
+                      endRound={ this.endRound }
                     />
                   : !loading
                     && <Boolean
@@ -110,9 +115,13 @@ class Game extends Component {
                       category={ category }
                       question={ question }
                       isEnabled={ isEnabled }
+                      endRound={ this.endRound }
                     />
               }
             </div>
+            <button type="button" onClick={ () => this.endRound() }>
+              Teste
+            </button>
           </div>
           <div className="game-column"><img src={ arabesco } alt="Arabesco" /></div>
         </div>
