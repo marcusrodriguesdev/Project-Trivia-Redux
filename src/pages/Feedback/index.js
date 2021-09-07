@@ -11,6 +11,7 @@ class Feedback extends Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.handlePlayAgain = this.handlePlayAgain.bind(this);
+    this.setPlayer = this.setPlayer.bind(this);
   }
 
   getAssertions() {
@@ -18,6 +19,17 @@ class Feedback extends Component {
     const parsedLocal = JSON.parse(local);
 
     return parsedLocal.player.assertions;
+  }
+
+  setPlayer() {
+    const { name, score, gravatar } = this.props;
+    const ranking = window.localStorage.getItem('ranking');
+    const emptyArray = '[]';
+    const playersJSON = ranking || emptyArray;
+    const players = JSON.parse(playersJSON);
+    const newPlayer = { name, score, picture: gravatar };
+    players.push(newPlayer);
+    window.localStorage.setItem('ranking', JSON.stringify(players));
   }
 
   handlePlayAgain() {
@@ -28,7 +40,7 @@ class Feedback extends Component {
 
   handleClick() {
     const { history } = this.props;
-
+    this.setPlayer();
     history.push('/ranking');
   }
 
@@ -72,15 +84,19 @@ class Feedback extends Component {
 }
 
 Feedback.propTypes = {
-  score: PropTypes.number.isRequired,
+  gravatar: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  name: PropTypes.string.isRequired,
   resetGame: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ game }) => ({
+const mapStateToProps = ({ game, auth }) => ({
   score: game.score,
+  name: auth.name,
+  gravatar: auth.gravatar,
 });
 
 const mapDispatchToProps = (dispatch) => ({
