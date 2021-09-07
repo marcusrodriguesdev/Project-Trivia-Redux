@@ -15,27 +15,6 @@ class Multiple extends Component {
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
   }
 
-  shuffle(array) {
-    const THREE = 3;
-    const arrayCopy = array;
-    const random = arrayCopy.splice(Math.floor(Math.random() * THREE));
-    return [...random, ...arrayCopy];
-  }
-
-  randomAnswer(question) {
-    const inicialAnswer = [
-      { answer: question.correct_answer,
-        index: -1 },
-      { answer: question.incorrect_answers[0],
-        index: 0 },
-      { answer: question.incorrect_answers[1],
-        index: 1 },
-      { answer: question.incorrect_answers[2],
-        index: 2 },
-    ];
-    return this.shuffle(this.shuffle(this.shuffle(inicialAnswer)));
-  }
-
   renderAnswerButton(answer) {
     const { correct, incorrect } = this.state;
     const ONE_NEGATIVE = -1;
