@@ -1,67 +1,55 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import './question.css';
+import React, { Component } from 'react';
+import './quest.css';
 
-class question extends React.Component {
+class Questions extends Component {
   constructor() {
     super();
     this.state = {
-      answerSelected: false,
+      correct: null,
+      incorrect: null,
     };
-
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClickClassName = this.handleClickClassName.bind(this);
   }
 
-  handleClick() {
-    this.setState({
-      answerSelected: true,
-    });
+  handleClickClassName() {
+    this.setState({ incorrect: 'incorrect', correct: 'correct' });
   }
 
   render() {
-    const { questions } = this.props;
-    const { answerSelected } = this.state;
+    const { correct, incorrect } = this.state;
+    const { answer } = this.props;
     return (
       <div>
-        <fieldset>
-          <h1 data-testid="question-category">
-            { questions[0].category }
-          </h1>
-          <h2 data-testid="question-text">
-            { questions[0].question }
-          </h2>
-          <ol>
-            <li classNme="incorrect">
-              {(questions[0].incorrect_answers).map((incorrect, index) => (
-                <button
-                  type="button"
-                  className={ answerSelected && 'incorrect' }
-                  key={ index }
-                  data-testid={ `wrong-answer-${index}` }
-                  name={ incorrect }
-                  onClick={ this.handleClick }
-                >
-                  { incorrect }
-                </button>
-              ))}
-            </li>
-            <li>
+        <p data-testid="question-category">{answer[0].category}</p>
+        <p data-testid="question-text">{answer[0].question}</p>
+        <button
+          className={ correct }
+          onClick={ this.handleClickClassName }
+          data-testid="correct-answer"
+          type="button"
+        >
+          {answer[0].correct_answer}
+        </button>
+        {answer[0].incorrect_answers
+          .map((element, index) => (
+            <div key={ index }>
               <button
+                className={ incorrect }
+                onClick={ this.handleClickClassName }
                 type="button"
-                className={ answerSelected && 'correct' }
-                data-testid="correct-answer"
-                onClick={ this.handleClick }
+                key={ index }
+                data-testid={ `wrong-answer-${index}` }
               >
-                { questions[0].correct_answer }
+                {element}
               </button>
-            </li>
-          </ol>
-        </fieldset>
+            </div>
+          ))}
       </div>
     );
   }
 }
-question.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+Questions.propTypes = {
+  answer: PropTypes.string.isRequired,
 };
-export default question;
+export default Questions;
