@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Header from './components/Header';
 import ConfigWindow from './pages/ConfigWindow';
 import FeedBack from './pages/FeedBack';
+import GameRanking from './pages/GameRanking';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/config" component={ ConfigWindow } />
         <Route path="/game" component={ GameScreen } />
         <Route path="/feedback" component={ FeedBack } />
+        <Route path="/ranking" component={ GameRanking } />
       </Switch>
     </div>
   );
