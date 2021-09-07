@@ -67,7 +67,7 @@ class Game extends React.Component {
               data-testid={ `wrong-answer-${index}` }
               disabled={ disabled }
               type="button"
-              className={ answered ? 'wrong' : '' }
+              className={ answered ? 'wrong' : 'alternative' }
               onClick={ this.callButton }
             >
               { questionsLoaded && this.b64toutf8(answer) }
@@ -83,7 +83,7 @@ class Game extends React.Component {
             <button
               type="button"
               data-testid="correct-answer"
-              className={ answered ? 'correct' : '' }
+              className={ answered ? 'correct' : 'alternative' }
               onClick={ this.callButton }
               disabled={ disabled }
             >
@@ -124,9 +124,11 @@ class Game extends React.Component {
       </button>
     );
     return (
-      <>
+      <div className="game-div">
         <Header />
-        { !disabled && <Timer switchButton={ this.switchButton } />}
+        <div className="timer-div">
+          { !disabled && <Timer switchButton={ this.switchButton } />}
+        </div>
         <fieldset>
           <h1
             data-testid="question-category"
@@ -143,7 +145,7 @@ class Game extends React.Component {
           </ul>
           { buttonShow && button }
         </fieldset>
-      </>
+      </div>
     );
   }
 }

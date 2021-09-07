@@ -3,7 +3,7 @@ import React from 'react';
 class Header extends React.Component {
   render() {
     return (
-      <header>
+      <header className="game-header">
         <img
           src={ `https://www.gravatar.com/avatar/${JSON.parse(localStorage.getItem('ranking')).picture}` }
           alt="Foto de Perfil"
@@ -12,7 +12,10 @@ class Header extends React.Component {
         <h1 data-testid="header-player-name">
           {JSON.parse(localStorage.getItem('player')).name}
         </h1>
-        <h2 data-testid="header-score">0</h2>
+        <h2>
+          Score:
+          <span data-testid="header-score">0</span>
+        </h2>
       </header>
     );
   }

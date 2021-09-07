@@ -39,7 +39,7 @@ class Login extends Component {
   render() {
     const { username, email } = this.state;
     return (
-      <div>
+      <div className="login-div">
         <fieldset>
           <label htmlFor="name-input">
             Nome:
