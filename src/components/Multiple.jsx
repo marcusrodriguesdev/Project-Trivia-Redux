@@ -9,12 +9,24 @@ class Multiple extends Component {
       incorrect: null,
     };
     this.clickClassName = this.clickClassName.bind(this);
+    this.nextButton = this.nextButton.bind(this);
   }
 
   clickClassName() {
     const { endRound } = this.props;
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
     endRound();
+  }
+
+  nextButton() {
+    const { isEnabled, nextRound } = this.props;
+    if (!isEnabled) {
+      return (
+        <button data-testid="btn-next" type="button" onClick={ () => nextRound() }>
+          Próxima
+        </button>
+      );
+    }
   }
 
   renderAnswerButton(answer) {
@@ -62,10 +74,14 @@ class Multiple extends Component {
           {this.renderAnswerButton(currentQuestion[2])}
           {this.renderAnswerButton(currentQuestion[3])}
         </div>
+        { this.nextButton() }
       </div>
     );
   }
 }
+// precisa saber se a resposta clicada foi a certa
+// alterar o estado correspondente
+// usar esse estado para mostrar/nao o nextButton
 
 Multiple.propTypes = {
   category: PropTypes.string.isRequired,

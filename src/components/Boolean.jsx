@@ -9,12 +9,25 @@ class Boolean extends Component {
       incorrect: null,
     };
     this.clickClassName = this.clickClassName.bind(this);
+    this.nextButton = this.nextButton.bind(this);
   }
 
   clickClassName() {
     const { endRound } = this.props;
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
     endRound();
+  }
+
+  nextButton() {
+    const { isEnabled, nextRound } = this.props;
+    if (!isEnabled) {
+      return (
+        <button data-testid="btn-next" type="button" onClick={ () => nextRound() }>
+          {/* <button type="button" onClick={ () => console.log('nextButton clicked!') }> */}
+          Próxima
+        </button>
+      );
+    }
   }
 
   renderAnswerButton(answer) {
@@ -60,6 +73,8 @@ class Boolean extends Component {
           {this.renderAnswerButton(currentQuestion[0])}
           {this.renderAnswerButton(currentQuestion[1])}
         </div>
+        { this.nextButton() }
+
       </div>
     );
   }
