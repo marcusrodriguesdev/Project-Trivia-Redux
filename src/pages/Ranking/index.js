@@ -6,9 +6,15 @@ class Ranking extends Component {
     this.state = {
       players: [],
     };
+
+    this.setPlayers = this.setPlayers.bind(this);
   }
 
   componentDidMount() {
+    this.setPlayers();
+  }
+
+  setPlayers() {
     const localPlayersString = window.localStorage.getItem('ranking');
     const localPlayers = JSON.parse(localPlayersString);
     this.setState({ players: localPlayers });
