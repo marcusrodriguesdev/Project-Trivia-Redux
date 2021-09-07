@@ -2,6 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Multiple extends Component {
+  constructor() {
+    super();
+    this.state = {
+      correct: null,
+      incorrect: null,
+    };
+    this.handleClickClassName = this.handleClickClassName.bind(this);
+  }
+
+  handleClickClassName() {
+    this.setState({ incorrect: 'incorrect', correct: 'correct' });
+  }
+
   shuffle(array) {
     const THREE = 3;
     const arrayCopy = array;
@@ -24,13 +37,24 @@ class Multiple extends Component {
   }
 
   renderAnswerButton(answer) {
+    const { correct, incorrect } = this.state;
     const ONE_NEGATIVE = -1;
     return (answer.index === ONE_NEGATIVE)
-      ? (<button type="button" data-testid="correct-answer">{ answer.answer }</button>)
+      ? (
+        <button
+          type="button"
+          data-testid="correct-answer"
+          className={ correct }
+          onClick={ this.handleClickClassName }
+        >
+          { answer.answer }
+        </button>)
       : (
         <button
           type="button"
           data-testid={ `wrong-answer-${answer.index}` }
+          className={ incorrect }
+          onClick={ this.handleClickClassName }
         >
           { answer.answer }
         </button>);
