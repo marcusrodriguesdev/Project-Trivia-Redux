@@ -6,6 +6,7 @@ import fetchGravatar from '../redux/actions/fetch/fetchGravatar';
 class Header extends Component {
   render() {
     const { playerName, hash } = this.props;
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     return (
       <div>
         <img
@@ -14,7 +15,7 @@ class Header extends Component {
           data-testid="header-profile-picture"
         />
         <div data-testid="header-player-name">{ playerName }</div>
-        <div data-testid="header-score">0</div>
+        <div data-testid="header-score">{score}</div>
       </div>
     );
   }
@@ -22,7 +23,7 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  playerName: state.user.name,
+  playerName: state.user.playerName,
 });
 
 const mapDispatchToProps = (dispatch) => ({

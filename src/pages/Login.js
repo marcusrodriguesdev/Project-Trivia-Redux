@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import InputCard from '../components/InputCard';
 import fetchToken from '../redux/actions/fetch/fetchToken';
+import { actionSaveDataUser } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -19,6 +20,11 @@ class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    const { getToken } = this.props;
+    getToken();
+  }
+
   onValidation() {
     const min = 3;
     const { email, playerName } = this.state;
@@ -31,9 +37,21 @@ class Login extends Component {
   onSubmit(event) {
     event.preventDefault();
     const { email, playerName } = this.state;
-    const { getToken } = this.props;
-    getToken({ email, playerName });
+    const { saveUser } = this.props;
+    saveUser({ email, playerName });
     this.setState({ redirect: true });
+    const state = JSON.parse(localStorage.getItem('state')) || {};
+    localStorage.setItem(
+      'state',
+      JSON.stringify({
+        player: {
+          ...state.player,
+          name: playerName,
+          gravatarEmail: email,
+          score: 0,
+          assertions: 0 },
+      }),
+    );
   }
 
   onHandlerChange({ target }) {
@@ -85,6 +103,7 @@ class Login extends Component {
 
 const mapDipatchToProps = (dispatch) => ({
   getToken: (data) => dispatch(fetchToken(data)),
+  saveUser: (data) => dispatch(actionSaveDataUser(data)),
 });
 
 const mapStateToProps = (state) => ({
@@ -95,5 +114,6 @@ export default connect(mapStateToProps, mapDipatchToProps)(Login);
 
 Login.propTypes = {
   getToken: PropTypes.func.isRequired,
+  saveUser: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
 };
