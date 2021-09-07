@@ -13,12 +13,74 @@ class Game extends Component {
     super();
     this.state = {
       indexQuestion: 0,
+      chronometer: 30,
+      isEnabled: true,
+      // isAnswerCorrect: false,
+      round: [],
+      loading: true,
     };
+    this.setRoundState = this.setRoundState.bind(this);
+    this.updateIsEnabled = this.updateIsEnabled.bind(this);
+  }
+
+  componentDidMount() {
+    const ONE_SECOND = 1000;
+    const { chronometer, isEnabled } = this.state;
+    this.chronometerId = setInterval(() => {
+      if (chronometer > 0 && isEnabled) {
+        this.setState((prevState) => ({ chronometer: prevState.chronometer - 1 }));
+      }
+      console.log('intervalo');
+    }, ONE_SECOND);
+    const { indexQuestion, round } = this.state;
+    const { rounds } = this.props;
+    if (round.length === 0) {
+      const result = this.randomAnswer(rounds[indexQuestion]);
+      this.setRoundState(result);
+      console.table(result);
+    }
+  }
+
+  componentDidUpdate() {
+    const { chronometer, isEnabled } = this.state;
+    if (isEnabled && chronometer === 0) {
+      this.updateIsEnabled();
+      clearInterval(this.chronometerId);
+    }
+  }
+
+  setRoundState(result) {
+    this.setState({
+      round: result,
+      loading: false,
+    });
+  }
+
+  updateIsEnabled() {
+    this.setState({
+      isEnabled: false,
+    });
+  }
+
+  randomAnswer(question) {
+    const correctAnswer = question.correct_answer;
+    const incorrectAnswers = question.incorrect_answers;
+    const incorrect = incorrectAnswers.map((answer, index) => ({ answer, index }));
+    const inicialAnswer = [...incorrect, { answer: correctAnswer, index: -1 }];
+    return this.shuffle(this.shuffle(this.shuffle(inicialAnswer)));
+  }
+
+  shuffle(array) {
+    const NUMBER = array.length;
+    const arrayCopy = array;
+    const random = arrayCopy.splice(Math.floor(Math.random() * NUMBER));
+    return [...random, ...arrayCopy];
   }
 
   render() {
     const { name, avatar, score, rounds } = this.props;
-    const { indexQuestion } = this.state;
+    const { indexQuestion, isEnabled, chronometer, round, loading } = this.state;
+    const { category, question } = rounds[indexQuestion];
     return (
       <div className="page-body">
         <div className="game-body">
@@ -29,10 +91,27 @@ class Game extends Component {
               avatar={ avatar }
               score={ score }
             />
+            <h1>
+              { chronometer }
+            </h1>
             <div className="game-main">
-              { rounds[indexQuestion].type === 'multiple'
-                ? <Multiple currentQuestion={ rounds[indexQuestion] } />
-                : <Boolean currentQuestion={ rounds[indexQuestion] } /> }
+              {
+                rounds[indexQuestion].type === 'multiple'
+                  ? !loading
+                    && <Multiple
+                      currentQuestion={ round }
+                      category={ category }
+                      question={ question }
+                      isEnabled={ isEnabled }
+                    />
+                  : !loading
+                    && <Boolean
+                      currentQuestion={ round }
+                      category={ category }
+                      question={ question }
+                      isEnabled={ isEnabled }
+                    />
+              }
             </div>
           </div>
           <div className="game-column"><img src={ arabesco } alt="Arabesco" /></div>
