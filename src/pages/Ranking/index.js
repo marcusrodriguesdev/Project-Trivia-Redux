@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { resetGame as resetGameAction } from '../../redux/actions/gameActions';
 
 class Ranking extends Component {
   constructor() {
@@ -29,7 +31,8 @@ class Ranking extends Component {
   }
 
   handleHomeClick() {
-    const { history } = this.props;
+    const { history, resetGame } = this.props;
+    resetGame();
     history.push('/');
   }
 
@@ -63,6 +66,11 @@ Ranking.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  resetGame: PropTypes.func.isRequired,
 };
 
-export default Ranking;
+const mapDispatchToProps = (dispatch) => ({
+  resetGame: () => dispatch(resetGameAction()),
+});
+
+export default connect(null, mapDispatchToProps)(Ranking);
