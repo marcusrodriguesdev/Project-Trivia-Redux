@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import WrongAnswers from './WrongAnswers';
 import CorrectAnswer from './CorrectAnswer';
 import { setTrivia, showButton } from '../Actions';
+import getDifficulty from '../Services/functions';
 
 import '../Styles/trivia.css';
 
@@ -15,12 +16,10 @@ class Questions extends React.Component {
     this.state = {
       answered: false,
       timer: 30,
-      points: 10,
       assertionsAdd: 1,
       showButton: true,
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleCorrectBtn = this.handleCorrectBtn.bind(this);
   }
@@ -52,10 +51,6 @@ class Questions extends React.Component {
     clearInterval(this.interval);
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-  }
-
   handleClick(event) {
     const { answered } = this.state;
     const { showNextButton } = this.props;
@@ -67,12 +62,14 @@ class Questions extends React.Component {
   }
 
   handleCorrectBtn() {
-    const { answered } = this.state;
-    const { savePoints } = this.props;
+    const { answered, timer } = this.state;
+    const { savePoints, question: { difficulty } } = this.props;
 
     this.setState({ answered: !answered });
+    const multiplier = (getDifficulty(difficulty));
+    const basePoints = 10;
 
-    savePoints(this.state);
+    savePoints({ ...this.state, points: basePoints + (multiplier * timer) });
     clearInterval(this.interval);
   }
 
