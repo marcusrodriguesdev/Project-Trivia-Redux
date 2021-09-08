@@ -61,13 +61,11 @@ class Home extends React.Component {
   }
 
   nextClick() {
+    const { history } = this.props;
     const { currentQuestionIndex, questions } = this.state;
     const newQuestionIndex = currentQuestionIndex + 1;
     if (newQuestionIndex === questions.length) {
-      this.setState({
-        currentQuestionIndex: 0,
-      });
-      this.setCurrentQuestion(0);
+      history.push('/results');
     } else {
       this.setState({
         currentQuestionIndex: newQuestionIndex,

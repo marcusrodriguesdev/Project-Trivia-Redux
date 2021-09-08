@@ -12,6 +12,8 @@ export const RESET_TIMER = 'RESET_TIMER';
 
 export const SET_SCORE = 'SET_SCORE';
 
+export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
+
 // Actions
 
 export const setData = (payload) => ({
@@ -35,6 +37,8 @@ export const setScore = (payload) => ({
   type: SET_SCORE,
   payload,
 });
+
+export const setCorrectAnswer = (payload) => ({ type: SET_CORRECT_ANSWER, payload });
 
 // Thunk
 
