@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 
 import { fecthApiThunk } from '../Redux/action';
 import Header from '../components/Header';
@@ -40,6 +41,7 @@ class Game extends Component {
       gravatarEmail: '',
     } };
     localStorage.setItem('state', JSON.stringify(player));
+    localStorage.setItem('ranking', JSON.stringify([]));
     // ranking = [
     //   { name: nome-da-pessoa, score: 10, picture: url-da-foto-no-gravatar }
     // ]
@@ -131,7 +133,14 @@ class Game extends Component {
       });
       this.createClock();
     }
-    if (next + 1 > results.length - 1) history.push('/feedback');
+    const player = JSON.parse(localStorage.getItem('state'));
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const profileAvatar = `https://www.gravatar.com/avatar/${md5(player.player.gravatarEmail).toString()}`;
+    const newRaking = [...ranking, { ...player.player, profileAvatar }];
+    if (next + 1 > results.length - 1) {
+      history.push('/feedback');
+      localStorage.setItem('ranking', JSON.stringify(newRaking));
+    }
   }
 
   renderQuestions() {
