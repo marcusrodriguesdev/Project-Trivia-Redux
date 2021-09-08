@@ -75,9 +75,15 @@ export class Game extends React.Component {
         assertions: PlayerAssertions,
         score: PlayerScore,
         gravatarEmail: player.email,
+        picture: player.avatar,
       },
     };
+    /* [
+  { name: nome-da-pessoa, score: 10, picture: url-da-foto-no-gravatar }
+] */
     localStorage.setItem('state', JSON.stringify(localStorageObj));
+    const ranking = [{ name: player.nome, score: PlayerScore, picture: player.avatar }];
+    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   // answersRender(questions) {
