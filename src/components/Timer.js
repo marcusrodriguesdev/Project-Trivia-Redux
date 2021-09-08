@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-// import Proptypes from 'prop-types';
+import Proptypes from 'prop-types';
 
 export default class Timer extends Component {
   constructor() {
     super();
 
     this.state = {
-      seconds: 3,
+      seconds: 30,
     };
   }
 
@@ -18,10 +18,13 @@ export default class Timer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // const { instaLose } = this.props;
+    const { instaLose, running } = this.props;
     if (prevState.seconds === 1) {
       clearInterval(this.timer);
-      // instaLose();
+      instaLose();
+    }
+    if (!running) {
+      clearInterval(this.timer);
     }
   }
 
@@ -36,5 +39,6 @@ export default class Timer extends Component {
 }
 
 Timer.propTypes = {
-  // instaLose: Proptypes.func.isRequired,
+  running: Proptypes.bool.isRequired,
+  instaLose: Proptypes.func.isRequired,
 };
