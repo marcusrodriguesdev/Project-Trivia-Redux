@@ -2,6 +2,8 @@ export const ACTIONS = {
   SET_EMAIL: 'SET_EMAIL',
   GET_TOKEN: 'GET_TOKEN',
   SET_SCORE: 'SET_SCORE',
+  SET_IMG_GRAVATAR: 'SET_IMG_GRAVATAR',
+  SET_IMG_GRAVATAR_ERROR: 'SET_IMG_GRAVATAR_ERROR',
 };
 
 export const setEmail = (payload) => ({ type: ACTIONS.SET_EMAIL, payload });
@@ -26,3 +28,18 @@ export function setLocalStorageThunk() {
     localStorage.setItem('state', JSON.stringify(getState()));
   };
 }
+
+export const actionSuccessAPI = (payload) => (
+  { type: ACTIONS.SET_IMG_GRAVATAR, payload });
+
+export const actionErrorAPI = (payload) => (
+  { type: ACTIONS.SET_IMG_GRAVATAR_ERROR, payload });
+
+export const actionFunctionThunk = (hash) => async (dispatch) => {
+  try {
+    const getGravatarAPI = await fetch(`https://www.gravatar.com/avatar/${hash}`);
+    dispatch(actionSuccessAPI(getGravatarAPI.url));
+  } catch (error) {
+    dispatch(actionErrorAPI(error));
+  }
+};

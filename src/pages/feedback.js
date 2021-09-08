@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import HeaderInfo from '../components/HeaderInfo';
+import HeaderFeedback from '../components/HeaderFeedback';
 
 class feedback extends Component {
   feedbackMessage(assertions) {
@@ -17,7 +17,7 @@ class feedback extends Component {
     const { assertions, score, history } = this.props;
     return (
       <div className="App">
-        <HeaderInfo />
+        <HeaderFeedback />
         { this.feedbackMessage(assertions) }
         <h4>
           {'Placar Final: '}

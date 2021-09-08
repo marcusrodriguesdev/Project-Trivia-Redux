@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import Input from '../components/Input';
 import logo from '../trivia.png';
-import { getTokenApi, setEmail } from '../actions';
+import { actionFunctionThunk, getTokenApi, setEmail } from '../actions';
 
 class login extends Component {
   constructor(props) {
@@ -26,9 +27,11 @@ class login extends Component {
   }
 
   handleOnClick() {
-    const { getApiToken, propSetEmail } = this.props;
+    const { getApiToken, propSetEmail, actionFunctionThunkProp } = this.props;
+    const { email } = this.state;
     propSetEmail(this.state);
     getApiToken();
+    actionFunctionThunkProp(md5(email).toString());
   }
 
   render() {
@@ -81,11 +84,13 @@ login.propTypes = {
   }).isRequired,
   getApiToken: PropTypes.func.isRequired,
   propSetEmail: PropTypes.func.isRequired,
+  actionFunctionThunkProp: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getApiToken: () => dispatch(getTokenApi()),
   propSetEmail: (payload) => dispatch(setEmail(payload)),
+  actionFunctionThunkProp: (payload) => dispatch(actionFunctionThunk(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(login);
