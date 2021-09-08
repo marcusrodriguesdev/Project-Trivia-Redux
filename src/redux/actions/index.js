@@ -1,5 +1,7 @@
 export const ACTIONS = {
   GET_TOKEN: 'GET_TOKEN',
+  SCORE: 'SCORE',
+  HITS: 'HITS',
 };
 
 export const getToken = (token) => ({
@@ -17,7 +19,11 @@ export const getNameAndEmail = (name, email) => ({
 });
 
 export const getScore = (score) => ({
-  type: 'SCORE', score,
+  type: ACTIONS.SCORE, score,
+});
+
+export const getHits = (hits) => ({
+  type: ACTIONS.HITS, hits,
 });
 
 // export default (ACTIONS, getToken, getNameAndEmail);
