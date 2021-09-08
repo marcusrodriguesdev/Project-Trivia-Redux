@@ -26,4 +26,8 @@ export const getHits = (hits) => ({
   type: ACTIONS.HITS, hits,
 });
 
+export const getTimer = (timer) => ({
+  type: 'TIMER', timer,
+});
+
 // export default (ACTIONS, getToken, getNameAndEmail);
