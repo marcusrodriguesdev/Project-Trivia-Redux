@@ -6,19 +6,37 @@ import md5 from 'crypto-js/md5';
 import { getQuestionsThunk } from '../Redux/Action';
 import Timer from '../components/Timer';
 // import Loading from './Loading';
+import '../App.css';
 
 class GamePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
+      // questionIsAnswered: false,
     };
+    this.questionAnswered = this.questionAnswered.bind(this);
   }
 
   componentDidMount() {
     // this.setQuestions();
     const { sendQuestionsToState, token } = this.props;
     sendQuestionsToState(token);
+  }
+
+  questionAnswered(event) {
+    const correctAnswer = document.querySelector('.correct-answer');
+    const wrong = document.querySelectorAll('.wrong-answer');
+    // this.setState({
+    //   questionIsAnswered: true,
+    // });
+    correctAnswer.classList.add('correct-color');
+    wrong.forEach((wrongAlternative) => {
+      wrongAlternative.classList.add('incorrect-color');
+    });
+    console.log(event.target);
+    console.log(correctAnswer);
+    console.log(wrong);
   }
 
   questionMod() {
@@ -32,13 +50,24 @@ class GamePage extends Component {
         <h3 data-testid="question-text">{currentQuestion.question}</h3>
         <h5 data-testid="question-category">{currentQuestion.category}</h5>
         {incorrectAnswers.map((answer, mapIndex) => (
-          <p
+          <button
+            type="button"
             data-testid={ `wrong-answer-${mapIndex}` }
-            key="incorrectAnswer"
+            // key="incorrectAnswer"
+            key={ mapIndex }
+            onClick={ this.questionAnswered }
+            className="wrong-answer"
           >
             {answer}
-          </p>)) }
-        <p data-testid="correct-answer">{currentQuestion.correct_answer }</p>
+          </button>)) }
+        <button
+          type="button"
+          className="correct-answer"
+          data-testid="correct-answer"
+          onClick={ this.questionAnswered }
+        >
+          {currentQuestion.correct_answer}
+        </button>
       </>
     );
   }
