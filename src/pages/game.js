@@ -26,13 +26,13 @@ class game extends Component {
     this.changingId = this.changingId.bind(this);
     this.handleCorrectAnswer = this.handleCorrectAnswer.bind(this);
     this.handleIncorrectAnswer = this.handleIncorrectAnswer.bind(this);
-    this.tre = this.tre.bind(this);
+    this.setTimer = this.setTimer.bind(this);
   }
 
   componentDidMount() {
     this.fetchAPI();
     const { setLocalStorage } = this.props;
-    this.tre();
+    this.setTimer();
     setLocalStorage();
   }
 
@@ -48,13 +48,13 @@ class game extends Component {
     }
   }
 
-  tre() {
-    const miliseconds = 1000;
+  setTimer() {
+    const ONE_SECOND = 1000;
     this.intervalId = setInterval(() => {
       this.setState((prevState) => ({
         timer: prevState.timer - 1,
       }));
-    }, miliseconds);
+    }, ONE_SECOND);
   }
 
   async fetchAPI() {
@@ -81,6 +81,7 @@ class game extends Component {
 
   changingId() {
     const { id, data } = this.state;
+    const { history } = this.props;
     const soma = id + 1;
     if (soma < data.length) {
       const incorrectAnswers = data[soma].incorrect_answers;
@@ -92,7 +93,9 @@ class game extends Component {
         answers: allAnswers.sort(),
         timer: 30,
       });
-      this.tre();
+      this.setTimer();
+    } else {
+      history.push('/feedback');
     }
   }
 
@@ -168,6 +171,7 @@ class game extends Component {
 game.propTypes = {
   setScore: PropTypes.func.isRequired,
   setLocalStorage: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = (dispath) => ({

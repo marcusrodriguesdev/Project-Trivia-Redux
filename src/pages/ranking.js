@@ -4,7 +4,7 @@ class ranking extends Component {
   render() {
     return (
       <div className="App">
-        tela de ranking 2
+        <h1 data-testid="ranking-title">Ranking</h1>
       </div>
     );
   }
