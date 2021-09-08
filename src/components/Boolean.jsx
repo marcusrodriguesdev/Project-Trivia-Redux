@@ -1,29 +1,76 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+const ONE_SECOND = 1000;
+
 class Boolean extends Component {
   constructor() {
     super();
     this.state = {
       correct: null,
       incorrect: null,
+      chronometer: 30,
+      isEnabled: true,
     };
     this.clickClassName = this.clickClassName.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.updateIsEnabled = this.updateIsEnabled.bind(this);
+  }
+
+  componentDidMount() {
+    this.chronometerId = setInterval(() => {
+      const { chronometer, isEnabled } = this.state;
+      if (chronometer > 0 && isEnabled) {
+        this.setState((prevState) => ({ chronometer: prevState.chronometer - 1 }));
+      }
+      // console.log('intervalo');
+    }, ONE_SECOND);
+  }
+
+  componentDidUpdate() {
+    const { chronometer, isEnabled } = this.state;
+    if (isEnabled && chronometer === 0) {
+      this.updateIsEnabled();
+      // clearInterval(this.chronometerId);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.chronometerId);
+  }
+
+  updateIsEnabled() {
+    this.setState({
+      isEnabled: false,
+    });
   }
 
   clickClassName(answer) {
+    const { chronometer } = this.state;
     const { endRound } = this.props;
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
-    endRound(answer);
+    endRound(answer, chronometer);
+    this.updateIsEnabled();
+    // clearInterval(this.chronometerId);
   }
 
   nextButton() {
-    const { isEnabled, nextRound } = this.props;
+    const { nextRound } = this.props;
+    const { isEnabled } = this.state;
     if (!isEnabled) {
       return (
-        <button data-testid="btn-next" type="button" onClick={ () => nextRound() }>
-          {/* <button type="button" onClick={ () => console.log('nextButton clicked!') }> */}
+        <button
+          data-testid="btn-next"
+          type="button"
+          onClick={ () => {
+            this.setState({
+              chronometer: 30,
+              isEnabled: true,
+            });
+            nextRound();
+            this.setState({ incorrect: null, correct: null });
+          } }
+        >
           Próxima
         </button>
       );
@@ -31,9 +78,8 @@ class Boolean extends Component {
   }
 
   renderAnswerButton(answer) {
-    const { correct, incorrect } = this.state;
+    const { correct, incorrect, isEnabled } = this.state;
     const ONE_NEGATIVE = -1;
-    const { isEnabled } = this.props;
     return (answer.index === ONE_NEGATIVE)
       ? (
         <button
@@ -58,9 +104,13 @@ class Boolean extends Component {
   }
 
   render() {
+    const { chronometer } = this.state;
     const { currentQuestion, category, question } = this.props;
     return (
       <div>
+        <h1>
+          { chronometer }
+        </h1>
         <p>
           Categoria:
           <span data-testid="question-category">{ category }</span>
@@ -84,8 +134,8 @@ Boolean.propTypes = {
   category: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,
   currentQuestion: PropTypes.arrayOf({}).isRequired,
-  isEnabled: PropTypes.bool.isRequired,
   endRound: PropTypes.func.isRequired,
+  nextRound: PropTypes.func.isRequired,
 };
 
 export default Boolean;

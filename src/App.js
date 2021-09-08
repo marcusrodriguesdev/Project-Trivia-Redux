@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 // import logo from './trivia.png';
 import './App.css';
+import Feedback from './pages/Feedback';
 import Game from './pages/Game';
 import Login from './pages/Login';
 import Settings from './pages/settings';
@@ -15,9 +16,10 @@ export default function App() {
         </p>
       </header> */}
       <Switch>
+        <Route path="/feedback" component={ Feedback } />
         <Route path="/game" component={ Game } />
         <Route path="/settings" component={ Settings } />
-        <Route exact path="/" component={ Login } />
+        <Route path="/" component={ Login } />
       </Switch>
     </div>
   );
