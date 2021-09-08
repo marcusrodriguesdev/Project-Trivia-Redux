@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -26,14 +25,16 @@ class Timer extends React.Component {
       hard: 3,
     };
     const dez = 10;
-    const actualStorage = JSON.parse(localStorage.getItem('player'));
-    if (actualStorage.score) {
-      actualStorage.score = actualStorage.score + dez + (values[diff] * Number(seconds));
-      actualStorage.assertions += 1;
+    const actualStorage = JSON.parse(localStorage.getItem('state'));
+    if (actualStorage.player.score) {
+      actualStorage.player.score += dez + (values[diff] * Number(seconds));
     } else {
-      actualStorage.score = dez + (values[diff] * Number(seconds));
+      actualStorage.player.score = dez + (values[diff] * Number(seconds));
     }
-    if (right) { localStorage.setItem('player', JSON.stringify(actualStorage)); }
+    if (right) {
+      actualStorage.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(actualStorage));
+    }
     // const email = JSON.parse(localStorage.getItem('player')).gravatarEmail;
     // const gravatar = md5(email).toString();
     // const storage = JSON.stringify([{
@@ -78,9 +79,9 @@ class Timer extends React.Component {
     });
 
     if (sec === 0) {
-      const { switchButton } = this.props;
+      const { sb } = this.props;
       clearInterval(this.timer);
-      switchButton();
+      sb();
     }
   }
 
@@ -95,7 +96,9 @@ class Timer extends React.Component {
 }
 
 Timer.propTypes = {
-  switchButton: PropTypes.func.isRequired,
+  diff: PropTypes.string.isRequired,
+  right: PropTypes.bool.isRequired,
+  sb: PropTypes.func.isRequired,
 };
 
 export default Timer;

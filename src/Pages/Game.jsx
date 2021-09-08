@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 import Timer from '../Components/Timer';
 
@@ -91,7 +92,7 @@ class Game extends React.Component {
               type="button"
               data-testid="correct-answer"
               className={ answered ? 'correct' : 'alternative' }
-              onClick={ async() => {
+              onClick={ async () => {
                 await this.setState({
                   right: true,
                 });
@@ -116,32 +117,31 @@ class Game extends React.Component {
   render() {
     const { questions, actualQuestion,
       questionsLoaded, buttonShow, disabled, right } = this.state;
-    const maxQuestionsNumber = 4;
+    const mq = 4;
     const diff = questionsLoaded
-      ? this.b64toutf8(questions[actualQuestion].difficulty) : null;
+      ? this.b64toutf8(questions[actualQuestion].difficulty) : '';
     const button = (
       <button
         type="button"
         data-testid="btn-next"
         onClick={ () => {
-          if (actualQuestion < maxQuestionsNumber) {
-            this.setState((prevState) => ({
-              actualQuestion: prevState.actualQuestion + 1,
-              answered: false,
-              disabled: false,
-              buttonShow: false,
-            }));
-          }
+          this.setState((prevState) => ({
+            actualQuestion: prevState.actualQuestion + 1,
+            answered: false,
+            disabled: false,
+            buttonShow: false,
+          }));
         } }
       >
         Próxima Questão
       </button>
     );
-    return (
+    const feedbackButton = (<Link data-testid="btn-next" to="/feedback">Feedback</Link>);
+    return questionsLoaded && (
       <div className="game-div">
         <Header />
         <div className="timer-div">
-          { !disabled && <Timer switchButton={ this.switchButton } diff={ diff } right={ right }/>}
+          { !disabled && <Timer sb={ this.switchButton } diff={ diff } right={ right } />}
         </div>
         <fieldset>
           <h1
@@ -157,7 +157,7 @@ class Game extends React.Component {
           <ul>
             {this.alternatives()}
           </ul>
-          { buttonShow && button }
+          { buttonShow && (actualQuestion === mq ? feedbackButton : button) }
         </fieldset>
       </div>
     );

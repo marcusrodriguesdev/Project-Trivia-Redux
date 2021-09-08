@@ -28,13 +28,13 @@ class Login extends Component {
 
   saveLocalStorage() {
     const { username, email } = this.state;
-    const storage = {
+    const storage = { player: {
       name: username,
       gravatarEmail: email,
       score: 0,
       assertions: 0,
-    };
-    localStorage.setItem('player', JSON.stringify(storage));
+    } };
+    localStorage.setItem('state', JSON.stringify(storage));
   }
 
   render() {
