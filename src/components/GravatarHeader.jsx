@@ -9,9 +9,15 @@ class GravatarHeader extends Component {
 
     this.state = {
       imgPath: '',
+      score: 0,
     };
 
     this.handleImg = this.handleImg.bind(this);
+  }
+
+  async componentDidMount() {
+    this.handleImg();
+    this.handleScore();
   }
 
   handleImg() {
@@ -22,14 +28,19 @@ class GravatarHeader extends Component {
     });
   }
 
+  handleScore() {
+    const localScore = localStorage.getItem('score');
+    this.setState({ score: localScore });
+  }
+
   render() {
     const { name } = this.props;
-    const { imgPath } = this.state;
+    const { imgPath, score } = this.state;
     return (
       <header>
-        {() => this.handleImg()}
         <img data-testid="header-profile-picture" alt="gravatar img" src={ imgPath } />
         <p data-testid="header-player-name">{ name }</p>
+        <p data-testid="header-score">{ score }</p>
       </header>
     );
   }

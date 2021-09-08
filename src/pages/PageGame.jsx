@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import GravatarHeader from '../components/GravatarHeader';
 
 class PageGame extends React.Component {
   constructor() {
     super();
     this.state = {
       counter: 0,
-      imgPath: '',
       styleButtons: {
         correct: { border: '' },
         incorrect: { border: '' },
@@ -16,20 +15,7 @@ class PageGame extends React.Component {
     };
 
     this.questionsSort = this.questionsSort.bind(this);
-    this.handleImg = this.handleImg.bind(this);
     this.handleQuestionClick = this.handleQuestionClick.bind(this);
-  }
-
-  async componentDidMount() {
-    this.handleImg();
-  }
-
-  handleImg() {
-    const { email } = this.props;
-    const path = md5(email).toString();
-    this.setState({
-      imgPath: `https://www.gravatar.com/avatar/${path}`,
-    });
   }
 
   handleQuestionClick() {
@@ -85,21 +71,13 @@ class PageGame extends React.Component {
   }
 
   render() {
-    const { counter, imgPath } = this.state;
-    const { results, name } = this.props;
+    const { counter } = this.state;
+    const { results } = this.props;
 
     if (results.length) {
       return (
         <div>
-          <header>
-            <img
-              data-testid="header-profile-picture"
-              alt="gravatar img"
-              src={ imgPath }
-            />
-            <p data-testid="header-player-name">{ name }</p>
-            <p data-testid="header-score">0</p>
-          </header>
+          <GravatarHeader />
 
           <h2>Game</h2>
 
@@ -119,8 +97,6 @@ const mapStateToProps = (state) => ({
 });
 
 PageGame.propTypes = {
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
   results: PropTypes.string.isRequired,
 };
 
