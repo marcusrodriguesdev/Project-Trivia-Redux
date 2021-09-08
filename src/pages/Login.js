@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import getTokenThunk from '../redux/actions';
+import Button from '../components/Button';
 
 class Login extends React.Component {
   constructor() {
@@ -13,7 +14,7 @@ class Login extends React.Component {
       name: '',
       email: '',
     };
-
+    this.renderButton = this.renderButton.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderInputs = this.renderInputs.bind(this);
@@ -27,6 +28,15 @@ class Login extends React.Component {
     const { getToken } = this.props;
     const { name, email } = this.state;
     getToken(name, email);
+  }
+
+  renderButton(text, dataTestId, func, disable) {
+    return (<Button
+      text={ text }
+      dataTestId={ dataTestId }
+      func={ func }
+      disable={ disable }
+    />);
   }
 
   renderInputs() {
@@ -68,22 +78,18 @@ class Login extends React.Component {
         <form action="">
           {this.renderInputs()}
           <Link to="/gameplay">
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ handleButton }
-              onClick={ this.handleClick }
-            >
-              Jogar
-            </button>
+            { this.renderButton(
+              'Jogar', // text
+              'btn-play', // data-test
+              this.handleClick,
+              handleButton, // disable
+            ) }
           </Link>
           <Link to="/settings">
-            <button
-              type="button"
-              data-testid="btn-settings"
-            >
-              Configurações
-            </button>
+            { this.renderButton(
+              'Configurações', // text
+              'btn-settings', // data-test
+            )}
           </Link>
         </form>
       </main>

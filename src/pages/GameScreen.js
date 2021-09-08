@@ -9,6 +9,7 @@ import Timer from '../components/Timer';
 import NextQuestionBtn from '../components/NextQuestionBtn';
 
 import { setScore, getQuestionsThunk } from '../redux/actions';
+/* import Button from '../components/Button'; */
 
 class GameScreen extends React.Component {
   constructor() {
@@ -18,7 +19,7 @@ class GameScreen extends React.Component {
       answered: false,
       qIndex: 0,
     };
-
+    this.renderButton = this.renderButton.bind(this);
     this.setTimer = this.setTimer.bind(this);
     this.checkUpdate = this.checkUpdate.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -73,6 +74,10 @@ class GameScreen extends React.Component {
       clearInterval(this.interval);
     }
   }
+
+  /*   renderButton() {
+    return (<Button />);
+  } */
 
   resetBtn() {
     document.querySelectorAll('.btn').forEach((btn) => { btn.style.border = ''; });
