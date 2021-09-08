@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchTrivia from '../services/fetchTrivia';
 import FeedbackHeader from '../components/FeedbackHeader';
+import Timer from '../components/Timer';
 
 class Game extends Component {
   constructor(props) {
@@ -12,12 +13,12 @@ class Game extends Component {
       trivia: [],
       index: 0,
       isLoading: true,
+      next: { display: 'none' },
       border: {
         correctStyle: {},
         wrongStyle: {},
       },
       teste: true,
-      next: { display: 'none' },
     };
 
     this.fetchTriviaGame = this.fetchTriviaGame.bind(this);
@@ -88,9 +89,9 @@ class Game extends Component {
 
   arrayAnswersButtons() {
     const { trivia, index, border, teste, next } = this.state;
-    // console.log(trivia[index]);
+    const { timer } = this.props;
+    const teste2 = timer > 0;
     let newArray = this.arrayAnswers(trivia[index]);
-    // console.log(newArray);
     newArray = newArray
       .map((element, indic) => (indic < newArray.length - 1 ? (
         <button
@@ -98,6 +99,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${indic}` }
           onClick={ this.addBorder }
           style={ border.wrongStyle }
+          disabled={ !teste2 }
         >
           {element}
         </button>)
@@ -107,17 +109,13 @@ class Game extends Component {
             data-testid="correct-answer"
             onClick={ this.addBorder }
             style={ border.correctStyle }
+            disabled={ !teste2 }
           >
             {element}
           </button>)));
-    // console.log(newArray);
     if (teste) {
       this.randomizeAnswers(newArray);
-      // this.setState({
-      //   teste: false,
-      // });
     }
-    // console.log(randomArray);
 
     return (
       <div>
@@ -142,6 +140,7 @@ class Game extends Component {
     return (
       <>
         <FeedbackHeader />
+        <Timer />
         <section>
           { isLoading ? <p>Loading...</p> : this.arrayAnswersButtons() }
         </section>
@@ -153,13 +152,19 @@ class Game extends Component {
 Game.propTypes = {
   token: PropTypes.string.isRequired,
   endpoint: PropTypes.string.isRequired,
+  timer: PropTypes.string.isRequired,
 };
+
+// const mapDispatchToProps = (dispatch) => ({
+//   addTimer: (timer) => dispatch(getTimer(timer)),
+// });
 
 const mapStateToProps = (state) => ({
   name: state.reducer.name,
   image: state.reducer.image,
   token: state.reducer.token,
   endpoint: state.reducer.endpoint,
+  timer: state.reducer.timer,
 });
 
 export default connect(mapStateToProps)(Game);
