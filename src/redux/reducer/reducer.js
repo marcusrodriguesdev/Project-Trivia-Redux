@@ -1,26 +1,27 @@
 import { actions } from '../actions';
 
 const INITIAL_STATE = {
-  email: '',
   name: '',
-  token: '',
+  assertions: 0,
+  score: 0,
+  gravatarEmail: '',
 };
 
-function user(state = INITIAL_STATE, action) {
+function player(state = INITIAL_STATE, action) {
   switch (action.type) {
   case actions.LOGGED_INFO:
     return {
       ...state,
-      name: action.payload,
+      name: action.name,
+      gravatarEmail: action.email,
     };
-  case actions.GET_TOKEN:
-    return {
-      ...state,
-      token: action.payload.token,
-    };
+  case actions.SET_SCORE:
+    return { ...state, score: state.score + action.score };
+  case actions.SET_ASSERTIONS:
+    return { ...state, assertions: state.assertions + 1 };
   default:
     return state;
   }
 }
 
-export default user;
+export default player;
