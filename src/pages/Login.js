@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor() {
@@ -47,6 +48,11 @@ class Login extends React.Component {
 
   render() {
     const { email, name, buttonClick } = this.state;
+
+    if (buttonClick) {
+      return <Redirect to="/configuration" />;
+    }
+
     return (
       <div>
         <form>
@@ -75,6 +81,13 @@ class Login extends React.Component {
             onClick={ this.submitClick }
           >
             Jogar
+          </button>
+          <button
+            data-testid="btn-settings"
+            type="button"
+            onClick={ this.submitClick }
+          >
+            Configurações
           </button>
         </form>
       </div>

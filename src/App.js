@@ -1,18 +1,14 @@
 import React from 'react';
-import logo from './trivia.png';
+import { Route, Switch } from 'react-router';
 import './App.css';
+import Configuration from './pages/Configuração';
 import Login from './pages/Login';
 
 export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
-      <Login />
-    </div>
+    <Switch>
+      <Route exact path="/" component={ Login } />
+      <Route path="/configuration" component={ Configuration } />
+    </Switch>
   );
 }
