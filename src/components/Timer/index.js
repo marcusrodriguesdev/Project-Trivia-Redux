@@ -12,7 +12,6 @@ class Timer extends Component {
 
   componentDidMount() {
     this.startTimer();
-    console.log('started');
   }
 
   startTimer() {

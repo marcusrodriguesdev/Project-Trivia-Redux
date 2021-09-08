@@ -1,4 +1,5 @@
 import QUESTION_ACTIONS from '../actions/questionActions';
+import GAME_ACTIONS from '../actions/gameActions';
 
 const INITIAL_STATE = {
   questionsArray: [],
@@ -14,6 +15,8 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
     return { ...state, isFetching: false, error: action.payload };
   case QUESTION_ACTIONS.SET_QUESTIONS:
     return { ...state, isFetching: false, questionsArray: action.payload };
+  case GAME_ACTIONS.RESET_GAME:
+    return INITIAL_STATE;
   default:
     return state;
   }
