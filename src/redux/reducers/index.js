@@ -8,6 +8,7 @@ const INICIAL_STATE = {
   image: '',
   hits: 0,
   score: 0,
+  endpoint: 'https://opentdb.com/api.php?amount=5&token=',
 };
 
 export default function reducer(state = INICIAL_STATE, action) {
