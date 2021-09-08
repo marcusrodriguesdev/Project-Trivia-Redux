@@ -27,6 +27,7 @@ class game extends Component {
     this.handleCorrectAnswer = this.handleCorrectAnswer.bind(this);
     this.handleIncorrectAnswer = this.handleIncorrectAnswer.bind(this);
     this.tre = this.tre.bind(this);
+    this.redirectToFeedbackPage = this.redirectToFeedbackPage.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +65,7 @@ class game extends Component {
     const incorrectAnswers = data.results[0].incorrect_answers;
     const correctAswer = data.results[0].correct_answer;
     const allAnswers = [...incorrectAnswers, correctAswer];
+    console.log(data);
 
     this.setState({
       data: data.results,
@@ -77,6 +79,11 @@ class game extends Component {
       tighten: true,
     });
     clearInterval(this.intervalId);
+  }
+
+  redirectToFeedbackPage() {
+    const { history } = this.props;
+    history.push('/feedback');
   }
 
   changingId() {
@@ -93,6 +100,8 @@ class game extends Component {
         timer: 30,
       });
       this.tre();
+    } else {
+      this.redirectToFeedbackPage();
     }
   }
 
@@ -128,6 +137,7 @@ class game extends Component {
   render() {
     const { data, answers, timer, tighten, id } = this.state;
     const loading = <div className="loading">Loading</div>;
+
     const buttonNext = (
       <button data-testid="btn-next" type="button" onClick={ this.changingId }>
         Próximo
@@ -168,6 +178,9 @@ class game extends Component {
 game.propTypes = {
   setScore: PropTypes.func.isRequired,
   setLocalStorage: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispath) => ({
