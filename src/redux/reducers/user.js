@@ -1,4 +1,4 @@
-import { SET_DATA_USER } from '../actions';
+import { SET_DATA_USER, SET_SCORE } from '../actions';
 
 const ESTADO_INICIAL = {
   user: '',
@@ -13,6 +13,11 @@ function userReducer(state = ESTADO_INICIAL, action) {
     return {
       ...state,
       ...payload,
+    };
+  case SET_SCORE:
+    return {
+      ...state,
+      score: payload,
     };
   default:
     return state;

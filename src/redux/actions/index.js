@@ -1,5 +1,7 @@
 import { fetchTriviaToken } from '../../services/API';
 
+// Types
+
 export const SET_DATA_USER = 'CLICK_BUTTON_LOGIN';
 
 export const SET_TIMER = 'SET_TIMER';
@@ -7,6 +9,10 @@ export const SET_TIMER = 'SET_TIMER';
 export const SET_TOKEN = 'SET_TOKEN';
 
 export const RESET_TIMER = 'RESET_TIMER';
+
+export const SET_SCORE = 'SET_SCORE';
+
+// Actions
 
 export const setData = (payload) => ({
   type: SET_DATA_USER,
@@ -24,6 +30,13 @@ export const setGame = (payload) => ({
 });
 
 export const resetTimer = (payload) => ({ type: RESET_TIMER, payload });
+
+export const setScore = (payload) => ({
+  type: SET_SCORE,
+  payload,
+});
+
+// Thunk
 
 export const fetchToken = () => async (dispatch) => {
   const token = await fetchTriviaToken();
