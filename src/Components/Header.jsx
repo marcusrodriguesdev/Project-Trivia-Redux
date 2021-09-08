@@ -18,7 +18,6 @@ class Header extends React.Component {
           {JSON.parse(localStorage.getItem('state')).player.name}
         </h1>
         <h2 data-testid="header-score">
-          Score:
           {' '}
           {JSON.parse(
             localStorage.getItem('state'),
