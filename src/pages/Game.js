@@ -22,19 +22,37 @@ export class Game extends React.Component {
     this.updateLocalStorage();
   }
 
+  componentWillUnmount() {
+    const playerInfo = JSON.parse(localStorage.getItem('state'));
+
+    const player = {
+      name: playerInfo.player.name,
+      score: playerInfo.player.score,
+      picture: playerInfo.player.picture,
+    };
+
+    const getRanking = JSON.parse(localStorage.getItem('ranking'));
+    if (getRanking) {
+      localStorage.setItem('ranking', JSON.stringify([...getRanking, player]));
+    } else localStorage.setItem('ranking', JSON.stringify([player]));
+  }
+
   setTimer() {
     const ONE_SECOND = 1000;
     this.setState({ timer: 30 });
     const countdown = setInterval(() => {
-      this.setState((prevState) => ({
-        timer: prevState.timer - 1 }),
-      () => {
-        const { timer, clicked } = this.state;
-        if (timer <= 0 || clicked) {
-          clearInterval(countdown);
-          this.setState({ clicked: true });
-        }
-      });
+      this.setState(
+        (prevState) => ({
+          timer: prevState.timer - 1,
+        }),
+        () => {
+          const { timer, clicked } = this.state;
+          if (timer <= 0 || clicked) {
+            clearInterval(countdown);
+            this.setState({ clicked: true });
+          }
+        },
+      );
     }, ONE_SECOND);
   }
 
@@ -51,18 +69,21 @@ export class Game extends React.Component {
     };
 
     if (target.name === 'correct-answer') {
-      this.setState((prevstate) => (
-        { PlayerScore: prevstate.PlayerScore + baseScore + (timer * obj[difficulty]),
-          PlayerAssertions: prevstate.PlayerAssertions + 1,
-        }));
+      this.setState((prevstate) => ({
+        PlayerScore:
+          prevstate.PlayerScore + baseScore + timer * obj[difficulty],
+        PlayerAssertions: prevstate.PlayerAssertions + 1,
+      }));
     }
 
-    this.setState({
-      clicked: true,
-    },
-    () => {
-      this.updateLocalStorage();
-    });
+    this.setState(
+      {
+        clicked: true,
+      },
+      () => {
+        this.updateLocalStorage();
+      },
+    );
   }
 
   updateLocalStorage() {
@@ -78,56 +99,16 @@ export class Game extends React.Component {
         picture: player.avatar,
       },
     };
-    /* [
-  { name: nome-da-pessoa, score: 10, picture: url-da-foto-no-gravatar }
-] */
-    localStorage.setItem('state', JSON.stringify(localStorageObj));
-    const ranking = [{ name: player.nome, score: PlayerScore, picture: player.avatar }];
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-  }
 
-  // answersRender(questions) {
-  //   const { clicked, timer, questionNumber } = this.state;
-  //   return (
-  //     <ul>
-  //       <button
-  //         type="button"
-  //         onClick={ this.handleClick }
-  //         data-testid="correct-answer"
-  //         disabled={ timer <= 0 ? true : clicked }
-  //         id="correct"
-  //         className={ clicked ? 'green-border' : '' }
-  //         name="correct-answer"
-  //       >
-  //         {' '}
-  //         {decodeURIComponent(questions[questionNumber].correct_answer)}
-  //       </button>
-  //       <br />
-  //       {questions[questionNumber].incorrect_answers.map((answer, index) => (
-  //         <>
-  //           <button
-  //             type="button"
-  //             disabled={ timer <= 0 ? true : clicked }
-  //             id={ index }
-  //             className={ clicked ? 'red-border' : '' }
-  //             name="wrong-answer"
-  //             key={ index }
-  //             data-testid={ `wrong-answer-${index}` }
-  //             onClick={ this.handleClick }
-  //           >
-  //             {decodeURIComponent(answer)}
-  //           </button>
-  //           <br />
-  //         </>
-  //       ))}
-  //     </ul>
-  //   );
-  // }
+    localStorage.setItem('state', JSON.stringify(localStorageObj));
+  }
 
   randomAnswers(questions) {
     const { questionNumber, timer, clicked } = this.state;
-    const allQuestions = [questions[questionNumber].correct_answer,
-      ...questions[questionNumber].incorrect_answers].sort();
+    const allQuestions = [
+      questions[questionNumber].correct_answer,
+      ...questions[questionNumber].incorrect_answers,
+    ].sort();
     return (
       <ul>
         {allQuestions.map((question, index) => {
@@ -168,11 +149,15 @@ export class Game extends React.Component {
   nextButton(questionNumber) {
     const { history, questions } = this.props;
     if (questionNumber < questions.length - 1) {
-      this.setState((prevState) => ({
-        questionNumber: prevState.questionNumber + 1,
-        clicked: false }), () => {
-        this.setTimer();
-      });
+      this.setState(
+        (prevState) => ({
+          questionNumber: prevState.questionNumber + 1,
+          clicked: false,
+        }),
+        () => {
+          this.setTimer();
+        },
+      );
     } else {
       history.push('/feedback');
     }
@@ -183,16 +168,20 @@ export class Game extends React.Component {
     const { timer, questionNumber, PlayerScore, clicked } = this.state;
     return (
       <div>
-        <p>{ timer }</p>
+        <p>{timer}</p>
         <header>
-          <img alt="avatar" data-testid="header-profile-picture" src={ player.avatar } />
+          <img
+            alt="avatar"
+            data-testid="header-profile-picture"
+            src={ player.avatar }
+          />
           <h4 data-testid="header-player-name">
             Nome:
             {player.nome}
             {' '}
             <span data-testid="header-score">
               Score:
-              { PlayerScore }
+              {PlayerScore}
             </span>
           </h4>
         </header>
@@ -204,18 +193,18 @@ export class Game extends React.Component {
           <h3 data-testid="question-text">
             {decodeURIComponent(questions[questionNumber].question)}
           </h3>
-          { this.randomAnswers(questions) }
+          {this.randomAnswers(questions)}
         </div>
-        {
-          clicked
-          && <input
+        {clicked && (
+          <input
             type="button"
             data-testid="btn-next"
             onClick={ () => this.nextButton(questionNumber) }
             value="Próxima"
           />
-        }
-      </div>);
+        )}
+      </div>
+    );
   }
 }
 
