@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Feedback extends Component {
   render() {
@@ -14,7 +15,12 @@ export default class Feedback extends Component {
           alt="avatar"
         />
         <p data-testid="header-score">{player.score}</p>
+        <p data-testid="feedback-total-score">{player.score}</p>
+        <p data-testid="feedback-total-question">{player.assertions}</p>
         {player.assertions < NUMBER ? 'Podia ser melhor...' : 'Mandou bem!'}
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">Jogar novamente</button>
+        </Link>
       </div>
     );
   }
