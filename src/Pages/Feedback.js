@@ -40,4 +40,9 @@ class Feedback extends React.Component {
   }
 }
 
+// const mapStateToProps = (state) => ({
+//   userName: state.user.name, // checar a chave de usuario no state;
+// });
+
+// export default (mapStateToProps)(Feedback);
 export default Feedback;

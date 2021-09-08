@@ -14,6 +14,7 @@ class GamePage extends Component {
       index: 0,
       questionIsAnswered: false,
       timer: 30,
+      // answerIsClicked: false,
     };
     this.questionAnswered = this.questionAnswered.bind(this);
     this.handleChronometer = this.handleChronometer.bind(this);
@@ -51,7 +52,7 @@ class GamePage extends Component {
     }
   }
 
-  questionAnswered(event) {
+  questionAnswered() {
     const correctAnswer = document.querySelector('.correct-answer');
     const wrong = document.querySelectorAll('.wrong-answer');
     this.setState({
@@ -61,15 +62,14 @@ class GamePage extends Component {
     wrong.forEach((wrongAlternative) => {
       wrongAlternative.classList.add('incorrect-color');
     });
-    console.log(event.target);
-    console.log(correctAnswer);
-    console.log(wrong);
   }
 
   questionMod() {
     const { index, timer } = this.state;
+
+    // const nextButton = <button type="button" data-testid="btn-next">Próxima</button>;
+
     const { questions } = this.props;
-    console.log(questions);
     const currentQuestion = questions[index];
     const incorrectAnswers = currentQuestion.incorrect_answers;
     return (
