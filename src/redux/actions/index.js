@@ -8,6 +8,8 @@ export const SET_TIMER = 'SET_TIMER';
 
 export const SET_TOKEN = 'SET_TOKEN';
 
+export const RESET_TIMER = 'RESET_TIMER';
+
 export const SET_SCORE = 'SET_SCORE';
 
 // Actions
@@ -26,6 +28,8 @@ export const setGame = (payload) => ({
   type: SET_TOKEN,
   payload,
 });
+
+export const resetTimer = (payload) => ({ type: RESET_TIMER, payload });
 
 export const setScore = (payload) => ({
   type: SET_SCORE,
