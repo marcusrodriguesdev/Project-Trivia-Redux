@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import Timer from '../components/Timer';
 import '../App.css';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    // const { name, email } = props;
     this.state = {
       player: {
         name: '',
@@ -134,21 +133,11 @@ class Game extends Component {
   }
 
   render() {
-    const { name, email } = this.props;
     const { questions, time, player } = this.state;
     const isFetching = questions.length === 0;
-    const emailHash = md5(email).toString();
     return (
       <>
-        <header>
-          <img
-            data-testid="header-profile-picture"
-            src={ `https://www.gravatar.com/avatar/${emailHash}` }
-            alt="Avatar"
-          />
-          <span data-testid="header-player-name">{ name }</span>
-          <span data-testid="header-score">{player.score}</span>
-        </header>
+        <Header score={ player.score } />
         <Timer setTimer={ this.setTimer } time={ time } />
         { !isFetching && this.renderQuestions() }
       </>
