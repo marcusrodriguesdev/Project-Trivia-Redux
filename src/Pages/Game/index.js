@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import PropTypes from 'prop-types';
 import './index.css';
 
@@ -18,6 +17,7 @@ class Game extends Component {
       disable: false,
       totalScore: 0,
       assertions: 0,
+      showButton: true,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
@@ -26,6 +26,7 @@ class Game extends Component {
     this.stopWatch = this.stopWatch.bind(this);
     this.switchValue = this.switchValue.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -60,10 +61,8 @@ class Game extends Component {
 
   async fetchQuestions() {
     const { dados: { token } } = this.props;
-
     const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
     const data = await response.json();
-
     this.setState({
       questions: data.results,
       loading: false,
@@ -95,11 +94,8 @@ class Game extends Component {
 
   handleClick({ target }) {
     this.stopTimer();
-
-    const { questions, questionNumber, timer, totalScore } = this.state;
-
+    const { questions, questionNumber, timer, totalScore, assertions } = this.state;
     const { difficulty } = questions[questionNumber];
-    const { assertions } = this.state;
 
     const { dados } = this.props;
     if (target.textContent !== questions[questionNumber].correct_answer) {
@@ -110,6 +106,7 @@ class Game extends Component {
         gravatarEmail: dados.email,
       };
       localStorage.setItem('state', JSON.stringify({ player: profile }));
+      this.setState({ showButton: false });
       return;
     }
 
@@ -120,6 +117,7 @@ class Game extends Component {
     this.setState({
       totalScore: totalScore + total,
       assertions: assertions + 1,
+      showButton: false,
     });
 
     const profile = {
@@ -130,6 +128,24 @@ class Game extends Component {
     };
 
     localStorage.setItem('state', JSON.stringify({ player: profile }));
+  }
+
+  nextQuestion() {
+    const { questionNumber } = this.state;
+    const four = 4;
+    if (questionNumber < four) {
+      this.setState({
+        questionNumber: questionNumber + 1,
+        showButton: true,
+        timer: 30,
+        greenBorder: '',
+        redBorder: '',
+      });
+      this.stopWatch();
+    } else {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
   }
 
   renderAnswers() {
@@ -171,7 +187,7 @@ class Game extends Component {
 
   render() {
     const { dados: { name, profile } } = this.props;
-    const { loading, questionNumber, timer } = this.state;
+    const { loading, questionNumber, timer, showButton } = this.state;
     if (loading) return <h1>loading</h1>;
     const { questions } = this.state;
 
@@ -207,6 +223,14 @@ class Game extends Component {
               this.renderAnswers()
             }
           </span>
+          <button
+            type="button"
+            data-testid="btn-next"
+            hidden={ showButton }
+            onClick={ this.nextQuestion }
+          >
+            Próxima
+          </button>
         </div>
       </div>
     );
@@ -221,4 +245,5 @@ export default connect(mapStateToProps, null)(Game);
 
 Game.propTypes = {
   dados: PropTypes.objectOf(PropTypes.string).isRequired,
+  history: PropTypes.objectOf(PropTypes.string).isRequired,
 };
