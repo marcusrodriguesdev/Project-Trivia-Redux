@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class FeedBack extends React.Component {
   render() {
@@ -13,6 +14,16 @@ class FeedBack extends React.Component {
           <span data-testid="feedback-total-score">{ score }</span>
           <span data-testid="feedback-total-question">{ assertions }</span>
         </p>
+        <Link to="/ranking">
+          <button type="button" data-testid="btn-ranking">
+            Ver Ranking
+          </button>
+        </Link>
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">
+            Jogar novamente
+          </button>
+        </Link>
       </div>
     );
   }
