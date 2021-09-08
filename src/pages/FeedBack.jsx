@@ -17,6 +17,13 @@ class FeedBack extends React.Component {
           >
             Jogar novamente
           </button>
+          <button
+            onClick={ () => history.push('/ranking') }
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver ranking
+          </button>
         </div>
       </div>
     );

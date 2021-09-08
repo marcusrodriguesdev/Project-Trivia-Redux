@@ -4,6 +4,7 @@ import './App.css';
 import FeedBack from './pages/FeedBack';
 // import GamePage from './pages/GamePage';
 import Login from './pages/Login';
+import Ranking from './pages/Ranking';
 import Settings from './pages/Settings';
 import Trivia from './pages/Trivia';
 
@@ -14,6 +15,7 @@ export default function App() {
       <Route path="/trivia" component={ Trivia } />
       <Route path="/settings" component={ Settings } />
       <Route path="/feedback" component={ FeedBack } />
+      <Route path="/ranking" component={ Ranking } />
     </Switch>
   );
 }
