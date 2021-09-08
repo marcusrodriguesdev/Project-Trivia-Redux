@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import './Questions.css';
-import { actionPlayerScore } from '../actions';
+import { actionPlayerScore, actionForScores } from '../actions';
 
 const TEN_POINTS = 10;
 const THREE = 3;
@@ -22,6 +22,7 @@ class Questions extends Component {
       numberQuestion: 0,
       visibilit: 'hide',
       redirect: false,
+      scori: 0,
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
@@ -84,14 +85,14 @@ class Questions extends Component {
       };
       localStorage.setItem('state', JSON.stringify(playerScore));
       player(1, sum);
+      this.setState((estadoAnterior) => ({ scori: estadoAnterior.scori + sum }));
     }
   }
 
   handleClickClassNameHelper(a) {
     this.setState({ incorrect: 'incorrect', correct: 'correct' });
-    const teste = a;
-    console.log(teste);
-    if (teste === 'correct' || teste === 'incorrect') {
+    const n = a;
+    if (n === 'correct' || n === 'incorrect') {
       this.setState({
         visibilit: 'show',
       });
@@ -99,16 +100,27 @@ class Questions extends Component {
   }
 
   nextQuestion() {
-    const { numberQuestion } = this.state;
+    const { numberQuestion, scori } = this.state;
+    const { user, arrayOfScoreAndName, playerStatus: { assertions } } = this.props;
     const question = 4;
     if (numberQuestion === question) {
+      const playerScore = {
+        player: {
+          name: user,
+          assertions: 1 + assertions,
+          score: scori,
+          gravatarEmail: '',
+        },
+      };
       this.setState({ redirect: true });
+      arrayOfScoreAndName(playerScore);
     }
     this.setState((estadoAnterior) => ({
       numberQuestion: estadoAnterior.numberQuestion + 1,
       seconds: 30,
       correct: null,
       incorrect: null,
+      visibilit: 'hide',
     }));
   }
 
@@ -165,17 +177,21 @@ class Questions extends Component {
 }
 
 Questions.propTypes = {
+  arrayOfScoreAndName: PropTypes.func.isRequired,
   player: PropTypes.func.isRequired,
-  resp: PropTypes.objectOf(PropTypes.string).isRequired,
   playerStatus: PropTypes.objectOf(PropTypes.number).isRequired,
+  resp: PropTypes.objectOf(PropTypes.string).isRequired,
+  user: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   playerStatus: state.player,
+  user: state.login.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   player: (assertions, score) => dispatch(actionPlayerScore(assertions, score)),
+  arrayOfScoreAndName: (score) => dispatch(actionForScores(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);

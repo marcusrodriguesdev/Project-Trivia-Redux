@@ -72,7 +72,7 @@ class Login extends Component {
       <div>
         <h1>Loginn</h1>
         <label htmlFor="email">
-          Email:
+          Email::
           <input
             type="text"
             name="email"
