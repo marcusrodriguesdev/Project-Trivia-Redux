@@ -84,12 +84,12 @@ class Game extends React.Component {
   }
 
   nextQuestion() {
-    const { history, questions: { results } } = this.props;
+    const { history } = this.props;
     const { indexQuestion } = this.state;
     const ARRAY = 4;
 
-    this.setState(({ indexQuestion }) => ({
-      indexQuestion: indexQuestion + 1,
+    this.setState((previous) => ({
+      indexQuestion: previous.indexQuestion + 1,
     }));
 
     this.setState({
@@ -182,6 +182,9 @@ Game.propTypes = {
     assertions: PropTypes.number,
     score: PropTypes.number,
     email: PropTypes.string,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }).isRequired,
 };
 
