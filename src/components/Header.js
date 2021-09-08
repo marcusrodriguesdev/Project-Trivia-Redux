@@ -23,12 +23,12 @@ class Header extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, score } = this.props;
     const { imgPath } = this.state;
     return (
       <>
         <span data-testid="header-player-name">{user.nome}</span>
-        <span data-testid="header-score">{user.score}</span>
+        <span data-testid="header-score">{score}</span>
         <img
           data-testid="header-profile-picture"
           src={ `https://www.gravatar.com/avatar/${imgPath}` }
@@ -52,6 +52,7 @@ Header.propTypes = {
     email: PropTypes.string,
     score: PropTypes.number,
   }).isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Header);
