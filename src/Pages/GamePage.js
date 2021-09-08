@@ -83,7 +83,7 @@ class GamePage extends Component {
     //   wrongAlternative.classList.add('incorrect-color');
     // });
 
-    this.handleClick();
+    // this.handleClick();
   }
 
   nextButtonClick() {
@@ -128,7 +128,7 @@ class GamePage extends Component {
             key={ mapIndex }
             onClick={ this.questionAnswered }
             className={ questionIsAnswered ? 'incorrect-color' : null }
-            disabled={ !timer }
+            disabled={ !timer || questionIsAnswered }
           >
             {answer}
           </button>)) }
@@ -136,8 +136,11 @@ class GamePage extends Component {
           type="button"
           className={ questionIsAnswered ? 'correct-color' : null }
           data-testid="correct-answer"
-          onClick={ this.questionAnswered }
-          disabled={ !timer }
+          onClick={ () => {
+            this.questionAnswered();
+            this.handleClick();
+          } }
+          disabled={ !timer || questionIsAnswered }
         >
           {currentQuestion.correct_answer}
         </button>

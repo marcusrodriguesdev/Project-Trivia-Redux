@@ -1,7 +1,6 @@
 import { PLAY } from '../Action';
 
 const INITIAL_STATE = {
-  // eslint-disable-next-line no-restricted-globals
   name: '',
   assertions: 0,
   score: 0,
