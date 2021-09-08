@@ -13,7 +13,6 @@ class Login extends Component {
     this.state = {
       playerName: '',
       playerEmail: '',
-      playButton: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateButton = this.validateButton.bind(this);
@@ -38,10 +37,9 @@ class Login extends Component {
     const { playerName, playerEmail } = this.state;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
     if (emailRegex.test(playerEmail) && playerName) {
-      this.setState({
-        playButton: true,
-      });
+      return false;
     }
+    return true;
   }
 
   returnButton() {
@@ -59,7 +57,8 @@ class Login extends Component {
   }
 
   render() {
-    const { playerName, playerEmail, playButton } = this.state;
+    const playButton = this.validateButton();
+    const { playerName, playerEmail } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -70,6 +69,7 @@ class Login extends Component {
             onChange={ this.handleChange }
             name="playerName"
             value={ playerName }
+            placeholder="Name"
           />
           <input
             type="email"
@@ -77,11 +77,17 @@ class Login extends Component {
             onChange={ this.handleChange }
             name="playerEmail"
             value={ playerEmail }
+            placeholder="E-mail"
           />
-          {playButton
-            ? this.returnButton()
-
-            : <button type="button" data-testid="btn-play" disabled>Jogar</button>}
+          <Link to="/game">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ playButton }
+            >
+              Jogar
+            </button>
+          </Link>
         </header>
 
         <Link to="/settings">
