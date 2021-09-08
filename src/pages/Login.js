@@ -64,39 +64,47 @@ class Login extends Component {
     const { email, playerName, validation, redirect } = this.state;
     if (redirect && token) { return <Redirect to="/game" />; }
     return (
-      <form onSubmit={ this.onSubmit }>
-        <InputCard
-          labelText="Nome:"
-          id="input-player-name"
-          name="playerName"
-          type="text"
-          value={ playerName }
-          onChange={ this.onHandlerChange }
+      <main>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvXYGoNTieKb55df0N0D6U-6iGhqqKtUIND23Rkbk_ppVnX0o6X_I0lJxTgGOOi_SrvJM&usqp=CAU"
+          alt="Trivia Logo"
         />
-        <InputCard
-          labelText="Email:"
-          id="input-gravatar-email"
-          name="email"
-          type="texto"
-          value={ email }
-          onChange={ this.onHandlerChange }
-        />
-        <button
-          data-testid="btn-play"
-          type="submit"
-          disabled={ validation }
-        >
-          Jogar
-        </button>
-        <Link to="/settings">
-          <button
-            data-testid="btn-settings"
-            type="button"
-          >
-            Settings
-          </button>
-        </Link>
-      </form>
+        <form onSubmit={ this.onSubmit }>
+          <InputCard
+            labelText="Nome:"
+            id="input-player-name"
+            name="playerName"
+            type="text"
+            value={ playerName }
+            onChange={ this.onHandlerChange }
+          />
+          <InputCard
+            labelText="Email:"
+            id="input-gravatar-email"
+            name="email"
+            type="texto"
+            value={ email }
+            onChange={ this.onHandlerChange }
+          />
+          <div>
+            <button
+              data-testid="btn-play"
+              type="submit"
+              disabled={ validation }
+            >
+              Jogar
+            </button>
+            <Link to="/settings">
+              <button
+                data-testid="btn-settings"
+                type="button"
+              >
+                Settings
+              </button>
+            </Link>
+          </div>
+        </form>
+      </main>
     );
   }
 }
