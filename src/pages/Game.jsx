@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchTrivia from '../services/fetchTrivia';
+import FeedbackHeader from '../components/FeedbackHeader';
 
 class Game extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Game extends Component {
         wrongStyle: {},
       },
       teste: true,
+      next: { display: 'none' },
     };
 
     this.fetchTriviaGame = this.fetchTriviaGame.bind(this);
@@ -50,6 +52,7 @@ class Game extends Component {
       this.setState({
         index,
         border: {},
+        next: { display: 'none' },
       });
     }
   }
@@ -79,11 +82,12 @@ class Game extends Component {
     const wrongStyle = { border: '3px solid rgb(255, 0, 0)' };
     this.setState({
       border: { correctStyle, wrongStyle },
+      next: {},
     });
   }
 
   arrayAnswersButtons() {
-    const { trivia, index, border, teste } = this.state;
+    const { trivia, index, border, teste, next } = this.state;
     // console.log(trivia[index]);
     let newArray = this.arrayAnswers(trivia[index]);
     // console.log(newArray);
@@ -109,9 +113,9 @@ class Game extends Component {
     // console.log(newArray);
     if (teste) {
       this.randomizeAnswers(newArray);
-      this.setState({
-        teste: false,
-      });
+      // this.setState({
+      //   teste: false,
+      // });
     }
     // console.log(randomArray);
 
@@ -124,6 +128,7 @@ class Game extends Component {
           type="button"
           onClick={ this.nextButton }
           data-testid="btn-next"
+          style={ next }
         >
           Próxima
         </button>
@@ -132,15 +137,11 @@ class Game extends Component {
   }
 
   render() {
-    const { name, image } = this.props;
+    // const { name, image } = this.props;
     const { isLoading } = this.state;
     return (
       <>
-        <header>
-          <img src={ image } alt="user" data-testid="header-profile-picture" />
-          <p data-testid="header-player-name">{name}</p>
-          <p data-testid="header-score">Placar: 0</p>
-        </header>
+        <FeedbackHeader />
         <section>
           { isLoading ? <p>Loading...</p> : this.arrayAnswersButtons() }
         </section>
@@ -150,8 +151,6 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   endpoint: PropTypes.string.isRequired,
 };
