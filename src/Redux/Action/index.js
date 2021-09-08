@@ -12,6 +12,7 @@ const GET_SECONDS = 'GET_SECONDS';
 const CHANGE_VISIBILITY = 'CHANGE_VISIBILITY';
 const UPDATE_SCORE = 'UPDATE_SCORE';
 const TOGGLE_CRONOMETER = 'TOGGLE_CRONOMETER';
+const COUNT_ASSERTIONS = 'COUNT_ASSERTIONS';
 
 export const ALL_ACTIONS = {
   ADD_NAME,
@@ -24,6 +25,7 @@ export const ALL_ACTIONS = {
   CHANGE_VISIBILITY,
   UPDATE_SCORE,
   TOGGLE_CRONOMETER,
+  COUNT_ASSERTIONS,
 };
 
 export const addName = (name) => ({
@@ -90,4 +92,9 @@ export const receiveScore = () => async (dispatch) => {
 export const toggleStatusCronometer = (status) => ({
   type: ALL_ACTIONS.TOGGLE_CRONOMETER,
   payload: status,
+});
+
+export const updateAssertions = (number) => ({
+  type: ALL_ACTIONS.COUNT_ASSERTIONS,
+  payload: number,
 });

@@ -27,6 +27,7 @@ class Timer extends Component {
     const {
       toggleDisabled,
       toggleVisibility,
+      statusCronometer,
     } = this.props;
     const MIN_SECONDS = 0;
     if (prevState.seconds < MIN_SECONDS) {
@@ -34,6 +35,8 @@ class Timer extends Component {
       toggleDisabled();
       toggleVisibility();
       return false;
+    } if (statusCronometer === 'off') {
+      clearInterval(this.interval);
     }
     return true;
   }

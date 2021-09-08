@@ -6,12 +6,16 @@ import Button from '../Button';
 import {
   changeVisibility,
   fetchAPIThunk,
+  getSeconds as getSecondsAction,
   setIsClicked,
+  toggleStatusCronometer,
+  updateAssertions as updateAssertionsAction,
   updateScore as updateScoreAction,
 } from '../../Redux/Action';
 import '../../Styles/trivia.css';
 import { updateAssertionsAndScore } from '../../helpers/localStorage';
 
+let assertion = 0;
 const MAX_INDEX = 4;
 class Multiple extends Component {
   constructor() {
@@ -38,7 +42,13 @@ class Multiple extends Component {
   }
 
   handleClick({ target: { id } }) {
-    const { toggleDisabled, toggleVisibility, result } = this.props;
+    const {
+      toggleDisabled,
+      toggleVisibility,
+      result,
+      updateAssertions,
+      stopCronometer,
+    } = this.props;
     const { index } = this.state;
     toggleDisabled();
     toggleVisibility();
@@ -49,13 +59,22 @@ class Multiple extends Component {
       updateAssertionsAndScore(difficultyLevel, seconds);
       const score = 0;
       const totalScore = score + (TEN + (difficultyLevel * seconds));
+      assertion += 1;
       updateScore(totalScore);
+      updateAssertions(assertion);
     }
+    stopCronometer('off');
   }
 
   changeQuestion() {
-    const { toggleDisabled, toggleVisibility } = this.props;
+    const {
+      toggleDisabled,
+      toggleVisibility,
+      stopCronometer,
+      getSeconds,
+    } = this.props;
     const { index } = this.state;
+    const THIRTY = 30;
     if (index < MAX_INDEX) {
       this.setState((prevState) => ({
         index: prevState.index + 1,
@@ -65,6 +84,8 @@ class Multiple extends Component {
     }
     toggleVisibility();
     toggleDisabled();
+    stopCronometer('on');
+    getSeconds(THIRTY);
   }
 
   renderQuestionAndAnswers() {
@@ -147,6 +168,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAPI: (token) => dispatch(fetchAPIThunk(token)),
   toggleVisibility: () => dispatch(changeVisibility()),
   updateScore: (score) => dispatch(updateScoreAction(score)),
+  updateAssertions: (assertions) => dispatch(updateAssertionsAction(assertions)),
+  stopCronometer: (status) => dispatch(toggleStatusCronometer(status)),
+  getSeconds: (seconds) => dispatch(getSecondsAction(seconds)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multiple);
