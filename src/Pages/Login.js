@@ -75,34 +75,36 @@ class Login extends Component {
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
         </header>
-        <div className="login-form">
-          <Input
-            name="name"
-            dataTest="input-player-name"
-            text="Nome: "
-            onChange={ this.handleName }
-            value={ name }
-          />
-          <Input
-            name="email"
-            dataTest="input-gravatar-email"
-            text="Email: "
-            onChange={ this.handleEmail }
-            value={ email }
-          />
-          <Button
-            text="Jogar"
-            dataTest="btn-play"
-            id="btn-play"
-            disabled={ !(emailValid && nameValid) }
-            onClick={ this.handleClick }
-          />
-          <Button
-            text="Configurações"
-            dataTest="btn-settings"
-            id="btn-settings"
-            onClick={ this.handleSettings }
-          />
+        <div className="login-form-container">
+          <div className="login-form">
+            <Input
+              name="name"
+              dataTest="input-player-name"
+              text="Nome: "
+              onChange={ this.handleName }
+              value={ name }
+            />
+            <Input
+              name="email"
+              dataTest="input-gravatar-email"
+              text="Email: "
+              onChange={ this.handleEmail }
+              value={ email }
+            />
+            <Button
+              text="Jogar"
+              dataTest="btn-play"
+              id="btn-play"
+              disabled={ !(emailValid && nameValid) }
+              onClick={ this.handleClick }
+            />
+            <Button
+              text="Configurações"
+              dataTest="btn-settings"
+              id="btn-settings"
+              onClick={ this.handleSettings }
+            />
+          </div>
         </div>
       </div>
     );
