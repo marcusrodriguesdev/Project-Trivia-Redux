@@ -12,12 +12,15 @@ class GamePage extends Component {
     super(props);
     this.state = {
       index: 0,
-      answerIsClicked: false,
-
+      questionIsAnswered: false,
+      timer: 30,
+      // answerIsClicked: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.questionMod = this.questionMod.bind(this);
     this.questionAnswered = this.questionAnswered.bind(this);
+    this.handleChronometer = this.handleChronometer.bind(this);
+    this.setTimer = this.setTimer.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +28,7 @@ class GamePage extends Component {
     const { sendQuestionsToState, token } = this.props;
     sendQuestionsToState(token);
   }
+
 
   handleClick() {
     const questionDifficulties = {
@@ -44,23 +48,54 @@ class GamePage extends Component {
   }
 
   questionAnswered(event) {
+
+  setTimer() {
+    const { timer } = this.state;
+    this.handleChronometer();
+    return (
+      <p>
+        { timer }
+      </p>);
+  }
+
+  handleChronometer() {
+    const { timer } = this.state;
+    const { questionIsAnswered } = this.state;
+    const INTERVAL = 1000;
+    const ONE_SECOND = 1;
+
+    if (timer > 0 && !questionIsAnswered) {
+      setTimeout(() => {
+        const time = timer - ONE_SECOND;
+        this.setState({
+          timer: time,
+        });
+      }, INTERVAL);
+    }
+  }
+
+  questionAnswered() {
+
     const correctAnswer = document.querySelector('.correct-answer');
     const wrong = document.querySelectorAll('.wrong-answer');
-    // this.setState({
-    //   questionIsAnswered: true,
-    // });
+    this.setState({
+      questionIsAnswered: true,
+    });
     correctAnswer.classList.add('correct-color');
     wrong.forEach((wrongAlternative) => {
       wrongAlternative.classList.add('incorrect-color');
     });
+
     this.handleClick();
+
   }
 
   questionMod() {
-    const nextButton = <button type="button" data-testid="btn-next">Próxima</button>;
-    const { index, answerIsClicked } = this.state;
+    const { index, timer } = this.state;
+
+    // const nextButton = <button type="button" data-testid="btn-next">Próxima</button>;
+
     const { questions } = this.props;
-    console.log(questions);
     const currentQuestion = questions[index];
     const incorrectAnswers = currentQuestion.incorrect_answers;
     return (
@@ -75,6 +110,7 @@ class GamePage extends Component {
             key={ mapIndex }
             onClick={ this.questionAnswered }
             className="wrong-answer"
+            disabled={ !timer }
           >
             {answer}
           </button>)) }
@@ -83,6 +119,7 @@ class GamePage extends Component {
           className="correct-answer"
           data-testid="correct-answer"
           onClick={ this.questionAnswered }
+          disabled={ !timer }
         >
           {currentQuestion.correct_answer}
         </button>
@@ -112,6 +149,7 @@ class GamePage extends Component {
           {playerScore}
         </p>
         {questions ? this.questionMod() : null }
+        {this.setTimer()}
       </>
     );
   }

@@ -26,6 +26,7 @@ export const questionAction = (payload) => ({
 export const getTokenThunk = () => async (dispatch) => {
   const response = await fetch('https://opentdb.com/api_token.php?command=request');
   const responseJson = await response.json();
+  console.log(responseJson);
   localStorage.setItem('token', responseJson.token);
   dispatch(tokenAction(responseJson.token));
 };
