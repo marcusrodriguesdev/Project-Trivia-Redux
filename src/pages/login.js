@@ -53,9 +53,11 @@ class login extends Component {
               onChange={ this.handleChange }
               testId="input-gravatar-email"
             />
-            <button type="button" data-testid="btn-settings">
-              <Link to="/gameConfig"> Config </Link>
-            </button>
+            <Link to="/gameConfig">
+              <button type="button" data-testid="btn-settings">
+                Config
+              </button>
+            </Link>
             <Link to="/game">
               <button
                 type="button"
