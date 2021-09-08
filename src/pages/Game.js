@@ -10,13 +10,18 @@ class Game extends React.Component {
 
     this.state = {
       loading: true,
+      clicked: false,
+      timer: 30,
+      disabled: false,
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
     this.handleQuestions();
+    this.timer();
   }
 
   async handleQuestions() {
@@ -26,7 +31,6 @@ class Game extends React.Component {
     console.log(data);
     this.setState({
       loading: false,
-      clicked: false,
     });
   }
 
@@ -45,14 +49,25 @@ class Game extends React.Component {
     });
   }
 
+  timer() {
+    const ONE_SECOND = 1000;
+
+    setInterval(() => {
+      this.setState((previous) => ({
+        timer: previous.timer - 1,
+      }));
+    }, ONE_SECOND);
+  }
+
   render() {
-    const { loading, clicked } = this.state;
+    const { loading, clicked, timer, disabled } = this.state;
     const { questions: { results } } = this.props;
 
     if (loading) return <h1>Carregando jogo</h1>;
     return (
       <>
         <Header />
+        <span>{timer}</span>
         <span data-testid="question-category">{ results[0].category }</span>
         <span data-testid="question-text">
           { results[0].question }
@@ -63,6 +78,7 @@ class Game extends React.Component {
           value={ results[0].correct_answer }
           data-testid="correct-answer"
           onClick={ this.checkAnswer }
+          disabled={ timer < 1 ? true : disabled }
         >
           { results[0].correct_answer }
         </button>
@@ -75,6 +91,7 @@ class Game extends React.Component {
               value={ answer }
               data-testid={ `wrong-answer-${index}` }
               onClick={ this.checkAnswer }
+              disabled={ timer < 1 ? true : disabled }
             >
               {answer}
             </button>))}
