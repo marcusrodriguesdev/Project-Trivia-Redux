@@ -6,6 +6,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const ADD_TRIVIA = 'ADD_TRIVIA';
 export const ADD_TOKEN = 'ADD_TOKEN';
 export const FETCH_GRAVATAR = 'FETCH_GRAVATAR';
+export const ADD_TRIVIA_INDEX = 'ADD_TRIVIA_INDEX';
 
 export const loading = () => ({
   type: LOADING,
@@ -28,6 +29,11 @@ export const userLogin = ({ name, email }) => ({
 
 export const fetchGravatar = (payload) => ({
   type: FETCH_GRAVATAR,
+  payload,
+});
+
+export const addTriviaIndex = (payload) => ({
+  type: ADD_TRIVIA_INDEX,
   payload,
 });
 
