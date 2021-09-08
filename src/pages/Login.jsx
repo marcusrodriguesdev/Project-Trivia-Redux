@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import { getToken, logged } from '../redux/actions';
+import { logged } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -36,11 +36,17 @@ class Login extends React.Component {
     });
   }
 
+  async token() {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const result = await response.json();
+    localStorage.setItem('token', result.token);
+  }
+
   handleClick() {
-    const { token, history, getInfo } = this.props;
-    const { name } = this.state;
-    token();
-    getInfo(name);
+    const { history, getInfo } = this.props;
+    const { name, email } = this.state;
+    this.token();
+    getInfo(name, email);
     history.push('/trivia');
   }
 
@@ -84,8 +90,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  token: () => dispatch(getToken()),
-  getInfo: (value) => dispatch(logged(value)),
+  getInfo: (name, email) => dispatch(logged(name, email)),
 });
 
 Login.propTypes = {
@@ -93,7 +98,6 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  token: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

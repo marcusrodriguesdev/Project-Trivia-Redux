@@ -21,6 +21,7 @@ class Alternatives extends React.Component {
           disabled={ seconds === 0 || next }
           className="correct"
           onClick={ applyColor }
+          name={ correctAnswer }
         >
           { decode(correctAnswer) }
         </button>
@@ -34,6 +35,7 @@ class Alternatives extends React.Component {
             onClick={ applyColor }
             className="incorrect"
             disabled={ seconds === 0 || next }
+            name={ wrongAnswer }
           >
             { decode(wrongAnswer) }
           </button>))}

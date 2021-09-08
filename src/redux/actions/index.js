@@ -4,21 +4,16 @@ export const actions = {
   LOADING: 'LOADING',
   GET_TOKEN: 'GET_TOKEN',
   GET_QUESTIONS: 'GET_QUESTIONS',
+  SET_SCORE: 'SET_SCORE',
+  SET_ASSERTIONS: 'SET_ASSERTIONS',
 };
 
-export const logged = (payload) => ({ type: actions.LOGGED_INFO, payload });
+export const logged = (name, email) => ({ type: actions.LOGGED_INFO, name, email });
 export const getApi = (payload) => ({ type: actions.GET_TOKEN, payload });
 export const getQuestions = (payload) => ({ type: actions.GET_QUESTIONS, payload });
 export const loading = () => ({ type: actions.LOADING });
-
-export function getToken() {
-  return async (dispatch) => {
-    const response = await fetch('https://opentdb.com/api_token.php?command=request');
-    const result = await response.json();
-    localStorage.setItem('token', result.token);
-    dispatch(getApi(result));
-  };
-}
+export const setScore = (score) => ({ type: actions.SET_SCORE, score });
+export const setAssertions = (assert) => ({ type: actions.SET_ASSERTIONS, assert });
 
 export function fetchQuestions() {
   return async (dispatch) => {

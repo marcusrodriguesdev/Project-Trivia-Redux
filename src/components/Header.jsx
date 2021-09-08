@@ -5,7 +5,7 @@ import '../css/Header.css';
 
 class Header extends Component {
   render() {
-    const { name } = this.props;
+    const { name, score } = this.props;
     return (
       <header className="cabecalho">
         <div>
@@ -23,7 +23,7 @@ class Header extends Component {
           </span>
         </div>
         <div>
-          <span data-testid="header-score">0</span>
+          <span data-testid="header-score">{ score }</span>
         </div>
       </header>
     );
@@ -32,10 +32,12 @@ class Header extends Component {
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  name: state.user.name,
+  name: state.player.name,
+  score: state.player.score,
 });
 
 export default connect(mapStateToProps, null)(Header);
