@@ -12,6 +12,7 @@ class Game extends React.Component {
       loading: true,
     };
     this.handleQuestions = this.handleQuestions.bind(this);
+    this.checkAnswer = this.checkAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -20,16 +21,32 @@ class Game extends React.Component {
 
   async handleQuestions() {
     const { getQuestions, token } = this.props;
-    console.log(token);
+    // console.log(token);
     const data = await getQuestions(token);
     console.log(data);
     this.setState({
       loading: false,
+      clicked: false,
+    });
+  }
+
+  checkAnswer() {
+    // const { value } = target;
+    // const { questions: { results } } = this.props;
+    // const correctAnswer = results[0].correct_answer;
+
+    // if (value === correctAnswer) {
+    //   target.className = 'correct-answer';
+    // } else {
+    //   target.className = 'incorrect-answer';
+    // }
+    this.setState({
+      clicked: true,
     });
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, clicked } = this.state;
     const { questions: { results } } = this.props;
 
     if (loading) return <h1>Carregando jogo</h1>;
@@ -40,15 +57,27 @@ class Game extends React.Component {
         <span data-testid="question-text">
           { results[0].question }
         </span>
-        <span data-testid="correct-answer">{ results[0].correct_answer }</span>
+        <button
+          type="button"
+          className={ clicked ? 'correct-answer' : null }
+          value={ results[0].correct_answer }
+          data-testid="correct-answer"
+          onClick={ this.checkAnswer }
+        >
+          { results[0].correct_answer }
+        </button>
         {results[0].incorrect_answers
           .map((answer, index) => (
-            <span
+            <button
+              type="button"
+              className={ clicked ? 'incorrect-answer' : null }
               key={ index }
+              value={ answer }
               data-testid={ `wrong-answer-${index}` }
+              onClick={ this.checkAnswer }
             >
               {answer}
-            </span>))}
+            </button>))}
       </>
     );
   }
