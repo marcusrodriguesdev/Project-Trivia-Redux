@@ -8,9 +8,11 @@ class Game extends React.Component {
 
     this.state = {
       questions: [],
+      isAnswered: false,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
+    this.selectHandler = this.selectHandler.bind(this);
   }
 
   componentDidMount() {
@@ -24,11 +26,35 @@ class Game extends React.Component {
       .then((data) => this.setState({ questions: data.results }));
   }
 
+  selectHandler() {
+    this.setState({ isAnswered: true });
+    // const { id } = e.target;
+    // if (id === 'correct') e.target.style.border = '3px solid rgb(6, 240, 15)';
+    // if (id === 'wrong') e.target.style.border = '3px solid rgb(255, 0, 0)';
+  }
+
+  renderAlternative(isCorrect, content, index = 1) {
+    const { isAnswered } = this.state;
+    const style = isAnswered ? { border: isCorrect
+      ? '3px solid rgb(6, 240, 15)' : '3px solid rgb(255, 0, 0)' } : {};
+    return (
+      <div
+        id={ isCorrect ? 'correct' : 'wrong' }
+        style={ style }
+        onClick={ this.selectHandler }
+        role="button"
+        tabIndex={ 0 }
+        onKeyDown={ (e) => console.log(e.key) }
+        data-testid={ `${isCorrect ? 'correct-answer' : `wrong-answer${index}`}` }
+      >
+        { content }
+      </div>
+    );
+  }
+
   render() {
     const { questions } = this.state;
-
     console.log(questions);
-
     return (
       <>
         <Header />
@@ -44,28 +70,19 @@ class Game extends React.Component {
               [questions[0].correct_answer, ...questions[0].incorrect_answers]
                 .sort()
                 .map((answer) => {
-                  console.log(answer);
                   if (answer === questions[0].correct_answer) {
-                    return <p key={ answer } data-testid="correct-answer">{answer}</p>;
+                    return this.renderAlternative(true, answer);
                   }
-
-                  return (
-                    <p
-                      key={ answer }
-                      data-testid={
-                        `wrong-answer-${
-                          questions[0].incorrect_answers
-                            .findIndex((el) => el === answer)}`
-                      }
-                    >
-                      { answer }
-                    </p>
+                  return this.renderAlternative(
+                    false,
+                    answer,
+                    questions[0].incorrect_answers.findIndex((el) => el === answer),
                   );
                 })
             ) : (
               <>
-                <p data-testid="correct-answer"> </p>
-                <p data-testid="wrong-answer-5"> </p>
+                { this.renderAlternative(true, ' ', 0) }
+                { this.renderAlternative(false, ' ', 1) }
               </>
             )}
             <button type="button">PRÓXIMA</button>
