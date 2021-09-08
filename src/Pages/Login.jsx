@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -29,11 +28,13 @@ class Login extends Component {
 
   saveLocalStorage() {
     const { username, email } = this.state;
-    const storage = { name: username };
-    const gravatar = md5(email).toString();
-    const gravatarStorage = { picture: gravatar };
-    localStorage.setItem('ranking', JSON.stringify(gravatarStorage));
-    localStorage.setItem('player', JSON.stringify(storage));
+    const storage = { player: {
+      name: username,
+      gravatarEmail: email,
+      score: 0,
+      assertions: 0,
+    } };
+    localStorage.setItem('state', JSON.stringify(storage));
   }
 
   render() {

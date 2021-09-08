@@ -17,6 +17,32 @@ class Timer extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.timer);
+    const { diff, right } = this.props;
+    const { seconds } = this.state;
+    const values = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+    const dez = 10;
+    const actualStorage = JSON.parse(localStorage.getItem('state'));
+    if (actualStorage.player.score) {
+      actualStorage.player.score += dez + (values[diff] * Number(seconds));
+    } else {
+      actualStorage.player.score = dez + (values[diff] * Number(seconds));
+    }
+    if (right) {
+      actualStorage.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(actualStorage));
+    }
+    // const email = JSON.parse(localStorage.getItem('player')).gravatarEmail;
+    // const gravatar = md5(email).toString();
+    // const storage = JSON.stringify([{
+    //   name: JSON.parse(localStorage.getItem('player')).name,
+    //   score: dez + (values[diff] * Number(seconds)),
+    //   picture: gravatar,
+    // }]);
+    // localStorage.setItem('ranking', storage);
   }
 
   // componentWillUnmount() {
@@ -53,9 +79,9 @@ class Timer extends React.Component {
     });
 
     if (sec === 0) {
-      const { switchButton } = this.props;
+      const { sb } = this.props;
       clearInterval(this.timer);
-      switchButton();
+      sb();
     }
   }
 
@@ -70,7 +96,9 @@ class Timer extends React.Component {
 }
 
 Timer.propTypes = {
-  switchButton: PropTypes.func.isRequired,
+  diff: PropTypes.string.isRequired,
+  right: PropTypes.bool.isRequired,
+  sb: PropTypes.func.isRequired,
 };
 
 export default Timer;

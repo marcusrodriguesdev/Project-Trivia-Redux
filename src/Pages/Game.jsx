@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 import Timer from '../Components/Timer';
 
@@ -12,10 +13,12 @@ class Game extends React.Component {
       disabled: false,
       answered: false,
       buttonShow: false,
+      right: false,
     };
     this.switchButton = this.switchButton.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.callButton = this.callButton.bind(this);
+    this.alternatives = this.alternatives.bind(this);
   }
 
   componentDidMount() {
@@ -68,7 +71,12 @@ class Game extends React.Component {
               disabled={ disabled }
               type="button"
               className={ answered ? 'wrong' : 'alternative' }
-              onClick={ this.callButton }
+              onClick={ async () => {
+                await this.setState({
+                  right: false,
+                });
+                this.callButton();
+              } }
             >
               { questionsLoaded && this.b64toutf8(answer) }
             </button>
@@ -84,7 +92,12 @@ class Game extends React.Component {
               type="button"
               data-testid="correct-answer"
               className={ answered ? 'correct' : 'alternative' }
-              onClick={ this.callButton }
+              onClick={ async () => {
+                await this.setState({
+                  right: true,
+                });
+                this.callButton();
+              } }
               disabled={ disabled }
             >
               { questionsLoaded
@@ -103,31 +116,32 @@ class Game extends React.Component {
 
   render() {
     const { questions, actualQuestion,
-      questionsLoaded, buttonShow, disabled } = this.state;
-    const maxQuestionsNumber = 4;
+      questionsLoaded, buttonShow, disabled, right } = this.state;
+    const mq = 4;
+    const diff = questionsLoaded
+      ? this.b64toutf8(questions[actualQuestion].difficulty) : '';
     const button = (
       <button
         type="button"
         data-testid="btn-next"
         onClick={ () => {
-          if (actualQuestion < maxQuestionsNumber) {
-            this.setState((prevState) => ({
-              actualQuestion: prevState.actualQuestion + 1,
-              answered: false,
-              disabled: false,
-              buttonShow: false,
-            }));
-          }
+          this.setState((prevState) => ({
+            actualQuestion: prevState.actualQuestion + 1,
+            answered: false,
+            disabled: false,
+            buttonShow: false,
+          }));
         } }
       >
         Próxima Questão
       </button>
     );
-    return (
+    const feedbackButton = (<Link data-testid="btn-next" to="/feedback">Feedback</Link>);
+    return questionsLoaded && (
       <div className="game-div">
         <Header />
         <div className="timer-div">
-          { !disabled && <Timer switchButton={ this.switchButton } />}
+          { !disabled && <Timer sb={ this.switchButton } diff={ diff } right={ right } />}
         </div>
         <fieldset>
           <h1
@@ -143,7 +157,7 @@ class Game extends React.Component {
           <ul>
             {this.alternatives()}
           </ul>
-          { buttonShow && button }
+          { buttonShow && (actualQuestion === mq ? feedbackButton : button) }
         </fieldset>
       </div>
     );
