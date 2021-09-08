@@ -3,7 +3,13 @@ import '../App.css';
 import { Redirect } from 'react-router-dom';
 
 const trivialink = 'https://opentdb.com/api.php?amount=5&token=';
+const um = 1;
+const dois = 2;
+const tres = 3;
 const cinco = 5;
+const dez = 10;
+const time = 30;
+let timer = time;
 
 class Question extends React.Component {
   constructor() {
@@ -28,11 +34,16 @@ class Question extends React.Component {
     this.incorrectAnswer = this.incorrectAnswer.bind(this);
     this.getTriviaApiResponse = this.getTriviaApiResponse.bind(this);
     this.borderColor = this.borderColor.bind(this);
+    this.calculatedPoints = this.calculatedPoints.bind(this);
   }
 
   componentDidMount() {
+    // let { timer } = this.state;
+    const ONE_SECOND = 1000;
     this.getTriviaApiResponse();
     this.timeToRespond();
+    setInterval(() => { timer -= 1; }, ONE_SECOND);
+    console.log(timer);
   }
 
   componentDidUpdate() {
@@ -42,14 +53,17 @@ class Question extends React.Component {
       button.className = '';
     });
     document.getElementById('correta').className = '';
+    timer = time;
   }
 
   async getTriviaApiResponse() {
+    const { countQuestion } = this.state;
     const token = localStorage.getItem('token');
     const responseApi = await fetch(`${trivialink}${token}`);
     const object = await responseApi.json();
     this.setState({
       questions: object,
+      difficulty: object.results[countQuestion].difficulty,
       loading: false,
     });
   }
@@ -80,6 +94,7 @@ class Question extends React.Component {
         });
         document.getElementById('correta').className = 'green-border';
       });
+    this.calculatedPoints();
   }
 
   timeToRespond() {
@@ -129,17 +144,32 @@ class Question extends React.Component {
     return this.incorrectAnswer(alternative, index);
   }
 
+  calculatedPoints() {
+    const { difficulty } = this.state;
+    let difficultyValue = 0;
+    switch (difficulty) {
+    case 'easy':
+      difficultyValue = um;
+      break;
+    case 'medium':
+      difficultyValue = dois;
+      break;
+    case 'hard':
+      difficultyValue = tres;
+      break;
+    default:
+      break;
+    }
+    const pontos = dez + (timer * difficultyValue);
+    console.log(`${timer} * ${difficultyValue} = ${pontos}`);
+  }
+
   render() {
     const { questions, loading, countQuestion, nextQuestion } = this.state;
 
     if (loading) return <h1>Loading...</h1>;
     if (countQuestion === cinco) {
       return <Redirect to="/feedback" />;
-      // return (
-      //   <Link to="/feedback">
-      //     <button type="button">Próximo</button>
-      //   </Link>
-      // );
     }
 
     const questionTrivia = questions.results[countQuestion];
