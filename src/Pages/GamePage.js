@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 // import { getQuestion } from '../Services/fetchAPI';
 import { getQuestionsThunk } from '../Redux/Action';
+import Timer from '../components/Timer';
 // import Loading from './Loading';
 
 class GamePage extends Component {
@@ -63,6 +64,7 @@ class GamePage extends Component {
           {playerScore}
         </p>
         {questions ? this.questionMod() : null }
+        <Timer />
       </>
     );
   }
