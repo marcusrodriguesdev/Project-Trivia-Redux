@@ -4,7 +4,6 @@ import Header from '../components/Header';
 
 class Feedback extends React.Component {
   render() {
-
     const player = JSON.parse(localStorage.getItem('state'));
     console.log(player);
     return (

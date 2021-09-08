@@ -114,7 +114,8 @@ class Game extends React.Component {
   }
 
   render() {
-    const { loading, clicked, timer, disabled, hidden, indexQuestion, score } = this.state;
+    const { loading,
+      clicked, timer, disabled, hidden, indexQuestion, score } = this.state;
     const { questions: { results } } = this.props;
 
     if (loading) return <h1>Carregando jogo</h1>;
