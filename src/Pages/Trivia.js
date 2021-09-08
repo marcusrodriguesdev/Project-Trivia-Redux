@@ -34,12 +34,7 @@ class Trivia extends React.Component {
     const hashGerada = CryptoJS.MD5(email).toString();
     const gravatarSrc = (`https://www.gravatar.com/avatar/${hashGerada}`);
 
-    if (!localStorage.getItem('ranking')) {
-      const ranking = [];
-      ranking.push({ name, score, picture: gravatarSrc });
-      return localStorage.setItem('ranking', JSON.stringify(ranking));
-    }
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
     ranking.push({ name, score, picture: gravatarSrc });
     return localStorage.setItem('ranking', JSON.stringify(ranking));
   }
