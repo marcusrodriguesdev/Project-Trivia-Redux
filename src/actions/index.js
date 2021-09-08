@@ -10,6 +10,7 @@ export const USER_TRY = 'USER_TRY';
 export const SHOW_NEXT_BUTTON = 'SHOW_NEXT_BUTTON';
 export const ADD_TRIVIA_INDEX = 'ADD_TRIVIA_INDEX';
 
+
 export const loading = () => ({
   type: LOADING,
 });
@@ -32,6 +33,15 @@ export const userLogin = ({ name, email }) => ({
 export const fetchGravatar = (payload) => ({
   type: FETCH_GRAVATAR,
   payload,
+});
+
+export const userTry = (payload) => ({
+  type: USER_TRY,
+  payload,
+});
+
+export const showNextButton = () => ({
+  type: SHOW_NEXT_BUTTON,
 });
 
 export const addTriviaIndex = (payload) => ({

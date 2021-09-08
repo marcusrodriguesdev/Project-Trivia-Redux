@@ -112,9 +112,9 @@ const mapStateToProps = (state) => ({
   results: state.triviaReducer.results,
   gravatarURL: state.gravatar.gravatarURL,
   name: state.loginReducer.name,
-  triviaIndex: state.triviaIndexReducer.index,
   tryUser: state.triviaReducer.tryUser,
   renderButton: state.triviaReducer.renderButton,
+  triviaIndex: state.triviaIndexReducer.index,
 });
 
 const mapDispatchToProps = (dispatch) => ({
