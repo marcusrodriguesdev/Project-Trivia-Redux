@@ -5,13 +5,28 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Feedback extends Component {
+  constructor() {
+    super();
+    this.getFeedback = this.getFeedback.bind(this);
+  }
+
+  getFeedback() {
+    const NUMBER_ASSERTIONS = 3;
+    const state = JSON.parse(localStorage.getItem('state'));
+    return state.player.assertions < NUMBER_ASSERTIONS
+      ? 'Podia ser melhor...' : 'Mandou bem!';
+  }
+
   render() {
     const { name, avatar, score } = this.props;
     return (
       <div>
         <Header name={ name } avatar={ avatar } score={ score } />
         <p data-testid="feedback-text">
-          Feedback
+          { this.getFeedback() }
+          <button type="button" onClick={ () => this.getFeedback() }>
+            Teste
+          </button>
         </p>
       </div>
     );
