@@ -152,7 +152,7 @@ class Game extends Component {
 Game.propTypes = {
   token: PropTypes.string.isRequired,
   endpoint: PropTypes.string.isRequired,
-  timer: PropTypes.string.isRequired,
+  timer: PropTypes.number.isRequired,
 };
 
 // const mapDispatchToProps = (dispatch) => ({

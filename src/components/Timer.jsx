@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getTimer } from '../redux/actions';
 
@@ -41,7 +42,7 @@ class Timer extends React.Component {
 }
 
 Timer.propTypes = {
-  timer: PropTypes.string.isRequired,
+  timer: PropTypes.number.isRequired,
   addTimer: PropTypes.func.isRequired,
 };
 
