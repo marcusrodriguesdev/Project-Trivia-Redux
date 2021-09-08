@@ -11,7 +11,7 @@ export const fetchPlayerImg = async (hash) => {
 };
 
 export const fetchQuestions = async (token) => {
-  const request = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+  const request = await fetch(`https://opentdb.com/api.php?amount=5&encode=url3986&token=${token}`)
     .then((response) => response.json())
     .then((questions) => questions.results);
   return request;
