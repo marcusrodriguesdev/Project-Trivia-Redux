@@ -1,3 +1,8 @@
+body {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 150% 150%;
+}
+
 .correct {
   border: 3px solid rgb(6, 240, 15);
 }
@@ -8,4 +13,112 @@
 
 li {
   list-style: none;
+}
+
+.login-div {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.login-div fieldset {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-div fieldset * {
+  padding: 10px;
+}
+
+.login-div fieldset label {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 30px;
+}
+
+.login-div fieldset input {
+  border: none;
+  border-radius: 10px;
+  margin-top: 10px;
+  transition: 0.3s;
+  width: 300px;
+}
+
+.login-div fieldset input:focus {
+  outline: none;
+  width: 400px;
+}
+
+.login-div fieldset button {
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  width: 200px;
+}
+
+.game-div fieldset button {
+  border-radius: 30px;
+  margin: 5px;
+  padding: 10px 20px;
+}
+
+.alternative {
+  border: none;
+}
+
+.alternative:hover {
+  background-color: tomato;
+  color: white;
+  cursor: pointer;
+}
+
+.login-div fieldset button:hover {
+  background-color: greenyellow;
+  cursor: pointer;
+}
+
+.login-div fieldset button:disabled:hover {
+  background-color: rgba(255, 255, 255, 0.164);
+}
+
+.game-div {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.game-div fieldset {
+  border: 4px dotted white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.game-header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.game-header img {
+  border-radius: 50%;
+  width: 150px;
+}
+
+.timer-div {
+  align-items: center;
+  display: flex;
+  font-size: 40px;
+  height: 100px;
+  justify-content: center;
+  width: 100px;
 }

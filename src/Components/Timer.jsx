@@ -15,6 +15,10 @@ class Timer extends React.Component {
     this.startTimer();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   // componentWillUnmount() {
   // }
   // ENVIAR PARA O REDUX O TEMPO ATUAL
