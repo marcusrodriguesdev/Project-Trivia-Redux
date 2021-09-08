@@ -8,8 +8,14 @@ import '../App.css';
 class Game extends Component {
   constructor(props) {
     super(props);
-
+    // const { name, email } = props;
     this.state = {
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
       time: 30,
       questionIndex: 0,
       questions: [],
@@ -18,6 +24,8 @@ class Game extends Component {
     this.saveQuestions = this.saveQuestions.bind(this);
     this.setTimer = this.setTimer.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.changeColor = this.changeColor.bind(this);
+    this.saveLocalStorage = this.saveLocalStorage.bind(this);
   }
 
   componentDidMount() {
@@ -28,7 +36,12 @@ class Game extends Component {
     this.setState((prevState) => ({ time: prevState.time - 1 }), callback);
   }
 
-  handleClick() {
+  handleClick(event) {
+    this.changeColor();
+    this.saveLocalStorage(event);
+  }
+
+  changeColor() {
     const rightBtn = document.querySelector('.correct-btn');
     const wrongBtn = document.querySelectorAll('.wrong-btn');
     rightBtn.className = 'correct-answer';
@@ -44,6 +57,41 @@ class Game extends Component {
     this.setState({
       questions: [...obj.results],
     });
+  }
+
+  saveLocalStorage({ target }) {
+    const answer = target.value;
+    const { questions, questionIndex, time, player } = this.state;
+    const { difficulty, correct_answer: correctAnswer } = questions[questionIndex];
+
+    if (answer === correctAnswer) {
+      let scoreMultiplier = 0;
+      const THREE = 3;
+      const TWO = 2;
+      const ONE = 1;
+      const TEN = 10;
+
+      switch (difficulty) {
+      case 'hard':
+        scoreMultiplier = THREE;
+        player.score += TEN + (time * scoreMultiplier);
+        player.assertions += 1;
+        break;
+      case 'medium':
+        scoreMultiplier = TWO;
+        player.score += TEN + (time * scoreMultiplier);
+        player.assertions += 1;
+        break;
+      case 'easy':
+        scoreMultiplier = ONE;
+        player.score += TEN + (time * scoreMultiplier);
+        player.assertions += 1;
+        break;
+      default:
+      }
+
+      localStorage.setItem('state', JSON.stringify({ player }));
+    }
   }
 
   renderQuestions() {
@@ -64,12 +112,14 @@ class Game extends Component {
           data-testid="correct-answer"
           className="correct-btn"
           onClick={ this.handleClick }
+          value={ correctAnswer }
         >
           { correctAnswer }
         </button>
         {incorrectAnswer.map((answer, index) => (
           <button
             disabled={ disabled }
+            value={ answer }
             onClick={ this.handleClick }
             className="wrong-btn"
             type="button"
@@ -85,7 +135,7 @@ class Game extends Component {
 
   render() {
     const { name, email } = this.props;
-    const { questions, time } = this.state;
+    const { questions, time, player } = this.state;
     const isFetching = questions.length === 0;
     const emailHash = md5(email).toString();
     return (
@@ -97,7 +147,7 @@ class Game extends Component {
             alt="Avatar"
           />
           <span data-testid="header-player-name">{ name }</span>
-          <span data-testid="header-score">0</span>
+          <span data-testid="header-score">{player.score}</span>
         </header>
         <Timer setTimer={ this.setTimer } time={ time } />
         { !isFetching && this.renderQuestions() }

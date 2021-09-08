@@ -27,6 +27,13 @@ class Login extends React.Component {
   async saveTokenInLocalStorage() {
     const token = await this.getToken();
     const { saveToken } = this.props;
+    const player = {
+      name: '',
+      assertions: 0,
+      score: 0,
+      gravatarEmail: '',
+    };
+    localStorage.setItem('state', JSON.stringify({ player }));
     localStorage.setItem('token', token);
     saveToken(token);
   }
@@ -51,11 +58,12 @@ class Login extends React.Component {
   }
 
   async saveNameAndEmail() {
-    const { saveUserName, saveUserEmail } = this.props;
+    const { saveUserName, saveUserEmail, history } = this.props;
     const { name, email } = this.state;
     await this.saveTokenInLocalStorage();
     saveUserName(name);
     saveUserEmail(email);
+    history.push('/trivia');
   }
 
   render() {
@@ -82,16 +90,14 @@ class Login extends React.Component {
           />
         </label>
 
-        <Link to="/trivia">
-          <button
-            data-testid="btn-play"
-            type="button"
-            disabled={ btnDisabled }
-            onClick={ this.saveNameAndEmail }
-          >
-            Jogar
-          </button>
-        </Link>
+        <button
+          data-testid="btn-play"
+          type="button"
+          disabled={ btnDisabled }
+          onClick={ this.saveNameAndEmail }
+        >
+          Jogar
+        </button>
         <Link to="/config">
           <button type="button" data-testid="btn-settings">
             Configuracoes
