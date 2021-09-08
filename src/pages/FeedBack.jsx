@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 class FeedBack extends React.Component {
   render() {
-    const { history, assertions } = this.props;
+    const { history, player: { score, assertions } } = this.props;
     const checkAssertion = () => {
       const NUMBER_THREE = 3;
       if (assertions < NUMBER_THREE) {
@@ -18,6 +18,8 @@ class FeedBack extends React.Component {
       <div>
         <div>
           <Header />
+          <h4 data-testid="feedback-total-score">{ score }</h4>
+          <h4 data-testid="feedback-total-question">{ assertions }</h4>
           <button
             onClick={ () => history.push('/') }
             type="button"
@@ -45,11 +47,14 @@ FeedBack.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  assertions: PropTypes.number.isRequired,
+  player: PropTypes.shape({
+    score: PropTypes.number,
+    assertions: PropTypes.number,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  assertions: state.player.assertions,
+  player: state.player,
 });
 
 export default connect(mapStateToProps, null)(FeedBack);

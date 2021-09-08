@@ -49,10 +49,12 @@ class GamePage extends React.Component {
       const STATIC_POINT = 10;
       const result = (STATIC_POINT + seconds * difficultyScore[difficulty])
         + player.score;
+      const assertions = player.assertions + 1;
       getScore(result);
-      getAssertions();
+      getAssertions(assertions);
       localStorage
-        .setItem('state', JSON.stringify({ player: { ...player, score: result } }));
+        .setItem('state', JSON.stringify({ player:
+          { ...player, score: result, assertions } }));
     }
   }
 
@@ -148,7 +150,7 @@ class GamePage extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: () => dispatch(fetchQuestionsAction()),
   getScore: (score) => dispatch(setScore(score)),
-  getAssertions: () => dispatch(setAssertions()),
+  getAssertions: (assert) => dispatch(setAssertions(assert)),
 });
 
 const mapStateToProps = (state) => ({
@@ -167,6 +169,7 @@ GamePage.propTypes = {
   getScore: PropTypes.func.isRequired,
   player: PropTypes.shape({
     score: PropTypes.number,
+    assertions: PropTypes.number,
   }).isRequired,
   getAssertions: PropTypes.func.isRequired,
 };
