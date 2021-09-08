@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // import ConfigButton from './ConfigButton';
 
 import './Questions.css';
+import ConfigButton from './ConfigButton';
 
 class QuestionsComponent extends React.Component {
   constructor() {
@@ -35,27 +36,22 @@ class QuestionsComponent extends React.Component {
           <ol>
             <li classNme="incorrect">
               {(questions[0].incorrect_answers).map((incorrect, index) => (
-                <button
-                  type="button"
-                  className={ answerSelected && 'incorrect' }
+                <ConfigButton
                   key={ index }
-                  data-testid={ `wrong-answer-${index}` }
+                  className={ answerSelected && 'incorrect' }
+                  test={ `wrong-answer-${index}` }
                   name={ incorrect }
                   onClick={ this.handleClick }
-                >
-                  { incorrect }
-                </button>
+                />
               ))}
             </li>
             <li>
-              <button
-                type="button"
+              <ConfigButton
                 className={ answerSelected && 'correct' }
-                data-testid="correct-answer"
+                test="correct-answer"
                 onClick={ this.handleClick }
-              >
-                { questions[0].correct_answer }
-              </button>
+                name={ questions[0].correct_answer }
+              />
             </li>
           </ol>
         </fieldset>
