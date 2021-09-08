@@ -1,7 +1,9 @@
 import React from 'react';
 import '../App.css';
+import { Redirect } from 'react-router-dom';
 
 const trivialink = 'https://opentdb.com/api.php?amount=5&token=';
+const cinco = 5;
 
 class Question extends React.Component {
   constructor() {
@@ -16,6 +18,7 @@ class Question extends React.Component {
           },
         ],
       },
+      nextQuestion: false,
       countQuestion: 0,
       loading: true,
     };
@@ -24,6 +27,7 @@ class Question extends React.Component {
     this.correctAnswer = this.correctAnswer.bind(this);
     this.incorrectAnswer = this.incorrectAnswer.bind(this);
     this.getTriviaApiResponse = this.getTriviaApiResponse.bind(this);
+    this.borderColor = this.borderColor.bind(this);
   }
 
   componentDidMount() {
@@ -31,9 +35,17 @@ class Question extends React.Component {
     this.timeToRespond();
   }
 
+  componentDidUpdate() {
+    const { countQuestion } = this.state;
+    if (countQuestion === cinco) return <Redirect to="/feedback" />;
+    document.querySelectorAll('#incorreta').forEach((button) => {
+      button.className = '';
+    });
+    document.getElementById('correta').className = '';
+  }
+
   async getTriviaApiResponse() {
     const token = localStorage.getItem('token');
-    console.log(token);
     const responseApi = await fetch(`${trivialink}${token}`);
     const object = await responseApi.json();
     this.setState({
@@ -42,18 +54,42 @@ class Question extends React.Component {
     });
   }
 
+  questionNext() {
+    let { countQuestion } = this.state;
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => {
+          this.setState({
+            countQuestion: (countQuestion += 1),
+            nextQuestion: false,
+          });
+        } }
+      >
+        Próxima
+      </button>
+    );
+  }
+
   borderColor() {
-    document.querySelectorAll('#incorreta').forEach((button) => {
-      button.className = 'red-border';
-    });
-    document.getElementById('correta').className = 'green-border';
+    this.setState({ nextQuestion: true },
+      () => {
+        document.querySelectorAll('#incorreta').forEach((button) => {
+          button.className = 'red-border';
+        });
+        document.getElementById('correta').className = 'green-border';
+      });
   }
 
   timeToRespond() {
     const THIRTY_SECONDS = 30000;
-    setInterval(() => document.querySelectorAll('button').forEach((button) => {
-      button.disabled = true;
-    }), THIRTY_SECONDS);
+    setInterval(
+      () => document.querySelectorAll('button').forEach((button) => {
+        button.disabled = true;
+      }),
+      THIRTY_SECONDS,
+    );
   }
 
   correctAnswer(alternative, index) {
@@ -94,9 +130,17 @@ class Question extends React.Component {
   }
 
   render() {
-    const { questions, loading, countQuestion } = this.state;
+    const { questions, loading, countQuestion, nextQuestion } = this.state;
 
     if (loading) return <h1>Loading...</h1>;
+    if (countQuestion === cinco) {
+      return <Redirect to="/feedback" />;
+      // return (
+      //   <Link to="/feedback">
+      //     <button type="button">Próximo</button>
+      //   </Link>
+      // );
+    }
 
     const questionTrivia = questions.results[countQuestion];
     const alternatives = [
@@ -110,11 +154,10 @@ class Question extends React.Component {
         <span data-testid="question-category">{questionTrivia.category}</span>
         <div>
           {alternatives.map((alternative, index) => this.Answer(
-            alternative,
-            questionTrivia.correct_answer,
-            index,
+            alternative, questionTrivia.correct_answer, index,
           ))}
         </div>
+        {nextQuestion ? this.questionNext() : ''}
       </div>
     );
   }
