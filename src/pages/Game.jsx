@@ -12,6 +12,7 @@ class Game extends React.Component {
     super(props);
 
     this.state = INITIAL_STATE;
+
     this.handleNext = this.handleNext.bind(this);
     this.questions = this.questions.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -23,21 +24,22 @@ class Game extends React.Component {
   }
 
   handleClick() {
+    // const { questionIndex } = this.state;
     const { addTry, buttonRender } = this.props;
     addTry(true);
     buttonRender();
-    this.setState((prevState) => ({
-      questionIndex: prevState.questionIndex + 1,
-    }));
   }
 
   handleNext() {
     const { addTry } = this.props;
     addTry(false);
+    this.setState((prevState) => ({
+      questionIndex: prevState.questionIndex + 1,
+    }));
   }
 
   questions() {
-    const { results } = this.props;
+    const { results, tryUser } = this.props;
     const { questionIndex } = this.state;
     return (
       <div key={ 0 }>
@@ -58,6 +60,7 @@ class Game extends React.Component {
               key={ index2 }
               type="button"
               data-testid={ `wrong-answer-${index2}` }
+              onClick={ this.handleClick }
             >
               {wrongResult}
             </button>),
@@ -68,7 +71,14 @@ class Game extends React.Component {
 
   render() {
     const nextButton = (
-      <button id="javascript" type="button" onClick={ this.handleNext }>Próximo</button>);
+      <button
+        data-testid="btn-next"
+        id="javascript"
+        type="button"
+        onClick={ this.handleNext }
+      >
+        Próximo
+      </button>);
     const { results, gravatarURL, name, tryUser } = this.props;
     return (
       <div>
@@ -81,6 +91,7 @@ class Game extends React.Component {
           {results
           && this.questions()}
           { tryUser && nextButton }
+
         </div>
       </div>
     );
@@ -95,7 +106,6 @@ Game.propTypes = {
   addTry: PropTypes.func.isRequired,
   tryUser: PropTypes.objectOf(PropTypes.any).isRequired,
   buttonRender: PropTypes.objectOf(PropTypes.any).isRequired,
-  // renderButton: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({

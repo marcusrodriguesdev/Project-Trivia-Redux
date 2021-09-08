@@ -1,7 +1,6 @@
 import { ADD_TRIVIA, USER_TRY, SHOW_NEXT_BUTTON } from '../actions';
 
 const INITIAL_STATE = {
-  results: [],
   tryUser: false,
   renderButton: false,
 };

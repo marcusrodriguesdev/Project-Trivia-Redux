@@ -49,6 +49,15 @@ export const addTriviaIndex = (payload) => ({
   payload,
 });
 
+export const userTry = (payload) => ({
+  type: USER_TRY,
+  payload,
+});
+
+export const showNextButton = () => ({
+  type: SHOW_NEXT_BUTTON,
+});
+
 export const requestTokenThunk = () => async (dispatch) => {
   const url = 'https://opentdb.com/api_token.php?command=request';
   dispatch(loading());
