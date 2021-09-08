@@ -10,9 +10,26 @@ class QuestionsComponent extends React.Component {
     super();
     this.state = {
       answerSelected: false,
+      count: 30,
+      questionIndex: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.timer = this.timer.bind(this);
+  }
+
+  componentDidMount() {
+    this.timer();
+  }
+
+  timer() {
+    const ONE_SECOND = 1000;
+
+    setInterval(() => {
+      this.setState((prevState) => ({
+        count: prevState.count - 1,
+      }));
+    }, ONE_SECOND);
   }
 
   handleClick() {
@@ -23,25 +40,29 @@ class QuestionsComponent extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { answerSelected } = this.state;
+    const { count, questionIndex, answerSelected } = this.state;
     return (
       <div>
+        <h3>
+          { count > 0 ? (`TEMPO RESTANTE: ${count} segundos`) : 'TEMPO ESGOTADO!' }
+        </h3>
         <fieldset>
           <h1 data-testid="question-category">
-            { questions[0].category }
+            { questions[questionIndex].category }
           </h1>
           <h2 data-testid="question-text">
-            { questions[0].question }
+            { questions[questionIndex].question }
           </h2>
           <ol>
             <li classNme="incorrect">
-              {(questions[0].incorrect_answers).map((incorrect, index) => (
+              {(questions[questionIndex].incorrect_answers).map((incorrect, index) => (
                 <ConfigButton
                   key={ index }
                   className={ answerSelected && 'incorrect' }
                   test={ `wrong-answer-${index}` }
                   name={ incorrect }
                   onClick={ this.handleClick }
+                  disable={ count <= 1 }
                 />
               ))}
             </li>
@@ -50,7 +71,8 @@ class QuestionsComponent extends React.Component {
                 className={ answerSelected && 'correct' }
                 test="correct-answer"
                 onClick={ this.handleClick }
-                name={ questions[0].correct_answer }
+                name={ questions[questionIndex].correct_answer }
+                disable={ count <= 1 }
               />
             </li>
           </ol>

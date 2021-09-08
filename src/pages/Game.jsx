@@ -22,7 +22,7 @@ class Game extends React.Component {
           <p data-testid="header-player-name">{ name }</p>
           <p data-testid="header-score">0</p>
         </header>
-        { questions.length > 0 && <QuestionsComponent questions={ questions } />}
+        { questions.length > 0 && <QuestionsComponent questions={ questions } /> }
       </div>
     );
   }

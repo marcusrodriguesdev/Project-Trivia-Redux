@@ -32,6 +32,7 @@ ConfigButton.propTypes = ({
 
 ConfigButton.defaultProps = {
   disable: false,
+  className: '',
 };
 
 export default ConfigButton;
