@@ -50,6 +50,7 @@ class Game extends Component {
     this.renderTimer = this.renderTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.timeIsOver = this.timeIsOver.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
     this.handleScore = this.handleScore.bind(this);
   }
 
@@ -73,6 +74,10 @@ class Game extends Component {
   }
 
   handleClass(event) {
+    this.setState({
+      disabled: true,
+    });
+
     const { target } = event;
     const parentDiv = target.parentElement;
     const buttons = parentDiv.querySelectorAll('button');
@@ -145,6 +150,13 @@ class Game extends Component {
     );
   }
 
+  nextQuestion() {
+    this.setState((prevstate) => ({
+      questionIndex: prevstate.questionIndex + 1,
+      disabled: false
+    }));
+  }
+
   renderCorrectButton(questions, questionIndex, index, disabled) {
     return (
       <button
@@ -208,7 +220,7 @@ class Game extends Component {
 
   render() {
     const { name, questions, score } = this.props;
-    const { over, shuffledArray, questionIndex } = this.state;
+    const { over, shuffledArray, questionIndex, disabled } = this.state;
     return (
       <div>
         <header>
@@ -223,6 +235,17 @@ class Game extends Component {
           <p data-testid="header-score">{ score }</p>
         </header>
         {this.renderQuestion(questions, shuffledArray, questionIndex, over)}
+        {
+          disabled ? (
+            <button
+              data-testid="btn-next"
+              type="button"
+              onClick={ this.nextQuestion }
+            >
+              Próxima
+            </button>
+          ) : null
+        }
       </div>
     );
   }
