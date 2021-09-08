@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 
 import { addScore as addScoreAction } from '../redux/actions';
 import Header from '../components/Header';
@@ -9,7 +10,7 @@ import Boolean from '../components/Boolean';
 
 import arabesco from '../image/arabesco-column.png';
 
-const ONE_SECOND = 1000;
+// const ONE_SECOND = 1000;
 // const ONE_NEGATIVE = -1;
 const ANSWER_CORRECT = 10;
 
@@ -18,24 +19,27 @@ class Game extends Component {
     super();
     this.state = {
       indexQuestion: 0,
-      chronometer: 30,
+      // chronometer: 30, // filho
+      // isChronometerRunning: true,
       assertions: 0,
-      isEnabled: true,
+      // isEnabled: true, // filho
       round: [],
       loading: true,
+      isFeedback: false,
     };
     this.setRoundState = this.setRoundState.bind(this);
-    this.updateIsEnabled = this.updateIsEnabled.bind(this);
+    // this.updateIsEnabled = this.updateIsEnabled.bind(this);
     this.endRound = this.endRound.bind(this);
-    this.nextRound = this.nextRound.bind(this);
     this.getCurrentScore = this.getCurrentScore.bind(this);
     this.addAssertions = this.addAssertions.bind(this);
-    const { name, email } = props;
+    this.nextRound = this.nextRound.bind(this);
+    this.getCurrentAnswerRound = this.getCurrentAnswerRound.bind(this);
+    const { name, email, score } = props;
     const player = {
       player: {
         name,
         assertions: 0, // assertions é o número de acertos
-        score: 0,
+        score,
         gravatarEmail: email,
       },
     };
@@ -43,28 +47,40 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const { chronometer, isEnabled } = this.state;
-    this.chronometerId = setInterval(() => {
-      if (chronometer > 0 && isEnabled) {
-        this.setState((prevState) => ({ chronometer: prevState.chronometer - 1 }));
-      }
-      console.log('intervalo');
-    }, ONE_SECOND);
-    const { indexQuestion, round } = this.state;
-    const { rounds } = this.props;
-    if (round.length === 0) {
-      const result = this.randomAnswer(rounds[indexQuestion]);
-      this.setRoundState(result);
-    }
+    // const { chronometer, isEnabled } = this.state;
+    // this.chronometerId = setInterval(() => {
+    //   if (chronometer > 0 && isEnabled) {
+    //     this.setState((prevState) => ({ chronometer: prevState.chronometer - 1 }));
+    //   }
+    //   // console.log('intervalo');
+    // }, ONE_SECOND);
+    // const { indexQuestion, round } = this.state;
+    // const { rounds } = this.props;
+    // if (round.length === 0) {
+    //   const result = this.randomAnswer(rounds[indexQuestion]);
+    //   this.setRoundState(result);
+    // }
+    this.getCurrentAnswerRound();
   }
 
   componentDidUpdate() {
-    const { chronometer, isEnabled } = this.state;
-    if (isEnabled && chronometer === 0) {
-      this.updateIsEnabled();
-      clearInterval(this.chronometerId);
-    }
+    // const { chronometer, isEnabled } = this.state;
+    // if (isEnabled && chronometer === 0) {
+    //   this.updateIsEnabled();
+    //   // clearInterval(this.chronometerId);
+    // }
   }
+
+  getCurrentAnswerRound() {
+    const { indexQuestion } = this.state;
+    const { rounds } = this.props;
+    const result = this.randomAnswer(rounds[indexQuestion]);
+    this.setRoundState(result);
+  }
+
+  // componentWillUnmount() {
+  //   clearInterval(this.chronometerId);
+  // }
 
   setRoundState(result) {
     this.setState({
@@ -82,11 +98,11 @@ class Game extends Component {
     return ANSWER_CORRECT + (time * difficultyPoints[difficulty]);
   }
 
-  updateIsEnabled() {
-    this.setState({
-      isEnabled: false,
-    });
-  }
+  // updateIsEnabled() {
+  //   this.setState({
+  //     isEnabled: false,
+  //   });
+  // }
 
   addAssertions() {
     this.setState((oldState) => ({ assertions: oldState.assertions + 1 }));
@@ -96,11 +112,11 @@ class Game extends Component {
     localStorage.setItem('state', JSON.stringify(player));
   }
 
-  async endRound(answer) {
-    this.updateIsEnabled();
-    clearInterval(this.chronometerId);
+  async endRound(answer, chronometer) {
+    // this.updateIsEnabled();
+    // clearInterval(this.chronometerId);
     const { rounds, addScore, name, email } = this.props;
-    const { chronometer, indexQuestion } = this.state;
+    const { indexQuestion } = this.state;
     const { difficulty } = rounds[indexQuestion];
     let currentScore = 0;
     if (answer === 'correct') {
@@ -122,15 +138,6 @@ class Game extends Component {
     this.savePlayerSession(player);
   }
 
-  nextRound() {
-    const { indexQuestion, round } = this.state;
-    const { rounds } = this.props;
-    if (round.length === 0) {
-      const result = this.randomAnswer(rounds[indexQuestion]);
-      this.setRoundState(result);
-    }
-  }
-
   randomAnswer(question) {
     const correctAnswer = question.correct_answer;
     const incorrectAnswers = question.incorrect_answers;
@@ -146,12 +153,24 @@ class Game extends Component {
     return [...random, ...arrayCopy];
   }
 
+  nextRound() {
+    const TOTAL_ROUND = 4;
+    const { indexQuestion } = this.state;
+    if (indexQuestion === TOTAL_ROUND) {
+      this.setState({ isFeedback: true });
+    } else {
+      this.setState((oldState) => ({ indexQuestion: oldState.indexQuestion + 1 }));
+    }
+    this.getCurrentAnswerRound();
+  }
+
   render() {
     const { name, avatar, score, rounds } = this.props;
-    const { indexQuestion, isEnabled, chronometer, round, loading } = this.state;
+    const { indexQuestion, round, loading, isFeedback } = this.state;
     const { category, question } = rounds[indexQuestion];
     return (
       <div className="page-body">
+        { isFeedback && <Redirect to="/feedback" />}
         <div className="game-body">
           <div className="game-column"><img src={ arabesco } alt="Arabesco" /></div>
           <div className="game-column-center">
@@ -160,9 +179,9 @@ class Game extends Component {
               avatar={ avatar }
               score={ score }
             />
-            <h1>
+            {/* <h1>
               { chronometer }
-            </h1>
+            </h1> */}
             <div className="game-main">
               {
                 rounds[indexQuestion].type === 'multiple'
@@ -171,7 +190,7 @@ class Game extends Component {
                       currentQuestion={ round }
                       category={ category }
                       question={ question }
-                      isEnabled={ isEnabled }
+                      // isEnabled={ isEnabled }
                       endRound={ this.endRound }
                       nextRound={ this.nextRound }
                     />
@@ -180,7 +199,7 @@ class Game extends Component {
                       currentQuestion={ round }
                       category={ category }
                       question={ question }
-                      isEnabled={ isEnabled }
+                      // isEnabled={ isEnabled }
                       endRound={ this.endRound }
                       nextRound={ this.nextRound }
                     />
