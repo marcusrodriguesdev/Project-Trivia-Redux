@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 // import { getQuestion } from '../Services/fetchAPI';
 import { getQuestionsThunk } from '../Redux/Action';
-import Timer from '../components/Timer';
 // import Loading from './Loading';
 import '../App.css';
 
@@ -13,9 +12,12 @@ class GamePage extends Component {
     super(props);
     this.state = {
       index: 0,
-      // questionIsAnswered: false,
+      questionIsAnswered: false,
+      timer: 30,
     };
     this.questionAnswered = this.questionAnswered.bind(this);
+    this.handleChronometer = this.handleChronometer.bind(this);
+    this.setTimer = this.setTimer.bind(this);
   }
 
   componentDidMount() {
@@ -24,12 +26,37 @@ class GamePage extends Component {
     sendQuestionsToState(token);
   }
 
+  setTimer() {
+    const { timer } = this.state;
+    this.handleChronometer();
+    return (
+      <p>
+        { timer }
+      </p>);
+  }
+
+  handleChronometer() {
+    const { timer } = this.state;
+    const { questionIsAnswered } = this.state;
+    const INTERVAL = 1000;
+    const ONE_SECOND = 1;
+
+    if (timer > 0 && !questionIsAnswered) {
+      setTimeout(() => {
+        const time = timer - ONE_SECOND;
+        this.setState({
+          timer: time,
+        });
+      }, INTERVAL);
+    }
+  }
+
   questionAnswered(event) {
     const correctAnswer = document.querySelector('.correct-answer');
     const wrong = document.querySelectorAll('.wrong-answer');
-    // this.setState({
-    //   questionIsAnswered: true,
-    // });
+    this.setState({
+      questionIsAnswered: true,
+    });
     correctAnswer.classList.add('correct-color');
     wrong.forEach((wrongAlternative) => {
       wrongAlternative.classList.add('incorrect-color');
@@ -40,7 +67,7 @@ class GamePage extends Component {
   }
 
   questionMod() {
-    const { index } = this.state;
+    const { index, timer } = this.state;
     const { questions } = this.props;
     console.log(questions);
     const currentQuestion = questions[index];
@@ -57,6 +84,7 @@ class GamePage extends Component {
             key={ mapIndex }
             onClick={ this.questionAnswered }
             className="wrong-answer"
+            disabled={ !timer }
           >
             {answer}
           </button>)) }
@@ -65,6 +93,7 @@ class GamePage extends Component {
           className="correct-answer"
           data-testid="correct-answer"
           onClick={ this.questionAnswered }
+          disabled={ !timer }
         >
           {currentQuestion.correct_answer}
         </button>
@@ -93,7 +122,7 @@ class GamePage extends Component {
           {playerScore}
         </p>
         {questions ? this.questionMod() : null }
-        <Timer />
+        {this.setTimer()}
       </>
     );
   }
