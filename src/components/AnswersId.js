@@ -16,6 +16,7 @@ class AnswersId extends React.Component {
       answer === data[id].correct_answer
         ? (
           <button
+            className="correct"
             type="button"
             data-testid="correct-answer"
             disabled={ timer === 0 }
@@ -28,6 +29,7 @@ class AnswersId extends React.Component {
         )
         : (
           <button
+            className="wrong"
             type="button"
             data-testid={ `wrong-answer${index}` }
             disabled={ timer === 0 }

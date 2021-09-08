@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { setLocalStorageThunk, setScore as setScoreAction } from '../actions';
 
 import '../App.css';
+import '../gameButton.css';
 import HeaderInfo from '../components/HeaderInfo';
 import AnswersId from '../components/AnswersId';
 
@@ -140,7 +141,7 @@ class game extends Component {
       <div className="App">
         <HeaderInfo />
         Tela de jogo
-        <div className="question-board">
+        <div className={ tighten ? 'show' : 'question-board' }>
           <h1 data-testid="question-category">{data[id].category}</h1>
           <h2 data-testid="question-text">{data[id].question}</h2>
           {answers.map((answer, index) => (
@@ -155,7 +156,7 @@ class game extends Component {
               timer={ timer }
             />)) }
           <div>
-            { timer }
+            {timer}
           </div>
           { tighten && buttonNext }
         </div>
