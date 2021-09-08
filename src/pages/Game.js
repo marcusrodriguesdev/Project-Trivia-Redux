@@ -7,12 +7,17 @@ import Header from '../components/Header';
 class Game extends React.Component {
   constructor(props) {
     super(props);
-
+    const { user } = this.props;
     this.state = {
       loading: true,
       clicked: false,
       timer: 30,
       disabled: false,
+      name: user.nome,
+      assertions: 0,
+      score: user.score,
+      gravatarEmail: user.email,
+
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
@@ -22,6 +27,20 @@ class Game extends React.Component {
   componentDidMount() {
     this.handleQuestions();
     this.timer();
+  }
+
+  componentDidUpdate() {
+    const { name, assertions, score, gravatarEmail } = this.state;
+    const state = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async handleQuestions() {
@@ -48,13 +67,12 @@ class Game extends React.Component {
       easy: 1,
     };
 
-    let score = 0;
-
     if (correctAnswer === value) {
-      score += TEN_POINTS + (timer * difficulties[questionDifficulty]);
+      this.setState((previous) => ({
+        score: previous.score + TEN_POINTS + (timer * difficulties[questionDifficulty]),
+        assertions: previous.assertions + 1,
+      }));
     }
-
-    console.log(score);
 
     this.setState({
       clicked: true,
@@ -117,6 +135,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
+  user: state.reducerLogin.user,
   token: state.token.token,
   questions: state.questionsReducer.questions,
 });
@@ -125,6 +144,12 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   getQuestions: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    nome: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    email: PropTypes.string,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
