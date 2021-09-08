@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 class FeedBack extends React.Component {
   render() {
-    const { assertions } = this.props;
+    const { history, assertions } = this.props;
     const checkAssertion = () => {
       const NUMBER_THREE = 3;
       if (assertions < NUMBER_THREE) {
@@ -18,6 +18,13 @@ class FeedBack extends React.Component {
       <div>
         <div>
           <Header />
+          <button
+            onClick={ () => history.push('/') }
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar novamente
+          </button>
         </div>
         <div data-testid="feedback-text">
           { checkAssertion() }
@@ -26,8 +33,10 @@ class FeedBack extends React.Component {
     );
   }
 }
-
 FeedBack.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   assertions: PropTypes.number.isRequired,
 };
 
