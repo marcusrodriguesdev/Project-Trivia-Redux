@@ -19,6 +19,7 @@ class Game extends Component {
       time: 30,
       questionIndex: 0,
       questions: [],
+      isVisible: false,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
@@ -26,6 +27,7 @@ class Game extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.changeColor = this.changeColor.bind(this);
     this.saveLocalStorage = this.saveLocalStorage.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -36,9 +38,20 @@ class Game extends Component {
     this.setState((prevState) => ({ time: prevState.time - 1 }), callback);
   }
 
+  nextQuestion() {
+    this.setState((prevState) => ({
+      ...prevState,
+      questionIndex: prevState.questionIndex + 1,
+      isVisible: false,
+    }));
+  }
+
   handleClick(event) {
     this.changeColor();
     this.saveLocalStorage(event);
+    this.setState({
+      isVisible: true,
+    });
   }
 
   changeColor() {
@@ -135,7 +148,7 @@ class Game extends Component {
 
   render() {
     const { name, email } = this.props;
-    const { questions, time, player } = this.state;
+    const { questions, time, player, isVisible } = this.state;
     const isFetching = questions.length === 0;
     const emailHash = md5(email).toString();
     return (
@@ -151,6 +164,11 @@ class Game extends Component {
         </header>
         <Timer setTimer={ this.setTimer } time={ time } />
         { !isFetching && this.renderQuestions() }
+
+        {isVisible && (
+          <button onClick={ this.nextQuestion } type="button" data-testid="btn-next">
+            Próxima
+          </button>)}
       </>
     );
   }
