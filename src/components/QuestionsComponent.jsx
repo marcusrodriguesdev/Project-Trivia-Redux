@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import ConfigButton from './ConfigButton';
 
 import './Questions.css';
 import ConfigButton from './ConfigButton';

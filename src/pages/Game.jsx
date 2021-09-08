@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { getQuestionThunk } from '../redux/actions';
 import QuestionsComponent from '../components/QuestionsComponent';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -14,14 +15,23 @@ class Game extends React.Component {
 
   render() {
     const { name, email, questions } = this.props;
+    const avatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     return (
       <div>
-        <header>
-          {/* { // utilizando o md5 } */}
-          <img src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` } alt="profile" data-testid="header-profile-picture" />
+        <Header
+          name={ name }
+          avatar={ avatar }
+          score={ 0 }
+        />
+        {/* <header>
+          <img
+            data-testid="header-profile-picture"
+            src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
+            alt="profile"
+          />
           <p data-testid="header-player-name">{ name }</p>
           <p data-testid="header-score">0</p>
-        </header>
+        </header> */}
         { questions.length > 0 && <QuestionsComponent questions={ questions } />}
       </div>
     );
