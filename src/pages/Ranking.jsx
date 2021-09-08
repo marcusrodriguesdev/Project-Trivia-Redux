@@ -13,7 +13,10 @@ class Ranking extends Component {
         <ul>
           { rankings
             .sort((a, b) => b.score - a.score)
-            .map((item, index) => <RankingInfo item={ item } key={ index } />)}
+            .map(
+              (item, index) => (
+                <RankingInfo item={ item } index={ index } key={ index } />),
+            ) }
         </ul>
         <Link data-testid="btn-go-home" to="/">
           <button type="button">

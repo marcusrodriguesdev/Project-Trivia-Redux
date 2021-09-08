@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 
 class RankingInfo extends Component {
   render() {
-    const { key, item: { name, score, picture } } = this.props;
+    const { index, item: { name, score, picture } } = this.props;
+    console.log('index', index);
     return (
       <li>
         <img src={ picture } alt="Gravatar" />
         <p>
-          <span data-testid={ `player-name-${key}` }>
+          <span data-testid={ `player-name-${index}` }>
             { name }
           </span>
         </p>
         <p>
-          <span data-testid={ `player-score-${key}` }>
+          <span data-testid={ `player-score-${index}` }>
             { score }
           </span>
           {' points'}
@@ -24,7 +25,7 @@ class RankingInfo extends Component {
 }
 
 RankingInfo.propTypes = {
-  key: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
   item: PropTypes.shape({
     name: PropTypes.string.isRequired,
     score: PropTypes.number.isRequired,
