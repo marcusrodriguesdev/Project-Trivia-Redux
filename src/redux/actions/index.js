@@ -51,7 +51,10 @@ export const fetchToken = () => async (dispatch) => {
 export const setDataUser = (payload) => (dispatch) => {
   const { user, email } = payload;
   const local = JSON.parse(localStorage.getItem('state'));
+  const localRanking = JSON.parse(localStorage.getItem('ranking'));
   const newLocal = { player: { ...local.player, name: user, gravatarEmail: email } };
+  const newLocalRanking = [...localRanking, { name: user, score: 0, picture: email }];
   localStorage.setItem('state', JSON.stringify(newLocal));
+  localStorage.setItem('ranking', JSON.stringify(newLocalRanking));
   dispatch(setData(payload));
 };

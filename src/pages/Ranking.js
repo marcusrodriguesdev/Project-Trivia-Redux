@@ -1,23 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Gravatar from '../components/gravatar';
 
 class Ranking extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      ranking: [{
-        name: '',
-        score: '',
-      }],
-    };
     this.handleClick = this.handleClick.bind(this);
     this.showRanking = this.showRanking.bind(this);
-  }
-
-  componentDidMount() {
-    const getUserRanking = JSON.parse(localStorage.getItem('state'));
-    const { player: { score, name } } = getUserRanking;
-    this.showRanking(name, score);
   }
 
   showRanking(name, score) {
@@ -31,13 +20,14 @@ class Ranking extends React.Component {
   }
 
   render() {
-    const { ranking } = this.state;
+    const userRanking = JSON.parse(localStorage.getItem('ranking'));
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         <ul>
-          { ranking.length === 0 ? undefined : ranking.map((user) => (
+          { userRanking.map((user) => (
             <li key={ user }>
+              <Gravatar email={ user.email } />
               <span>{user.name}</span>
               <span>{user.score}</span>
             </li>

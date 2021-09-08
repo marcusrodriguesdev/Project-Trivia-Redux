@@ -18,7 +18,7 @@ function userReducer(state = ESTADO_INICIAL, action) {
   case SET_SCORE:
     return {
       ...state,
-      score: payload,
+      score: state.score + payload,
     };
   case SET_CORRECT_ANSWER:
     return {

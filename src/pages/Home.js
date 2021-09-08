@@ -66,10 +66,19 @@ class Home extends React.Component {
   }
 
   nextClick() {
-    const { history } = this.props;
     const { currentQuestionIndex, questions } = this.state;
     const newQuestionIndex = currentQuestionIndex + 1;
     if (newQuestionIndex === questions.length) {
+      const { history, email, score, user } = this.props;
+      const localRanking = JSON.parse(localStorage.getItem('ranking'));
+      const newLocal = localRanking.map((userRank) => {
+        if (userRank.picture === email && userRank.name === user) {
+          return { ...userRank, score };
+        }
+        return userRank;
+      });
+      localStorage.setItem('ranking', JSON.stringify(newLocal));
+      console.log(newLocal);
       history.push('/results');
     } else {
       this.setState({
@@ -111,11 +120,17 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => ({
   token: state.game.token.token,
+  user: state.user.user,
+  email: state.user.email,
+  score: state.user.score,
 });
 
 export default connect(mapStateToProps)(Home);
 
 Home.propTypes = {
   token: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
   history: PropTypes.func.isRequired,
 };

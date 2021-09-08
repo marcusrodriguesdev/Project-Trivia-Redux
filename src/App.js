@@ -19,8 +19,12 @@ class App extends React.Component {
         gravatarEmail: '',
       },
     };
+    const ranking = [];
 
     localStorage.setItem('state', JSON.stringify(state));
+    if (localStorage.getItem('ranking') === null) {
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
   }
 
   render() {
