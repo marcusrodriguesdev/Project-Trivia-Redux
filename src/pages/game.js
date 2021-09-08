@@ -26,7 +26,6 @@ class game extends Component {
     this.changingId = this.changingId.bind(this);
     this.handleCorrectAnswer = this.handleCorrectAnswer.bind(this);
     this.handleIncorrectAnswer = this.handleIncorrectAnswer.bind(this);
-    this.tre = this.tre.bind(this);
     this.redirectToFeedbackPage = this.redirectToFeedbackPage.bind(this);
     this.setTimer = this.setTimer.bind(this);
   }
@@ -89,7 +88,6 @@ class game extends Component {
 
   changingId() {
     const { id, data } = this.state;
-    const { history } = this.props;
     const soma = id + 1;
     if (soma < data.length) {
       const incorrectAnswers = data[soma].incorrect_answers;
@@ -101,7 +99,7 @@ class game extends Component {
         answers: allAnswers.sort(),
         timer: 30,
       });
-      this.tre();
+      this.setTimer();
     } else {
       this.redirectToFeedbackPage();
     }
