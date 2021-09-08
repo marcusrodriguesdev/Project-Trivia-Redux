@@ -1,4 +1,4 @@
-import { LOGGED_INFO, GET_TOKEN } from '../actions';
+import { actions } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
@@ -8,12 +8,12 @@ const INITIAL_STATE = {
 
 function user(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case LOGGED_INFO:
+  case actions.LOGGED_INFO:
     return {
       ...state,
       name: action.payload,
     };
-  case GET_TOKEN:
+  case actions.GET_TOKEN:
     return {
       ...state,
       token: action.payload.token,

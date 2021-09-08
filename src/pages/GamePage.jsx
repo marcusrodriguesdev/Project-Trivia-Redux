@@ -8,9 +8,11 @@ import { fetchQuestions as fetchQuestionsAction } from '../redux/actions/index';
 class GamePage extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       next: false,
       questionNumber: 0,
+      seconds: 30,
     };
 
     this.toggleNextButton = this.toggleNextButton.bind(this);
@@ -22,6 +24,22 @@ class GamePage extends React.Component {
   async componentDidMount() {
     const { fetchQuestions } = this.props;
     await fetchQuestions();
+
+    this.updateSeconds();
+  }
+
+  componentDidUpdate() {
+    const { seconds } = this.state;
+    if (seconds === 0) {
+      clearInterval(this.countDown);
+    }
+  }
+
+  updateSeconds() {
+    const ONE_SECOND = 1000;
+    this.countDown = setInterval(() => {
+      this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
+    }, ONE_SECOND);
   }
 
   applyColor() {
@@ -34,6 +52,7 @@ class GamePage extends React.Component {
       return item;
     });
 
+    clearInterval(this.countDown);
     this.toggleNextButton();
   }
 
@@ -57,16 +76,27 @@ class GamePage extends React.Component {
   }
 
   showNextQuestion() {
+    const { history } = this.props;
+    const { questionNumber } = this.state;
+    const LIMIT = 4;
     this.removeColor();
-    this.setState((prev) => ({
-      questionNumber: prev.questionNumber + 1,
-    }));
+
+    if (questionNumber === LIMIT) {
+      history.push('/feedback');
+    } else {
+      this.setState((prev) => ({
+        questionNumber: prev.questionNumber + 1,
+        seconds: 30,
+      }));
+      this.updateSeconds();
+    }
   }
 
   render() {
-    const { next, questionNumber } = this.state;
+    const { next, questionNumber, seconds } = this.state;
     return (
       <div>
+        <p>{ seconds }</p>
         <Question
           questionNumber={ questionNumber }
         />
@@ -74,6 +104,8 @@ class GamePage extends React.Component {
         <Alternatives
           applyColor={ this.applyColor }
           questionNumber={ questionNumber }
+          seconds={ seconds }
+          next={ next }
         />
 
         <div>
@@ -97,6 +129,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 GamePage.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(GamePage);
