@@ -1,4 +1,4 @@
-import { LOADING } from '../actions/index';
+import { actions } from '../actions/index';
 
 const INITIAL_STATE = {
   loading: true,
@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 
 function loading(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case LOADING:
+  case actions.LOADING:
     return { loading: false };
   default:
     return state;

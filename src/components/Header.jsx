@@ -6,7 +6,6 @@ import '../css/Header.css';
 class Header extends Component {
   render() {
     const { name } = this.props;
-    console.log(name);
     return (
       <header className="cabecalho">
         <div>
