@@ -109,4 +109,5 @@ export default connect(mapStateToProps)(Home);
 
 Home.propTypes = {
   token: PropTypes.string.isRequired,
+  history: PropTypes.func.isRequired,
 };
