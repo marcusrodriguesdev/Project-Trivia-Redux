@@ -34,9 +34,20 @@ class Game extends Component {
     this.renderCorrectButton = this.renderCorrectButton.bind(this);
     this.renderIncorrectButton = this.renderIncorrectButton.bind(this);
     this.countdownTimer = this.countdownTimer.bind(this);
+    this.handleClass = this.handleClass.bind(this);
     this.renderTimer = this.renderTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.timeIsOver = this.timeIsOver.bind(this);
+  }
+
+  handleClass(event) {
+    const { target } = event;
+    const parentDiv = target.parentElement;
+    const buttons = parentDiv.querySelectorAll('button');
+    buttons.forEach((button) => {
+      const { dataset: { testid } } = button;
+      button.classList.add(testid);
+    });
   }
 
   resetTimer() {
@@ -109,6 +120,7 @@ class Game extends Component {
         type="button"
         disabled={ disabled }
         data-testid="correct-answer"
+        onClick={ this.handleClass }
       >
         {questions[questionIndex].correct_answer}
       </button>
@@ -122,6 +134,7 @@ class Game extends Component {
         type="button"
         disabled={ disabled }
         data-testid={ `wrong-answer-${index}` }
+        onClick={ this.handleClass }
       >
         {questions[questionIndex].incorrect_answers[index]}
       </button>
