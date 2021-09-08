@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
+import './index.css';
 
 class Game extends Component {
   constructor() {
@@ -11,10 +12,13 @@ class Game extends Component {
       questions: {},
       questionNumber: 0,
       loading: true,
+      redBorder: '',
+      greenBorder: '',
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -33,8 +37,15 @@ class Game extends Component {
     });
   }
 
+  handleClick() {
+    this.setState({
+      greenBorder: 'green-border',
+      redBorder: 'red-border',
+    });
+  }
+
   renderAnswers() {
-    const { questions, questionNumber } = this.state; // Testando o git hub
+    const { questions, questionNumber, redBorder, greenBorder } = this.state; // Testando o git hub
 
     const answers = [...questions[questionNumber].incorrect_answers,
       questions[questionNumber].correct_answer];
@@ -42,14 +53,25 @@ class Game extends Component {
     let id = index; // Key do map
     return answers.sort().map((answer) => {
       if (answer === questions[questionNumber].correct_answer) {
-        return <button type="button" data-testid="correct-answer">{ answer }</button>;
+        return (
+          <button
+            type="button"
+            data-testid="correct-answer"
+            className={ greenBorder }
+            onClick={ this.handleClick }
+          >
+            { answer }
+          </button>
+        );
       }
       id += 1;
       return (
         <button
+          className={ redBorder }
           type="button"
           data-testid={ `wrong-answer-${id}` }
           key={ id }
+          onClick={ this.handleClick }
         >
           { answer }
         </button>
