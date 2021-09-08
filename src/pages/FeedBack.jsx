@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 
@@ -16,7 +16,6 @@ class FeedBack extends React.Component {
     };
     return (
       <div>
-        FeedBack
         <div>
           <Header />
           <button
