@@ -3,18 +3,58 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addTriviaThunk } from '../actions';
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  questionIndex: 0,
+};
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = INITIAL_STATE;
+
+    this.questions = this.questions.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     const { addTrivia } = this.props;
     addTrivia();
+  }
+
+  handleClick() {
+    // const { questionIndex } = this.state;
+    this.setState((prevState) => ({
+      questionIndex: prevState.questionIndex + 1,
+    }));
+  }
+
+  questions() {
+    const { results } = this.props;
+    const { questionIndex } = this.state;
+    return (
+      <div key={ 0 }>
+        <p data-testid="question-category">{results[questionIndex].category}</p>
+        <p data-testid="question-text">{results[questionIndex].question}</p>
+        <button
+          type="button"
+          data-testid="correct-answer"
+          onClick={ this.handleClick }
+        >
+          {results[questionIndex].correct_answer}
+        </button>
+        {results[questionIndex].incorrect_answers.map(
+          (wrongResult, index2) => (
+            <button
+              key={ index2 }
+              type="button"
+              data-testid={ `wrong-answer-${index2}` }
+            >
+              {wrongResult}
+            </button>),
+        )}
+      </div>
+    );
   }
 
   render() {
@@ -28,27 +68,8 @@ class Game extends React.Component {
         </header>
         <div>
           {results
-            && results.map((result, index) => (
-              <div key={ index }>
-                <p data-testid="question-category">{result.category}</p>
-                <p data-testid="question-text">{result.question}</p>
-                <button
-                  type="button"
-                  data-testid="correct-answer"
-                >
-                  {result.correct_answer}
-                </button>
-                {result.incorrect_answers.map(
-                  (wrongResult, index2) => (
-                    <button
-                      key={ index2 }
-                      type="button"
-                      data-testid={ `wrong-answer-${index2}` }
-                    >
-                      {wrongResult}
-                    </button>),
-                )}
-              </div>))}
+          && this.questions()}
+
         </div>
       </div>
     );
@@ -66,6 +87,7 @@ const mapStateToProps = (state) => ({
   results: state.triviaReducer.results,
   gravatarURL: state.gravatar.gravatarURL,
   name: state.loginReducer.name,
+  triviaIndex: state.triviaIndexReducer.index,
 });
 
 const mapDispatchToProps = (dispatch) => ({
