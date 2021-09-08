@@ -5,6 +5,8 @@ import { addTriviaThunk, userTry, showNextButton } from '../actions';
 
 const INITIAL_STATE = {
   questionIndex: 0,
+  seconds: 30,
+  disabledState: false,
 };
 
 class Game extends React.Component {
@@ -16,11 +18,31 @@ class Game extends React.Component {
     this.handleNext = this.handleNext.bind(this);
     this.questions = this.questions.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.startTimer = this.startTimer.bind(this);
+    // this.disableButton = this.disableButton.bind(this);
   }
 
   componentDidMount() {
     const { addTrivia } = this.props;
     addTrivia();
+    this.startTimer();
+  }
+
+  startTimer() {
+    const ONE_SECOND = 1000;
+    this.intervalId = setInterval(() => {
+      this.countdown();
+    }, ONE_SECOND);
+  }
+
+  countdown() {
+    const TIME_LIMIT_IN_SECONDS = 0;
+    const { seconds } = this.state;
+    if (seconds > TIME_LIMIT_IN_SECONDS) {
+      this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
+    } else {
+      this.handleClick();
+    }
   }
 
   handleClick() {
@@ -28,6 +50,9 @@ class Game extends React.Component {
     const { addTry, buttonRender } = this.props;
     addTry(true);
     buttonRender();
+    this.setState({
+      disabledState: true,
+    });
   }
 
   handleNext() {
@@ -35,12 +60,14 @@ class Game extends React.Component {
     addTry(false);
     this.setState((prevState) => ({
       questionIndex: prevState.questionIndex + 1,
+      seconds: 30,
+      disabledState: false,
     }));
   }
 
   questions() {
     const { results, tryUser } = this.props;
-    const { questionIndex } = this.state;
+    const { questionIndex, disabledState } = this.state;
     return (
       <div key={ 0 }>
         <p data-testid="question-category">{results[questionIndex].category}</p>
@@ -50,6 +77,7 @@ class Game extends React.Component {
           type="button"
           data-testid="correct-answer"
           onClick={ this.handleClick }
+          disabled={ disabledState }
         >
           {results[questionIndex].correct_answer}
         </button>
@@ -61,6 +89,7 @@ class Game extends React.Component {
               type="button"
               data-testid={ `wrong-answer-${index2}` }
               onClick={ this.handleClick }
+              disabled={ disabledState }
             >
               {wrongResult}
             </button>),
@@ -80,12 +109,14 @@ class Game extends React.Component {
         Próximo
       </button>);
     const { results, gravatarURL, name, tryUser } = this.props;
+    const { seconds } = this.state;
     return (
       <div>
         <header>
           <img src={ gravatarURL } alt="" data-testid="header-profile-picture" />
           <p data-testid="header-player-name">{name}</p>
           <p data-testid="header-score">0</p>
+          <p>{seconds}</p>
         </header>
         <div>
           {results
