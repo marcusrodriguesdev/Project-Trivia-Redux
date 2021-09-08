@@ -16,9 +16,8 @@ class Header extends React.Component {
 
     const hash = MD5(email).toString();
     return (
-
-      <header>
-        <img data-testid="header-profile-picture" alt="cabeça" src={ `https://www.gravatar.com/avatar/${hash}.jpg` } />
+      <header className="main-header">
+        <img data-testid="header-profile-picture" alt="cabeça" src={ `https://www.gravatar.com/avatar/${hash}` } />
         <h2 data-testid="header-player-name">
           { name }
         </h2>
