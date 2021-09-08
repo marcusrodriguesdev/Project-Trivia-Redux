@@ -14,31 +14,28 @@ export class Game extends React.Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.setTimer = this.setTimer.bind(this);
   }
 
   componentDidMount() {
-    const { timer } = this.state;
+    this.setTimer();
+    this.updateLocalStorage();
+  }
+
+  setTimer() {
     const ONE_SECOND = 1000;
-    if (timer > 0) {
-      setInterval(() => (
-        this.setState((prevstate) => ({ timer: prevstate.timer - 1 }))
-      ), ONE_SECOND);
-    }
-
-    // Set localstorage default
-    const { PlayerAssertions, PlayerScore } = this.state;
-    const { player } = this.props;
-
-    const localStorageObj = {
-      player: {
-        name: player.nome,
-        assertions: PlayerAssertions,
-        score: PlayerScore,
-        gravatarEmail: player.email,
-      },
-    };
-
-    localStorage.setItem('state', JSON.stringify(localStorageObj));
+    this.setState({ timer: 30 });
+    const countdown = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1 }),
+      () => {
+        const { timer, clicked } = this.state;
+        if (timer <= 0 || clicked) {
+          clearInterval(countdown);
+          this.setState({ clicked: true });
+        }
+      });
+    }, ONE_SECOND);
   }
 
   handleClick({ target }) {
@@ -80,29 +77,70 @@ export class Game extends React.Component {
         gravatarEmail: player.email,
       },
     };
-
     localStorage.setItem('state', JSON.stringify(localStorageObj));
   }
 
-  answersRender(questions) {
-    const { clicked, timer, questionNumber } = this.state;
+  // answersRender(questions) {
+  //   const { clicked, timer, questionNumber } = this.state;
+  //   return (
+  //     <ul>
+  //       <button
+  //         type="button"
+  //         onClick={ this.handleClick }
+  //         data-testid="correct-answer"
+  //         disabled={ timer <= 0 ? true : clicked }
+  //         id="correct"
+  //         className={ clicked ? 'green-border' : '' }
+  //         name="correct-answer"
+  //       >
+  //         {' '}
+  //         {decodeURIComponent(questions[questionNumber].correct_answer)}
+  //       </button>
+  //       <br />
+  //       {questions[questionNumber].incorrect_answers.map((answer, index) => (
+  //         <>
+  //           <button
+  //             type="button"
+  //             disabled={ timer <= 0 ? true : clicked }
+  //             id={ index }
+  //             className={ clicked ? 'red-border' : '' }
+  //             name="wrong-answer"
+  //             key={ index }
+  //             data-testid={ `wrong-answer-${index}` }
+  //             onClick={ this.handleClick }
+  //           >
+  //             {decodeURIComponent(answer)}
+  //           </button>
+  //           <br />
+  //         </>
+  //       ))}
+  //     </ul>
+  //   );
+  // }
+
+  randomAnswers(questions) {
+    const { questionNumber, timer, clicked } = this.state;
+    const allQuestions = [questions[questionNumber].correct_answer,
+      ...questions[questionNumber].incorrect_answers].sort();
     return (
       <ul>
-        <button
-          type="button"
-          onClick={ this.handleClick }
-          data-testid="correct-answer"
-          disabled={ timer <= 0 ? true : clicked }
-          id="correct"
-          className={ clicked ? 'green-border' : '' }
-          name="correct-answer"
-        >
-          {' '}
-          {questions[questionNumber].correct_answer}
-        </button>
-        <br />
-        {questions[questionNumber].incorrect_answers.map((answer, index) => (
-          <>
+        {allQuestions.map((question, index) => {
+          if (question === questions[questionNumber].correct_answer) {
+            return (
+              <button
+                type="button"
+                onClick={ this.handleClick }
+                data-testid="correct-answer"
+                disabled={ timer <= 0 ? true : clicked }
+                id="correct"
+                className={ clicked ? 'green-border' : '' }
+                name="correct-answer"
+              >
+                {decodeURIComponent(question)}
+              </button>
+            );
+          }
+          return (
             <button
               type="button"
               disabled={ timer <= 0 ? true : clicked }
@@ -113,21 +151,33 @@ export class Game extends React.Component {
               data-testid={ `wrong-answer-${index}` }
               onClick={ this.handleClick }
             >
-              {answer}
+              {decodeURIComponent(question)}
             </button>
-            <br />
-          </>
-        ))}
+          );
+        })}
       </ul>
     );
   }
 
+  nextButton(questionNumber) {
+    const { history, questions } = this.props;
+    if (questionNumber < questions.length - 1) {
+      this.setState((prevState) => ({
+        questionNumber: prevState.questionNumber + 1,
+        clicked: false }), () => {
+        this.setTimer();
+      });
+    } else {
+      history.push('/feedback');
+    }
+  }
+
   render() {
     const { player, questions } = this.props;
-    const { timer, questionNumber, PlayerScore } = this.state;
+    const { timer, questionNumber, PlayerScore, clicked } = this.state;
     return (
       <div>
-        <p>{ `${timer > 0 ? timer : 0}` }</p>
+        <p>{ timer }</p>
         <header>
           <img alt="avatar" data-testid="header-profile-picture" src={ player.avatar } />
           <h4 data-testid="header-player-name">
@@ -143,22 +193,34 @@ export class Game extends React.Component {
         <div>
           <p data-testid="question-category">
             Categoria:
-            {questions[questionNumber].category}
+            {decodeURIComponent(questions[questionNumber].category)}
           </p>
           <h3 data-testid="question-text">
-            {questions[questionNumber].question}
+            {decodeURIComponent(questions[questionNumber].question)}
           </h3>
-          { this.answersRender(questions) }
+          { this.randomAnswers(questions) }
         </div>
+        {
+          clicked
+          && <input
+            type="button"
+            data-testid="btn-next"
+            onClick={ () => this.nextButton(questionNumber) }
+            value="Próxima"
+          />
+        }
       </div>);
   }
 }
 
 Game.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   player: PropTypes.shape({
     avatar: PropTypes.string,
-    nome: PropTypes.string,
     email: PropTypes.string,
+    nome: PropTypes.string,
   }).isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
