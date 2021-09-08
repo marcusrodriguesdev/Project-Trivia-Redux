@@ -1,8 +1,8 @@
 export const setPlayerInLocalStorage = () => {
   const INITIAL_STATE = {
     name: '',
-    assertions: '',
-    score: '',
+    assertions: 0,
+    score: 0,
     gravatarEmail: '',
   };
   localStorage.setItem('state', JSON.stringify({ player: INITIAL_STATE }));
@@ -17,7 +17,7 @@ export const updateAssertionsAndScore = (difficulty, seconds) => {
   const state = JSON.parse(localStorage.getItem('state'));
   const updatedPlayer = {
     ...state.player,
-    score: Number(state.player.score) + (TEN + (difficulty * seconds)),
+    score: Number(state.player.score) + (Number(TEN + (difficulty * seconds))),
     assertions: Number(state.player.assertions) + 1,
   };
   localStorage.setItem('state', JSON.stringify({ player: updatedPlayer }));
