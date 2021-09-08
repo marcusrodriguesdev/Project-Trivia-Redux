@@ -21,10 +21,10 @@ class Login extends Component {
   }
 
   onClick() {
-    const { playerEmail, playerName } = this.state;
+    const { playerEmail: gravatarEmail, playerName: name } = this.state;
     const { updateNameEmail, sendTokenToState } = this.props;
     sendTokenToState();
-    updateNameEmail({ playerEmail, playerName });
+    updateNameEmail({ gravatarEmail, name });
   }
 
   handleChange({ target }) {
