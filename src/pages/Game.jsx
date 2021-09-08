@@ -56,7 +56,15 @@ class Game extends React.Component {
   }
 
   handleNext() {
-    const { addTry } = this.props;
+    const { addTry, history } = this.props;
+    const { questionIndex } = this.state;
+    const INDEX_QUESTION = 4;
+
+    if (questionIndex < INDEX_QUESTION) {
+      this.setState((prevState) => ({ questionIndex: prevState.questionIndex + 1 }));
+    } else {
+      history.push('/feedback');
+    }
     addTry(false);
     this.setState((prevState) => ({
       questionIndex: prevState.questionIndex + 1,
@@ -137,6 +145,9 @@ Game.propTypes = {
   addTry: PropTypes.func.isRequired,
   tryUser: PropTypes.objectOf(PropTypes.any).isRequired,
   buttonRender: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
