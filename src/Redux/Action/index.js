@@ -16,6 +16,7 @@ const CHANGE_VISIBILITY = 'CHANGE_VISIBILITY';
 const UPDATE_SCORE = 'UPDATE_SCORE';
 const TOGGLE_CRONOMETER = 'TOGGLE_CRONOMETER';
 const COUNT_ASSERTIONS = 'COUNT_ASSERTIONS';
+const RESET_SCORE = 'RESET_SCORE';
 
 export const ALL_ACTIONS = {
   ADD_NAME,
@@ -31,6 +32,7 @@ export const ALL_ACTIONS = {
   UPDATE_SCORE,
   TOGGLE_CRONOMETER,
   COUNT_ASSERTIONS,
+  RESET_SCORE,
 };
 
 export const addName = (name) => ({
@@ -56,6 +58,10 @@ export const addUrlGravatar = (urlGravatar) => ({
 export const loading = () => ({
   type: ALL_ACTIONS.LOADING,
   payload: false,
+});
+
+export const resetScore = () => ({
+  type: ALL_ACTIONS.RESET_SCORE,
 });
 
 export const fetchAPIThunk = (token) => async (dispatch) => {
