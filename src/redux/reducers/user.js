@@ -1,9 +1,10 @@
-import { SET_DATA_USER } from '../actions';
+import { SET_DATA_USER, SET_SCORE, SET_CORRECT_ANSWER } from '../actions';
 
 const ESTADO_INICIAL = {
   user: '',
   email: '',
   score: 0,
+  correctAnswers: 0,
 };
 
 function userReducer(state = ESTADO_INICIAL, action) {
@@ -13,6 +14,16 @@ function userReducer(state = ESTADO_INICIAL, action) {
     return {
       ...state,
       ...payload,
+    };
+  case SET_SCORE:
+    return {
+      ...state,
+      score: payload,
+    };
+  case SET_CORRECT_ANSWER:
+    return {
+      ...state,
+      correctAnswers: payload,
     };
   default:
     return state;

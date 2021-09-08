@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import shuffleList from '../../services/suffleList';
 import './Question.css';
-import { setTimer } from '../../redux/actions';
+import { setTimer, resetTimer, setScore, setCorrectAnswer } from '../../redux/actions';
 
 class Question extends React.Component {
   constructor(props) {
@@ -41,7 +41,9 @@ class Question extends React.Component {
   }
 
   calcPonts() {
-    const { difficulty } = this.props;
+    const {
+      difficulty, setScoreGlobal, setCorrectAnswersGlobal, correctAnswers,
+    } = this.props;
     const timer = document.querySelector('#timer').innerHTML;
     const pontDifficulty = {
       hard: 3,
@@ -53,10 +55,12 @@ class Question extends React.Component {
     const stateLocal = JSON.parse(localStorage.getItem('state'));
     const newLocal = { ...stateLocal, player: { ...stateLocal.player, score: total } };
     localStorage.setItem('state', JSON.stringify(newLocal));
+    setScoreGlobal(total);
+    setCorrectAnswersGlobal(correctAnswers + 1);
   }
 
   renderNexButton() {
-    const { nextClick, setTimeGlobal } = this.props;
+    const { nextClick, setTimeGlobal, resetTimeGlobal } = this.props;
     return (
       <button
         type="button"
@@ -64,6 +68,7 @@ class Question extends React.Component {
         onClick={ () => {
           nextClick();
           setTimeGlobal(false);
+          resetTimeGlobal(true);
         } }
       >
         Próxima
@@ -123,16 +128,22 @@ Question.propTypes = {
   isTimer: PropTypes.bool.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
   nextClick: PropTypes.func.isRequired,
+  resetTimeGlobal: PropTypes.func.isRequired,
   setTimeGlobal: PropTypes.func.isRequired,
+  setScoreGlobal: PropTypes.func.isRequired,
   difficulty: PropTypes.string.isRequired,
 };
 
 const MapStateToProps = (state) => ({
   isTimer: state.game.stopWatch.isTimer,
+  correctAnswers: state.user.correctAnswers,
 });
 
 const MapDispachToProps = (dispatch) => ({
   setTimeGlobal: (payload) => dispatch(setTimer(payload)),
+  resetTimeGlobal: (payload) => dispatch(resetTimer(payload)),
+  setScoreGlobal: (payload) => dispatch(setScore(payload)),
+  setCorrectAnswersGlobal: (payload) => dispatch(setCorrectAnswer(payload)),
 });
 
 export default connect(MapStateToProps, MapDispachToProps)(Question);
