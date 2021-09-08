@@ -98,11 +98,21 @@ class Game extends Component {
     return ANSWER_CORRECT + (time * difficultyPoints[difficulty]);
   }
 
-  // updateIsEnabled() {
-  //   this.setState({
-  //     isEnabled: false,
-  //   });
-  // }
+  setRanking() {
+    const oldLSRanking = JSON.parse(localStorage.getItem('ranking'));
+    const { name, score, avatar } = this.props;
+    const currentGame = {
+      name,
+      score,
+      picture: avatar,
+    };
+    console.log(oldLSRanking);
+    if (oldLSRanking !== null) {
+      localStorage.setItem('ranking', JSON.stringify([...oldLSRanking, currentGame]));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([currentGame]));
+    }
+  }
 
   addAssertions() {
     this.setState((oldState) => ({ assertions: oldState.assertions + 1 }));
@@ -158,6 +168,7 @@ class Game extends Component {
     const { indexQuestion } = this.state;
     if (indexQuestion === TOTAL_ROUND) {
       this.setState({ isFeedback: true });
+      this.setRanking();
     } else {
       this.getCurrentAnswerRound(indexQuestion + 1);
       this.setState((oldState) => ({ indexQuestion: oldState.indexQuestion + 1 }));

@@ -33,17 +33,17 @@ class Feedback extends Component {
           { this.getFeedback() }
         </p>
         <p>
-          `Total de pontos: `
+          { 'Total de pontos: ' }
           <span data-testid="feedback-total-score">
             { score }
           </span>
         </p>
         <p>
-          `Acertou `
+          { 'Acertou ' }
           <span data-testid="feedback-total-question">
             { this.getAssertions() }
           </span>
-          ` perguntas`
+          { ' perguntas' }
         </p>
         <Link data-testid="btn-play-again" to="/">
           <button type="button">
