@@ -16,12 +16,15 @@ class Game extends Component {
       redBorder: '',
       greenBorder: '',
       disable: false,
+      totalScore: 0,
+      assertions: 0,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.stopWatch = this.stopWatch.bind(this);
+    this.switchValue = this.switchValue.bind(this);
   }
 
   componentDidMount() {
@@ -57,11 +60,53 @@ class Game extends Component {
     });
   }
 
-  handleClick() {
+  switchValue(difficuty) {
+    const hardPoints = 3;
+
+    switch (difficuty) {
+    case 'easy':
+      return 1;
+    case 'medium':
+      return 2;
+    case 'hard':
+      return hardPoints;
+    default:
+      return 0;
+    }
+  }
+
+  handleClick({ target }) {
     this.setState({
       greenBorder: 'green-border',
       redBorder: 'red-border',
     });
+    clearInterval(this.timer);
+    const { questions, questionNumber, timer, totalScore } = this.state;
+
+    const { difficulty } = questions[questionNumber];
+    if (target.textContent !== questions[questionNumber].correct_answer) return null;
+    const ten = 10;
+    const points = this.switchValue(difficulty);
+    const total = ten + (timer * points);
+    const { assertions } = this.state;
+
+    this.setState({
+      totalScore: totalScore + total,
+      assertions: assertions + 1,
+    });
+
+    const { dados } = this.props;
+
+    const profile = {
+      player: {
+        name: dados.name,
+        assertions: assertions + 1,
+        score: totalScore + total,
+        gravatarEmail: dados.email,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(profile));
   }
 
   renderAnswers() {
