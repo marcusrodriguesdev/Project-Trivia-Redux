@@ -56,7 +56,7 @@ class Home extends React.Component {
           incorrectAnswers={ question.incorrect_answers }
         />
         <button type="button" data-testid="btn-ranking" onClick={ this.handleClick }>
-          Ranking
+          Ver Ranking
         </button>
       </>
     );

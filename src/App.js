@@ -10,6 +10,19 @@ import './App.css';
 
 // requisito 1
 class App extends React.Component {
+  componentDidMount() {
+    const state = {
+      player: {
+        name: '',
+        assertions: '',
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   render() {
     return (
       <Switch>
