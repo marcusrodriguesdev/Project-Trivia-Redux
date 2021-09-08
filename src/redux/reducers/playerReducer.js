@@ -1,4 +1,4 @@
-import { SET_PLAYER, ADD_SCORE } from '../actions';
+import { SET_PLAYER, ADD_SCORE, RESET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   playerInfo: {
@@ -22,6 +22,10 @@ export default function playerReducer(state = INITIAL_STATE, action) {
   case ADD_SCORE:
     return { ...state,
       score: state.score + action.payload,
+    };
+  case RESET_SCORE:
+    return { ...state,
+      score: 0,
     };
   default:
     return state;

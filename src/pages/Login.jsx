@@ -5,7 +5,8 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { setGameToken as setGameTokenAction,
   setPlayer as setPlayerAction,
-  setGameRound as setGameRoundAction } from '../redux/actions';
+  setGameRound as setGameRoundAction,
+  resetScore as resetScoreAction } from '../redux/actions';
 
 import { getTokenTrivia, getGameTrivia } from '../services/triviaAPI';
 import getAvatarImg from '../services/gravatarAPI';
@@ -14,7 +15,7 @@ const NEGATIVE_ONE = -1;
 const NUMBER_THREE = 3;
 
 class Login extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       name: '',
@@ -28,6 +29,8 @@ class Login extends Component {
     this.validateUserEmail = this.validateUserEmail.bind(this);
     this.validateDomainEmail = this.validateDomainEmail.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    const { resetScore } = props;
+    resetScore();
   }
 
   async onSubmitForm() {
@@ -153,6 +156,7 @@ Login.propTypes = {
   setGameToken: PropTypes.func.isRequired,
   setPlayer: PropTypes.func.isRequired,
   setGameRound: PropTypes.func.isRequired,
+  resetScore: PropTypes.func.isRequired,
   // token: PropTypes.string.isRequired,
 };
 
@@ -164,6 +168,7 @@ const mapDispatchToProps = (dispatch) => ({
   setGameToken: (token) => dispatch(setGameTokenAction(token)),
   setPlayer: (playerInfo) => dispatch(setPlayerAction(playerInfo)),
   setGameRound: (games) => dispatch(setGameRoundAction(games)),
+  resetScore: () => dispatch(resetScoreAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
