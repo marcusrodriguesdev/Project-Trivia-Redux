@@ -4,7 +4,6 @@ import './App.css';
 import Configuration from './pages/Configuração';
 import Login from './pages/Login';
 
-
 export default function App() {
   return (
     <Switch>
