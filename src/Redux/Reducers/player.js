@@ -1,7 +1,6 @@
 import { PLAY } from '../Action';
 
 const INITIAL_STATE = {
-  // eslint-disable-next-line no-restricted-globals
   name: '',
   assertions: 0,
   score: 0,
@@ -11,9 +10,7 @@ const INITIAL_STATE = {
 function player(state = INITIAL_STATE, action) {
   switch (action.type) {
   case PLAY:
-    return { ...state,
-      name: action.payload.playerName,
-      gravatarEmail: action.payload.playerEmail };
+    return { ...state, ...action.payload };
 
   default:
     return state;

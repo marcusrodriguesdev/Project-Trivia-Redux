@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 // import { getQuestion } from '../Services/fetchAPI';
-import { getQuestionsThunk } from '../Redux/Action';
+import playAction, { getQuestionsThunk } from '../Redux/Action';
 // import Loading from './Loading';
 import '../App.css';
 
@@ -14,11 +14,13 @@ class GamePage extends Component {
       index: 0,
       questionIsAnswered: false,
       timer: 30,
-      // answerIsClicked: false,
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.questionMod = this.questionMod.bind(this);
     this.questionAnswered = this.questionAnswered.bind(this);
     this.handleChronometer = this.handleChronometer.bind(this);
     this.setTimer = this.setTimer.bind(this);
+    this.nextButtonClick = this.nextButtonClick.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +37,24 @@ class GamePage extends Component {
         { timer }
       </p>);
   }
+
+  handleClick() {
+    const questionDifficulties = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+    const INITIAL_SCORE = 10;
+    let { playerScore: score, playerAssertions: assertions } = this.props;
+    const { updateScore, questions } = this.props;
+    const { index, timer } = this.state;
+    const currentDifficulty = questions[index].difficulty;
+    assertions += 1;
+    score += INITIAL_SCORE + (timer * questionDifficulties[currentDifficulty]);
+    updateScore({ assertions, score });
+  }
+
+  // questionAnswered(event) {
 
   handleChronometer() {
     const { timer } = this.state;
@@ -53,21 +73,45 @@ class GamePage extends Component {
   }
 
   questionAnswered() {
-    const correctAnswer = document.querySelector('.correct-answer');
-    const wrong = document.querySelectorAll('.wrong-answer');
+    // const correctAnswer = document.querySelector('.correct-answer');
+    // const wrong = document.querySelectorAll('.wrong-answer');
     this.setState({
       questionIsAnswered: true,
     });
-    correctAnswer.classList.add('correct-color');
-    wrong.forEach((wrongAlternative) => {
-      wrongAlternative.classList.add('incorrect-color');
-    });
+    // correctAnswer.classList.add('correct-color');
+    // wrong.forEach((wrongAlternative) => {
+    //   wrongAlternative.classList.add('incorrect-color');
+    // });
+
+    // this.handleClick();
+  }
+
+  nextButtonClick() {
+    const { index, questionIsAnswered } = this.state;
+    const { history } = this.props;
+    const MAX_INDEX = 4;
+    if (index < MAX_INDEX) {
+      this.setState({
+        index: index + 1,
+        questionIsAnswered: !questionIsAnswered,
+      });
+    } else {
+      history.push('/feedback');
+    }
   }
 
   questionMod() {
-    const { index, timer } = this.state;
+    const { index, timer, questionIsAnswered } = this.state;
 
-    // const nextButton = <button type="button" data-testid="btn-next">Próxima</button>;
+    const nextButton = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ this.nextButtonClick }
+      >
+        Próxima
+      </button>
+    );
 
     const { questions } = this.props;
     const currentQuestion = questions[index];
@@ -83,20 +127,24 @@ class GamePage extends Component {
             // key="incorrectAnswer"
             key={ mapIndex }
             onClick={ this.questionAnswered }
-            className="wrong-answer"
-            disabled={ !timer }
+            className={ questionIsAnswered ? 'incorrect-color' : null }
+            disabled={ !timer || questionIsAnswered }
           >
             {answer}
           </button>)) }
         <button
           type="button"
-          className="correct-answer"
+          className={ questionIsAnswered ? 'correct-color' : null }
           data-testid="correct-answer"
-          onClick={ this.questionAnswered }
-          disabled={ !timer }
+          onClick={ () => {
+            this.questionAnswered();
+            this.handleClick();
+          } }
+          disabled={ !timer || questionIsAnswered }
         >
           {currentQuestion.correct_answer}
         </button>
+        { questionIsAnswered && nextButton }
       </>
     );
   }
@@ -129,6 +177,10 @@ class GamePage extends Component {
 }
 
 GamePage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  playerAssertions: PropTypes.number.isRequired,
   playerEmail: PropTypes.string.isRequired,
   playerName: PropTypes.string.isRequired,
   playerScore: PropTypes.number.isRequired,
@@ -137,10 +189,12 @@ GamePage.propTypes = {
   }).isRequired,
   sendQuestionsToState: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  updateScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   playerScore: state.player.score,
+  playerAssertions: state.player.assertions,
   playerName: state.player.name,
   playerEmail: state.player.gravatarEmail,
   token: state.token,
@@ -149,6 +203,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   sendQuestionsToState: (token) => dispatch(getQuestionsThunk(token)),
+  updateScore: (payload) => dispatch(playAction(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

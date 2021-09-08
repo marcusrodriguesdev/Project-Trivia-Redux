@@ -6,10 +6,18 @@ export const PLAY = 'PLAY';
 export const GET_TOKEN = 'GET_TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 
-const playAction = (payload) => ({
-  type: PLAY,
-  payload,
-});
+const state = { player: {
+  name: '',
+  assertions: 0,
+  score: 0,
+  gravatarEmail: '',
+} };
+
+const playAction = (payload) => {
+  state.player = { ...state.player, ...payload };
+  localStorage.setItem('state', JSON.stringify(state));
+  return { type: PLAY, payload };
+};
 
 export default playAction;
 
