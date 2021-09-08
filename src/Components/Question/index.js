@@ -132,6 +132,8 @@ Question.propTypes = {
   setTimeGlobal: PropTypes.func.isRequired,
   setScoreGlobal: PropTypes.func.isRequired,
   difficulty: PropTypes.string.isRequired,
+  setCorrectAnswersGlobal: PropTypes.func.isRequired,
+  correctAnswers: PropTypes.number.isRequired,
 };
 
 const MapStateToProps = (state) => ({
