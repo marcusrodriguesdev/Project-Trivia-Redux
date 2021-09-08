@@ -15,6 +15,7 @@ class Game extends Component {
         correctStyle: {},
         wrongStyle: {},
       },
+      teste: true,
     };
 
     this.fetchTriviaGame = this.fetchTriviaGame.bind(this);
@@ -82,16 +83,36 @@ class Game extends Component {
   }
 
   arrayAnswersButtons() {
-    const { trivia, index, border } = this.state;
-    console.log(trivia[index]);
+    const { trivia, index, border, teste } = this.state;
+    // console.log(trivia[index]);
     let newArray = this.arrayAnswers(trivia[index]);
     // console.log(newArray);
     newArray = newArray
-      .map((element, indic) => (indic < newArray.length - 1
-        ? <button type="button" data-testid={ `wrong-answer-${indic}` } onClick={ this.addBorder } style={ border.wrongStyle }>{element}</button>
-        : <button type="button" data-testid="correct-answer" onClick={ this.addBorder } style={ border.correctStyle }>{element}</button>));
-    console.log(newArray);
-    this.randomizeAnswers(newArray);
+      .map((element, indic) => (indic < newArray.length - 1 ? (
+        <button
+          type="button"
+          data-testid={ `wrong-answer-${indic}` }
+          onClick={ this.addBorder }
+          style={ border.wrongStyle }
+        >
+          {element}
+        </button>)
+        : (
+          <button
+            type="button"
+            data-testid="correct-answer"
+            onClick={ this.addBorder }
+            style={ border.correctStyle }
+          >
+            {element}
+          </button>)));
+    // console.log(newArray);
+    if (teste) {
+      this.randomizeAnswers(newArray);
+      this.setState({
+        teste: false,
+      });
+    }
     // console.log(randomArray);
 
     return (
