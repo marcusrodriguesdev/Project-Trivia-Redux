@@ -9,7 +9,7 @@ import Ranking from './pages/Ranking';
 import './App.css';
 
 // requisito 1
-class App extends React.Component {
+class App extends React.Component {P
   componentDidMount() {
     const state = {
       player: {
@@ -20,11 +20,10 @@ class App extends React.Component {
       },
     };
     const ranking = [];
-
-    localStorage.setItem('state', JSON.stringify(state));
-    if (localStorage.getItem('ranking') === null) {
+    if (JSON.parse(localStorage.getItem('ranking')) === null) {
       localStorage.setItem('ranking', JSON.stringify(ranking));
     }
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   render() {

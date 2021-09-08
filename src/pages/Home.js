@@ -61,6 +61,10 @@ class Home extends React.Component {
   }
 
   handleClick() {
+    const { user, email } = this.props;
+    const localRanking = JSON.parse(localStorage.getItem('ranking'));
+    const newLocalRanking = [...localRanking, { name: user, score: 0, picture: email }];
+    localStorage.setItem('ranking', JSON.stringify(newLocalRanking));
     const { history } = this.props;
     history.push('/ranking');
   }
@@ -109,9 +113,9 @@ class Home extends React.Component {
           nextClick={ this.nextClick }
           difficulty={ currentQuestion.difficulty }
         />
-        <button type="button" data-testid="btn-ranking" onClick={ this.handleClick }>
+        {/* <button type="button" data-testid="btn-ranking" onClick={ this.handleClick }>
           Ver Ranking
-        </button>
+        </button> */}
         <StopWatch />
       </>
     );
