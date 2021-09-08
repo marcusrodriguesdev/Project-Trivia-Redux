@@ -16,7 +16,7 @@ function player(state = INITIAL_STATE, action) {
       gravatarEmail: action.email,
     };
   case actions.SET_SCORE:
-    return { ...state, score: state.score + action.score };
+    return { ...state, score: action.score };
   case actions.SET_ASSERTIONS:
     return { ...state, assertions: state.assertions + 1 };
   default:

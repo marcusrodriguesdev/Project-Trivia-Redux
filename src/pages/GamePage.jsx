@@ -29,7 +29,7 @@ class GamePage extends React.Component {
     await fetchQuestions();
 
     this.updateSeconds();
-    localStorage.setItem('state', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
 
   componentDidUpdate() {
@@ -47,10 +47,12 @@ class GamePage extends React.Component {
 
     if (name === correctAnswer) {
       const STATIC_POINT = 10;
-      const result = (STATIC_POINT + seconds * difficultyScore[difficulty]);
+      const result = (STATIC_POINT + seconds * difficultyScore[difficulty])
+        + player.score;
       getScore(result);
       getAssertions();
-      localStorage.setItem('state', JSON.stringify(player));
+      localStorage
+        .setItem('state', JSON.stringify({ player: { ...player, score: result } }));
     }
   }
 
@@ -101,7 +103,6 @@ class GamePage extends React.Component {
     const LIMIT = 4;
     this.removeColor();
 
-    // localStorage.setItem('state', JSON.stringify(player));
     if (questionNumber === LIMIT) {
       history.push('/feedback');
     } else {
@@ -157,15 +158,17 @@ const mapStateToProps = (state) => ({
 
 GamePage.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
-  getAssertions: PropTypes.func.isRequired,
-  getScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  player: PropTypes.objectOf(PropTypes.string).isRequired,
   questions: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
+  getScore: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    score: PropTypes.number,
+  }).isRequired,
+  getAssertions: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
