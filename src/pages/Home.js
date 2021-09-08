@@ -38,7 +38,7 @@ class Home extends React.Component {
     const state = {
       player: {
         name: '',
-        assertions: '',
+        assertions: 0,
         score: 0,
         gravatarEmail: '',
       },

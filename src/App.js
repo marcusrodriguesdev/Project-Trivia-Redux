@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import ConfigPage from './pages/ConfigPage';
+import Results from './pages/Results';
 
 import './App.css';
 
@@ -14,6 +15,7 @@ class App extends React.Component {
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route exact path="/game" component={ Home } />
+        <Route exact path="/results" component={ Results } />
         <Route exact path="/ConfigPage" component={ ConfigPage } />
       </Switch>
     );

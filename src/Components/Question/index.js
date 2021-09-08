@@ -53,7 +53,10 @@ class Question extends React.Component {
     const TEN_NUMBER = 10;
     const total = TEN_NUMBER + (timer * pontDifficulty[difficulty]);
     const stateLocal = JSON.parse(localStorage.getItem('state'));
-    const newLocal = { ...stateLocal, player: { ...stateLocal.player, score: total } };
+    const newLocal = {
+      ...stateLocal,
+      player: { ...stateLocal.player, score: total, assertions: correctAnswers + 1 },
+    };
     localStorage.setItem('state', JSON.stringify(newLocal));
     setScoreGlobal(total);
     setCorrectAnswersGlobal(correctAnswers + 1);
@@ -138,7 +141,7 @@ Question.propTypes = {
 
 const MapStateToProps = (state) => ({
   isTimer: state.game.stopWatch.isTimer,
-  correctAnswers: state.user.correctAnswers,
+  correctAnswers: state.user.assertions,
 });
 
 const MapDispachToProps = (dispatch) => ({
