@@ -14,6 +14,7 @@ class Login extends React.Component {
     this.validateEmail = this.validateEmail.bind(this);
     this.validateName = this.validateName.bind(this);
     this.submitClick = this.submitClick.bind(this);
+    this.openConfig = this.openConfig.bind(this);
   }
 
   validateEmail(event) {
@@ -47,11 +48,16 @@ class Login extends React.Component {
       .then((data) => localStorage.setItem('token', data.token));
   }
 
+  openConfig() {
+    const { history } = this.props;
+    history.push('/configuration');
+  }
+
   submitClick() {
     const { setUserValue, history } = this.props;
     setUserValue(this.state);
     this.requestToken();
-    history.push('/configuration');
+    history.push('/game');
   }
 
   render() {
@@ -89,7 +95,7 @@ class Login extends React.Component {
           <button
             data-testid="btn-settings"
             type="button"
-            onClick={ this.submitClick }
+            onClick={ this.openConfig }
           >
             Configurações
           </button>
