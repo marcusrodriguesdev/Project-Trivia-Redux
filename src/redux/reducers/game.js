@@ -1,11 +1,7 @@
 import { SET_TOKEN, SET_TIMER, RESET_TIMER } from '../actions';
 
 const INITIAL_STATE = {
-  token: {
-    response_code: 0,
-    response_message: 'Token Generated Successfully!',
-    token: '1cc383c8d766281d08ca87aa07573288c4b1b8e2dd65ae6c0f5493206f90ebc3',
-  },
+  token: {},
   stopWatch: {
     isTimer: false,
     resetTime: false,
