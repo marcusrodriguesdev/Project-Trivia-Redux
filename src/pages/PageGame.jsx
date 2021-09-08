@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GravatarHeader from '../components/GravatarHeader';
 
+import Timer from '../components/Timer';
+
 class PageGame extends React.Component {
   constructor() {
     super();
@@ -12,10 +14,13 @@ class PageGame extends React.Component {
         correct: { border: '' },
         incorrect: { border: '' },
       },
+      running: true,
+      disabled: false,
     };
 
     this.questionsSort = this.questionsSort.bind(this);
     this.handleQuestionClick = this.handleQuestionClick.bind(this);
+    this.handleTimeOut = this.handleTimeOut.bind(this);
   }
 
   handleQuestionClick() {
@@ -24,14 +29,16 @@ class PageGame extends React.Component {
         correct: { border: '3px solid rgb(6, 240, 15)' },
         incorrect: { border: '3px solid red' },
       },
+      running: false,
+      disabled: true,
     });
   }
 
-  // referencs https://flaviocopes.com/how-to-shuffle-array-javascript/
+  // references https://flaviocopes.com/how-to-shuffle-array-javascript/
   questionsSort() {
     const initialNumber = -1;
     const maxRange = 0.5;
-    const { counter, styleButtons } = this.state;
+    const { counter, styleButtons, disabled } = this.state;
     const { results } = this.props;
     let incorrectAnswersIndex = initialNumber;
     let allAnswers = [results[counter].correct_answer,
@@ -49,6 +56,7 @@ class PageGame extends React.Component {
                 className="correct-answer"
                 type="button"
                 data-testid="correct-answer"
+                disabled={ disabled }
               >
                 {answer}
               </button>);
@@ -62,6 +70,7 @@ class PageGame extends React.Component {
               type="button"
               key={ incorrectAnswersIndex }
               data-testid={ `wrong-answer-${incorrectAnswersIndex}` }
+              disabled={ disabled }
             >
               {answer}
             </button>);
@@ -70,8 +79,12 @@ class PageGame extends React.Component {
     );
   }
 
+  handleTimeOut() {
+    this.setState({ disabled: true });
+  }
+
   render() {
-    const { counter } = this.state;
+    const { counter, running } = this.state;
     const { results } = this.props;
 
     if (results.length) {
@@ -80,6 +93,8 @@ class PageGame extends React.Component {
           <GravatarHeader />
 
           <h2>Game</h2>
+
+          <Timer instaLose={ this.handleTimeOut } running={ running } />
 
           <h3 data-testid="question-category">{ results[counter].category }</h3>
           <p data-testid="question-text">{results[counter].question}</p>
@@ -90,6 +105,7 @@ class PageGame extends React.Component {
     } return <p>Carregando...</p>;
   }
 }
+
 const mapStateToProps = (state) => ({
   results: state.myReducer.results,
   name: state.user.name,
