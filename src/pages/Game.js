@@ -17,6 +17,7 @@ class Game extends React.Component {
       assertions: 0,
       score: user.score,
       gravatarEmail: user.email,
+      hidden: true,
 
     };
     this.handleQuestions = this.handleQuestions.bind(this);
@@ -76,6 +77,7 @@ class Game extends React.Component {
 
     this.setState({
       clicked: true,
+      hidden: false,
     });
   }
 
@@ -90,7 +92,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { loading, clicked, timer, disabled } = this.state;
+    const { loading, clicked, timer, disabled, hidden } = this.state;
     const { questions: { results } } = this.props;
 
     if (loading) return <h1>Carregando jogo</h1>;
@@ -125,6 +127,14 @@ class Game extends React.Component {
             >
               {answer}
             </button>))}
+
+        <button
+          type="button"
+          data-testid="btn-next"
+          hidden={ hidden }
+        >
+          Próxima
+        </button>
       </>
     );
   }
