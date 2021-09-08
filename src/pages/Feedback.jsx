@@ -13,8 +13,16 @@ class Feedback extends Component {
         Tela de Feedback
         <FeedbackHeader />
         <FeedbackMsg />
-        <p>{`Você acertou ${hits} questões!`}</p>
-        <p>{`Um total de  ${score} pontos!`}</p>
+        <p>
+          {'Você acertou '}
+          <span data-testid="feedback-total-score">{ hits }</span>
+          {' questões!'}
+        </p>
+        <p>
+          {'Um total de '}
+          <span data-testid="feedback-total-question">{ score }</span>
+          {' pontos!'}
+        </p>
         <Link to="/ranking">
           <button type="button">VER RANKING</button>
         </Link>
