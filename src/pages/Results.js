@@ -18,8 +18,8 @@ class Results extends React.Component {
   render() {
     const { correctAnswers, score } = this.props;
     let feedback;
-    const feedback2 = `Você acertou: ${correctAnswers}`;
-    const feedback3 = `Sua pontuação foi: ${score}`;
+    const feedback2 = 'Você acertou: ';
+    const feedback3 = 'Sua pontuação foi: ';
     const treshold = 3;
     if (correctAnswers < treshold) {
       feedback = 'Podia ser melhor...';
@@ -28,9 +28,12 @@ class Results extends React.Component {
     }
     return (
       <div>
+        <Header />
         <p data-testid="feedback-text">{ feedback }</p>
-        <p data-testid="feedback-total-question">{ feedback2 }</p>
-        <p data-testid="feedback-total-score">{ feedback3 }</p>
+        <p>{ feedback2 }</p>
+        <p data-testid="feedback-total-question">{ correctAnswers }</p>
+        <p>{ feedback3 }</p>
+        <p data-testid="feedback-total-score">{ score }</p>
         <button
           type="button"
           onClick={ this.handleClick }
@@ -50,7 +53,7 @@ Results.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  correctAnswers: state.user.correctAnswers,
+  correctAnswers: state.user.assertions,
   score: state.user.score,
 });
 
