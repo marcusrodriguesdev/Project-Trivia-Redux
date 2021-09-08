@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import '../css/Alternatives.css';
 
 import { connect } from 'react-redux';
+import decode from '../GlobalFuncs/DecodeFunc';
 
 class Alternatives extends React.Component {
   displayAnswer(applyColor) {
@@ -21,7 +22,7 @@ class Alternatives extends React.Component {
           className="correct"
           onClick={ applyColor }
         >
-          { correctAnswer }
+          { decode(correctAnswer) }
         </button>
 
         {incorrectAnswer.map((wrongAnswer, index) => (
@@ -34,7 +35,7 @@ class Alternatives extends React.Component {
             className="incorrect"
             disabled={ seconds === 0 || next }
           >
-            { wrongAnswer }
+            { decode(wrongAnswer) }
           </button>))}
       </div>
     );

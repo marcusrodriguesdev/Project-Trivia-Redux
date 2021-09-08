@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import decode from '../GlobalFuncs/DecodeFunc';
 
 class Question extends React.Component {
   displayQuestion() {
@@ -9,7 +10,7 @@ class Question extends React.Component {
     return (
       <div>
         <p data-testid="question-category">{ category }</p>
-        <p data-testid="question-text">{ question }</p>
+        <p data-testid="question-text">{ decode(question) }</p>
       </div>
     );
   }
