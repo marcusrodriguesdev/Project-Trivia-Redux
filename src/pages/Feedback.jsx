@@ -31,7 +31,6 @@ class Feedback extends Component {
             Jogar novamente
           </button>
         </Link>
-
       </div>
     );
   }
