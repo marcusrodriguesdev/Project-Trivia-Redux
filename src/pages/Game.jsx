@@ -60,7 +60,7 @@ class Game extends Component {
     //   const result = this.randomAnswer(rounds[indexQuestion]);
     //   this.setRoundState(result);
     // }
-    this.getCurrentAnswerRound();
+    this.getCurrentAnswerRound(0);
   }
 
   componentDidUpdate() {
@@ -71,10 +71,10 @@ class Game extends Component {
     // }
   }
 
-  getCurrentAnswerRound() {
-    const { indexQuestion } = this.state;
+  getCurrentAnswerRound(index) {
+    // const { indexQuestion } = this.state;
     const { rounds } = this.props;
-    const result = this.randomAnswer(rounds[indexQuestion]);
+    const result = this.randomAnswer(rounds[index]);
     this.setRoundState(result);
   }
 
@@ -159,9 +159,9 @@ class Game extends Component {
     if (indexQuestion === TOTAL_ROUND) {
       this.setState({ isFeedback: true });
     } else {
+      this.getCurrentAnswerRound(indexQuestion + 1);
       this.setState((oldState) => ({ indexQuestion: oldState.indexQuestion + 1 }));
     }
-    this.getCurrentAnswerRound();
   }
 
   render() {
@@ -170,18 +170,19 @@ class Game extends Component {
     const { category, question } = rounds[indexQuestion];
     return (
       <div className="page-body">
-        { isFeedback && <Redirect to="/feedback" />}
-        <div className="game-body">
-          <div className="game-column"><img src={ arabesco } alt="Arabesco" /></div>
-          <div className="game-column-center">
-            <Header
+        {
+          isFeedback
+            && <Redirect
+              to="/feedback"
               name={ name }
               avatar={ avatar }
               score={ score }
             />
-            {/* <h1>
-              { chronometer }
-            </h1> */}
+        }
+        <div className="game-body">
+          <div className="game-column"><img src={ arabesco } alt="Arabesco" /></div>
+          <div className="game-column-center">
+            <Header name={ name } avatar={ avatar } score={ score } />
             <div className="game-main">
               {
                 rounds[indexQuestion].type === 'multiple'

@@ -23,7 +23,7 @@ class Multiple extends Component {
       if (chronometer > 0 && isEnabled) {
         this.setState((prevState) => ({ chronometer: prevState.chronometer - 1 }));
       }
-      console.log('intervalo');
+      // console.log('intervalo');
     }, ONE_SECOND);
   }
 
