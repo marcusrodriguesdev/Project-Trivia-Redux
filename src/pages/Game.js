@@ -18,6 +18,7 @@ class Game extends Component {
       time: 30,
       questionIndex: 0,
       questions: [],
+      isVisible: false,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
@@ -25,6 +26,7 @@ class Game extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.changeColor = this.changeColor.bind(this);
     this.saveLocalStorage = this.saveLocalStorage.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -35,17 +37,37 @@ class Game extends Component {
     this.setState((prevState) => ({ time: prevState.time - 1 }), callback);
   }
 
+  nextQuestion() {
+    const LAST_QUESTION = 4;
+    const { questionIndex } = this.state;
+    const { history } = this.props;
+    if (questionIndex === LAST_QUESTION) {
+      console.log('entrei aqui hein');
+      history.push('/feedback');
+    }
+
+    this.setState((prevState) => ({
+      ...prevState,
+      questionIndex: prevState.questionIndex + 1,
+      isVisible: false,
+      time: 30,
+    }));
+  }
+
   handleClick(event) {
     this.changeColor();
     this.saveLocalStorage(event);
+    this.setState({
+      isVisible: true,
+    });
   }
 
   changeColor() {
     const rightBtn = document.querySelector('.correct-btn');
     const wrongBtn = document.querySelectorAll('.wrong-btn');
-    rightBtn.className = 'correct-answer';
+    rightBtn.classList.add('correct-answer');
     wrongBtn.forEach((button) => {
-      button.className = 'wrong-answer';
+      button.classList.add('wrong-answer');
     });
   }
 
@@ -133,13 +155,18 @@ class Game extends Component {
   }
 
   render() {
-    const { questions, time, player } = this.state;
+    const { questions, time, player, isVisible } = this.state;
     const isFetching = questions.length === 0;
     return (
       <>
         <Header score={ player.score } />
         <Timer setTimer={ this.setTimer } time={ time } />
         { !isFetching && this.renderQuestions() }
+
+        {isVisible && (
+          <button onClick={ this.nextQuestion } type="button" data-testid="btn-next">
+            Próxima
+          </button>)}
       </>
     );
   }

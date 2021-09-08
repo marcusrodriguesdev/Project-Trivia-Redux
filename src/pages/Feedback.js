@@ -5,7 +5,12 @@ import Header from '../components/Header';
 export default class Feedback extends Component {
   render() {
     const { score } = this.props;
-    return <Header score={ score } />;
+    return (
+      <div>
+        <Header score={ score } />
+        <span data-testid="feedback-text">feedback</span>
+      </div>
+    );
   }
 }
 
