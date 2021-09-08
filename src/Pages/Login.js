@@ -5,8 +5,11 @@ import Input from '../Components/Input';
 import Button from '../Components/Button';
 import fetchAPI from '../services/fetchAPI';
 import logo from '../trivia.png';
-import { addName, saveToken } from '../Redux/Action';
-import { saveToLocalStorage, setPlayerInLocalStorage } from '../helpers/localStorage';
+import { addName, saveToken, fetchUrlGravatar } from '../Redux/Action';
+import {
+  saveToLocalStorage,
+  setPlayerInLocalStorage,
+} from '../helpers/localStorage';
 
 class Login extends Component {
   constructor(props) {
@@ -48,8 +51,8 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { history, getName, getToken } = this.props;
-    const { name } = this.state;
+    const { history, getName, getToken, fetchURL } = this.props;
+    const { name, email } = this.state;
 
     getName(name);
 
@@ -58,6 +61,7 @@ class Login extends Component {
     getToken(data.token);
     saveToLocalStorage(data.token, 'token');
     setPlayerInLocalStorage();
+    fetchURL(email);
 
     history.push('/trivia');
   }
@@ -119,6 +123,7 @@ Login.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   getToken: (token) => dispatch(saveToken(token)),
   getName: (name) => dispatch(addName(name)),
+  fetchURL: (email) => dispatch(fetchUrlGravatar(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

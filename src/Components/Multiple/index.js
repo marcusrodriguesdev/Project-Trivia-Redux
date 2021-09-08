@@ -13,7 +13,9 @@ import {
   updateScore as updateScoreAction,
 } from '../../Redux/Action';
 import '../../Styles/trivia.css';
-import { updateAssertionsAndScore } from '../../helpers/localStorage';
+import {
+  setRankingLocalStorage,
+  updateAssertionsAndScore } from '../../helpers/localStorage';
 
 let assertion = 0;
 const MAX_INDEX = 4;
@@ -72,6 +74,9 @@ class Multiple extends Component {
       toggleVisibility,
       stopCronometer,
       getSeconds,
+      name,
+      score,
+      urlGravatar,
     } = this.props;
     const { index } = this.state;
     const THIRTY = 30;
@@ -80,6 +85,7 @@ class Multiple extends Component {
         index: prevState.index + 1,
       }));
     } else {
+      setRankingLocalStorage(name, score, urlGravatar);
       this.setState({ redirect: true });
     }
     toggleVisibility();
@@ -161,6 +167,9 @@ const mapStateToProps = ({ user, trivia, timer }) => ({
   isVisible: trivia.isVisible,
   loading: trivia.loading,
   seconds: timer.seconds,
+  name: user.name,
+  score: trivia.score,
+  urlGravatar: user.urlGravatar,
 });
 
 const mapDispatchToProps = (dispatch) => ({

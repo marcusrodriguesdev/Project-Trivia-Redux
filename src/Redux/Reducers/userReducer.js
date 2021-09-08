@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   name: '',
   email: '',
   token: '',
+  urlGravatar: '',
 };
 
 const userReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -17,6 +18,11 @@ const userReducer = (state = INITIAL_STATE, { type, payload }) => {
     return {
       ...state,
       name: payload,
+    };
+  case ALL_ACTIONS.ADD_URLGRAVATAR:
+    return {
+      ...state,
+      urlGravatar: payload,
     };
   default:
     return state;
