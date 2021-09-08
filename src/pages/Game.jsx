@@ -151,7 +151,10 @@ class Game extends Component {
   }
 
   nextQuestion() {
-    this.setState((prevstate) => ({ questionIndex: prevstate.questionIndex + 1, disabled: false }));
+    this.setState((prevstate) => ({
+      questionIndex: prevstate.questionIndex + 1,
+      disabled: false
+    }));
   }
 
   renderCorrectButton(questions, questionIndex, index, disabled) {
