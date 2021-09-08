@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import FeedbackHeader from '../components/FeedbackHeader';
+import FeedbackMsg from '../components/FeedbackMsg';
 
 class Feedback extends Component {
   // const { name, image, score } = this.props;
@@ -10,6 +11,7 @@ class Feedback extends Component {
       <div>
         Tela de Feedback
         <FeedbackHeader />
+        <FeedbackMsg />
       </div>
     );
   }
