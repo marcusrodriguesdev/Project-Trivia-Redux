@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Alternatives from '../components/Alternatives';
 import Question from '../components/Question';
-import { fetchQuestions as fetchQuestionsAction, setAssertions, setScore } from '../redux/actions/index';
+import
+{ fetchQuestions as fetchQuestionsAction, setAssertions, setScore }
+  from '../redux/actions/index';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -27,7 +29,7 @@ class GamePage extends React.Component {
     await fetchQuestions();
 
     this.updateSeconds();
-    localStorage.setItem('state', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
 
   componentDidUpdate() {
@@ -45,10 +47,12 @@ class GamePage extends React.Component {
 
     if (name === correctAnswer) {
       const STATIC_POINT = 10;
-      const result = (STATIC_POINT + seconds * difficultyScore[difficulty]);
+      const result = (STATIC_POINT + seconds * difficultyScore[difficulty])
+        + player.score;
       getScore(result);
       getAssertions();
-      localStorage.setItem('state', JSON.stringify(player));
+      localStorage
+        .setItem('state', JSON.stringify({ player: { ...player, score: result } }));
     }
   }
 
@@ -94,12 +98,11 @@ class GamePage extends React.Component {
   }
 
   showNextQuestion() {
-    const { history, player } = this.props;
+    const { history } = this.props;
     const { questionNumber } = this.state;
     const LIMIT = 4;
     this.removeColor();
 
-    // localStorage.setItem('state', JSON.stringify(player));
     if (questionNumber === LIMIT) {
       history.push('/feedback');
     } else {
@@ -162,6 +165,10 @@ GamePage.propTypes = {
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
   getScore: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    score: PropTypes.number,
+  }).isRequired,
+  getAssertions: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
