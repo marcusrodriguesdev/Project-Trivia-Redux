@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Alternatives from '../components/Alternatives';
 import Question from '../components/Question';
-import { fetchQuestions as fetchQuestionsAction } from '../redux/actions/index';
+import { fetchQuestions as fetchQuestionsAction, setAssertions, setScore } from '../redux/actions/index';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -19,19 +19,36 @@ class GamePage extends React.Component {
     this.applyColor = this.applyColor.bind(this);
     this.showNextQuestion = this.showNextQuestion.bind(this);
     this.removeColor = this.removeColor.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
   }
 
   async componentDidMount() {
-    const { fetchQuestions } = this.props;
+    const { fetchQuestions, player } = this.props;
     await fetchQuestions();
 
     this.updateSeconds();
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   componentDidUpdate() {
     const { seconds } = this.state;
     if (seconds === 0) {
       clearInterval(this.countDown);
+    }
+  }
+
+  calculateScore({ target: { name } }) {
+    const { questionNumber, seconds } = this.state;
+    const { questions: { results }, getScore, getAssertions, player } = this.props;
+    const { difficulty, correct_answer: correctAnswer } = results[questionNumber];
+    const difficultyScore = { easy: 1, medium: 2, hard: 3 };
+
+    if (name === correctAnswer) {
+      const STATIC_POINT = 10;
+      const result = (STATIC_POINT + seconds * difficultyScore[difficulty]);
+      getScore(result);
+      getAssertions();
+      localStorage.setItem('state', JSON.stringify(player));
     }
   }
 
@@ -42,7 +59,7 @@ class GamePage extends React.Component {
     }, ONE_SECOND);
   }
 
-  applyColor() {
+  applyColor(e) {
     const correct = document.querySelector('.correct');
     correct.className = 'correct correct-answer';
 
@@ -53,6 +70,7 @@ class GamePage extends React.Component {
     });
 
     clearInterval(this.countDown);
+    this.calculateScore(e);
     this.toggleNextButton();
   }
 
@@ -76,11 +94,12 @@ class GamePage extends React.Component {
   }
 
   showNextQuestion() {
-    const { history } = this.props;
+    const { history, player } = this.props;
     const { questionNumber } = this.state;
     const LIMIT = 4;
     this.removeColor();
 
+    // localStorage.setItem('state', JSON.stringify(player));
     if (questionNumber === LIMIT) {
       history.push('/feedback');
     } else {
@@ -125,6 +144,13 @@ class GamePage extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: () => dispatch(fetchQuestionsAction()),
+  getScore: (score) => dispatch(setScore(score)),
+  getAssertions: () => dispatch(setAssertions()),
+});
+
+const mapStateToProps = (state) => ({
+  questions: state.gamePage.questions,
+  player: state.player,
 });
 
 GamePage.propTypes = {
@@ -132,6 +158,10 @@ GamePage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  questions: PropTypes.shape({
+    results: PropTypes.arrayOf(PropTypes.any),
+  }).isRequired,
+  getScore: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(GamePage);
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
