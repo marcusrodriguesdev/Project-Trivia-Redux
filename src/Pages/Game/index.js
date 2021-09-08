@@ -11,18 +11,38 @@ class Game extends Component {
     this.state = {
       questions: {},
       questionNumber: 0,
+      timer: 30,
       loading: true,
       redBorder: '',
       greenBorder: '',
+      disable: false,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.stopWatch = this.stopWatch.bind(this);
   }
 
   componentDidMount() {
     this.fetchQuestions();
+    this.stopWatch();
+  }
+
+  stopWatch() {
+    const segundo = 1000;
+    this.timer = setInterval(() => {
+      const { timer } = this.state;
+      this.setState({
+        timer: timer - 1,
+      });
+      if (timer === 1) {
+        clearInterval(this.timer);
+        this.setState({
+          disable: true,
+        });
+      }
+    }, segundo);
   }
 
   async fetchQuestions() {
@@ -45,7 +65,7 @@ class Game extends Component {
   }
 
   renderAnswers() {
-    const { questions, questionNumber, redBorder, greenBorder } = this.state; // Testando o git hub
+    const { questions, questionNumber, redBorder, greenBorder, disable } = this.state; // Testando o git hub
 
     const answers = [...questions[questionNumber].incorrect_answers,
       questions[questionNumber].correct_answer];
@@ -59,6 +79,7 @@ class Game extends Component {
             data-testid="correct-answer"
             className={ greenBorder }
             onClick={ this.handleClick }
+            disabled={ disable }
           >
             { answer }
           </button>
@@ -72,6 +93,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${id}` }
           key={ id }
           onClick={ this.handleClick }
+          disabled={ disable }
         >
           { answer }
         </button>
@@ -81,7 +103,7 @@ class Game extends Component {
 
   render() {
     const { dados: { name, profile } } = this.props;
-    const { loading, questionNumber } = this.state;
+    const { loading, questionNumber, timer } = this.state;
     if (loading) return <h1>loading</h1>;
     const { questions } = this.state;
 
@@ -97,6 +119,9 @@ class Game extends Component {
             data-testid="header-profile-picture"
           />
           <span data-testid="header-score">0</span>
+          <span>
+            { timer }
+          </span>
         </header>
         <div>
           <span data-testid="question-category">
