@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 
 class ConfigButton extends Component {
   render() {
-    const { link, test, name, onClick, disable } = this.props;
+    const { link, test, name, onClick, disable, className } = this.props;
     return (
       <Link to={ link }>
         <button
+          className={ className }
           data-testid={ test }
           type="button"
           onClick={ onClick }
@@ -26,10 +27,10 @@ ConfigButton.propTypes = ({
   name: PropTypes.string,
   onClick: PropTypes.func,
   disable: PropTypes.bool,
+  className: PropTypes.string,
 }).isRequired;
 
 ConfigButton.defaultProps = {
-  link: '',
   disable: false,
 };
 
