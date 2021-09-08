@@ -2,6 +2,8 @@ export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const SAVE_NAME = 'SAVE_NAME';
 export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
+export const ENABLE_BUTTONS = 'ENABLE_BUTTONS';
+export const RESET_TIMER = 'RESET_TIMER';
 
 export const saveQuestions = (payload) => ({
   type: SAVE_QUESTIONS,
