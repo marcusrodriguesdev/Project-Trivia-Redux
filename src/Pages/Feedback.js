@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../Components/Header/index';
 import Button from '../Components/Button';
+import { getPlayerDataFromLocalStorage } from '../helpers/localStorage';
 
 class Feedback extends Component {
   constructor() {
@@ -21,12 +22,14 @@ class Feedback extends Component {
   }
 
   render() {
-    const { assertions, score } = this.props;
+    // const { assertions, score } = this.props;
     const THREE = 3;
+    const asserts = getPlayerDataFromLocalStorage('assertions');
+    const score = getPlayerDataFromLocalStorage('score');
     return (
       <div>
         <Header />
-        { assertions >= THREE
+        { asserts >= THREE
           ? <p data-testid="feedback-text">Mandou bem!</p>
           : <p data-testid="feedback-text">Podia ser melhor...</p>}
         <p>
@@ -35,7 +38,7 @@ class Feedback extends Component {
         </p>
         <p>
           {'Respostas corretas: '}
-          <span data-testid="feedback-total-question">{ assertions }</span>
+          <span data-testid="feedback-total-question">{ asserts }</span>
         </p>
         <Button
           text="Jogar novamente"
