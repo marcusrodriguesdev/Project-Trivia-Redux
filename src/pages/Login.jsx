@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fecthApiToken from '../services/fetchApiToken';
 import { userLogin } from '../Redux/action/index';
-// import logo from '../trivia.png';
+import '../styles/login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -50,7 +50,7 @@ class Login extends React.Component {
   render() {
     const { name, email, validation } = this.state;
     return (
-      <div>
+      <div className="login">
         <form className="main-form">
           <label htmlFor="name">
             <input
@@ -77,7 +77,7 @@ class Login extends React.Component {
           </label>
           <button
             type="button"
-            className="play-button"
+            className={ !validation && 'play-button' }
             data-testid="btn-play"
             disabled={ validation }
             onClick={ this.onFecthToken }
@@ -88,6 +88,7 @@ class Login extends React.Component {
             <button
               type="button"
               data-testid="btn-settings"
+              className="btn-settings"
             >
               Settings
             </button>
