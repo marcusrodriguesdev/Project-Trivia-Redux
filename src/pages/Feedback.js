@@ -20,6 +20,13 @@ class Feedback extends React.Component {
       <>
         <Header score={ player.player.score } />
         <span data-testid="feedback-text">{ getFeedback() }</span>
+
+        <span data-testid="feedback-total-score">
+          { player.player.score }
+        </span>
+        <span data-testid="feedback-total-question">
+          { player.player.assertions }
+        </span>
       </>
     );
   }
