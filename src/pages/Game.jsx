@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { updateScore } from '../actions';
 
 class Game extends Component {
   constructor(props) {
@@ -16,8 +17,19 @@ class Game extends Component {
     this.bindings();
   }
 
+  componentDidMount() {
+    const playerObj = {
+      player: {
+        name: '',
+        assertions: '',
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(playerObj));
+  }
+
   componentDidUpdate() {
-    console.log('Atualizei');
     const { timer, alreadyShuffled } = this.state;
     const { questions } = this.props;
     if (timer === 0) {
@@ -39,6 +51,26 @@ class Game extends Component {
     this.resetTimer = this.resetTimer.bind(this);
     this.timeIsOver = this.timeIsOver.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.handleScore = this.handleScore.bind(this);
+  }
+
+  handleScore(questionIndex) {
+    const ten = 10;
+    const um = 1;
+    const dois = 2;
+    const três = 3;
+    const { questions, updateScoreProp } = this.props;
+    let questionDifficulty = questions[questionIndex].difficulty;
+    const { timer } = this.state;
+    if (questionDifficulty === 'easy') {
+      questionDifficulty = um;
+    } else if (questionDifficulty === 'medium') {
+      questionDifficulty = dois;
+    } else if (questionDifficulty === 'hard') {
+      questionDifficulty = três;
+    }
+    const currentScore = (ten + (timer * questionDifficulty));
+    updateScoreProp(currentScore);
   }
 
   handleClass(event) {
@@ -129,7 +161,10 @@ class Game extends Component {
         type="button"
         disabled={ disabled }
         data-testid="correct-answer"
-        onClick={ this.handleClass }
+        onClick={ (event) => {
+          this.handleClass(event);
+          this.handleScore(questionIndex);
+        } }
       >
         {questions[questionIndex].correct_answer}
       </button>
@@ -181,7 +216,7 @@ class Game extends Component {
   }
 
   render() {
-    const { name, questions } = this.props;
+    const { name, questions, score } = this.props;
     const { over, shuffledArray, questionIndex, disabled } = this.state;
     return (
       <div>
@@ -194,7 +229,7 @@ class Game extends Component {
           <h3 data-testid="header-player-name">
             { name }
           </h3>
-          <p data-testid="header-score">0</p>
+          <p data-testid="header-score">{ score }</p>
         </header>
         {this.renderQuestion(questions, shuffledArray, questionIndex, over)}
         {
@@ -216,11 +251,18 @@ class Game extends Component {
 const mapStateToProps = (state) => ({
   name: state.player.name,
   questions: state.game.questions,
+  score: state.player.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateScoreProp: (points) => dispatch(updateScore(points)),
 });
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
+  score: PropTypes.string.isRequired,
+  updateScoreProp: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
