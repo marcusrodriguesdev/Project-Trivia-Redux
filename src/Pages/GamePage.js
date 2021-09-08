@@ -5,15 +5,19 @@ import md5 from 'crypto-js/md5';
 // import { getQuestion } from '../Services/fetchAPI';
 import playAction, { getQuestionsThunk } from '../Redux/Action';
 // import Loading from './Loading';
+import '../App.css';
 
 class GamePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
+      answerIsClicked: false,
+
     };
     this.handleClick = this.handleClick.bind(this);
     this.questionMod = this.questionMod.bind(this);
+    this.questionAnswered = this.questionAnswered.bind(this);
   }
 
   componentDidMount() {
@@ -39,8 +43,22 @@ class GamePage extends Component {
     updateScore({ assertions, score });
   }
 
+  questionAnswered(event) {
+    const correctAnswer = document.querySelector('.correct-answer');
+    const wrong = document.querySelectorAll('.wrong-answer');
+    // this.setState({
+    //   questionIsAnswered: true,
+    // });
+    correctAnswer.classList.add('correct-color');
+    wrong.forEach((wrongAlternative) => {
+      wrongAlternative.classList.add('incorrect-color');
+    });
+    this.handleClick();
+  }
+
   questionMod() {
-    const { index } = this.state;
+    const nextButton = <button type="button" data-testid="btn-next">Próxima</button>;
+    const { index, answerIsClicked } = this.state;
     const { questions } = this.props;
     console.log(questions);
     const currentQuestion = questions[index];
@@ -50,19 +68,25 @@ class GamePage extends Component {
         <h3 data-testid="question-text">{currentQuestion.question}</h3>
         <h5 data-testid="question-category">{currentQuestion.category}</h5>
         {incorrectAnswers.map((answer, mapIndex) => (
-          <p
+          <button
+            type="button"
             data-testid={ `wrong-answer-${mapIndex}` }
-            key="incorrectAnswer"
+            // key="incorrectAnswer"
+            key={ mapIndex }
+            onClick={ this.questionAnswered }
+            className="wrong-answer"
           >
             {answer}
-          </p>)) }
+          </button>)) }
         <button
           type="button"
+          className="correct-answer"
           data-testid="correct-answer"
-          onClick={ this.handleClick }
+          onClick={ this.questionAnswered }
         >
-          {currentQuestion.correct_answer }
+          {currentQuestion.correct_answer}
         </button>
+        { answerIsClicked && nextButton }
       </>
     );
   }
