@@ -18,11 +18,13 @@ class Game extends React.Component {
       score: user.score,
       gravatarEmail: user.email,
       hidden: true,
+      indexQuestion: 0,
 
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
     this.timer = this.timer.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -56,10 +58,10 @@ class Game extends React.Component {
 
   checkAnswer({ target }) {
     const { value } = target;
-    const { timer } = this.state;
+    const { timer, indexQuestion } = this.state;
     const { questions: { results } } = this.props;
-    const correctAnswer = results[0].correct_answer;
-    const questionDifficulty = results[0].difficulty;
+    const correctAnswer = results[indexQuestion].correct_answer;
+    const questionDifficulty = results[indexQuestion].difficulty;
     const TEN_POINTS = 10;
 
     const difficulties = {
@@ -81,6 +83,26 @@ class Game extends React.Component {
     });
   }
 
+  nextQuestion() {
+    const { history } = this.props;
+    const { indexQuestion } = this.state;
+    const ARRAY = 4;
+
+    this.setState((previous) => ({
+      indexQuestion: previous.indexQuestion + 1,
+    }));
+
+    this.setState({
+      clicked: false,
+      hidden: true,
+      timer: 30,
+    });
+
+    if (indexQuestion === ARRAY) {
+      history.push('/feedback');
+    }
+  }
+
   timer() {
     const ONE_SECOND = 1000;
 
@@ -92,7 +114,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { loading, clicked, timer, disabled, hidden } = this.state;
+    const { loading, clicked, timer, disabled, hidden, indexQuestion } = this.state;
     const { questions: { results } } = this.props;
 
     if (loading) return <h1>Carregando jogo</h1>;
@@ -100,21 +122,21 @@ class Game extends React.Component {
       <>
         <Header />
         <span>{timer}</span>
-        <span data-testid="question-category">{ results[0].category }</span>
+        <span data-testid="question-category">{ results[indexQuestion].category }</span>
         <span data-testid="question-text">
-          { results[0].question }
+          { results[indexQuestion].question }
         </span>
         <button
           type="button"
           className={ clicked ? 'correct-answer' : null }
-          value={ results[0].correct_answer }
+          value={ results[indexQuestion].correct_answer }
           data-testid="correct-answer"
           onClick={ this.checkAnswer }
           disabled={ timer < 1 ? true : disabled }
         >
-          { results[0].correct_answer }
+          { results[indexQuestion].correct_answer }
         </button>
-        {results[0].incorrect_answers
+        {results[indexQuestion].incorrect_answers
           .map((answer, index) => (
             <button
               type="button"
@@ -132,6 +154,7 @@ class Game extends React.Component {
           type="button"
           data-testid="btn-next"
           hidden={ hidden }
+          onClick={ this.nextQuestion }
         >
           Próxima
         </button>
@@ -159,6 +182,9 @@ Game.propTypes = {
     assertions: PropTypes.number,
     score: PropTypes.number,
     email: PropTypes.string,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }).isRequired,
 };
 
