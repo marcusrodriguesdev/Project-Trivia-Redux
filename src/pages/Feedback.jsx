@@ -7,13 +7,19 @@ import Header from '../components/Header';
 class Feedback extends Component {
   constructor() {
     super();
+    this.getAssertions = this.getAssertions.bind(this);
     this.getFeedback = this.getFeedback.bind(this);
+  }
+
+  getAssertions() {
+    return JSON.parse(localStorage.getItem('state')).player.assertions;
   }
 
   getFeedback() {
     const NUMBER_ASSERTIONS = 3;
-    const state = JSON.parse(localStorage.getItem('state'));
-    return state.player.assertions < NUMBER_ASSERTIONS
+    // const state = JSON.parse(localStorage.getItem('state'));
+    // return state.player.assertions < NUMBER_ASSERTIONS
+    return this.getAssertions() < NUMBER_ASSERTIONS
       ? 'Podia ser melhor...' : 'Mandou bem!';
   }
 
@@ -24,9 +30,19 @@ class Feedback extends Component {
         <Header name={ name } avatar={ avatar } score={ score } />
         <p data-testid="feedback-text">
           { this.getFeedback() }
-          <button type="button" onClick={ () => this.getFeedback() }>
-            Teste
-          </button>
+        </p>
+        <p>
+          `Total de pontos: `
+          <span data-testid="feedback-total-score">
+            { score }
+          </span>
+        </p>
+        <p>
+          `Acertou `
+          <span data-testid="feedback-total-question">
+            { this.getAssertions() }
+          </span>
+          ` perguntas`
         </p>
       </div>
     );
