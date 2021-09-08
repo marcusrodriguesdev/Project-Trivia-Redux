@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Header extends Component {
   render() {
-    const { name, avatar, score = 0 } = this.props;
+    const { name, avatar, score } = this.props;
     console.log(name);
     return (
       <header>

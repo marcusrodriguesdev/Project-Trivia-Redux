@@ -1,23 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
 import './Questions.css';
+import { Link } from 'react-router-dom';
 import ConfigButton from './ConfigButton';
+import { setCorrects } from '../redux/actions/index';
 
 class QuestionsComponent extends React.Component {
   constructor() {
     super();
     this.state = {
       answerSelected: false,
+      answersCorrects: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleClickCorrect = this.handleClickCorrect.bind(this);
   }
 
   handleClick() {
     this.setState({
       answerSelected: true,
     });
+  }
+
+  handleClickCorrect() {
+    const { setAnswerCorrects } = this.props;
+    const { answersCorrects } = this.state;
+    // this.setState({
+    //   answerSelected: true,
+    //   answersCorrects: answersCorrects + 1,
+    // });
+    this.setState((prevstate) => ({ answersCorrects: prevstate.answersCorrects + 1 }));
+    console.log(answersCorrects);
+    setAnswerCorrects(answersCorrects);
   }
 
   render() {
@@ -48,12 +65,13 @@ class QuestionsComponent extends React.Component {
               <ConfigButton
                 className={ answerSelected && 'correct' }
                 test="correct-answer"
-                onClick={ this.handleClick }
+                onClick={ this.handleClickCorrect }
                 name={ questions[0].correct_answer }
               />
             </li>
           </ol>
         </fieldset>
+        <Link to="/feedback">FeedBack</Link>
       </div>
     );
   }
@@ -61,6 +79,11 @@ class QuestionsComponent extends React.Component {
 
 QuestionsComponent.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+  setCorrects: PropTypes.func,
+}.isRequired;
 
-export default QuestionsComponent;
+const mapDispatchToProps = (dispatch) => ({
+  setAnswerCorrects: (payload) => dispatch(setCorrects(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(QuestionsComponent);
