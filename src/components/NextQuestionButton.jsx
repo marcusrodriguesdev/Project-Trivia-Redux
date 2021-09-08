@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class NextQuestionButton extends Component {
   render() {
@@ -16,3 +17,7 @@ class NextQuestionButton extends Component {
 }
 
 export default NextQuestionButton;
+
+NextQuestionButton.propTypes = {
+  handleNextButton: PropTypes.func,
+}.isRequired;
