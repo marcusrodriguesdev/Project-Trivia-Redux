@@ -11,6 +11,7 @@ class GamePage extends Component {
     super(props);
     this.state = {
       index: 0,
+      answerIsClicked: false,
     };
   }
 
@@ -21,7 +22,8 @@ class GamePage extends Component {
   }
 
   questionMod() {
-    const { index } = this.state;
+    const nextButton = <button type="button" data-testid="btn-next">Próxima</button>;
+    const { index, answerIsClicked } = this.state;
     const { questions } = this.props;
     console.log(questions);
     const currentQuestion = questions[index];
@@ -38,6 +40,7 @@ class GamePage extends Component {
             {answer}
           </p>)) }
         <p data-testid="correct-answer">{currentQuestion.correct_answer }</p>
+        {answerIsClicked && nextButton}
       </>
     );
   }
