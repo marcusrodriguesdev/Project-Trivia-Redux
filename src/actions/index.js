@@ -8,6 +8,8 @@ export const ADD_TOKEN = 'ADD_TOKEN';
 export const FETCH_GRAVATAR = 'FETCH_GRAVATAR';
 export const USER_TRY = 'USER_TRY';
 export const SHOW_NEXT_BUTTON = 'SHOW_NEXT_BUTTON';
+export const ADD_TRIVIA_INDEX = 'ADD_TRIVIA_INDEX';
+
 
 export const loading = () => ({
   type: LOADING,
@@ -40,6 +42,11 @@ export const userTry = (payload) => ({
 
 export const showNextButton = () => ({
   type: SHOW_NEXT_BUTTON,
+});
+
+export const addTriviaIndex = (payload) => ({
+  type: ADD_TRIVIA_INDEX,
+  payload,
 });
 
 export const requestTokenThunk = () => async (dispatch) => {
