@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser } from '../actions';
 
@@ -51,11 +52,12 @@ class Login extends React.Component {
     const { setUserValue, history } = this.props;
     setUserValue(this.state);
     this.requestToken();
-    history.push('/header');
+    history.push('/configuration');
   }
 
   render() {
     const { email, name } = this.state;
+
     return (
       <div>
         <form>
@@ -84,6 +86,13 @@ class Login extends React.Component {
             onClick={ this.submitClick }
           >
             Jogar
+          </button>
+          <button
+            data-testid="btn-settings"
+            type="button"
+            onClick={ this.submitClick }
+          >
+            Configurações
           </button>
         </form>
       </div>
