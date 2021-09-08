@@ -25,11 +25,21 @@ class Game extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.stopWatch = this.stopWatch.bind(this);
     this.switchValue = this.switchValue.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
   }
 
   componentDidMount() {
     this.fetchQuestions();
     this.stopWatch();
+    const { dados } = this.props;
+    const { assertions } = this.state;
+    const profile = {
+      name: dados.name,
+      assertions,
+      score: 0,
+      gravatarEmail: dados.email,
+    };
+    localStorage.setItem('state', JSON.stringify({ player: profile }));
   }
 
   stopWatch() {
@@ -75,38 +85,51 @@ class Game extends Component {
     }
   }
 
-  handleClick({ target }) {
+  stopTimer() {
     this.setState({
       greenBorder: 'green-border',
       redBorder: 'red-border',
     });
     clearInterval(this.timer);
+  }
+
+  handleClick({ target }) {
+    this.stopTimer();
+
     const { questions, questionNumber, timer, totalScore } = this.state;
 
     const { difficulty } = questions[questionNumber];
-    if (target.textContent !== questions[questionNumber].correct_answer) return null;
+    const { assertions } = this.state;
+
+    const { dados } = this.props;
+    if (target.textContent !== questions[questionNumber].correct_answer) {
+      const profile = {
+        name: dados.name,
+        assertions,
+        score: totalScore,
+        gravatarEmail: dados.email,
+      };
+      localStorage.setItem('state', JSON.stringify({ player: profile }));
+      return;
+    }
+
     const ten = 10;
     const points = this.switchValue(difficulty);
     const total = ten + (timer * points);
-    const { assertions } = this.state;
 
     this.setState({
       totalScore: totalScore + total,
       assertions: assertions + 1,
     });
 
-    const { dados } = this.props;
-
     const profile = {
-      player: {
-        name: dados.name,
-        assertions: assertions + 1,
-        score: totalScore + total,
-        gravatarEmail: dados.email,
-      },
+      name: dados.name,
+      assertions: assertions + 1,
+      score: totalScore + total,
+      gravatarEmail: dados.email,
     };
 
-    localStorage.setItem('state', JSON.stringify(profile));
+    localStorage.setItem('state', JSON.stringify({ player: profile }));
   }
 
   renderAnswers() {
