@@ -12,10 +12,12 @@ class Game extends React.Component {
       disabled: false,
       answered: false,
       buttonShow: false,
+      right: false,
     };
     this.switchButton = this.switchButton.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.callButton = this.callButton.bind(this);
+    this.alternatives = this.alternatives.bind(this);
   }
 
   componentDidMount() {
@@ -68,7 +70,12 @@ class Game extends React.Component {
               disabled={ disabled }
               type="button"
               className={ answered ? 'wrong' : 'alternative' }
-              onClick={ this.callButton }
+              onClick={ async () => {
+                await this.setState({
+                  right: false,
+                });
+                this.callButton();
+              } }
             >
               { questionsLoaded && this.b64toutf8(answer) }
             </button>
@@ -84,7 +91,12 @@ class Game extends React.Component {
               type="button"
               data-testid="correct-answer"
               className={ answered ? 'correct' : 'alternative' }
-              onClick={ this.callButton }
+              onClick={ async() => {
+                await this.setState({
+                  right: true,
+                });
+                this.callButton();
+              } }
               disabled={ disabled }
             >
               { questionsLoaded
@@ -103,8 +115,10 @@ class Game extends React.Component {
 
   render() {
     const { questions, actualQuestion,
-      questionsLoaded, buttonShow, disabled } = this.state;
+      questionsLoaded, buttonShow, disabled, right } = this.state;
     const maxQuestionsNumber = 4;
+    const diff = questionsLoaded
+      ? this.b64toutf8(questions[actualQuestion].difficulty) : null;
     const button = (
       <button
         type="button"
@@ -127,7 +141,7 @@ class Game extends React.Component {
       <div className="game-div">
         <Header />
         <div className="timer-div">
-          { !disabled && <Timer switchButton={ this.switchButton } />}
+          { !disabled && <Timer switchButton={ this.switchButton } diff={ diff } right={ right }/>}
         </div>
         <fieldset>
           <h1
