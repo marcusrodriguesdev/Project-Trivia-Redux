@@ -40,6 +40,11 @@ class Timer extends React.Component {
   }
 }
 
+Timer.propTypes = {
+  timer: PropTypes.string.isRequired,
+  addTimer: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
   addTimer: (timer) => dispatch(getTimer(timer)),
 });
