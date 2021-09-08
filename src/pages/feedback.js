@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-// import Header from './Header';
+import HeaderInfo from '../components/HeaderInfo';
 
-class Feedback extends Component {
+class feedback extends Component {
   feedbackMessage(assertions) {
     const MIN_TO_BE_GOOD = 3;
     if (assertions >= MIN_TO_BE_GOOD) {
@@ -17,7 +17,7 @@ class Feedback extends Component {
     const { assertions, score, history } = this.props;
     return (
       <div className="App">
-        {/* <Header /> */}
+        <HeaderInfo />
         { this.feedbackMessage(assertions) }
         <h4>
           {'Placar Final: '}
@@ -47,7 +47,7 @@ class Feedback extends Component {
   }
 }
 
-Feedback.propTypes = {
+feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   history: PropTypes.shape(PropTypes.any).isRequired,
@@ -58,4 +58,4 @@ const mapStateToProps = ({ player }) => ({
   score: player.score,
 });
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps)(feedback);

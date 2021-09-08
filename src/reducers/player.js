@@ -10,7 +10,13 @@ const INITIAL_STATE = {
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ACTIONS.SET_EMAIL:
-    return { ...state, gravatarEmail: action.payload };
+    return { ...state, gravatarEmail: action.payload.email, name: action.payload.name };
+  case ACTIONS.SET_SCORE:
+    return {
+      ...state,
+      score: state.score + action.payload,
+      assertions: state.assertions + 1,
+    };
   default:
     return state;
   }
