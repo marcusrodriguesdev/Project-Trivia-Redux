@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setUser } from '../actions';
 
@@ -42,9 +41,16 @@ class Login extends React.Component {
     });
   }
 
+  requestToken() {
+    fetch('https://opentdb.com/api_token.php?command=request')
+      .then((res) => res.json())
+      .then((data) => localStorage.setItem('token', data.token));
+  }
+
   submitClick() {
     const { setUserValue, history } = this.props;
     setUserValue(this.state);
+    this.requestToken();
     history.push('/configuration');
   }
 
