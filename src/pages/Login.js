@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setUser } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -7,7 +10,6 @@ class Login extends React.Component {
     this.state = {
       email: '',
       name: '',
-      buttonClick: false,
     };
 
     this.validateEmail = this.validateEmail.bind(this);
@@ -41,17 +43,13 @@ class Login extends React.Component {
   }
 
   submitClick() {
-    return this.setState({
-      buttonClick: true,
-    });
+    const { setUserValue, history } = this.props;
+    setUserValue(this.state);
+    history.push('/configuration');
   }
 
   render() {
-    const { email, name, buttonClick } = this.state;
-
-    if (buttonClick) {
-      return <Redirect to="/configuration" />;
-    }
+    const { email, name } = this.state;
 
     return (
       <div>
@@ -95,4 +93,15 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setUserValue: (payload) => dispatch(setUser(payload)),
+});
+
+Login.propTypes = {
+  setUserValue: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);

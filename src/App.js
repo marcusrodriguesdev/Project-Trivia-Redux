@@ -4,11 +4,12 @@ import './App.css';
 import Configuration from './pages/Configuração';
 import Login from './pages/Login';
 
+
 export default function App() {
   return (
     <Switch>
-      <Route exact path="/" component={ Login } />
       <Route path="/configuration" component={ Configuration } />
+      <Route exact path="/" render={ (props) => <Login { ...props } /> } />
     </Switch>
   );
 }
