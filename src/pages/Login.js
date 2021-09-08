@@ -21,7 +21,6 @@ class Login extends React.Component {
 
   handleChange(event) {
     const { value, name } = event.target;
-    console.log(event.target.name);
     this.setState({ [name]: value }, () => {
       const { user, email } = this.state;
       const userValidation = user === '';
@@ -34,8 +33,8 @@ class Login extends React.Component {
   }
 
   async handleClick(event) {
-    const { history, setData, setToken } = this.props;
     event.preventDefault();
+    const { history, setData, setToken } = this.props;
     await setToken();
     history.push('/game');
     const userData = this.state;
