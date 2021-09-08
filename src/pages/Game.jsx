@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addTriviaThunk } from '../actions';
+import { addTriviaThunk, userTry, showNextButton } from '../actions';
 
 const INITIAL_STATE = {
   questionIndex: 0,
@@ -12,7 +12,7 @@ class Game extends React.Component {
     super(props);
 
     this.state = INITIAL_STATE;
-
+    this.handleNext = this.handleNext.bind(this);
     this.questions = this.questions.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -23,10 +23,17 @@ class Game extends React.Component {
   }
 
   handleClick() {
-    // const { questionIndex } = this.state;
+    const { addTry, buttonRender } = this.props;
+    addTry(true);
+    buttonRender();
     this.setState((prevState) => ({
       questionIndex: prevState.questionIndex + 1,
     }));
+  }
+
+  handleNext() {
+    const { addTry } = this.props;
+    addTry(false);
   }
 
   questions() {
@@ -37,6 +44,7 @@ class Game extends React.Component {
         <p data-testid="question-category">{results[questionIndex].category}</p>
         <p data-testid="question-text">{results[questionIndex].question}</p>
         <button
+          className={ tryUser ? 'correct' : '' }
           type="button"
           data-testid="correct-answer"
           onClick={ this.handleClick }
@@ -46,6 +54,7 @@ class Game extends React.Component {
         {results[questionIndex].incorrect_answers.map(
           (wrongResult, index2) => (
             <button
+              className={ tryUser ? 'incorrect' : '' }
               key={ index2 }
               type="button"
               data-testid={ `wrong-answer-${index2}` }
@@ -58,7 +67,9 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, gravatarURL, name } = this.props;
+    const nextButton = (
+      <button id="javascript" type="button" onClick={ this.handleNext }>Próximo</button>);
+    const { results, gravatarURL, name, tryUser } = this.props;
     return (
       <div>
         <header>
@@ -69,7 +80,7 @@ class Game extends React.Component {
         <div>
           {results
           && this.questions()}
-
+          { tryUser && nextButton }
         </div>
       </div>
     );
@@ -81,17 +92,25 @@ Game.propTypes = {
   results: PropTypes.objectOf(PropTypes.any).isRequired,
   gravatarURL: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  addTry: PropTypes.func.isRequired,
+  tryUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  buttonRender: PropTypes.objectOf(PropTypes.any).isRequired,
+  // renderButton: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   results: state.triviaReducer.results,
   gravatarURL: state.gravatar.gravatarURL,
   name: state.loginReducer.name,
+  tryUser: state.triviaReducer.tryUser,
+  renderButton: state.triviaReducer.renderButton,
   triviaIndex: state.triviaIndexReducer.index,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addTrivia: (localStorage) => dispatch(addTriviaThunk(localStorage)),
+  addTry: (param) => dispatch(userTry(param)),
+  buttonRender: () => dispatch(showNextButton()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
