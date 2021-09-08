@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import NextQuestionButton from '../components/NextQuestionButton';
 
 class PageGame extends React.Component {
   constructor() {
@@ -13,11 +14,13 @@ class PageGame extends React.Component {
         correct: { border: '' },
         incorrect: { border: '' },
       },
+      isRunning: true,
     };
 
     this.questionsSort = this.questionsSort.bind(this);
     this.handleImg = this.handleImg.bind(this);
     this.handleQuestionClick = this.handleQuestionClick.bind(this);
+    this.handleNextButton = this.handleNextButton.bind(this);
   }
 
   async componentDidMount() {
@@ -33,12 +36,31 @@ class PageGame extends React.Component {
   }
 
   handleQuestionClick() {
-    this.setState({
-      styleButtons: {
-        correct: { border: '3px solid rgb(6, 240, 15)' },
-        incorrect: { border: '3px solid red' },
-      },
-    });
+    const { isRunning } = this.state;
+    if (isRunning) {
+      this.setState({
+        styleButtons: {
+          correct: { border: '3px solid rgb(6, 240, 15)' },
+          incorrect: { border: '3px solid red' },
+        },
+        isRunning: false,
+      });
+    }
+  }
+
+  handleNextButton() {
+    const { counter } = this.state;
+    const lastIndexQuestion = 4;
+    if (counter < lastIndexQuestion) {
+      this.setState((prevState) => ({
+        counter: prevState.counter + 1,
+        styleButtons: {
+          correct: { border: '' },
+          incorrect: { border: '' },
+        },
+        isRunning: true,
+      }));
+    }
   }
 
   // referencs https://flaviocopes.com/how-to-shuffle-array-javascript/
@@ -85,7 +107,7 @@ class PageGame extends React.Component {
   }
 
   render() {
-    const { counter, imgPath } = this.state;
+    const { counter, imgPath, isRunning } = this.state;
     const { results, name } = this.props;
 
     if (results.length) {
@@ -106,6 +128,8 @@ class PageGame extends React.Component {
           <h3 data-testid="question-category">{ results[counter].category }</h3>
           <p data-testid="question-text">{results[counter].question}</p>
           { this.questionsSort() }
+          { isRunning ? null
+            : <NextQuestionButton handleNextButton={ this.handleNextButton } /> }
 
         </div>
       );
