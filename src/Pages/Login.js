@@ -84,6 +84,7 @@ class Login extends Component {
               type="button"
               data-testid="btn-play"
               disabled={ playButton }
+              onClick={ this.onClick }
             >
               Jogar
             </button>
