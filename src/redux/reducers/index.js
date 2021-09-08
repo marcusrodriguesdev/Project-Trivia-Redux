@@ -7,7 +7,7 @@ const INICIAL_STATE = {
   email: '',
   image: '',
   hits: 0,
-  score: 0,
+  score: 20,
   endpoint: 'https://opentdb.com/api.php?amount=5&token=',
 };
 

@@ -8,8 +8,8 @@ class Feedback extends Component {
   render() {
     return (
       <div>
+        Tela de Feedback
         <FeedbackHeader />
-        Feedback
       </div>
     );
   }
@@ -27,4 +27,4 @@ const mapStateToProps = (state) => ({
   score: state.reducer.score,
 }); */
 
-export default connect(mapStateToProps)(Feedback);
+export default connect()(Feedback);
