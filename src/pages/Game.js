@@ -168,7 +168,7 @@ class Game extends Component {
             Próxima
           </button>)}
       </>
-    ) : (<Feedback score={ player.score } />);
+    ) : (<Feedback player={ player } />);
   }
 }
 
