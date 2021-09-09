@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import './Questions.css';
 import ConfigButton from './ConfigButton';
 import { setScore as setScoreAction } from '../redux/actions';
-
-let COUNTER;
 
 class QuestionsComponent extends React.Component {
   constructor(props) {
@@ -27,6 +26,8 @@ class QuestionsComponent extends React.Component {
 
     this.timer = this.timer.bind(this);
     this.updateScore = this.updateScore.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
   }
 
   componentDidMount() {
@@ -50,20 +51,10 @@ class QuestionsComponent extends React.Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  // timer() {
-  //   const ONE_SECOND = 1000;
-
-  //   setInterval(() => {
-  //     this.setState((prevState) => ({
-  //       count: prevState.count - 1,
-  //     }));
-  //   }, ONE_SECOND);
-  // }
-
   timer() {
     const ONE_SECOND = 1000;
 
-    COUNTER = setInterval(() => {
+    setInterval(() => {
       this.setState((prevState) => ({
         count: prevState.count - 1,
       }));
@@ -96,27 +87,52 @@ class QuestionsComponent extends React.Component {
     this.setState({
       answerSelected: true,
       hidden: false,
+      count: 0,
     });
-
-    // Retirado da documentação https://developer.mozilla.org/pt-BR/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals
-    clearInterval(COUNTER);
   }
 
-  // nextQuestion() {
-  //   const MAX_QUESTIONS = 4;
+  nextQuestion() {
+    this.setState((prevState) => ({
+      questionIndex: prevState.questionIndex + 1,
+    }));
 
-  //   this.setState((prevState) => ({
-  //     questionIndex: prevState.questionIndex + 1,
-  //   }));
+    this.setState({
+      answerSelected: false,
+      count: 30,
+      hidden: true,
+    });
+  }
 
-  //   if(questionIndex === MAX_QUESTIONS) {
+  renderNextButton() {
+    const { hidden, questionIndex } = this.state;
+    const MAX_QUESTIONS = 4;
 
-  //   }
-  // }
+    if (questionIndex === MAX_QUESTIONS) {
+      return (
+        <Link to="/feedback">
+          <ConfigButton
+            test="btn-next"
+            name="Próxima"
+            hidden={ hidden }
+            onClick={ this.nextQuestion }
+          />
+        </Link>
+      );
+    }
+
+    return (
+      <ConfigButton
+        test="btn-next"
+        name="Próxima"
+        hidden={ hidden }
+        onClick={ this.nextQuestion }
+      />
+    );
+  }
 
   render() {
     const { questions } = this.props;
-    const { count, questionIndex, answerSelected, hidden } = this.state;
+    const { count, questionIndex, answerSelected } = this.state;
     return (
       <div>
         <h3>
@@ -152,12 +168,7 @@ class QuestionsComponent extends React.Component {
               />
             </li>
           </ol>
-          <ConfigButton
-            test="btn-next"
-            name="Próxima"
-            hidden={ hidden }
-            // onClick={}
-          />
+          {this.renderNextButton()}
         </fieldset>
       </div>
     );
