@@ -36,6 +36,11 @@ const triviaReducer = (state = INITIAL_STATE, { type, payload }) => {
       ...state,
       score: state.score + payload,
     };
+  case ALL_ACTIONS.RESET_SCORE:
+    return {
+      ...state,
+      score: 0,
+    };
   case ALL_ACTIONS.COUNT_ASSERTIONS:
     return {
       ...state,

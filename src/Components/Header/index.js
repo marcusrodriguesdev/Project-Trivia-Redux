@@ -1,38 +1,21 @@
 import React, { Component } from 'react';
-import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import '../../Styles/trivia.css';
+import { addUrlGravatar } from '../../Redux/Action';
 
 class Header extends Component {
-  constructor() {
-    super();
-    this.state = {
-      imgURL: '',
-    };
-  }
-
-  componentDidMount() {
-    this.fetchGravatar();
-  }
-
-  async fetchGravatar() {
-    const { email } = this.props;
-    const gravatarEmail = md5(email).toString();
-    const gravatarURL = `https://www.gravatar.com/avatar/${gravatarEmail}`;
-    const response = await fetch(gravatarURL);
-    this.setState({
-      imgURL: response.url,
-    });
-  }
-
   render() {
-    const { name, score } = this.props;
-    const { imgURL } = this.state;
+    const { name, score, imgURL } = this.props;
     return (
-      <header>
-        <img data-testid="header-profile-picture" src={ imgURL } alt="gravatar" />
-        <p data-testid="header-player-name">{ name }</p>
+      <header className="trivia-header">
+        {/* <div className="player-info-container"> */}
+        <div>
+          <img data-testid="header-profile-picture" src={ imgURL } alt="gravatar" />
+          <p data-testid="header-player-name">{ name }</p>
+        </div>
         <p data-testid="header-score">{ score }</p>
+        {/* </div> */}
       </header>
     );
   }
@@ -42,10 +25,16 @@ const mapStateToProps = (state) => ({
   name: state.user.name,
   result: state.trivia.result,
   score: state.trivia.score,
+  imgURL: state.user.urlGravatar,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  urlGravatar: (urlGravatar) => dispatch(addUrlGravatar(urlGravatar)),
 });
 
 Header.propTypes = {
   name: PropTypes.string,
+  urlGravatar: PropTypes.func,
 }.isRequired;
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

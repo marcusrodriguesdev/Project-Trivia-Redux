@@ -1,10 +1,13 @@
 import fetchTriviaAPI from '../../services/fetchTriviaAPI';
 import generateRandomAnswer from '../../helpers/generateRandomAnswer';
 import { getPlayerDataFromLocalStorage } from '../../helpers/localStorage';
+import fetchUrlGravatarAPI from '../../services/fetchUrlGravatarAPI';
 
 const ADD_NAME = 'ADD_NAME';
 const ADD_EMAIL = 'ADD_EMAIL';
 const SAVE_TOKEN = 'SAVE_TOKEN';
+const ADD_URLGRAVATAR = 'ADD_URLGRAVATAR';
+const REQUEST_GRAVATAR_SUCCESS = 'REQUEST_GRAVATAR_SUCCESS';
 const RESQUEST_QUESTION_SUCESS = 'RESQUEST_QUESTION_SUCESS';
 const LOADING = 'LOADING';
 const SET_IS_CLICKED = 'SET_IS_CLICKED';
@@ -13,11 +16,14 @@ const CHANGE_VISIBILITY = 'CHANGE_VISIBILITY';
 const UPDATE_SCORE = 'UPDATE_SCORE';
 const TOGGLE_CRONOMETER = 'TOGGLE_CRONOMETER';
 const COUNT_ASSERTIONS = 'COUNT_ASSERTIONS';
+const RESET_SCORE = 'RESET_SCORE';
 
 export const ALL_ACTIONS = {
   ADD_NAME,
   ADD_EMAIL,
   SAVE_TOKEN,
+  ADD_URLGRAVATAR,
+  REQUEST_GRAVATAR_SUCCESS,
   RESQUEST_QUESTION_SUCESS,
   LOADING,
   SET_IS_CLICKED,
@@ -26,6 +32,7 @@ export const ALL_ACTIONS = {
   UPDATE_SCORE,
   TOGGLE_CRONOMETER,
   COUNT_ASSERTIONS,
+  RESET_SCORE,
 };
 
 export const addName = (name) => ({
@@ -43,9 +50,18 @@ export const saveToken = (token) => ({
   payload: token,
 });
 
+export const addUrlGravatar = (urlGravatar) => ({
+  type: ALL_ACTIONS.ADD_URLGRAVATAR,
+  payload: urlGravatar,
+});
+
 export const loading = () => ({
   type: ALL_ACTIONS.LOADING,
   payload: false,
+});
+
+export const resetScore = () => ({
+  type: ALL_ACTIONS.RESET_SCORE,
 });
 
 export const fetchAPIThunk = (token) => async (dispatch) => {
@@ -64,6 +80,12 @@ export const fetchAPIThunk = (token) => async (dispatch) => {
     type: ALL_ACTIONS.RESQUEST_QUESTION_SUCESS,
     payload: newQuestion,
   });
+};
+
+export const fetchUrlGravatar = (email) => async (dispatch) => {
+  dispatch(loading());
+  const url = await fetchUrlGravatarAPI(email);
+  dispatch(addUrlGravatar(url));
 };
 
 export const setIsClicked = () => ({

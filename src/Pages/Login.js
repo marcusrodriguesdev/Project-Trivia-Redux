@@ -5,8 +5,11 @@ import Input from '../Components/Input';
 import Button from '../Components/Button';
 import fetchAPI from '../services/fetchAPI';
 import logo from '../trivia.png';
-import { addName, saveToken } from '../Redux/Action';
-import { saveToLocalStorage, setPlayerInLocalStorage } from '../helpers/localStorage';
+import { addName, saveToken, fetchUrlGravatar, resetScore } from '../Redux/Action';
+import {
+  saveToLocalStorage,
+  setPlayerInLocalStorage,
+} from '../helpers/localStorage';
 
 class Login extends Component {
   constructor(props) {
@@ -23,6 +26,13 @@ class Login extends Component {
     this.handleEmail = this.handleEmail.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
+  }
+
+  async getData() {
+    const { getToken } = this.props;
+    const data = await fetchAPI();
+    saveToLocalStorage(data.token, 'token');
+    getToken(data.token);
   }
 
   handleEmail({ target }) {
@@ -47,17 +57,15 @@ class Login extends Component {
     });
   }
 
-  async handleClick() {
-    const { history, getName, getToken } = this.props;
-    const { name } = this.state;
-
+  handleClick() {
+    const { history, getName, fetchURL, resetScoreAction } = this.props;
+    const { name, email } = this.state;
+    this.getData();
     getName(name);
 
-    const data = await fetchAPI();
-
-    getToken(data.token);
-    saveToLocalStorage(data.token, 'token');
+    resetScoreAction();
     setPlayerInLocalStorage();
+    fetchURL(email);
 
     history.push('/trivia');
   }
@@ -119,6 +127,8 @@ Login.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   getToken: (token) => dispatch(saveToken(token)),
   getName: (name) => dispatch(addName(name)),
+  fetchURL: (email) => dispatch(fetchUrlGravatar(email)),
+  resetScoreAction: () => dispatch(resetScore()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
