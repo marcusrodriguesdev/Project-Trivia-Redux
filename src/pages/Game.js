@@ -9,14 +9,31 @@ class Game extends React.Component {
     this.state = {
       questions: [],
       isAnswered: false,
+      isTimeOver: false,
+      time: 30,
+      countdown: {},
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.selectHandler = this.selectHandler.bind(this);
+    this.interval = this.interval.bind(this);
   }
 
   componentDidMount() {
     this.fetchQuestions();
+    this.interval();
+  }
+
+  interval() {
+    const interval = 1000;
+    const countdown = setInterval(() => {
+      this.setState((previousState) => ({
+        time: previousState.time - 1,
+      }));
+    }, interval);
+    this.setState({
+      countdown,
+    });
   }
 
   fetchQuestions() {
@@ -34,27 +51,35 @@ class Game extends React.Component {
   }
 
   renderAlternative(isCorrect, content, index = 1) {
-    const { isAnswered } = this.state;
+    const { isAnswered, isTimeOver } = this.state;
     const style = isAnswered ? { border: isCorrect
       ? '3px solid rgb(6, 240, 15)' : '3px solid rgb(255, 0, 0)' } : {};
     return (
-      <div
+      <button
         id={ isCorrect ? 'correct' : 'wrong' }
         style={ style }
+        className="alternative"
+        disabled={ isTimeOver }
         onClick={ this.selectHandler }
-        role="button"
         tabIndex={ 0 }
+        type="button"
         onKeyDown={ (e) => console.log(e.key) }
         data-testid={ `${isCorrect ? 'correct-answer' : `wrong-answer${index}`}` }
       >
         { content }
-      </div>
+      </button>
     );
   }
 
   render() {
-    const { questions } = this.state;
-    console.log(questions);
+    const { questions, time, countdown, isTimeOver } = this.state;
+    if (time === 0 && !isTimeOver) {
+      clearInterval(countdown);
+      this.setState({
+        isTimeOver: true,
+      });
+    }
+
     return (
       <>
         <Header />
@@ -64,6 +89,9 @@ class Game extends React.Component {
             <p data-testid="question-text">
               {questions[0] ? questions[0].question : '' }
             </p>
+            <h2>
+              { `TEMPO: ${time}` }
+            </h2>
           </div>
           <div className="alternatives-container">
             {questions[0] ? (
@@ -85,7 +113,7 @@ class Game extends React.Component {
                 { this.renderAlternative(false, ' ', 1) }
               </>
             )}
-            <button type="button">PRÓXIMA</button>
+            <button type="button" className="submit">PRÓXIMA</button>
           </div>
         </div>
       </>

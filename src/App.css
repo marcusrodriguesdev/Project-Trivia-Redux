@@ -88,22 +88,17 @@
   width: 50%;
 }
 
-.alternatives-container div {
+.alternatives-container .alternative {
   background-color: #bdbdbdf8;
   cursor: pointer;
   font-size: 24px;
   margin: 4px 0;
   padding: 8px 0;
   text-align: center;
-  transition: all 0.2s;
   width: 90%;
 }
 
-.alternatives-container div:hover {
-  transform: scale(1.03);
-}
-
-.alternatives-container button {
+.alternatives-container .submit {
   background-color: #61dafb;
   border: none;
   border-radius: 10px;
