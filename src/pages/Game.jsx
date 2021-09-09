@@ -163,7 +163,7 @@ class Game extends Component {
           </div>
           <div className="question-answers">
             {
-              [...results[0].incorrect_answers, results[next].correct_answer]
+              [...results[next].incorrect_answers, results[next].correct_answer]
                 .sort()
                 .map((answers, index) => {
                   if (answers === results[next].correct_answer) {

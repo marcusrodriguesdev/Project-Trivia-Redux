@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 class Header extends Component {
   render() {
     const { name, email, score } = this.props;
-    // const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     const profileAvatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     return (
       <header>
