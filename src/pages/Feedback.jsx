@@ -9,6 +9,7 @@ class Feedback extends React.Component {
 
     this.getAssertions = this.getAssertions.bind(this);
     this.getScore = this.getScore.bind(this);
+    this.getRanking = this.getRanking.bind(this);
   }
 
   getAssertions() {
@@ -19,6 +20,19 @@ class Feedback extends React.Component {
   getScore() {
     const playerData = JSON.parse(localStorage.getItem('state'));
     return playerData.player.score;
+  }
+
+  getRanking() {
+    const { player } = JSON.parse(localStorage.state);
+    const { name, score, gravatarEmail } = player;
+    const playerInfo = { name, score, picture };
+    if (localStorage.ranking) {
+      const ranking = JSON.parse(localStorage.ranking);
+      const updatedRanking = [...ranking, playerInfo];
+      localStorage.ranking = JSON.stringify(updatedRanking);
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([playerInfo]));
+    }
   }
 
   render() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { addTriviaThunk, userTry, showNextButton } from '../actions';
 import '../Game.css';
 
@@ -145,6 +146,21 @@ class Game extends React.Component {
         )}
       </div>
     );
+  }
+
+  generateRanking() {
+    const { player } = JSON.parse(localStorage.state);
+    const { name, score, gravatarEmail } = player;
+    const gravatarHash = md5(gravatarEmail.trim().toLowerCase()).toString();
+    const picture = `https://www.gravatar.com/avatar/${gravatarHash}`;
+    const obj = { name, score, picture };
+    if (localStorage.ranking) {
+      const ranking = JSON.parse(localStorage.ranking);
+      const newRanking = [...ranking, obj];
+      localStorage.ranking = JSON.stringify(newRanking);
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([obj]));
+    }
   }
 
   render() {
