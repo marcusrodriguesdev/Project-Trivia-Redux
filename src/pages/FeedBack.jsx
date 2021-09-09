@@ -64,10 +64,7 @@ FeedBack.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  player: PropTypes.shape({
-    score: PropTypes.number,
-    assertions: PropTypes.number,
-  }).isRequired,
+  player: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({

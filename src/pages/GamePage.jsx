@@ -30,7 +30,6 @@ class GamePage extends React.Component {
 
     this.updateSeconds();
     localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
-    // localStorage.setItem('ranking', JSON.stringify([...]));
   }
 
   componentDidUpdate() {

@@ -1,34 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { CONVERT_HASH, GRAVATAR } from '../components/Header';
 import PlayersList from '../components/PlayersList';
 
 class Ranking extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.getLocalStorage = this.getLocalStorage.bind(this);
-  }
-
-  // componentDidMount() {
-  //   const { name, score, email } = this.props;
-  //   const ranking = this.getLocalStorage();
-
-  //   localStorage
-  //     .setItem('ranking', JSON
-  //       .stringify([...ranking, {
-  //         name, score, picture: `${GRAVATAR}${CONVERT_HASH(email)}`,
-  //       }]));
-  // }
-
-  getLocalStorage() {
-    return JSON.parse(localStorage.getItem('ranking'));
-  }
-
   render() {
     const { history } = this.props;
-    const ranking = this.getLocalStorage();
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
 
     return (
       <div>
