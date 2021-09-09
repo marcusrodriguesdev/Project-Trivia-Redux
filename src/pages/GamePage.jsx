@@ -16,7 +16,6 @@ class GamePage extends React.Component {
       seconds: 30,
     };
 
-    this.toggleNextButton = this.toggleNextButton.bind(this);
     this.applyColor = this.applyColor.bind(this);
     this.showNextQuestion = this.showNextQuestion.bind(this);
     this.removeColor = this.removeColor.bind(this);
