@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import fetchTrivia from '../services/fetchTrivia';
 import FeedbackHeader from '../components/FeedbackHeader';
 import Timer from '../components/Timer';
+import { changeStop, getTimer } from '../redux/actions';
 
 class Game extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class Game extends Component {
         correctStyle: {},
         wrongStyle: {},
       },
-      teste: true,
+      randomKey: true,
     };
 
     this.fetchTriviaGame = this.fetchTriviaGame.bind(this);
@@ -44,10 +45,11 @@ class Game extends Component {
   }
 
   nextButton() {
+    const { addStop, addTimer } = this.props;
     const { trivia } = this.state;
     let { index } = this.state;
+    const thirty = 30;
     // console.log(trivia.length);
-
     if (index < trivia.length - 1) {
       index += 1;
       this.setState({
@@ -55,6 +57,8 @@ class Game extends Component {
         border: {},
         next: { display: 'none' },
       });
+      addStop();
+      addTimer(thirty);
     }
   }
 
@@ -78,45 +82,62 @@ class Game extends Component {
     return array;
   }
 
-  addBorder() {
+  addBorder(event) {
     const correctStyle = { border: '3px solid rgb(6, 240, 15)' };
     const wrongStyle = { border: '3px solid rgb(255, 0, 0)' };
+    const { addStop, timer } = this.props;
     this.setState({
       border: { correctStyle, wrongStyle },
       next: {},
     });
+    console.log(event.target.className);
+    addStop();
+    if (event.target.className === 'correct') {
+      let difficulty = event.target.name;
+      const three = 3;
+      const ten = 10;
+      if (difficulty === 'hard') difficulty = three;
+      if (difficulty === 'medium') difficulty = 2;
+      if (difficulty === 'easy') difficulty = 1;
+      const points = ten + (timer * difficulty);
+      console.log(points);
+    }
   }
 
   arrayAnswersButtons() {
-    const { trivia, index, border, teste, next } = this.state;
+    const { trivia, index, border, randomKey, next } = this.state;
+    const { stop } = this.props;
     const { timer } = this.props;
-    const teste2 = timer > 0;
+    let buttonDisabled = timer <= 0;
+    if (stop === true) buttonDisabled = true;
     let newArray = this.arrayAnswers(trivia[index]);
     newArray = newArray
       .map((element, indic) => (indic < newArray.length - 1 ? (
         <button
+          className="wrong"
           type="button"
           data-testid={ `wrong-answer-${indic}` }
           onClick={ this.addBorder }
           style={ border.wrongStyle }
-          disabled={ !teste2 }
+          disabled={ buttonDisabled }
         >
           {element}
         </button>)
         : (
           <button
+            name={ trivia[index].difficulty }
+            className="correct"
             type="button"
             data-testid="correct-answer"
             onClick={ this.addBorder }
             style={ border.correctStyle }
-            disabled={ !teste2 }
+            disabled={ buttonDisabled }
           >
             {element}
           </button>)));
-    if (teste) {
+    if (randomKey) {
       this.randomizeAnswers(newArray);
     }
-
     return (
       <div>
         <p data-testid="question-category">{trivia[index].category}</p>
@@ -153,11 +174,15 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   endpoint: PropTypes.string.isRequired,
   timer: PropTypes.number.isRequired,
+  addStop: PropTypes.func.isRequired,
+  addTimer: PropTypes.func.isRequired,
+  stop: PropTypes.bool.isRequired,
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-//   addTimer: (timer) => dispatch(getTimer(timer)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  addStop: () => dispatch(changeStop()),
+  addTimer: (timer) => dispatch(getTimer(timer)),
+});
 
 const mapStateToProps = (state) => ({
   name: state.reducer.name,
@@ -165,6 +190,7 @@ const mapStateToProps = (state) => ({
   token: state.reducer.token,
   endpoint: state.reducer.endpoint,
   timer: state.reducer.timer,
+  stop: state.reducer.stop,
 });
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

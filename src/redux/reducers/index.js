@@ -10,6 +10,7 @@ const INICIAL_STATE = {
   score: 0,
   endpoint: 'https://opentdb.com/api.php?amount=5&token=',
   timer: 30,
+  stop: false,
 };
 
 export default function reducer(state = INICIAL_STATE, action) {
@@ -26,6 +27,8 @@ export default function reducer(state = INICIAL_STATE, action) {
     return { ...state, score: action.score };
   case 'TIMER':
     return { ...state, timer: action.timer };
+  case 'STOP':
+    return { ...state, stop: !state.stop };
   default:
     return state;
   }
