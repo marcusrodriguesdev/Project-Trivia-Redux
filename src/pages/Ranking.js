@@ -9,26 +9,22 @@ class Ranking extends React.Component {
     this.showRanking = this.showRanking.bind(this);
   }
 
-  componentDidMount() {
-    const userRanking = JSON.parse(localStorage.getItem('ranking'))
-      .sort((a, b) => {
-        if (a.score - b.score === 0) {
-          const fa = a.name.toLowerCase();
-          const fb = b.name.toLowerCase();
+  // componentDidMount() {
+  //   const userRanking = JSON.parse(localStorage.getItem('ranking'));
+  //   //   .sort((a, b) => a.score - b.score);
+  //   // if (a.score - b.score === 0) {
+  //   //   const fa = a.name.toLowerCase();
+  //   //   const fb = b.name.toLowerCase()
+  //   //   if (fa < fb) {
+  //   //     return -1;
+  //   //   }
+  //   //   if (fa > fb) {
+  //   //     return 1;
+  //   //   }
+  //   // }
 
-          if (fa < fb) {
-            return -1;
-          }
-          if (fa > fb) {
-            return 1;
-          }
-          return 0;
-        }
-        return b.score - a.score;
-      });
-
-    localStorage.setItem('ranking', JSON.stringify(userRanking));
-  }
+  //   localStorage.setItem('ranking', JSON.stringify(userRanking));
+  // }
 
   showRanking(name, score) {
     this.setState((prevState) => ({ ranking: [...prevState.ranking, { name, score }] }));
@@ -39,9 +35,24 @@ class Ranking extends React.Component {
     history.push('/');
   }
 
-  // eslint-disable-next-line max-lines-per-function
   render() {
-    const userRanking = JSON.parse(localStorage.getItem('ranking'));
+    const userRanking = JSON.parse(localStorage.getItem('ranking'))
+    // Logica retirada na referência https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
+      .sort((a, b) => {
+        if (a.score - b.score === 0) {
+          const fa = a.picture.toLowerCase();
+          const fb = b.picture.toLowerCase();
+          const retunrNegative = -1;
+          if (fa < fb) {
+            return retunrNegative;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+        }
+
+        return b.score - a.score;
+      });
 
     return (
       <div>
