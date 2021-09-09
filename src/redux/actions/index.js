@@ -4,6 +4,7 @@ export const GET_TOKEN = 'GET_TOKEN';
 export const SET_QUESTION = 'SET_QUESTION';
 export const SET_NAME = 'SET_NAME';
 export const SET_EMAIL = 'SET_EMAIL';
+export const SET_SCORE = 'SET_SCORE';
 
 export const getToken = (payload) => ({
   type: GET_TOKEN,
@@ -12,6 +13,11 @@ export const getToken = (payload) => ({
 
 export const setQuestion = (payload) => ({
   type: SET_QUESTION,
+  payload,
+});
+
+export const setScore = (payload) => ({
+  type: SET_SCORE,
   payload,
 });
 

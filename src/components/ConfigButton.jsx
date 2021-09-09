@@ -13,6 +13,7 @@ class ConfigButton extends Component {
           type="button"
           onClick={ onClick }
           disabled={ disable }
+          name={ name }
         >
           { name }
         </button>
