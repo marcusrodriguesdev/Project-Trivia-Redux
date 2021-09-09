@@ -6,7 +6,7 @@ const tres = 3;
 
 class Feedback extends React.Component {
   render() {
-    const { avatar, name } = this.props;
+    const { avatar, name, history } = this.props;
     const storageInfos = localStorage.getItem('state');
     const scorePlayer = JSON.parse(storageInfos);
     return (
@@ -25,6 +25,15 @@ class Feedback extends React.Component {
         ) : (
           ''
         )}
+        <div>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ () => history.push('/') }
+          >
+            Jogar novamente
+          </button>
+        </div>
       </header>
     );
   }
@@ -39,6 +48,7 @@ const mapStateToProps = (state) => ({
 Feedback.propTypes = {
   avatar: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  history: PropTypes.objectOf().isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
