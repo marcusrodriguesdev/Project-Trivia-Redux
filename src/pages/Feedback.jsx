@@ -24,7 +24,7 @@ class Feedback extends React.Component {
 
   getRanking() {
     const { player } = JSON.parse(localStorage.state);
-    const { name, score, gravatarEmail } = player;
+    const { name, score } = player;
     const playerInfo = { name, score, picture };
     if (localStorage.ranking) {
       const ranking = JSON.parse(localStorage.ranking);
