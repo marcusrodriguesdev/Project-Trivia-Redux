@@ -213,7 +213,7 @@ class Game extends Component {
           </span>
           <span>
             {
-              this.renderAnswers()
+              this.renderAnswers() // teste do git
             }
           </span>
           <button
