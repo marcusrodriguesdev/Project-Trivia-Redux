@@ -26,6 +26,7 @@ class Feedback extends React.Component {
           ''
         )}
         <div>
+          {/* Requisito 15 */}
           <button
             type="button"
             data-testid="btn-play-again"
@@ -33,6 +34,7 @@ class Feedback extends React.Component {
           >
             Jogar novamente
           </button>
+          {/* Requisito 16 */}
           <button
             type="button"
             data-testid="btn-ranking"
