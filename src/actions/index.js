@@ -13,7 +13,7 @@ export default function Login(name, email, profile, token) {
   });
 }
 
-export function setScore(name, email, profile, score) {
+export function setScore({ name, email, profile, score, assertions }) {
   return ({
     type: SCORE,
     payload: {
@@ -21,6 +21,7 @@ export function setScore(name, email, profile, score) {
       email,
       profile,
       score,
+      assertions,
     },
   });
 }
