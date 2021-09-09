@@ -5,6 +5,7 @@ export const INITIAL_STATE = {
   email: '',
   profile: '',
   score: 0,
+  assertions: 0,
 };
 
 function scoreReducer(state = INITIAL_STATE, action) {
@@ -17,6 +18,7 @@ function scoreReducer(state = INITIAL_STATE, action) {
       email: payload.email,
       profile: payload.profile,
       score: payload.score,
+      assertions: payload.assertions,
     };
   default:
     return state;

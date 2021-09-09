@@ -124,7 +124,7 @@ class Game extends Component {
   }
 
   nextQuestion() {
-    const { questionNumber, totalScore } = this.state;
+    const { questionNumber, totalScore: score, assertions } = this.state;
     const four = 4;
     if (questionNumber < four) {
       this.setState({
@@ -138,7 +138,7 @@ class Game extends Component {
     } else {
       const { history, Score, dados } = this.props;
       const { name, email, profile } = dados;
-      Score(name, email, profile, totalScore);
+      Score({ name, email, profile, score, assertions });
       history.push('/feedback');
     }
   }
@@ -213,7 +213,7 @@ class Game extends Component {
           </span>
           <span>
             {
-              this.renderAnswers()
+              this.renderAnswers() // teste do git
             }
           </span>
           <button
@@ -235,8 +235,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  Score: (name, email, profile, score) => dispatch(
-    setScore(name, email, profile, score),
+  Score: ({ name, email, profile, score, assertions }) => dispatch(
+    setScore({ name, email, profile, score, assertions }),
   ),
 });
 
