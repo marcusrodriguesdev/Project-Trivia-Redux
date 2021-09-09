@@ -30,4 +30,8 @@ export const getTimer = (timer) => ({
   type: 'TIMER', timer,
 });
 
+export const changeStop = () => ({
+  type: 'STOP',
+});
+
 // export default (ACTIONS, getToken, getNameAndEmail);
