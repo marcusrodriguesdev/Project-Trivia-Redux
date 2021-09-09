@@ -217,7 +217,9 @@ class Question extends React.Component {
         <h2 data-testid="question-text">{questionTrivia.question}</h2>
         <span data-testid="question-category">{questionTrivia.category}</span>
         <div>
-          {alternatives.map((alternative, index) => this.Answer(alternative, questionTrivia.correct_answer, index))}
+          {alternatives.map((alternative, index) => this.Answer(
+            alternative, questionTrivia.correct_answer, index,
+          ))}
         </div>
         {nextQuestion ? this.questionNext() : ''}
       </div>
