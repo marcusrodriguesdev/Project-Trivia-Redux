@@ -9,7 +9,8 @@ class Feedback extends React.Component {
 
     this.getAssertions = this.getAssertions.bind(this);
     this.getScore = this.getScore.bind(this);
-    this.getRanking = this.getRanking.bind(this);
+    this.setRanking = this.setRanking.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   getAssertions() {
@@ -22,17 +23,32 @@ class Feedback extends React.Component {
     return playerData.player.score;
   }
 
-  getRanking() {
-    const { player } = JSON.parse(localStorage.state);
-    const { name, score, gravatarEmail } = player;
-    const playerInfo = { name, score, picture };
-    if (localStorage.ranking) {
-      const ranking = JSON.parse(localStorage.ranking);
-      const updatedRanking = [...ranking, playerInfo];
-      localStorage.ranking = JSON.stringify(updatedRanking);
-    } else {
-      localStorage.setItem('ranking', JSON.stringify([playerInfo]));
-    }
+  setRanking() {
+    const { name, picture } = this.props;
+    const score = this.getScore();
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const player = { name, score, picture };
+    ranking.push(player);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
+  // getRanking() {
+  //   const { player } = JSON.parse(localStorage.state);
+  //   const { name, score, gravatarEmail } = player;
+  //   const playerInfo = { name, score, picture };
+  //   if (localStorage.ranking) {
+  //     const ranking = JSON.parse(localStorage.ranking);
+  //     const updatedRanking = [...ranking, playerInfo];
+  //     localStorage.ranking = JSON.stringify(updatedRanking);
+  //   } else {
+  //     localStorage.setItem('ranking', JSON.stringify([playerInfo]));
+  //   }
+  // }
+
+  handleClick() {
+    const { history } = this.props;
+    this.setRanking();
+    history.push('/');
   }
 
   render() {
@@ -61,14 +77,13 @@ class Feedback extends React.Component {
             Jogar novamente
           </button>
         </Link>
-        <Link to="/ranking">
-          <button
-            data-testid="btn-ranking"
-            type="button"
-          >
-            Ver Ranking
-          </button>
-        </Link>
+        <button
+          data-testid="btn-ranking"
+          type="button"
+          onClick={ this.handleClick }
+        >
+          Ver Ranking
+        </button>
       </div>
     );
   }
@@ -77,6 +92,9 @@ class Feedback extends React.Component {
 Feedback.propTypes = {
   picture: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({

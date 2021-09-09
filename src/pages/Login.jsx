@@ -42,6 +42,8 @@ class Login extends React.Component {
     userLog({ email, name });
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify(player));
+    const rankingData = { name, score: 0, picture: email };
+    localStorage.setItem('ranking', JSON.stringify(rankingData));
     gravatarAvatar(email);
   }
 
