@@ -1,9 +1,20 @@
 import React from 'react';
 import '../App.css';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { playerPoints } from '../actions';
 
 const trivialink = 'https://opentdb.com/api.php?amount=5&token=';
+const um = 1;
+const dois = 2;
+const tres = 3;
 const cinco = 5;
+const dez = 10;
+const time = 30;
+let timer = time;
+let assertion = 0;
+let pontos = 0;
 
 class Question extends React.Component {
   constructor() {
@@ -28,28 +39,42 @@ class Question extends React.Component {
     this.incorrectAnswer = this.incorrectAnswer.bind(this);
     this.getTriviaApiResponse = this.getTriviaApiResponse.bind(this);
     this.borderColor = this.borderColor.bind(this);
+    this.calculatedPoints = this.calculatedPoints.bind(this);
   }
 
   componentDidMount() {
+    // let { timer } = this.state;
+    const ONE_SECOND = 1000;
     this.getTriviaApiResponse();
     this.timeToRespond();
+    setInterval(() => { timer -= 1; }, ONE_SECOND);
+    console.log(timer);
   }
 
   componentDidUpdate() {
     const { countQuestion } = this.state;
-    if (countQuestion === cinco) return <Redirect to="/feedback" />;
+    if (countQuestion === cinco) {
+      const { name, gravatarEmail, score, assertions } = this.props;
+      localStorage.setItem('player', JSON.stringify({
+        name, gravatarEmail, score, assertions,
+      }));
+      return <Redirect to="/feedback" />;
+    }
     document.querySelectorAll('#incorreta').forEach((button) => {
       button.className = '';
     });
     document.getElementById('correta').className = '';
+    timer = time;
   }
 
   async getTriviaApiResponse() {
+    const { countQuestion } = this.state;
     const token = localStorage.getItem('token');
     const responseApi = await fetch(`${trivialink}${token}`);
     const object = await responseApi.json();
     this.setState({
       questions: object,
+      difficulty: object.results[countQuestion].difficulty,
       loading: false,
     });
   }
@@ -72,7 +97,7 @@ class Question extends React.Component {
     );
   }
 
-  borderColor() {
+  borderColor({ target }) {
     this.setState({ nextQuestion: true },
       () => {
         document.querySelectorAll('#incorreta').forEach((button) => {
@@ -80,6 +105,7 @@ class Question extends React.Component {
         });
         document.getElementById('correta').className = 'green-border';
       });
+    this.calculatedPoints(target);
   }
 
   timeToRespond() {
@@ -129,17 +155,40 @@ class Question extends React.Component {
     return this.incorrectAnswer(alternative, index);
   }
 
+  calculatedPoints(target) {
+    const { submitPlayerPoints } = this.props;
+    if (target.id === 'correta') {
+      assertion += 1;
+      const { difficulty } = this.state;
+      let difficultyValue = 0;
+      switch (difficulty) {
+      case 'easy':
+        difficultyValue = um;
+        break;
+      case 'medium':
+        difficultyValue = dois;
+        break;
+      case 'hard':
+        difficultyValue = tres;
+        break;
+      default:
+        break;
+      }
+      pontos += (dez + (timer * difficultyValue));
+    }
+    submitPlayerPoints({ pontos, assertion });
+  }
+
   render() {
     const { questions, loading, countQuestion, nextQuestion } = this.state;
 
     if (loading) return <h1>Loading...</h1>;
     if (countQuestion === cinco) {
+      const { name, gravatarEmail, score, assertions } = this.props;
+      localStorage.setItem('player', JSON.stringify({
+        name, gravatarEmail, score, assertions,
+      }));
       return <Redirect to="/feedback" />;
-      // return (
-      //   <Link to="/feedback">
-      //     <button type="button">Próximo</button>
-      //   </Link>
-      // );
     }
 
     const questionTrivia = questions.results[countQuestion];
@@ -163,4 +212,23 @@ class Question extends React.Component {
   }
 }
 
-export default Question;
+Question.propTypes = {
+  submitPlayerPoints: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  gravatarEmail: state.player.email,
+  score: state.player.score,
+  assertions: state.player.assertions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  submitPlayerPoints: (payload) => dispatch(playerPoints(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);

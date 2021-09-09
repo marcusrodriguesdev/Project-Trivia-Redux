@@ -1,4 +1,4 @@
-import { PLAYER_INFO } from '../actions';
+import { PLAYER_INFO, PLAYER_POINTS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -14,6 +14,12 @@ function playerReducer(state = INITIAL_STATE, action) {
       ...state,
       name: action.payload.name,
       gravatarEmail: action.payload.email,
+    };
+  case PLAYER_POINTS:
+    return {
+      ...state,
+      score: action.payload.pontos,
+      assertions: action.payload.assertion,
     };
   default:
     return state;
