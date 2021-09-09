@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import loadLocal from '../services/getLocal';
+import { loadRanking } from '../services/getLocal';
 
 export default class Ranking extends Component {
   render() {
-    const rankingList = loadLocal();
+    const rankingList = loadRanking();
     return (
       <div>
         {rankingList.map((player, index) => (

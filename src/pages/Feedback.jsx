@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import save from '../services/saveToLocal';
+import { saveRank } from '../services/saveToLocal';
 import FeedbackHeader from '../components/FeedbackHeader';
 import FeedbackMsg from '../components/FeedbackMsg';
 
 class Feedback extends Component {
   render() {
     const { name, image, hits, score } = this.props;
-    save(name, image, score);
+    saveRank(name, image, score);
     return (
       <div>
         Tela de Feedback
