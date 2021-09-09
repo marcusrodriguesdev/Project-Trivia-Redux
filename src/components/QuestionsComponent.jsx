@@ -96,6 +96,7 @@ class QuestionsComponent extends React.Component {
       answerSelected: true,
     });
 
+    // Retirado da documentação https://developer.mozilla.org/pt-BR/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals
     clearInterval(COUNTER);
   }
 
