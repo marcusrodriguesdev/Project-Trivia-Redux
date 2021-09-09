@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Proptypes from 'prop-types';
 
-class FeedbackMensage extends Component {
+export default class FeedbackMensage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      assertions: 0,
+    };
+
+    this.handleAssertions = this.handleAssertions.bind(this);
+  }
+
+  async componentDidMount() {
+    this.handleAssertions();
+  }
+
+  handleAssertions() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions } } = state;
+    this.setState({ assertions });
+  }
+
   render() {
-    const { score } = this.props;
+    const { assertions } = this.state;
     const goodScore = 3;
     return (
       <div>
         <p data-testid="feedback-text">
-          { score.questions >= goodScore ? 'Mandou bem!' : 'Podia ser melhor...' }
+          { assertions >= goodScore ? 'Mandou bem!' : 'Podia ser melhor...' }
         </p>
       </div>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  score: state.user.score,
-});
-
-export default connect(mapStateToProps, null)(FeedbackMensage);
-
-FeedbackMensage.propTypes = {
-  score: Proptypes.objectOf().isRequired,
-};
