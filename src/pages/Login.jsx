@@ -29,9 +29,19 @@ class Login extends React.Component {
   handleClick() {
     const { email, name } = this.state;
     const { fetchToken, token, gravatarAvatar, userLog } = this.props;
+    localStorage.clear();
+    const player = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
     fetchToken();
     userLog({ email, name });
     localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify(player));
     gravatarAvatar(email);
   }
 
