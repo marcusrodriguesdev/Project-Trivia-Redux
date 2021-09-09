@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addTriviaThunk, userTry, showNextButton } from '../actions';
+import '../Game.css';
 
 const INITIAL_STATE = {
   questionIndex: 0,
@@ -149,6 +150,7 @@ class Game extends React.Component {
   render() {
     const nextButton = (
       <button
+        className="next-button"
         data-testid="btn-next"
         id="javascript"
         type="button"
@@ -161,12 +163,18 @@ class Game extends React.Component {
     return (
       <div>
         <header>
-          <img src={ gravatarURL } alt="" data-testid="header-profile-picture" />
+          <div className="player-avatar">
+            <img
+              src={ gravatarURL }
+              alt="Player Avatar"
+              data-testid="header-profile-picture"
+            />
+          </div>
           <p data-testid="header-player-name">{name}</p>
           <p data-testid="header-score">0</p>
           <p>{seconds}</p>
         </header>
-        <div>
+        <div className="answers">
           {results
           && this.questions()}
           { tryUser && nextButton }

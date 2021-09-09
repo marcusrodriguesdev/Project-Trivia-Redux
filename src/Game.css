@@ -1,0 +1,12 @@
+header {
+  display: flex;
+  flex-flow: column wrap;  
+}
+
+.player-avatar {  
+  margin-top:40px;
+}
+
+.answers {  
+  margin: 4px;  
+}
