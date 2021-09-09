@@ -38,22 +38,26 @@ class Feedback extends Component {
 
   render() {
     return (
-      <div>
+      <div className="feedback-div">
         <Header />
-        <div>
-          <p data-testid="feedback-total-question">
-            {' '}
-            {JSON.parse(
-              localStorage.getItem('state'),
-            ).player.assertions}
-          </p>
+        <div className="message-feedback-div">
+          <h2>
+            Alternativas Corretas:
+            <span data-testid="feedback-total-question">
+              {JSON.parse(
+                localStorage.getItem('state'),
+              ).player.assertions}
+            </span>
+          </h2>
           {this.answerHits()}
-          <p data-testid="feedback-total-score">
-            {' '}
-            {JSON.parse(
-              localStorage.getItem('state'),
-            ).player.score}
-          </p>
+          <h2>
+            Pontuação:
+            <span data-testid="feedback-total-score">
+              {JSON.parse(
+                localStorage.getItem('state'),
+              ).player.score}
+            </span>
+          </h2>
           <Link to="/">
             <button type="button" data-testid="btn-play-again">Jogar novamente</button>
           </Link>

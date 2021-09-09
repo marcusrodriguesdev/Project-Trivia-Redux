@@ -1,6 +1,9 @@
 body {
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
   background-size: 150% 150%;
+  height: 100vh;
+  overflow-x: hidden;
+  width: 100vw;
 }
 
 .correct {
@@ -53,6 +56,21 @@ li {
   width: 400px;
 }
 
+.feedback-div button {
+  border: none;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 20px 30px;
+  width: 200px;
+}
+
+.ranking-div button {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 20px;
+}
+
 .login-div fieldset button {
   border: none;
   border-radius: 10px;
@@ -73,6 +91,11 @@ li {
 .alternative:hover {
   background-color: tomato;
   color: white;
+  cursor: pointer;
+}
+
+.feedback-div button:hover {
+  background-color: tomato;
   cursor: pointer;
 }
 
@@ -121,4 +144,66 @@ li {
   height: 100px;
   justify-content: center;
   width: 100px;
+}
+
+.feedback-div {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.message-feedback-div {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+}
+
+.ranking-div {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-evenly;
+}
+
+
+.rankings {
+  height: 60%;
+  overflow: scroll;
+  overflow-x: hidden;
+  width: 40%;
+}
+
+.rankings::-webkit-scrollbar {
+  display: none;
+}
+
+.ranking-div header {
+  font-size: 100px;
+  text-align: center;
+}
+
+.each-ranking {
+  align-items: center;
+  background-color: tomato;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px 0;
+  padding: 15px 0;
+  width: 100%;
+}
+
+.game-div a {
+  background-color: white;
+  border-radius: 20px;
+  color: black;
+  padding: 20px 0;
+  text-align: center;
+  text-decoration: none;
 }
