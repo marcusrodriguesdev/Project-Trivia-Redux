@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
 import '../App.css';
 import Header from '../components/Header';
+import Feedback from './Feedback';
 
 class Game extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Game extends Component {
       questionIndex: 0,
       questions: [],
       isVisible: false,
+      renderFeedback: false,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
@@ -40,10 +42,8 @@ class Game extends Component {
   nextQuestion() {
     const LAST_QUESTION = 4;
     const { questionIndex } = this.state;
-    const { history } = this.props;
     if (questionIndex === LAST_QUESTION) {
-      console.log('entrei aqui hein');
-      history.push('/feedback');
+      this.setState({ renderFeedback: true });
     }
 
     this.setState((prevState) => ({
@@ -155,9 +155,9 @@ class Game extends Component {
   }
 
   render() {
-    const { questions, time, player, isVisible } = this.state;
+    const { questions, time, player, isVisible, renderFeedback } = this.state;
     const isFetching = questions.length === 0;
-    return (
+    return !renderFeedback ? (
       <>
         <Header score={ player.score } />
         <Timer setTimer={ this.setTimer } time={ time } />
@@ -168,7 +168,7 @@ class Game extends Component {
             Próxima
           </button>)}
       </>
-    );
+    ) : (<Feedback score={ player.score } />);
   }
 }
 
