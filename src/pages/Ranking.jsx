@@ -17,7 +17,7 @@ export default class Ranking extends Component {
             <span data-testid={ `player-score-${index}` }>{player.score}</span>
           </div>
         ))}
-        <BtnPlayAgain history={ history } />
+        <BtnPlayAgain history={ history } testid="btn-go-home" />
       </div>
     );
   }

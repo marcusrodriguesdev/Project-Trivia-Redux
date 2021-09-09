@@ -29,7 +29,7 @@ class Feedback extends Component {
         <Link to="/ranking">
           <button type="button" data-testid="btn-ranking">VER RANKING</button>
         </Link>
-        <BtnPlayAgain history={ history } />
+        <BtnPlayAgain history={ history } testid="btn-play-again" />
       </div>
     );
   }
