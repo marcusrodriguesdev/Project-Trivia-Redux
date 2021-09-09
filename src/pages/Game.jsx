@@ -9,6 +9,11 @@ const INITIAL_STATE = {
   disabledState: false,
 };
 
+const dez = 10;
+const easy = 1;
+const medium = 2;
+const hard = 3;
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +24,7 @@ class Game extends React.Component {
     this.questions = this.questions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.handlePoints = this.handlePoints.bind(this);
     // this.disableButton = this.disableButton.bind(this);
   }
 
@@ -41,11 +47,37 @@ class Game extends React.Component {
     if (seconds > TIME_LIMIT_IN_SECONDS) {
       this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
     } else {
-      this.handleClick();
+      const { addTry, buttonRender } = this.props;
+      addTry(true);
+      buttonRender();
+      this.setState({
+        disabledState: true,
+      });
     }
   }
 
-  handleClick() {
+  handlePoints(event) {
+    const { seconds, questionIndex } = this.state;
+    const { results } = this.props;
+    let dificuldade;
+    let score = 0;
+    if (results[questionIndex].difficulty === 'easy') {
+      dificuldade = easy;
+    } else if (results[questionIndex].difficulty === 'medium') {
+      dificuldade = medium;
+    } else if (results[questionIndex].difficulty === 'hard') {
+      dificuldade = hard;
+    }
+    const totalPoints = JSON.parse(localStorage.getItem('state'));
+    if (event.target.classList.contains('certaResposta')) {
+      score = dez + (seconds * dificuldade);
+      totalPoints.player.assertions += 1;
+    }
+    totalPoints.player.score += score;
+    localStorage.setItem('state', JSON.stringify(totalPoints));
+  }
+
+  handleClick(event) {
     // const { questionIndex } = this.state;
     const { addTry, buttonRender } = this.props;
     addTry(true);
@@ -53,6 +85,7 @@ class Game extends React.Component {
     this.setState({
       disabledState: true,
     });
+    this.handlePoints(event);
   }
 
   handleNext() {
@@ -87,7 +120,8 @@ class Game extends React.Component {
         <p data-testid="question-category">{results[questionIndex].category}</p>
         <p data-testid="question-text">{results[questionIndex].question}</p>
         <button
-          className={ tryUser ? 'correct' : '' }
+          className={ tryUser ? 'correct certaResposta' : 'certaResposta' }
+          id="teste"
           type="button"
           data-testid="correct-answer"
           onClick={ this.handleClick }
