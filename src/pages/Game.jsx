@@ -45,7 +45,7 @@ class Game extends Component {
   }
 
   nextButton() {
-    const { addStop, addTimer } = this.props;
+    const { addStop, addTimer, history } = this.props;
     const { trivia } = this.state;
     let { index } = this.state;
     const thirty = 30;
@@ -59,7 +59,7 @@ class Game extends Component {
       });
       addStop();
       addTimer(thirty);
-    }
+    } else { history.push('/feedback'); }
   }
 
   arrayAnswers({ incorrect_answers: incorrectAnswers, correct_answer: correctAnswer }) {
@@ -177,6 +177,9 @@ Game.propTypes = {
   addStop: PropTypes.func.isRequired,
   addTimer: PropTypes.func.isRequired,
   stop: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
