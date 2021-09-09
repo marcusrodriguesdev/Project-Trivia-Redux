@@ -20,6 +20,8 @@ class Feedback extends Component {
         <p><Message hits={ answersCorrects } /></p>
         <div data-testid="feedback-total-question">{ assertions }</div>
         <ConfigButton link="/" test="btn-play-again" name="Jogar novamente" />
+        <ConfigButton link="/ranking" test="btn-ranking" name="Ranking" />
+
       </>
     );
   }
