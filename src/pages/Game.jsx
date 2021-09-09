@@ -61,16 +61,22 @@ class Game extends React.Component {
     const INDEX_QUESTION = 4;
 
     if (questionIndex < INDEX_QUESTION) {
-      this.setState((prevState) => ({ questionIndex: prevState.questionIndex + 1 }));
+      this.setState((prevState) => ({
+        questionIndex: prevState.questionIndex + 1,
+        seconds: 30,
+        disabledState: false,
+      }));
     } else {
       history.push('/feedback');
     }
+
     addTry(false);
-    this.setState((prevState) => ({
-      questionIndex: prevState.questionIndex + 1,
-      seconds: 30,
-      disabledState: false,
-    }));
+
+    // this.setState((prevState) => ({
+    //   questionIndex: prevState.questionIndex + 1,
+    //   seconds: 30,
+    //   disabledState: false,
+    // }));
   }
 
   questions() {
