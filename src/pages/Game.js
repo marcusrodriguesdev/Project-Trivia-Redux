@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import Timer from '../components/Timer';
 import '../App.css';
+import Header from '../components/Header';
+import Feedback from './Feedback';
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    // const { name, email } = props;
     this.state = {
       player: {
         name: '',
@@ -20,6 +20,7 @@ class Game extends Component {
       questionIndex: 0,
       questions: [],
       isVisible: false,
+      renderFeedback: false,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
@@ -39,10 +40,17 @@ class Game extends Component {
   }
 
   nextQuestion() {
+    const LAST_QUESTION = 4;
+    const { questionIndex } = this.state;
+    if (questionIndex === LAST_QUESTION) {
+      this.setState({ renderFeedback: true });
+    }
+
     this.setState((prevState) => ({
       ...prevState,
       questionIndex: prevState.questionIndex + 1,
       isVisible: false,
+      time: 30,
     }));
   }
 
@@ -57,9 +65,9 @@ class Game extends Component {
   changeColor() {
     const rightBtn = document.querySelector('.correct-btn');
     const wrongBtn = document.querySelectorAll('.wrong-btn');
-    rightBtn.className = 'correct-answer';
+    rightBtn.classList.add('correct-answer');
     wrongBtn.forEach((button) => {
-      button.className = 'wrong-answer';
+      button.classList.add('wrong-answer');
     });
   }
 
@@ -147,21 +155,11 @@ class Game extends Component {
   }
 
   render() {
-    const { name, email } = this.props;
-    const { questions, time, player, isVisible } = this.state;
+    const { questions, time, player, isVisible, renderFeedback } = this.state;
     const isFetching = questions.length === 0;
-    const emailHash = md5(email).toString();
-    return (
+    return !renderFeedback ? (
       <>
-        <header>
-          <img
-            data-testid="header-profile-picture"
-            src={ `https://www.gravatar.com/avatar/${emailHash}` }
-            alt="Avatar"
-          />
-          <span data-testid="header-player-name">{ name }</span>
-          <span data-testid="header-score">{player.score}</span>
-        </header>
+        <Header score={ player.score } />
         <Timer setTimer={ this.setTimer } time={ time } />
         { !isFetching && this.renderQuestions() }
 
@@ -170,7 +168,7 @@ class Game extends Component {
             Próxima
           </button>)}
       </>
-    );
+    ) : (<Feedback score={ player.score } />);
   }
 }
 
