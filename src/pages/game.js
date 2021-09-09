@@ -30,6 +30,7 @@ class game extends Component {
     this.changingId = this.changingId.bind(this);
     this.handleCorrectAnswer = this.handleCorrectAnswer.bind(this);
     this.handleIncorrectAnswer = this.handleIncorrectAnswer.bind(this);
+    this.redirectToFeedbackPage = this.redirectToFeedbackPage.bind(this);
     this.setTimer = this.setTimer.bind(this);
   }
 
@@ -68,6 +69,7 @@ class game extends Component {
     const incorrectAnswers = data[0].incorrect_answers;
     const correctAswer = data[0].correct_answer;
     const allAnswers = [...incorrectAnswers, correctAswer];
+    console.log(data);
 
     this.setState({
       data,
@@ -83,9 +85,13 @@ class game extends Component {
     clearInterval(this.intervalId);
   }
 
+  redirectToFeedbackPage() {
+    const { history } = this.props;
+    history.push('/feedback');
+  }
+
   changingId() {
     const { id, data } = this.state;
-    const { history } = this.props;
     const soma = id + 1;
     if (soma < data.length) {
       const incorrectAnswers = data[soma].incorrect_answers;
@@ -99,7 +105,7 @@ class game extends Component {
       });
       this.setTimer();
     } else {
-      history.push('/feedback');
+      this.redirectToFeedbackPage();
     }
   }
 
@@ -135,6 +141,7 @@ class game extends Component {
   render() {
     const { data, answers, timer, tighten, id } = this.state;
     const loading = <div className="loading">Loading</div>;
+
     const buttonNext = (
       <button data-testid="btn-next" type="button" onClick={ this.changingId }>
         Próximo
@@ -175,8 +182,10 @@ class game extends Component {
 game.propTypes = {
   setScore: PropTypes.func.isRequired,
   setLocalStorage: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   fetchQuestions: PropTypes.func.isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = (dispath) => ({
