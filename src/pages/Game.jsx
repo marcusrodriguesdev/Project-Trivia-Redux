@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateScore } from '../actions';
 import { Redirect } from 'react-router-dom';
+import { updateScore } from '../actions';
+import Header from '../components/Header';
+import setInitialState from '../helpers';
 
 class Game extends Component {
   constructor(props) {
@@ -19,17 +21,7 @@ class Game extends Component {
     this.bindings();
   }
 
-  componentDidMount() {
-    const playerObj = {
-      player: {
-        name: '',
-        assertions: '',
-        score: 0,
-        gravatarEmail: '',
-      },
-    };
-    localStorage.setItem('state', JSON.stringify(playerObj));
-  }
+  componentDidMount() { setInitialState(); }
 
   componentDidUpdate() {
     const { timer, alreadyShuffled } = this.state;
@@ -164,6 +156,10 @@ class Game extends Component {
         redirect: true,
       });
     }
+    this.setState((prevstate) => ({
+      questionIndex: prevstate.questionIndex + 1,
+      disabled: false,
+    }));
   }
 
   renderCorrectButton(questions, questionIndex, index, disabled) {
@@ -228,24 +224,14 @@ class Game extends Component {
   }
 
   render() {
-    const { name, questions, score } = this.props;
+    const { questions } = this.props;
     const { over, shuffledArray, questionIndex, disabled, redirect } = this.state;
     if (redirect) {
       return (<Redirect to="/FeedBack" />);
     }
     return (
       <div>
-        <header>
-          <img
-            src="https://www.gravatar.com/avatar/"
-            data-testid="header-profile-picture"
-            alt="gravatar"
-          />
-          <h3 data-testid="header-player-name">
-            { name }
-          </h3>
-          <p data-testid="header-score">{ score }</p>
-        </header>
+        <Header />
         {this.renderQuestion(questions, shuffledArray, questionIndex, over)}
         {
           disabled ? (
@@ -264,9 +250,7 @@ class Game extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  name: state.player.name,
   questions: state.game.questions,
-  score: state.player.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -274,9 +258,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Game.propTypes = {
-  name: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
-  score: PropTypes.string.isRequired,
   updateScoreProp: PropTypes.func.isRequired,
 };
 
