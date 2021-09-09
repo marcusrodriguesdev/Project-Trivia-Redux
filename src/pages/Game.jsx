@@ -162,6 +162,10 @@ class Game extends Component {
         redirect: true,
       });
     }
+    this.setState((prevstate) => ({
+      questionIndex: prevstate.questionIndex + 1,
+      disabled: false,
+    }));
   }
 
   renderCorrectButton(questions, questionIndex, index, disabled) {
@@ -227,8 +231,7 @@ class Game extends Component {
 
   render() {
     const { questions } = this.props;
-    const {
-      over, shuffledArray, questionIndex, disabled, redirect } = this.state;
+    const { over, shuffledArray, questionIndex, disabled, redirect } = this.state;
     if (redirect) {
       return (<Redirect to="/FeedBack" />);
     }
