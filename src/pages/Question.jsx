@@ -1,6 +1,9 @@
 import React from 'react';
 import '../App.css';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { playerPoints } from '../actions';
 
 const trivialink = 'https://opentdb.com/api.php?amount=5&token=';
 const um = 1;
@@ -10,6 +13,8 @@ const cinco = 5;
 const dez = 10;
 const time = 30;
 let timer = time;
+let assertion = 0;
+let pontos = 0;
 
 class Question extends React.Component {
   constructor() {
@@ -48,7 +53,15 @@ class Question extends React.Component {
 
   componentDidUpdate() {
     const { countQuestion } = this.state;
-    if (countQuestion === cinco) return <Redirect to="/feedback" />;
+    if (countQuestion === cinco) {
+      const { name, gravatarEmail, score, assertions } = this.props;
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name, gravatarEmail, score, assertions,
+        },
+      }));
+      return <Redirect to="/feedback" />;
+    }
     document.querySelectorAll('#incorreta').forEach((button) => {
       button.className = '';
     });
@@ -86,7 +99,7 @@ class Question extends React.Component {
     );
   }
 
-  borderColor() {
+  borderColor({ target }) {
     this.setState({ nextQuestion: true },
       () => {
         document.querySelectorAll('#incorreta').forEach((button) => {
@@ -94,7 +107,7 @@ class Question extends React.Component {
         });
         document.getElementById('correta').className = 'green-border';
       });
-    this.calculatedPoints();
+    this.calculatedPoints(target);
   }
 
   timeToRespond() {
@@ -144,24 +157,28 @@ class Question extends React.Component {
     return this.incorrectAnswer(alternative, index);
   }
 
-  calculatedPoints() {
-    const { difficulty } = this.state;
-    let difficultyValue = 0;
-    switch (difficulty) {
-    case 'easy':
-      difficultyValue = um;
-      break;
-    case 'medium':
-      difficultyValue = dois;
-      break;
-    case 'hard':
-      difficultyValue = tres;
-      break;
-    default:
-      break;
+  calculatedPoints(target) {
+    const { submitPlayerPoints } = this.props;
+    if (target.id === 'correta') {
+      assertion += 1;
+      const { difficulty } = this.state;
+      let difficultyValue = 0;
+      switch (difficulty) {
+      case 'easy':
+        difficultyValue = um;
+        break;
+      case 'medium':
+        difficultyValue = dois;
+        break;
+      case 'hard':
+        difficultyValue = tres;
+        break;
+      default:
+        break;
+      }
+      pontos += (dez + (timer * difficultyValue));
     }
-    const pontos = dez + (timer * difficultyValue);
-    console.log(`${timer} * ${difficultyValue} = ${pontos}`);
+    submitPlayerPoints({ pontos, assertion });
   }
 
   render() {
@@ -169,6 +186,12 @@ class Question extends React.Component {
 
     if (loading) return <h1>Loading...</h1>;
     if (countQuestion === cinco) {
+      const { name, gravatarEmail, score, assertions } = this.props;
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name, gravatarEmail, score, assertions,
+        },
+      }));
       return <Redirect to="/feedback" />;
     }
 
@@ -193,4 +216,23 @@ class Question extends React.Component {
   }
 }
 
-export default Question;
+Question.propTypes = {
+  submitPlayerPoints: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  gravatarEmail: state.player.email,
+  score: state.player.score,
+  assertions: state.player.assertions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  submitPlayerPoints: (payload) => dispatch(playerPoints(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
