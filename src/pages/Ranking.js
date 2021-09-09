@@ -9,23 +9,6 @@ class Ranking extends React.Component {
     this.showRanking = this.showRanking.bind(this);
   }
 
-  // componentDidMount() {
-  //   const userRanking = JSON.parse(localStorage.getItem('ranking'));
-  //   //   .sort((a, b) => a.score - b.score);
-  //   // if (a.score - b.score === 0) {
-  //   //   const fa = a.name.toLowerCase();
-  //   //   const fb = b.name.toLowerCase()
-  //   //   if (fa < fb) {
-  //   //     return -1;
-  //   //   }
-  //   //   if (fa > fb) {
-  //   //     return 1;
-  //   //   }
-  //   // }
-
-  //   localStorage.setItem('ranking', JSON.stringify(userRanking));
-  // }
-
   showRanking(name, score) {
     this.setState((prevState) => ({ ranking: [...prevState.ranking, { name, score }] }));
   }
