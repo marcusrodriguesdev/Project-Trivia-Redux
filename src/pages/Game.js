@@ -9,12 +9,13 @@ import Feedback from './Feedback';
 class Game extends Component {
   constructor(props) {
     super(props);
+    const { name, email } = this.props;
     this.state = {
       player: {
-        name: '',
+        name,
         assertions: 0,
         score: 0,
-        gravatarEmail: '',
+        gravatarEmail: email,
       },
       time: 30,
       questionIndex: 0,
