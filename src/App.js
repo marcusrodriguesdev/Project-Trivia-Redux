@@ -19,7 +19,7 @@ export default class App extends Component {
           <Route path="/game" component={ GamePage } />
           <Route path="/settings" component={ Settings } />
           <Route path="/feedback" component={ Feedback } />
-          <Route path="/Ranking" component={ Ranking } />
+          <Route path="/ranking" component={ Ranking } />
         </Switch>
       </BrowserRouter>
     );
