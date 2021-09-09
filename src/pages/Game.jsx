@@ -144,13 +144,19 @@ class Game extends Component {
     );
   }
 
+  updateTimer() {
+    const interval = 1000;
+    const setTime = setInterval(this.timer, interval);
+    return (setTime);
+  }
+
   nextQuestion() {
-    const questionIndex = this.state;
+    const { questionIndex } = this.state;
     const questionLength = 4;
     if (questionIndex < questionLength) {
       this.setState((prevstate) => ({
         questionIndex: prevstate.questionIndex + 1,
-        disabled: false }));
+        disabled: false }), () => this.updateTimer());
     } else {
       this.setState({
         redirect: true,
