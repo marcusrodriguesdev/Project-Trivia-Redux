@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 20vmin;  
+  height: 20vmin;
   pointer-events: none;
 }
 
@@ -13,17 +13,17 @@
   margin: 10px;
 }
 
-.input-email{
-  margin:4px;
-  margin-top:100px;
+.input-email {
+  margin: 4px;
+  margin-top: 100px;
 }
 
 .input-name {
-  margin:4px;
+  margin: 4px;
 }
 
 .play-button {
-  margin:4px;
+  margin: 4px;
   width: 100px;
 }
 
