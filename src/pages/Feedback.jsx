@@ -9,8 +9,8 @@ import BtnPlayAgain from '../components/BtnPlayAgain';
 
 class Feedback extends Component {
   render() {
-    const { name, image, hits, score, history } = this.props;
-    saveRank(name, image, score);
+    const { name, image, hits, history, total } = this.props;
+    saveRank(name, image, total);
     return (
       <div>
         Tela de Feedback
@@ -23,7 +23,7 @@ class Feedback extends Component {
         </p>
         <p>
           {'Um total de '}
-          <span data-testid="feedback-total-question">{ score }</span>
+          <span data-testid="feedback-total-question">{ total }</span>
           {' pontos!'}
         </p>
         <Link to="/ranking">
@@ -39,17 +39,19 @@ Feedback.propTypes = {
   hits: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
+  // score: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  hits: state.reducer.hits,
-  name: state.reducer.name,
-  image: state.reducer.image,
-  score: state.reducer.score,
+  hits: state.scoreReducer.hits,
+  score: state.scoreReducer.score,
+  total: state.scoreReducer.total,
+  name: state.userReducer.name,
+  image: state.userReducer.image,
 });
 
 export default connect(mapStateToProps)(Feedback);

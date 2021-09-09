@@ -15,12 +15,20 @@ export function saveRank(name, image, score) {
   localStorage.setItem('ranking', JSON.stringify(state));
 }
 
-export function saveScore(score) {
-  const state = loadScore();
-  const result = state + score;
-  localStorage.setItem('score', JSON.stringify(result));
+export function savePlayer(name, gravatarEmail) {
+  localStorage.setItem('state', JSON.stringify({ player: {
+    name,
+    assertions: 0,
+    score: 0,
+    gravatarEmail } }));
 }
 
-export function resetScore() {
-  localStorage.setItem('score', JSON.stringify(0));
+export function saveScore(score) {
+  const result = loadScore();
+  result.player.score += score;
+  localStorage.setItem('state', JSON.stringify(result));
 }
+
+/* export function resetScore() {
+  localStorage.setItem('state', JSON.stringify(0));
+} */

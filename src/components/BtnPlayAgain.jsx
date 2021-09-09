@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeStop } from '../redux/actions';
+import { changeStop, getScore } from '../redux/actions';
 
 class BtnPlayAgain extends Component {
   constructor(props) {
@@ -11,8 +11,9 @@ class BtnPlayAgain extends Component {
   }
 
   playAgain() {
-    const { addStop, history } = this.props;
+    const { addStop, history, resetScore } = this.props;
     addStop();
+    resetScore();
     history.push('/');
   }
 
@@ -31,6 +32,7 @@ class BtnPlayAgain extends Component {
 
 BtnPlayAgain.propTypes = {
   addStop: PropTypes.func.isRequired,
+  resetScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -38,6 +40,7 @@ BtnPlayAgain.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   addStop: () => dispatch(changeStop()),
+  resetScore: () => dispatch(getScore(0)),
 });
 
 export default connect(null, mapDispatchToProps)(BtnPlayAgain);

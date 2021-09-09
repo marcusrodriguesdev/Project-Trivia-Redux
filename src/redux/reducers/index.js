@@ -1,35 +1,12 @@
-// import ACTIONS from '../actions';
-import { ACTIONS } from '../actions';
+import { combineReducers } from 'redux';
+import userReducer from './user';
+import timerReducer from './timer';
+import scoreReducer from './scores';
 
-const INICIAL_STATE = {
-  token: '',
-  name: '',
-  email: '',
-  image: '',
-  hits: 0,
-  score: 0,
-  endpoint: 'https://opentdb.com/api.php?amount=5&token=',
-  timer: 30,
-  stop: false,
-};
+const rootReducer = combineReducers({
+  scoreReducer,
+  timerReducer,
+  userReducer,
+});
 
-export default function reducer(state = INICIAL_STATE, action) {
-  switch (action.type) {
-  case ACTIONS.GET_TOKEN:
-    return { ...state, token: action.token };
-  case 'NAME_EMAIL':
-    return { ...state, name: action.name, email: action.email };
-  case 'IMAGE':
-    return { ...state, image: action.image };
-  case ACTIONS.HITS:
-    return { ...state, hits: state.hits + 1 };
-  case ACTIONS.SCORE:
-    return { ...state, score: action.score };
-  case 'TIMER':
-    return { ...state, timer: action.timer };
-  case 'STOP':
-    return { ...state, stop: !state.stop };
-  default:
-    return state;
-  }
-}
+export default rootReducer;

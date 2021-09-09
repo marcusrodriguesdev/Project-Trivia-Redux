@@ -6,7 +6,7 @@ import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
 import fetchImage from '../services/fetchImage';
 import { getToken, getNameAndEmail, getImage } from '../redux/actions';
-import { resetScore } from '../services/saveToLocal';
+import { savePlayer } from '../services/saveToLocal';
 
 class Login extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class Login extends Component {
     addImage(responseImage);
 
     addNameAndEmail(name, email);
-
+    savePlayer(name, email);
     history.push('/game');
   }
 
@@ -51,7 +51,6 @@ class Login extends Component {
 
   render() {
     const { name, email, isDisable } = this.state;
-    resetScore();
     return (
       <div className="App">
         <header className="App-header">

@@ -197,12 +197,12 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  name: state.reducer.name,
-  image: state.reducer.image,
-  token: state.reducer.token,
-  endpoint: state.reducer.endpoint,
-  timer: state.reducer.timer,
-  stop: state.reducer.stop,
+  name: state.userReducer.name,
+  image: state.userReducer.image,
+  token: state.userReducer.token,
+  endpoint: state.userReducer.endpoint,
+  timer: state.timerReducer.timer,
+  stop: state.timerReducer.stop,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
