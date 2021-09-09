@@ -58,3 +58,4 @@ Feedback.propTypes = {
 };
 
 export default connect(mapStateToProps)(Feedback);
+// Teste erro lint
