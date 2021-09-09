@@ -22,7 +22,7 @@ export default function reducer(state = INICIAL_STATE, action) {
   case 'IMAGE':
     return { ...state, image: action.image };
   case ACTIONS.HITS:
-    return { ...state, hits: action.hits };
+    return { ...state, hits: state.hits + 1 };
   case ACTIONS.SCORE:
     return { ...state, score: action.score };
   case 'TIMER':
