@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 export default class PlayersList extends Component {
   render() {
     const { ranking } = this.props;
+
+    ranking.sort((a, b) => b.score - a.score);
+
     return (
       <ul>
         { ranking.map(({ name, score, picture }, index) => (
