@@ -23,6 +23,9 @@ class Feedback extends React.Component {
     const ASSERTIONS = 3;
     return (
       <div>
+        <div>
+          <span data-testid="feedback-text">FIM DE JOGO!</span>
+        </div>
         <header>
           <img src="" alt="Gravatar" data-testid="header-profile-picture" />
           <span data-testid="header-player-name">{ playerName }</span>
