@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setLocalStorageThunk, setScore as setScoreAction } from '../actions';
+import {
+  fetchQuestionsThunk,
+  setLocalStorageThunk,
+  setScore as setScoreAction,
+} from '../actions';
 
 import '../App.css';
 import '../gameButton.css';
@@ -59,16 +63,16 @@ class game extends Component {
   }
 
   async fetchAPI() {
-    const response = await fetch('https://opentdb.com/api.php?amount=5');
-    const data = await response.json();
+    const { fetchQuestions } = this.props;
+    const data = await fetchQuestions();
 
-    const incorrectAnswers = data.results[0].incorrect_answers;
-    const correctAswer = data.results[0].correct_answer;
+    const incorrectAnswers = data[0].incorrect_answers;
+    const correctAswer = data[0].correct_answer;
     const allAnswers = [...incorrectAnswers, correctAswer];
     console.log(data);
 
     this.setState({
-      data: data.results,
+      data,
       answers: allAnswers.sort(),
     });
     return data;
@@ -181,11 +185,14 @@ game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = (dispath) => ({
   setScore: (score) => dispath(setScoreAction(score)),
   setLocalStorage: () => dispath(setLocalStorageThunk()),
+  fetchQuestions: () => dispath(fetchQuestionsThunk()),
 });
 
 export default connect(null, mapDispatchToProps)(game);
