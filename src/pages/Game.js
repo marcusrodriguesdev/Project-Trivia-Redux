@@ -5,10 +5,10 @@ import Header from '../components/Header';
 class Game extends React.Component {
   constructor() {
     super();
-
     this.state = {
       questions: [],
       isAnswered: false,
+      assertions: 0,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
@@ -26,11 +26,14 @@ class Game extends React.Component {
       .then((data) => this.setState({ questions: data.results }));
   }
 
-  selectHandler() {
+  selectHandler(e) {
     this.setState({ isAnswered: true });
-    // const { id } = e.target;
-    // if (id === 'correct') e.target.style.border = '3px solid rgb(6, 240, 15)';
-    // if (id === 'wrong') e.target.style.border = '3px solid rgb(255, 0, 0)';
+    const { id } = e.target;
+    if (id === 'correct') {
+      this.setState((prevState) => ({
+        assertions: prevState.assertions + 1,
+      }));
+    }
   }
 
   renderAlternative(isCorrect, content, index = 1) {
