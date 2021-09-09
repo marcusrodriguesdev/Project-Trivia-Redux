@@ -9,6 +9,9 @@ class Feedback extends React.Component {
     // const SCORE = 3;
     return (
       <div>
+        <div>
+          <span data-testid="feedback-text">FIM DE JOGO!</span>
+        </div>
         {/* Requisito 12 */}
         <header>
           <img src="" alt="Gravatar" data-testid="header-profile-picture" />
