@@ -58,9 +58,7 @@ class Game extends Component {
       });
       if (timer !== 0) addStop();
       addTimer(thirty);
-    } else {
-      history.push('/feedback');
-    }
+    } else { history.push('/feedback'); }
   }
 
   arrayAnswers({ incorrect_answers: incorrectAnswers, correct_answer: correctAnswer }) {
