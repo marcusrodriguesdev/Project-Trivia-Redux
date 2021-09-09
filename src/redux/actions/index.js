@@ -14,6 +14,10 @@ export const SET_SCORE = 'SET_SCORE';
 
 export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
 
+export const RESET_STATE_GAME = 'RESET_STATE_GAME';
+
+export const RESET_STATE_USER = 'RESET_STATE_USER';
+
 // Actions
 
 export const setData = (payload) => ({
@@ -39,6 +43,23 @@ export const setScore = (payload) => ({
 });
 
 export const setCorrectAnswer = (payload) => ({ type: SET_CORRECT_ANSWER, payload });
+
+export const resetStateUser = () => ({ type: RESET_STATE_USER,
+  payload: {
+    user: '',
+    email: '',
+    score: 0,
+    assertions: 0,
+  } });
+
+export const resetStateGame = () => ({ type: RESET_STATE_GAME,
+  payload: {
+    token: {},
+    stopWatch: {
+      isTimer: false,
+      resetTime: false,
+    },
+  } });
 
 // Thunk
 

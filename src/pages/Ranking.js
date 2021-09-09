@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Gravatar from '../components/gravatar';
+import { resetStateGame, resetStateUser } from '../redux/actions';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -14,25 +16,16 @@ class Ranking extends React.Component {
   }
 
   handleClick() {
-    const { history } = this.props;
+    const { history, resetUserGlobal, resetGameGlobal } = this.props;
     history.push('/');
+    resetGameGlobal();
+    resetUserGlobal();
   }
 
   render() {
     // Logica retirada na referência https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
     const userRanking = JSON.parse(localStorage.getItem('ranking'))
-      .sort((a, b) => {
-        const fa = a.picture.toLowerCase();
-        const fb = b.picture.toLowerCase();
-        const returnNegative = -1;
-        if (fa < fb) {
-          return returnNegative;
-        }
-        if (fa > fb) {
-          return 1;
-        }
-        return 0;
-      });
+      .sort((a, b) => b.score - a.score);
 
     return (
       <div>
@@ -58,8 +51,15 @@ class Ranking extends React.Component {
   }
 }
 
-export default Ranking;
+const mapDispatchToProps = (dispatch) => ({
+  resetUserGlobal: () => dispatch(resetStateUser()),
+  resetGameGlobal: () => dispatch(resetStateGame()),
+});
+
+export default connect(null, mapDispatchToProps)(Ranking);
 
 Ranking.propTypes = {
   history: PropTypes.objectOf(PropTypes.object).isRequired,
+  resetUserGlobal: PropTypes.func.isRequired,
+  resetGameGlobal: PropTypes.func.isRequired,
 };

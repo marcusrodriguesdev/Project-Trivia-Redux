@@ -42,7 +42,7 @@ class Question extends React.Component {
 
   calcPonts() {
     const {
-      difficulty, setScoreGlobal, setCorrectAnswersGlobal, correctAnswers,
+      difficulty, setScoreGlobal, setCorrectAnswersGlobal, correctAnswers, score,
     } = this.props;
     const timer = document.querySelector('#timer').innerHTML;
     const pontDifficulty = {
@@ -55,10 +55,12 @@ class Question extends React.Component {
     const stateLocal = JSON.parse(localStorage.getItem('state'));
     const newLocal = {
       ...stateLocal,
-      player: { ...stateLocal.player, score: total, assertions: correctAnswers + 1 },
+      player: {
+        ...stateLocal.player, score: score + total, assertions: correctAnswers + 1,
+      },
     };
     localStorage.setItem('state', JSON.stringify(newLocal));
-    setScoreGlobal(total);
+    setScoreGlobal(score + total);
     setCorrectAnswersGlobal(correctAnswers + 1);
   }
 
@@ -137,11 +139,13 @@ Question.propTypes = {
   difficulty: PropTypes.string.isRequired,
   setCorrectAnswersGlobal: PropTypes.func.isRequired,
   correctAnswers: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const MapStateToProps = (state) => ({
   isTimer: state.game.stopWatch.isTimer,
   correctAnswers: state.user.assertions,
+  score: state.user.score,
 });
 
 const MapDispachToProps = (dispatch) => ({
