@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../trivia.png';
 import { setDataUser, fetchToken } from '../redux/actions';
-import ButtonConfig from '../Components/ButtonConfig';
+import ButtonConfig from '../components/buttonConfig';
 
 // requisito 1
 class Login extends React.Component {
@@ -17,6 +17,16 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  setRanking() {
+    const { user, email } = this.state;
+    const localRanking = (
+      JSON.parse(localStorage.getItem('ranking')) === null
+        ? [] : JSON.parse(localStorage.getItem('ranking'))
+    );
+    const newLocalRanking = [...localRanking, { name: user, score: 0, picture: email }];
+    localStorage.setItem('ranking', JSON.stringify(newLocalRanking));
   }
 
   handleChange(event) {
@@ -41,6 +51,7 @@ class Login extends React.Component {
     delete userData.emailValidation;
     delete userData.userValidation;
     setData(userData);
+    this.setRanking();
   }
 
   render() {

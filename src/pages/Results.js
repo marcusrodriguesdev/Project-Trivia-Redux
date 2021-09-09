@@ -1,18 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Header from '../Components/Header';
+import Header from '../components/header';
 
 class Results extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
+    this.hadlerCLickRanking = this.hadlerCLickRanking.bind(this);
   }
 
   handleClick() {
     const { history } = this.props;
     history.push('/');
+  }
+
+  hadlerCLickRanking() {
+    const { history } = this.props;
+    history.push('/ranking');
   }
 
   render() {
@@ -40,6 +46,13 @@ class Results extends React.Component {
           data-testid="btn-play-again"
         >
           Jogar novamente
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ this.hadlerCLickRanking }
+        >
+          Ver Ranking
         </button>
       </div>
     );

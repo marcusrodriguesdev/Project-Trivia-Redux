@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   token: {
     response_code: 0,
     response_message: 'Token Generated Successfully!',
-    token: '6f659292fd2215338e3ea98143bc5901be0e3721e60f82fd2fac8f7e76808b81',
+    token: 'e0c200733f05384a37e830c2670aba1b3d5ca4fd7c541edf6a3c45034e9f8ba4',
   },
   stopWatch: {
     isTimer: false,
