@@ -3,8 +3,32 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 20vmin;  
   pointer-events: none;
+}
+
+.login-inputs {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 10px;
+}
+
+.input-email{
+  margin:4px;
+  margin-top:100px;
+}
+
+.input-name {
+  margin:4px;
+}
+
+.play-button {
+  margin:4px;
+  width: 100px;
+}
+
+.settings-button {
+  margin: 100px;
 }
 
 .red-border {

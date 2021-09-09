@@ -46,28 +46,30 @@ class Login extends React.Component {
     };
     const nameIsValid = name.length >= minLength;
     return (
-      <div>
-        <ConfigButton />
+      <div className="login-inputs">
         <input
+          className="input-email"
           data-testid="input-gravatar-email"
           type="email"
           name="email"
           value={ email }
-          placeholder="emaildobol@porexemplo.com"
+          placeholder="Insira seu e-mail"
           onChange={ this.handleLogin }
         />
         <input
+          className="input-name"
           data-testid="input-player-name"
           type="text"
           name="name"
           value={ name }
-          placeholder="amelhorsenhae12345"
+          placeholder="Insira seu nome"
           onChange={ this.handleLogin }
         />
         <Link
           to="/game"
         >
           <button
+            className="play-button"
             data-testid="btn-play"
             type="button"
             disabled={ !(emailIsValid() && nameIsValid) }
@@ -76,6 +78,9 @@ class Login extends React.Component {
             Jogar
           </button>
         </Link>
+        <div className="settings-button">
+          <ConfigButton />
+        </div>
       </div>
     );
   }

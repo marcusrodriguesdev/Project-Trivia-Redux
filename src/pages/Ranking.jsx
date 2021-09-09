@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import '../Ranking.css';
 
 class Ranking extends Component {
   getGameRank() {
@@ -10,7 +11,7 @@ class Ranking extends Component {
   render() {
     const playerScorePosition = JSON.parse(localStorage.getItem('ranking'));
     return (
-      <section>
+      <section className="ranking-info">
         <h2 data-testid="ranking-title">Ranking</h2>
         {playerScorePosition ? [...playerScorePosition.sort((a, b) => (
           b.score - a.score))]
@@ -24,10 +25,10 @@ class Ranking extends Component {
                 {player.score}
               </p>
             </div>
-          )) : <span>Deu ruim</span>}
+          )) : <span>Error</span>}
         <Link to="/">
           <button type="button" data-testid="btn-go-home">
-            Jogar novamente
+            Jogar Novamente
           </button>
         </Link>
       </section>
