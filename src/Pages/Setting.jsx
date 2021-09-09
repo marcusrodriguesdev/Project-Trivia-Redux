@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 
 class Setting extends Component {
   render() {
@@ -10,9 +9,5 @@ class Setting extends Component {
     );
   }
 }
-
-// Setting.propTypes = {
-
-// };
 
 export default Setting;
