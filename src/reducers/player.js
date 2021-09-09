@@ -3,6 +3,7 @@ import { SAVE_NAME, UPDATE_SCORE } from '../actions';
 const INITIAL_STATE = {
   name: '',
   score: 0,
+  assertions: 0,
 };
 
 function player(state = INITIAL_STATE, action) {
@@ -19,6 +20,7 @@ function player(state = INITIAL_STATE, action) {
     return {
       ...state,
       score: state.score + action.points,
+      assertions: state.assertions + 1,
     };
   default:
     return state;

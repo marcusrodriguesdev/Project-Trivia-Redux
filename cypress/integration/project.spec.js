@@ -395,7 +395,7 @@ describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve con
   });
 });
 
-describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida a pessoa usuária', () => {
+describe.only('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida a pessoa usuária', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -525,7 +525,7 @@ describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos result
   });
 });
 
-describe.only('15 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder jogar novamente', () => {
+describe('15 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder jogar novamente', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

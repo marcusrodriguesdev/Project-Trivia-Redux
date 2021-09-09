@@ -147,21 +147,14 @@ class Game extends Component {
     );
   }
 
-  updateTimer() {
-    const interval = 1000;
-    const setTime = setInterval(this.timer, interval);
-    return (setTime);
-  }
-
   nextQuestion() {
-    this.setState((prevstate) => ({
-      questionIndex: prevstate.questionIndex + 1,
+    this.setState({
       alreadyShuffled: false,
       timer: 30,
       over: false,
       answered: false,
       disabled: false,
-    }));
+    });
     const questionContainer = document.querySelectorAll('#question-container button');
     for (let index = 0; index < questionContainer.length; index += 1) {
       questionContainer[index].classList.remove('correct-answer');
@@ -170,13 +163,12 @@ class Game extends Component {
       questionContainer[index].classList.remove('wrong-answer-2');
     }
     const { questionIndex } = this.state;
-    const questionLength = 4;
-    if (questionIndex < questionLength) {
-      this.setState((prevstate) => ({
-        questionIndex: prevstate.questionIndex + 1,
-        disabled: false
-      }), () => this.updateTimer());
-    } else {
+    const FOUR = 4;
+    this.setState((prevstate) => ({
+      questionIndex: prevstate.questionIndex + 1,
+      disabled: false,
+    }));
+    if (questionIndex === FOUR) {
       this.setState({
         redirect: true,
       });
