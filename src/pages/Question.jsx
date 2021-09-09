@@ -43,23 +43,13 @@ class Question extends React.Component {
   }
 
   componentDidMount() {
-    // let { timer } = this.state;
-    const ONE_SECOND = 1000;
     this.getTriviaApiResponse();
     this.timeToRespond();
-    setInterval(() => { timer -= 1; }, ONE_SECOND);
-    console.log(timer);
   }
 
   componentDidUpdate() {
     const { countQuestion } = this.state;
     if (countQuestion === cinco) {
-      const { name, gravatarEmail, score, assertions } = this.props;
-      localStorage.setItem('state', JSON.stringify({
-        player: {
-          name, gravatarEmail, score, assertions,
-        },
-      }));
       return <Redirect to="/feedback" />;
     }
     document.querySelectorAll('#incorreta').forEach((button) => {
@@ -100,24 +90,26 @@ class Question extends React.Component {
   }
 
   borderColor({ target }) {
-    this.setState({ nextQuestion: true },
-      () => {
-        document.querySelectorAll('#incorreta').forEach((button) => {
-          button.className = 'red-border';
-        });
-        document.getElementById('correta').className = 'green-border';
+    this.setState({ nextQuestion: true }, () => {
+      document.querySelectorAll('#incorreta').forEach((button) => {
+        button.className = 'red-border';
       });
+      document.getElementById('correta').className = 'green-border';
+    });
     this.calculatedPoints(target);
   }
 
   timeToRespond() {
-    const THIRTY_SECONDS = 30000;
-    setInterval(
-      () => document.querySelectorAll('button').forEach((button) => {
-        button.disabled = true;
-      }),
-      THIRTY_SECONDS,
-    );
+    const ONE_SECOND = 1000;
+    setInterval(() => {
+      if (timer === 0) {
+        document.querySelectorAll('button').forEach((button) => {
+          button.disabled = true;
+        });
+        this.questionNext();
+      }
+      timer -= 1;
+    }, ONE_SECOND);
   }
 
   correctAnswer(alternative, index) {
@@ -158,6 +150,7 @@ class Question extends React.Component {
   }
 
   calculatedPoints(target) {
+    console.log(target.id, assertion, pontos);
     const { submitPlayerPoints } = this.props;
     if (target.id === 'correta') {
       assertion += 1;
@@ -176,9 +169,21 @@ class Question extends React.Component {
       default:
         break;
       }
-      pontos += (dez + (timer * difficultyValue));
+      pontos += dez + timer * difficultyValue;
     }
     submitPlayerPoints({ pontos, assertion });
+    const { name, gravatarEmail } = this.props;
+    localStorage.setItem(
+      'state',
+      JSON.stringify({
+        player: {
+          name,
+          score: pontos,
+          assertions: assertion,
+          gravatarEmail,
+        },
+      }),
+    );
   }
 
   render() {
@@ -187,11 +192,17 @@ class Question extends React.Component {
     if (loading) return <h1>Loading...</h1>;
     if (countQuestion === cinco) {
       const { name, gravatarEmail, score, assertions } = this.props;
-      localStorage.setItem('state', JSON.stringify({
-        player: {
-          name, gravatarEmail, score, assertions,
-        },
-      }));
+      localStorage.setItem(
+        'state',
+        JSON.stringify({
+          player: {
+            name,
+            score,
+            assertions,
+            gravatarEmail,
+          },
+        }),
+      );
       return <Redirect to="/feedback" />;
     }
 
@@ -206,9 +217,7 @@ class Question extends React.Component {
         <h2 data-testid="question-text">{questionTrivia.question}</h2>
         <span data-testid="question-category">{questionTrivia.category}</span>
         <div>
-          {alternatives.map((alternative, index) => this.Answer(
-            alternative, questionTrivia.correct_answer, index,
-          ))}
+          {alternatives.map((alternative, index) => this.Answer(alternative, questionTrivia.correct_answer, index))}
         </div>
         {nextQuestion ? this.questionNext() : ''}
       </div>
