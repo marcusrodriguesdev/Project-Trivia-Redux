@@ -1,11 +1,39 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { MD5 } from 'crypto-js';
+import { CONVERT_HASH, GRAVATAR } from '../components/Header';
+import PlayersList from '../components/PlayersList';
 
 class Ranking extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getLocalStorage = this.getLocalStorage.bind(this);
+  }
+
+  componentDidMount() {
+    const { name, score, email } = this.props;
+    const ranking = this.getLocalStorage();
+
+    localStorage
+      .setItem('ranking', JSON
+        .stringify([...ranking, {
+          name, score, picture: `${GRAVATAR}${CONVERT_HASH(email)}`,
+        }]));
+  }
+
+  getLocalStorage() {
+    return JSON.parse(localStorage.getItem('ranking'));
+  }
+
   render() {
     const { history } = this.props;
+    const ranking = this.getLocalStorage();
+
     return (
       <div>
+        <PlayersList ranking={ ranking } />
         <h1 data-testid="ranking-title">Ranking</h1>
         <button
           type="button"
@@ -25,4 +53,10 @@ Ranking.propTypes = {
   }).isRequired,
 };
 
-export default Ranking;
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  score: state.player.score,
+  email: state.player.email,
+});
+
+export default connect(mapStateToProps)(Ranking);
