@@ -100,12 +100,6 @@ class GamePage extends React.Component {
     btnNext.className = 'notDisplay';
   }
 
-  toggleNextButton() {
-    this.setState((previousValue) => ({
-      next: !previousValue.next,
-    }));
-  }
-
   showNextQuestion() {
     const { history } = this.props;
     const { questionNumber } = this.state;
