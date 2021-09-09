@@ -17,9 +17,9 @@ class Home extends React.Component {
     };
 
     this.fetchAndStoreQuestions = this.fetchAndStoreQuestions.bind(this);
-    this.handleClick = this.handleClick.bind(this);
     this.nextClick = this.nextClick.bind(this);
     this.setCurrentQuestion = this.setCurrentQuestion.bind(this);
+    this.setRankingInLocal = this.setRankingInLocal.bind(this);
   }
 
   componentDidMount() {
@@ -38,12 +38,25 @@ class Home extends React.Component {
     const state = {
       player: {
         name: '',
-        assertions: '',
+        assertions: 0,
         score: 0,
         gravatarEmail: '',
       },
     };
     localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  setRankingInLocal() {
+    const { email, user, score } = this.props;
+    const localRanking = JSON.parse(localStorage.getItem('ranking'));
+    const newLocal = localRanking.map((userRank) => {
+      if (userRank.picture === email && userRank.name === user) {
+        return { ...userRank, score };
+      }
+      return userRank;
+    });
+
+    localStorage.setItem('ranking', JSON.stringify(newLocal));
   }
 
   async fetchAndStoreQuestions() {
@@ -60,29 +73,12 @@ class Home extends React.Component {
     });
   }
 
-  handleClick() {
-    const { user, email } = this.props;
-    const localRanking = JSON.parse(localStorage.getItem('ranking'));
-    const newLocalRanking = [...localRanking, { name: user, score: 0, picture: email }];
-    localStorage.setItem('ranking', JSON.stringify(newLocalRanking));
-    const { history } = this.props;
-    history.push('/ranking');
-  }
-
   nextClick() {
     const { currentQuestionIndex, questions } = this.state;
     const newQuestionIndex = currentQuestionIndex + 1;
     if (newQuestionIndex === questions.length) {
-      const { history, email, score, user } = this.props;
-      const localRanking = JSON.parse(localStorage.getItem('ranking'));
-      const newLocal = localRanking.map((userRank) => {
-        if (userRank.picture === email && userRank.name === user) {
-          return { ...userRank, score };
-        }
-        return userRank;
-      });
-      localStorage.setItem('ranking', JSON.stringify(newLocal));
-      console.log(newLocal);
+      const { history } = this.props;
+      this.setRankingInLocal();
       history.push('/results');
     } else {
       this.setState({
@@ -113,9 +109,6 @@ class Home extends React.Component {
           nextClick={ this.nextClick }
           difficulty={ currentQuestion.difficulty }
         />
-        {/* <button type="button" data-testid="btn-ranking" onClick={ this.handleClick }>
-          Ver Ranking
-        </button> */}
         <StopWatch />
       </>
     );

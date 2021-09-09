@@ -5,11 +5,12 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import ConfigPage from './pages/ConfigPage';
 import Ranking from './pages/Ranking';
+import Results from './pages/Results';
 
 import './App.css';
 
 // requisito 1
-class App extends React.Component {P
+class App extends React.Component {
   componentDidMount() {
     const state = {
       player: {
@@ -31,8 +32,9 @@ class App extends React.Component {P
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route exact path="/game" component={ Home } />
-        <Route exact path="/configPage" component={ ConfigPage } />
         <Route exact path="/ranking" component={ Ranking } />
+        <Route exact path="/results" component={ Results } />
+        <Route exact path="/ConfigPage" component={ ConfigPage } />
       </Switch>
     );
   }

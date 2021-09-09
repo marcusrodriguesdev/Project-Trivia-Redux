@@ -21,6 +21,7 @@ const mapStateToProps = ({ user: { user, score, email } }) => ({
   score,
   email,
 });
+
 export default connect(mapStateToProps)(Header);
 
 Header.propTypes = {

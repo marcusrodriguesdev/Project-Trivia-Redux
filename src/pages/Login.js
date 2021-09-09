@@ -19,6 +19,16 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  setRanking() {
+    const { user, email } = this.state;
+    const localRanking = (
+      JSON.parse(localStorage.getItem('ranking')) === null
+        ? [] : JSON.parse(localStorage.getItem('ranking'))
+    );
+    const newLocalRanking = [...localRanking, { name: user, score: 0, picture: email }];
+    localStorage.setItem('ranking', JSON.stringify(newLocalRanking));
+  }
+
   handleChange(event) {
     const { value, name } = event.target;
     this.setState({ [name]: value }, () => {
@@ -41,6 +51,7 @@ class Login extends React.Component {
     delete userData.emailValidation;
     delete userData.userValidation;
     setData(userData);
+    this.setRanking();
   }
 
   render() {

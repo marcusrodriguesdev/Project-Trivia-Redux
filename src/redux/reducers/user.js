@@ -4,7 +4,7 @@ const ESTADO_INICIAL = {
   user: '',
   email: '',
   score: 0,
-  correctAnswers: 0,
+  assertions: 0,
 };
 
 function userReducer(state = ESTADO_INICIAL, action) {
@@ -18,12 +18,12 @@ function userReducer(state = ESTADO_INICIAL, action) {
   case SET_SCORE:
     return {
       ...state,
-      score: state.score + payload,
+      score: payload,
     };
   case SET_CORRECT_ANSWER:
     return {
       ...state,
-      correctAnswers: payload,
+      assertions: payload,
     };
   default:
     return state;

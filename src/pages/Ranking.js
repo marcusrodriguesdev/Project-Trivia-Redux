@@ -9,8 +9,28 @@ class Ranking extends React.Component {
     this.showRanking = this.showRanking.bind(this);
   }
 
+  componentDidMount() {
+    const userRanking = JSON.parse(localStorage.getItem('ranking'))
+      .sort((a, b) => {
+        if (a.score - b.score === 0) {
+          const fa = a.name.toLowerCase();
+          const fb = b.name.toLowerCase();
+
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        }
+        return b.score - a.score;
+      });
+
+    localStorage.setItem('ranking', JSON.stringify(userRanking));
+  }
+
   showRanking(name, score) {
-    // const { ranking } = this.state;
     this.setState((prevState) => ({ ranking: [...prevState.ranking, { name, score }] }));
   }
 
@@ -19,17 +39,19 @@ class Ranking extends React.Component {
     history.push('/');
   }
 
+  // eslint-disable-next-line max-lines-per-function
   render() {
     const userRanking = JSON.parse(localStorage.getItem('ranking'));
+
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         <ul>
-          { userRanking.map((user) => (
+          { userRanking.map((user, index) => (
             <li key={ user }>
               <Gravatar email={ user.email } />
-              <span>{user.name}</span>
-              <span>{user.score}</span>
+              <span data-testid={ `player-name-${index}` }>{user.name}</span>
+              <span data-testid={ `player-score-${index}` }>{user.score}</span>
             </li>
           ))}
         </ul>
