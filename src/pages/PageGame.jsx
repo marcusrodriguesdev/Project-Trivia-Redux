@@ -2,27 +2,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import NextQuestionButton from '../components/NextQuestionButton';
 
 import Timer from '../components/Timer';
+import Answers from '../components/Answers';
 
 class PageGame extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       counter: 0,
       imgPath: '',
+      disabledButtons: false,
       styleButtons: {
         correct: { border: '' },
         incorrect: { border: '' },
       },
-      running: true,
-      disabled: false,
+      isRunning: true,
     };
 
-    this.questionsSort = this.questionsSort.bind(this);
     this.handleImg = this.handleImg.bind(this);
     this.handleQuestionClick = this.handleQuestionClick.bind(this);
+    this.handleNextButton = this.handleNextButton.bind(this);
     this.handleTimeOut = this.handleTimeOut.bind(this);
+    this.timeExpired = this.timeExpired.bind(this);
   }
 
   async componentDidMount() {
@@ -38,67 +41,57 @@ class PageGame extends React.Component {
   }
 
   handleQuestionClick() {
+    const { isRunning } = this.state;
+    if (isRunning) {
+      this.setState({
+        styleButtons: {
+          correct: { border: '3px solid rgb(6, 240, 15)' },
+          incorrect: { border: '3px solid red' },
+        },
+        isRunning: false,
+      });
+    }
+  }
+
+  handleNextButton() {
+    const { counter } = this.state;
+    const lastIndexQuestion = 4;
+    if (counter < lastIndexQuestion) {
+      this.setState((prevState) => ({
+        counter: prevState.counter + 1,
+        isRunning: true,
+        styleButtons: {
+          correct: { border: '' },
+          incorrect: { border: '' },
+        },
+        disabledButtons: false,
+      }));
+    }
+  }
+
+  decreaseTime() {
+    this.setState((prevState) => ({
+      timeRemaining: prevState.timeRemaining - 1,
+    }));
+  }
+
+  timeExpired() {
     this.setState({
       styleButtons: {
         correct: { border: '3px solid rgb(6, 240, 15)' },
         incorrect: { border: '3px solid red' },
       },
-      running: false,
-      disabled: true,
+      isRunning: false,
     });
   }
 
-  // references https://flaviocopes.com/how-to-shuffle-array-javascript/
-  questionsSort() {
-    const initialNumber = -1;
-    const maxRange = 0.5;
-    const { counter, styleButtons, disabled } = this.state;
-    const { results } = this.props;
-    let incorrectAnswersIndex = initialNumber;
-    let allAnswers = [results[counter].correct_answer,
-      ...results[counter].incorrect_answers];
-    allAnswers = allAnswers.sort(() => Math.random() - maxRange);
-
-    return (
-      <div>
-        {allAnswers.map((answer) => {
-          if (answer === results[counter].correct_answer) {
-            return (
-              <button
-                onClick={ this.handleQuestionClick }
-                style={ styleButtons.correct }
-                className="correct-answer"
-                type="button"
-                data-testid="correct-answer"
-                disabled={ disabled }
-              >
-                {answer}
-              </button>);
-          }
-          incorrectAnswersIndex += 1;
-          return (
-            <button
-              onClick={ this.handleQuestionClick }
-              style={ styleButtons.incorrect }
-              className="wrong-answer"
-              type="button"
-              key={ incorrectAnswersIndex }
-              data-testid={ `wrong-answer-${incorrectAnswersIndex}` }
-              disabled={ disabled }
-            >
-              {answer}
-            </button>);
-        })}
-      </div>
-    );
-  }
-
   handleTimeOut() {
-    this.setState({ disabled: true });
+    this.setState({ disabledButtons: true });
   }
 
   render() {
-    const { counter, imgPath, running } = this.state;
+    const { counter, imgPath, isRunning, disabledButtons, styleButtons } = this.state;
+
     const { results, name } = this.props;
 
     if (results.length) {
@@ -116,11 +109,25 @@ class PageGame extends React.Component {
 
           <h2>Game</h2>
 
-          <Timer instaLose={ this.handleTimeOut } running={ running } />
+          <Timer
+            isRunning={ isRunning }
+            timeExpired={ this.timeExpired }
+            instaLose={ this.handleTimeOut }
+            counter={ counter }
+          />
 
           <h3 data-testid="question-category">{ results[counter].category }</h3>
           <p data-testid="question-text">{results[counter].question}</p>
-          { this.questionsSort() }
+          <Answers
+            counter={ counter }
+            disabledButtons={ disabledButtons }
+            styleButtons={ styleButtons }
+            handleQuestionClick={ this.handleQuestionClick }
+            results={ results }
+          />
+
+          { isRunning ? null
+            : <NextQuestionButton handleNextButton={ this.handleNextButton } /> }
 
         </div>
       );
@@ -135,9 +142,9 @@ const mapStateToProps = (state) => ({
 });
 
 PageGame.propTypes = {
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  results: PropTypes.string.isRequired,
-};
+  name: PropTypes.string,
+  email: PropTypes.string,
+  results: PropTypes.array,
+}.isRequired;
 
 export default connect(mapStateToProps)(PageGame);
