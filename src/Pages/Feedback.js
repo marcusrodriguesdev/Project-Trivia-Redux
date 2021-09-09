@@ -1,24 +1,35 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class Feedback extends React.Component {
   render() {
+    const { playerName, playerScore } = this.props;
+    // const SCORE = 3;
     return (
       <div>
         {/* Requisito 12 */}
         <header>
           <img src="" alt="Gravatar" data-testid="header-profile-picture" />
-          <span data-testid="header-player-name">Nome do Jogador</span>
-          <span data-testid="header-score">Placar</span>
+          <span data-testid="header-player-name">{ playerName }</span>
+          <span data-testid="header-score">{ playerScore }</span>
         </header>
 
         {/* Requisito 13 Mensagem de feedback,
         "Podia ser melhor..." para <3,
         "Mandou bem!" para >- 3 hits */}
-        <div>
-          <span data-testud="feedback-text"> Podia ser melhor </span>
-          <span data-testud="feedback-text"> Mandou bem! </span>
-        </div>
+        {/* {(playerScore >= SCORE)
+          ? (
+            <div>
+              <span data-testud="feedback-text"> Mandou bem! </span>
+            </div>
+          )
+          : (
+            <div>
+              <span data-testud="feedback-text"> Podia ser melhor </span>
+            </div>
+          )} */}
 
         {/* Requisito 14 */}
         <div>
@@ -40,9 +51,14 @@ class Feedback extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   userName: state.user.name, // checar a chave de usuario no state;
-// });
+Feedback.propTypes = {
+  playerName: PropTypes.string.isRequired,
+  playerScore: PropTypes.number.isRequired,
+};
 
-// export default (mapStateToProps)(Feedback);
-export default Feedback;
+const mapStateToProps = (state) => ({
+  playerName: state.player.name,
+  playerScore: state.player.score,
+});
+
+export default connect(mapStateToProps)(Feedback);
