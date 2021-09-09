@@ -5,3 +5,11 @@
 .incorrect-answer {
   border: 3px solid red;
 }
+
+.notDisplay {
+  display: none;
+}
+
+.display {
+  display: inherit;
+}

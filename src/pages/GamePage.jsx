@@ -12,7 +12,6 @@ class GamePage extends React.Component {
     super(props);
 
     this.state = {
-      next: false,
       questionNumber: 0,
       seconds: 30,
     };
@@ -36,6 +35,7 @@ class GamePage extends React.Component {
     const { seconds } = this.state;
     if (seconds === 0) {
       clearInterval(this.countDown);
+      this.applyColor();
     }
   }
 
@@ -44,6 +44,7 @@ class GamePage extends React.Component {
     const { questions: { results }, getScore, getAssertions, player } = this.props;
     const { difficulty, correct_answer: correctAnswer } = results[questionNumber];
     const difficultyScore = { easy: 1, medium: 2, hard: 3 };
+    this.applyColor();
 
     if (name === correctAnswer) {
       const STATIC_POINT = 10;
@@ -65,32 +66,38 @@ class GamePage extends React.Component {
     }, ONE_SECOND);
   }
 
-  applyColor(e) {
+  applyColor() {
     const correct = document.querySelector('.correct');
     correct.className = 'correct correct-answer';
+    correct.disabled = true;
 
     const incorrect = document.querySelectorAll('.incorrect');
     incorrect.forEach((item) => {
       item.className = 'incorrect incorrect-answer';
+      item.disabled = true;
       return item;
     });
 
+    const btnNext = document.querySelector('#btn-next');
+    btnNext.className = 'display';
+
     clearInterval(this.countDown);
-    this.calculateScore(e);
-    this.toggleNextButton();
   }
 
   removeColor() {
     const correct = document.querySelector('.correct');
     correct.className = 'correct default';
+    correct.disabled = false;
 
     const incorrect = document.querySelectorAll('.incorrect');
     incorrect.forEach((item) => {
       item.className = 'incorrect default';
+      item.disabled = false;
       return item;
     });
 
-    this.toggleNextButton();
+    const btnNext = document.querySelector('#btn-next');
+    btnNext.className = 'notDisplay';
   }
 
   toggleNextButton() {
@@ -117,7 +124,7 @@ class GamePage extends React.Component {
   }
 
   render() {
-    const { next, questionNumber, seconds } = this.state;
+    const { questionNumber, seconds } = this.state;
     return (
       <div>
         <p>{ seconds }</p>
@@ -126,21 +133,20 @@ class GamePage extends React.Component {
         />
 
         <Alternatives
-          applyColor={ this.applyColor }
+          calculateScore={ this.calculateScore }
           questionNumber={ questionNumber }
-          seconds={ seconds }
-          next={ next }
         />
 
         <div>
-          { next && (
-            <button
-              type="button"
-              onClick={ this.showNextQuestion }
-              data-testid="btn-next"
-            >
-              Proxima
-            </button>) }
+          <button
+            type="button"
+            onClick={ this.showNextQuestion }
+            data-testid="btn-next"
+            id="btn-next"
+            className="notDisplay"
+          >
+            Proxima
+          </button>
         </div>
       </div>
     );

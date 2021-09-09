@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import decode from '../GlobalFuncs/DecodeFunc';
 
 class Alternatives extends React.Component {
-  displayAnswer(applyColor) {
-    const { questions: { results }, seconds, questionNumber, next } = this.props;
+  displayAnswer(calculateScore) {
+    const { questions: { results }, questionNumber } = this.props;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
@@ -28,9 +28,8 @@ class Alternatives extends React.Component {
               type="button"
               data-testid={ answer === correctAnswer ? 'correct-answer'
                 : `wrong-answer-${wrongIndex.indexOf(answer)}` }
-              disabled={ seconds === 0 || next }
               className={ answer === correctAnswer ? 'correct' : 'incorrect' }
-              onClick={ applyColor }
+              onClick={ calculateScore }
               name={ answer }
             >
               { decode(answer) }
@@ -42,10 +41,10 @@ class Alternatives extends React.Component {
   }
 
   render() {
-    const { loading, applyColor } = this.props;
+    const { loading, calculateScore } = this.props;
     return (
       <div>
-        {!loading && this.displayAnswer(applyColor)}
+        {!loading && this.displayAnswer(calculateScore)}
       </div>
     );
   }
@@ -57,14 +56,12 @@ const mapStateToProps = (state) => ({
 });
 
 Alternatives.propTypes = {
-  applyColor: PropTypes.func.isRequired,
+  calculateScore: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   questionNumber: PropTypes.number.isRequired,
   questions: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
-  seconds: PropTypes.number.isRequired,
-  next: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Alternatives);
