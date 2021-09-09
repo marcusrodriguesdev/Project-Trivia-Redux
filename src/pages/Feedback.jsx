@@ -26,7 +26,7 @@ class Feedback extends Component {
           {' pontos!'}
         </p>
         <Link to="/ranking">
-          <button type="button">VER RANKING</button>
+          <button type="button" data-testid="btn-ranking">VER RANKING</button>
         </Link>
         <Link to="/">
           <button type="button" data-testid="btn-play-again">JOGAR NOVAMENTE</button>
