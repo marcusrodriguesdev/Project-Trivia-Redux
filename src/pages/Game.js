@@ -99,6 +99,9 @@ class Game extends React.Component {
         data-testid="btn-next"
         type="button"
         className="submit"
+        onClick={ () => this.setState((previState) => ({
+          questionIndex: previState.questionIndex + 1,
+        })) }
       >
         PRÓXIMA
       </button>
@@ -127,7 +130,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions, assertions, score, isAnswered } = this.state;
+    const { questions, assertions, score, isAnswered, questionIndex } = this.state;
     return (
       <>
         <Header
@@ -137,22 +140,24 @@ class Game extends React.Component {
         <div className="game-page">
           { this.renderQuestion() }
           <div className="alternatives-container">
-            {questions[0] ? (
-              [questions[0].correct_answer, ...questions[0].incorrect_answers]
+            {questions[questionIndex] ? (
+              [questions[questionIndex].correct_answer,
+                ...questions[questionIndex].incorrect_answers]
                 .sort()
                 .map((answer) => {
-                  if (answer === questions[0].correct_answer) {
+                  if (answer === questions[questionIndex].correct_answer) {
                     return this.renderAlternative(true, answer);
                   }
                   return this.renderAlternative(
                     false,
                     answer,
-                    questions[0].incorrect_answers.findIndex((el) => el === answer),
+                    questions[questionIndex].incorrect_answers
+                      .findIndex((el) => el === answer),
                   );
                 })
             ) : (
               <>
-                { this.renderAlternative(true, ' ', 0) }
+                { this.renderAlternative(true, ' ', questionIndex) }
                 { this.renderAlternative(false, ' ', 1) }
               </>
             )}
