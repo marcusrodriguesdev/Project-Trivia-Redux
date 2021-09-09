@@ -10,23 +10,32 @@ class Feedback extends React.Component {
     const storageInfos = localStorage.getItem('state');
     const scorePlayer = JSON.parse(storageInfos);
     return (
-      <header>
-        <h1 data-testid="feedback-text">Feedbacks</h1>
-        <div data-testid="header-profile-picture">{avatar}</div>
-        <p data-testid="header-player-name">{name}</p>
-        <div data-testid="header-score">{scorePlayer.player.score}</div>
-        {scorePlayer.player.assertions < tres ? (
-          <p data-testid="feedback-text">Podia ser melhor...</p>
-        ) : (
-          ''
-        )}
-        {scorePlayer.player.assertions >= tres ? (
-          <p data-testid="feedback-text">Mandou bem!</p>
-        ) : (
-          ''
-        )}
-        <div>
-          {/* Requisito 15 */}
+      <div>
+        <header>
+          <h1 data-testid="feedback-text">Feedbacks</h1>
+          <div data-testid="header-profile-picture">{avatar}</div>
+          <p data-testid="header-player-name">{name}</p>
+          <div data-testid="header-score">{scorePlayer.player.score}</div>
+          {scorePlayer.player.assertions < tres ? (
+            <p data-testid="feedback-text">Podia ser melhor...</p>
+          ) : (
+            ''
+          )}
+          {scorePlayer.player.assertions >= tres ? (
+            <p data-testid="feedback-text">Mandou bem!</p>
+          ) : (
+            ''
+          )}
+        </header>
+        <section>
+          <h4>Pontuação Final:</h4>
+          <span data-testid="feedback-total-score">
+            {scorePlayer.player.score}
+          </span>
+          <h4>Número de questões corretas:</h4>
+          <span data-testid="feedback-total-question">
+            {scorePlayer.player.assertions}
+          </span>
           <button
             type="button"
             data-testid="btn-play-again"
@@ -34,7 +43,6 @@ class Feedback extends React.Component {
           >
             Jogar novamente
           </button>
-          {/* Requisito 16 */}
           <button
             type="button"
             data-testid="btn-ranking"
@@ -42,8 +50,8 @@ class Feedback extends React.Component {
           >
             Ver Ranking
           </button>
-        </div>
-      </header>
+        </section>
+      </div>
     );
   }
 }
@@ -61,3 +69,4 @@ Feedback.propTypes = {
 };
 
 export default connect(mapStateToProps)(Feedback);
+// Teste
