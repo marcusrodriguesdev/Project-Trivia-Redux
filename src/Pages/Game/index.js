@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setScore } from '../../actions';
 import './index.css';
+import localHelper from './helper';
 
 class Game extends Component {
   constructor() {
@@ -107,8 +108,7 @@ class Game extends Component {
       return;
     }
     const ten = 10;
-    const points = this.switchValue(difficulty);
-    const total = ten + (timer * points);
+    const total = ten + (timer * this.switchValue(difficulty));
     this.setState({
       totalScore: totalScore + total,
       assertions: assertions + 1,
@@ -136,9 +136,9 @@ class Game extends Component {
       });
       this.stopWatch();
     } else {
-      const { history, Score, dados } = this.props;
-      const { name, email, profile } = dados;
+      const { history, Score, dados: { name, email, profile } } = this.props;
       Score({ name, email, profile, score, assertions });
+      localHelper({ name, score, profile });
       history.push('/feedback');
     }
   }
