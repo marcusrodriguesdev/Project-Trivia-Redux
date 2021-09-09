@@ -30,6 +30,17 @@ class Login extends Component {
     await this.getToken();
 
     playerInfo({ email, name });
+    localStorage.setItem(
+      'state',
+      JSON.stringify({
+        player: {
+          name: '',
+          score: 0,
+          assertions: 0,
+          gravatarEmail: '',
+        },
+      }),
+    );
     history.push('/jogo');
   }
 

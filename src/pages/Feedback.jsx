@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const tres = 3;
+const timer = -1;
 
 class Feedback extends React.Component {
   render() {
