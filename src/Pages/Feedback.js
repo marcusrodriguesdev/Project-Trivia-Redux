@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 class Feedback extends React.Component {
   render() {
-    const { playerName, playerScore } = this.props;
-    // const SCORE = 3;
+    const { playerName, playerScore, playerAssertions } = this.props;
+    const ASSERTIONS = 3;
     return (
       <div>
         {/* Requisito 12 */}
@@ -19,17 +19,15 @@ class Feedback extends React.Component {
         {/* Requisito 13 Mensagem de feedback,
         "Podia ser melhor..." para <3,
         "Mandou bem!" para >- 3 hits */}
-        {/* {(playerScore >= SCORE)
-          ? (
-            <div>
-              <span data-testud="feedback-text"> Mandou bem! </span>
-            </div>
-          )
-          : (
-            <div>
-              <span data-testud="feedback-text"> Podia ser melhor </span>
-            </div>
-          )} */}
+        <div>
+          <p
+            data-testid="feedback-text"
+          >
+            {(playerAssertions >= ASSERTIONS)
+              ? 'Mandou bem!'
+              : 'Podia ser melhor...'}
+          </p>
+        </div>
 
         {/* Requisito 14 */}
         <div>
@@ -52,12 +50,14 @@ class Feedback extends React.Component {
 }
 
 Feedback.propTypes = {
+  playerAssertions: PropTypes.number.isRequired,
   playerName: PropTypes.string.isRequired,
   playerScore: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   playerName: state.player.name,
+  playerAssertions: state.player.assertions,
   playerScore: state.player.score,
 });
 
