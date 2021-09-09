@@ -7,29 +7,25 @@ class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      score: 1,
-      message: '',
-      correctAnswers: 0,
-    };
+    this.getAssertions = this.getAssertions.bind(this);
+    this.getScore = this.getScore.bind(this);
   }
 
-  FeedbackMensage() {
-    const { score } = this.state;
-    const tryAgain = 'Podia ser melhor...';
-    const goodJob = 'Mandou bem!';
-    const MIN_SCORE = 3;
-    // recuperar score
-    if (score < MIN_SCORE) {
-      this.setState = ({ message: tryAgain });
-    } else {
-      this.setState = ({ message: goodJob });
-    }
+  getAssertions() {
+    const playerData = JSON.parse(localStorage.getItem('state'));
+    return playerData.player.assertions;
+  }
+
+  getScore() {
+    const playerData = JSON.parse(localStorage.getItem('state'));
+    return playerData.player.score;
   }
 
   render() {
-    const { score, message, correctAnswers } = this.state;
     const { picture, name } = this.props;
+    const assertions = this.getAssertions();
+    const MIN_ASSERTIONS = 3;
+    const score = this.getScore();
 
     return (
       <div>
@@ -38,9 +34,11 @@ class Feedback extends React.Component {
           <h4 data-testid="header-player-name">{ name }</h4>
           <h6 data-testid="header-score">{ score }</h6>
         </header>
-        <h2 data-testid="feedback-text">{ message }</h2>
-        <h6 data-testid="feedback-total-score">{score}</h6>
-        <h6 data-testid="feedback-total-question">{ correctAnswers }</h6>
+        <h2 data-testid="feedback-text">
+          { assertions < MIN_ASSERTIONS ? 'Podia ser melhor...' : 'Mandou bem!'}
+        </h2>
+        <h6 data-testid="feedback-total-score">{ score }</h6>
+        <h6 data-testid="feedback-total-question">{ assertions }</h6>
         <Link to="/">
           <button
             data-testid="btn-play-again"
