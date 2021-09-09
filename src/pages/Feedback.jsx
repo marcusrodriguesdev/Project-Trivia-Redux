@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import save from '../services/saveToLocal';
 import FeedbackHeader from '../components/FeedbackHeader';
 import FeedbackMsg from '../components/FeedbackMsg';
 
 class Feedback extends Component {
   render() {
-    const { hits, score } = this.props;
+    const { name, image, hits, score } = this.props;
+    save(name, image, score);
     return (
       <div>
         Tela de Feedback
@@ -26,7 +28,7 @@ class Feedback extends Component {
         <Link to="/ranking">
           <button type="button">VER RANKING</button>
         </Link>
-        <Link to="/login">
+        <Link to="/">
           <button type="button" data-testid="btn-play-again">JOGAR NOVAMENTE</button>
         </Link>
       </div>
@@ -36,11 +38,15 @@ class Feedback extends Component {
 
 Feedback.propTypes = {
   hits: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   hits: state.reducer.hits,
+  name: state.reducer.name,
+  image: state.reducer.image,
   score: state.reducer.score,
 });
 
