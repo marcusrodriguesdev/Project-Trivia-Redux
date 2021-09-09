@@ -13,6 +13,7 @@ class Game extends Component {
       alreadyShuffled: false,
       questionIndex: 0,
       disabled: false,
+      answered: false,
     };
     this.bindings();
   }
@@ -46,7 +47,7 @@ class Game extends Component {
     this.renderCorrectButton = this.renderCorrectButton.bind(this);
     this.renderIncorrectButton = this.renderIncorrectButton.bind(this);
     this.countdownTimer = this.countdownTimer.bind(this);
-    this.handleClass = this.handleClass.bind(this);
+    this.handleClickAnswer = this.handleClickAnswer.bind(this);
     this.renderTimer = this.renderTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.timeIsOver = this.timeIsOver.bind(this);
@@ -55,27 +56,29 @@ class Game extends Component {
   }
 
   handleScore(questionIndex) {
-    const ten = 10;
-    const um = 1;
-    const dois = 2;
-    const três = 3;
+    const TEN = 10;
+    const ONE = 1;
+    const TWO = 2;
+    const THREE = 3;
     const { questions, updateScoreProp } = this.props;
-    let questionDifficulty = questions[questionIndex].difficulty;
+    const difficultyQ = questions[questionIndex].difficulty;
+    let rightDifficulty = Buffer.from(difficultyQ, 'base64').toString('utf-8');
     const { timer } = this.state;
-    if (questionDifficulty === 'easy') {
-      questionDifficulty = um;
-    } else if (questionDifficulty === 'medium') {
-      questionDifficulty = dois;
-    } else if (questionDifficulty === 'hard') {
-      questionDifficulty = três;
+    if (rightDifficulty === 'easy') {
+      rightDifficulty = ONE;
+    } else if (rightDifficulty === 'medium') {
+      rightDifficulty = TWO;
+    } else if (rightDifficulty === 'hard') {
+      rightDifficulty = THREE;
     }
-    const currentScore = (ten + (timer * questionDifficulty));
+    const currentScore = (TEN + (timer * rightDifficulty));
     updateScoreProp(currentScore);
   }
 
-  handleClass(event) {
+  handleClickAnswer(event) {
     this.setState({
       disabled: true,
+      answered: true,
     });
 
     const { target } = event;
@@ -153,47 +156,79 @@ class Game extends Component {
   nextQuestion() {
     this.setState((prevstate) => ({
       questionIndex: prevstate.questionIndex + 1,
-      disabled: false }));
+      alreadyShuffled: false,
+      timer: 30,
+      over: false,
+      answered: false,
+      disabled: false,
+    }));
+    const questionContainer = document.querySelectorAll('#question-container button');
+    for (let index = 0; index < questionContainer.length; index += 1) {
+      questionContainer[index].classList.remove('correct-answer');
+      questionContainer[index].classList.remove('wrong-answer-0');
+      questionContainer[index].classList.remove('wrong-answer-1');
+      questionContainer[index].classList.remove('wrong-answer-2');
+    }
   }
 
   renderCorrectButton(questions, questionIndex, index, disabled) {
-    return (
-      <button
-        key={ index }
-        type="button"
-        disabled={ disabled }
-        data-testid="correct-answer"
-        onClick={ (event) => {
-          this.handleClass(event);
-          this.handleScore(questionIndex);
-        } }
-      >
-        {questions[questionIndex].correct_answer}
-      </button>
-    );
+    const base64Correct = JSON.stringify(questions[questionIndex].correct_answer);
+    if (base64Correct !== undefined) {
+      const buffCorrect = Buffer.from(base64Correct, 'base64');
+      const stringCorrect = buffCorrect.toString('utf-8');
+      return (
+        <button
+          key={ index }
+          type="button"
+          disabled={ disabled }
+          data-testid="correct-answer"
+          onClick={ (event) => {
+            this.handleClickAnswer(event);
+            this.handleScore(questionIndex);
+          } }
+        >
+          {stringCorrect}
+        </button>
+      );
+    }
   }
 
   renderIncorrectButton(questions, questionIndex, index, disabled) {
-    return (
-      <button
-        key={ index }
-        type="button"
-        disabled={ disabled }
-        data-testid={ `wrong-answer-${index}` }
-        onClick={ this.handleClass }
-      >
-        {questions[questionIndex].incorrect_answers[index]}
-      </button>
-    );
+    const base64Incorrect = JSON
+      .stringify(questions[questionIndex].incorrect_answers[index]);
+    if (base64Incorrect !== undefined) {
+      const buffIncorrect = Buffer.from(base64Incorrect, 'base64');
+      const stringIncorrect = buffIncorrect.toString('utf-8');
+      return (
+        <button
+          key={ index }
+          type="button"
+          disabled={ disabled }
+          data-testid={ `wrong-answer-${index}` }
+          onClick={ this.handleClickAnswer }
+        >
+          {stringIncorrect}
+        </button>
+      );
+    }
+    // const stringIncorrect = decodeURIComponent(questions[questionIndex].incorrect_answers[index]);
   }
 
   renderQuestion(questions, shuffledArray, questionIndex, over) {
+    const base64Category = JSON.stringify(questions[questionIndex].category);
+    const buffCategory = Buffer.from(base64Category, 'base64');
+    const stringCategory = buffCategory.toString('utf-8');
+
+    const base64Question = JSON.stringify(questions[questionIndex].question);
+    const buffQuestion = Buffer.from(base64Question, 'base64');
+    const stringQuestion = buffQuestion.toString('utf-8');
+
     if (questions.length > 1) {
       const { disabled } = this.state;
       return (
-        <div>
-          <h4 data-testid="question-category">{questions[questionIndex].category}</h4>
-          <p data-testid="question-text">{questions[questionIndex].question}</p>
+        <div id="question-container">
+          <h4 data-testid="question-category">{stringCategory}</h4>
+          <p data-testid="question-text">{stringQuestion}</p>
           {shuffledArray.map((element) => (
             element.correct
               ? this
@@ -211,7 +246,13 @@ class Game extends Component {
   }
 
   renderTimer() {
-    const { timer } = this.state;
+    const { answered, timer, interval } = this.state;
+    if (answered) {
+      clearInterval(interval);
+      return (
+        <h2>{timer}</h2>
+      );
+    }
     return (
       <h2>{timer}</h2>
     );

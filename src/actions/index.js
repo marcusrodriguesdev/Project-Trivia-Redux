@@ -22,9 +22,9 @@ export const saveToken = (token) => ({
 export const getToken = () => async (dispatch) => {
   const response = await fetch('https://opentdb.com/api_token.php?command=request');
   const objToken = await response.json();
-  dispatch(saveToken(objToken));
+  dispatch(saveToken(objToken)); // https://opentdb.com/api.php?amount=5&encode=url3986&token=${objToken.token}
   localStorage.setItem('token', objToken.token);
-  const response2 = await fetch(`https://opentdb.com/api.php?amount=5&token=${objToken.token}`);
+  const response2 = await fetch(`https://opentdb.com/api.php?amount=5&encode=base64&token=${objToken.token}`);
   const objQuestions = await response2.json();
   dispatch(saveQuestions(objQuestions));
 };
