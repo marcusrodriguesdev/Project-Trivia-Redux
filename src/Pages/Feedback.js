@@ -31,8 +31,8 @@ class Feedback extends React.Component {
 
         {/* Requisito 14 */}
         <div>
-          <span data-testid="feedback-total-score">Placar Final</span>
-          <span data-testid="feedback-total-question">Acertou x perguntas</span>
+          <span data-testid="feedback-total-score">{ playerScore }</span>
+          <span data-testid="feedback-total-question">{ playerAssertions }</span>
         </div>
 
         {/* Requisito 15 */}
