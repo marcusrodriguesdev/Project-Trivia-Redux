@@ -45,5 +45,5 @@ export default connect(mapStateToProps, null)(Feedback);
 
 Feedback.propTypes = {
   dados: PropTypes.objectOf(PropTypes.string).isRequired,
-  history: PropType.objectOf(PropTypes.string).isRequired,
+  history: PropTypes.objectOf(PropTypes.string).isRequired,
 };
