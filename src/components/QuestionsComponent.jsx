@@ -28,12 +28,11 @@ class QuestionsComponent extends React.Component {
   handleClickCorrect() {
     const { setAnswerCorrects } = this.props;
     const { answersCorrects } = this.state;
-    // this.setState({
-    //   answerSelected: true,
-    //   answersCorrects: answersCorrects + 1,
-    // });
-    this.setState((prevstate) => ({ answersCorrects: prevstate.answersCorrects + 1 }));
-    console.log(answersCorrects);
+    this.setState({
+      answerSelected: true,
+      answersCorrects: answersCorrects + 1,
+    });
+    // this.setState((prevstate) => ({ answersCorrects: prevstate.answersCorrects + 1 }));
     setAnswerCorrects(answersCorrects);
   }
 
