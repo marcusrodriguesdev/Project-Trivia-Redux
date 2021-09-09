@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setScore } from '../../actions';
 import './index.css';
 
 class Game extends Component {
   constructor() {
     super();
-
     this.state = {
       questions: {},
       questionNumber: 0,
@@ -19,7 +19,6 @@ class Game extends Component {
       assertions: 0,
       showButton: true,
     };
-
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -71,7 +70,6 @@ class Game extends Component {
 
   switchValue(difficuty) {
     const hardPoints = 3;
-
     switch (difficuty) {
     case 'easy':
       return 1;
@@ -96,7 +94,6 @@ class Game extends Component {
     this.stopTimer();
     const { questions, questionNumber, timer, totalScore, assertions } = this.state;
     const { difficulty } = questions[questionNumber];
-
     const { dados } = this.props;
     if (target.textContent !== questions[questionNumber].correct_answer) {
       const profile = {
@@ -109,29 +106,25 @@ class Game extends Component {
       this.setState({ showButton: false });
       return;
     }
-
     const ten = 10;
     const points = this.switchValue(difficulty);
     const total = ten + (timer * points);
-
     this.setState({
       totalScore: totalScore + total,
       assertions: assertions + 1,
       showButton: false,
     });
-
     const profile = {
       name: dados.name,
       assertions: assertions + 1,
       score: totalScore + total,
       gravatarEmail: dados.email,
     };
-
     localStorage.setItem('state', JSON.stringify({ player: profile }));
   }
 
   nextQuestion() {
-    const { questionNumber } = this.state;
+    const { questionNumber, totalScore } = this.state;
     const four = 4;
     if (questionNumber < four) {
       this.setState({
@@ -143,14 +136,15 @@ class Game extends Component {
       });
       this.stopWatch();
     } else {
-      const { history } = this.props;
+      const { history, Score, dados } = this.props;
+      const { name, email, profile } = dados;
+      Score(name, email, profile, totalScore);
       history.push('/feedback');
     }
   }
 
   renderAnswers() {
     const { questions, questionNumber, redBorder, greenBorder, disable } = this.state; // Testando o git hub
-
     const answers = [...questions[questionNumber].incorrect_answers,
       questions[questionNumber].correct_answer];
     const index = -1;
@@ -190,7 +184,6 @@ class Game extends Component {
     const { loading, questionNumber, timer, showButton } = this.state;
     if (loading) return <h1>loading</h1>;
     const { questions } = this.state;
-
     return (
       <div>
         <header>
@@ -241,9 +234,16 @@ const mapStateToProps = (state) => ({
   dados: state.loginReducer,
 });
 
-export default connect(mapStateToProps, null)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  Score: (name, email, profile, score) => dispatch(
+    setScore(name, email, profile, score),
+  ),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
   dados: PropTypes.objectOf(PropTypes.string).isRequired,
   history: PropTypes.objectOf(PropTypes.string).isRequired,
+  Score: PropTypes.func.isRequired,
 };
