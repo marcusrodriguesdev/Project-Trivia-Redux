@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { MD5 } from 'crypto-js';
 import { CONVERT_HASH, GRAVATAR } from '../components/Header';
 import PlayersList from '../components/PlayersList';
 
@@ -12,16 +11,16 @@ class Ranking extends React.Component {
     this.getLocalStorage = this.getLocalStorage.bind(this);
   }
 
-  componentDidMount() {
-    const { name, score, email } = this.props;
-    const ranking = this.getLocalStorage();
+  // componentDidMount() {
+  //   const { name, score, email } = this.props;
+  //   const ranking = this.getLocalStorage();
 
-    localStorage
-      .setItem('ranking', JSON
-        .stringify([...ranking, {
-          name, score, picture: `${GRAVATAR}${CONVERT_HASH(email)}`,
-        }]));
-  }
+  //   localStorage
+  //     .setItem('ranking', JSON
+  //       .stringify([...ranking, {
+  //         name, score, picture: `${GRAVATAR}${CONVERT_HASH(email)}`,
+  //       }]));
+  // }
 
   getLocalStorage() {
     return JSON.parse(localStorage.getItem('ranking'));

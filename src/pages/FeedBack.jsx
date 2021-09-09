@@ -1,9 +1,26 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
+import Header, { CONVERT_HASH, GRAVATAR } from '../components/Header';
 
 class FeedBack extends React.Component {
+  componentDidMount() {
+    const { player: { name, score, email } } = this.props;
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+
+    if (Object.prototype.hasOwnProperty.call(localStorage, 'ranking')) {
+      localStorage
+        .setItem('ranking', JSON
+          .stringify([...ranking, {
+            name, score, picture: `${GRAVATAR}${CONVERT_HASH(email)}`,
+          }]));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([{
+        name, score, picture: `${GRAVATAR}${CONVERT_HASH(email)}`,
+      }]));
+    }
+  }
+
   render() {
     const { history, player: { score, assertions } } = this.props;
     const checkAssertion = () => {
