@@ -17,6 +17,7 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.formsComponent = this.formsComponent.bind(this);
   }
 
   setRanking() {
@@ -54,49 +55,63 @@ class Login extends React.Component {
     this.setRanking();
   }
 
-  render() {
+  formsComponent() {
     const { emailValidation, userValidation } = this.state;
     return (
+      <form className="login-container-forms">
+        <fieldset className="login-container-inputs">
+          <label htmlFor="user">
+            <input
+              id="user"
+              type="text"
+              name="user"
+              placeholder="User"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+              required
+              className="login-container-user"
+            />
+          </label>
+          <label htmlFor="email" className="teste">
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Email"
+              data-testid="input-gravatar-email"
+              required
+              onChange={ this.handleChange }
+              className="login-container-email"
+            />
+          </label>
+          <button
+            type="submit"
+            data-testid="btn-play"
+            disabled={ userValidation || emailValidation }
+            onClick={ this.handleClick }
+            className="btn btn-login"
+          >
+            Jogar
+          </button>
+          <ButtonConfig />
+        </fieldset>
+      </form>
+    );
+  }
 
-      <>
-        <img src={ logo } className="App-logo" alt="logo" />
-        <h1>Login</h1>
-        <form>
-          <fieldset>
-            <label htmlFor="user">
-              <input
-                id="user"
-                type="text"
-                name="user"
-                placeholder="User"
-                data-testid="input-player-name"
-                onChange={ this.handleChange }
-                required
-              />
-            </label>
-            <label htmlFor="email">
-              <input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="Email"
-                data-testid="input-gravatar-email"
-                required
-                onChange={ this.handleChange }
-              />
-            </label>
-            <button
-              type="submit"
-              data-testid="btn-play"
-              disabled={ userValidation || emailValidation }
-              onClick={ this.handleClick }
-            >
-              Jogar
-            </button>
-            <ButtonConfig />
-          </fieldset>
-        </form>
-      </>
+  render() {
+    return (
+      <div className="login-container">
+        <img
+          src={ logo }
+          className="login-container-logo"
+          alt="logo"
+        />
+        <h1 className="login-container-title">Login</h1>
+        {
+          this.formsComponent()
+        }
+      </div>
 
     );
   }

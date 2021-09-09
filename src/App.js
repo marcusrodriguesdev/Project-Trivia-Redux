@@ -7,7 +7,7 @@ import ConfigPage from './pages/ConfigPage';
 import Ranking from './pages/Ranking';
 import Results from './pages/Results';
 
-import './App.css';
+import './Style/App.css';
 
 // requisito 1
 class App extends React.Component {

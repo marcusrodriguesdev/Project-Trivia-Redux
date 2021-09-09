@@ -1,0 +1,32 @@
+.login-container
+  @include display-flex-column($justify: space-evenly)
+  height: 100vh
+  background: linear-gradient(#32a4a8, white)
+
+  &-logo
+    width: 50%
+
+  &-title
+    font-size: 3rem
+    font-weight: 300
+
+  &-forms
+    width: 80%
+
+  &-inputs
+    height: 50vh
+    width: 100%
+    @include display-flex-column
+
+  input
+    border: none
+    border-bottom: 2px solid gray
+    font-size: 1.5rem
+    position: relative
+    top: 0
+    left: 0
+    border-radius: 1rem
+    padding: 1rem
+    outline: none
+    background: none
+    z-index: 1

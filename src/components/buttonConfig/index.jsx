@@ -10,6 +10,7 @@ export default class ButtonConfig extends Component {
             type="button"
             data-testid="btn-settings"
             onClick={ this.redirectConfigPage }
+            className="btn btn-config"
           >
             <p data-testid="settings-title"> ConfigPage </p>
           </button>
