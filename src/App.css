@@ -88,17 +88,18 @@
   width: 50%;
 }
 
-.alternatives-container p {
+.alternatives-container div {
   background-color: #bdbdbdf8;
   cursor: pointer;
   font-size: 24px;
+  margin: 4px 0;
   padding: 8px 0;
   text-align: center;
   transition: all 0.2s;
   width: 90%;
 }
 
-.alternatives-container p:hover {
+.alternatives-container div:hover {
   transform: scale(1.03);
 }
 
