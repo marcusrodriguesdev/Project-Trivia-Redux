@@ -9,13 +9,11 @@ class Header extends Component {
     const { name, score, imgURL } = this.props;
     return (
       <header className="trivia-header">
-        {/* <div className="player-info-container"> */}
-        <div>
+        <div className="player-info-container">
           <img data-testid="header-profile-picture" src={ imgURL } alt="gravatar" />
           <p data-testid="header-player-name">{ name }</p>
         </div>
-        <p data-testid="header-score">{ score }</p>
-        {/* </div> */}
+        <p data-testid="header-score" className="header-score">{ `Pontos: ${score}` }</p>
       </header>
     );
   }

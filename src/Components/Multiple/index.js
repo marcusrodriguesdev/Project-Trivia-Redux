@@ -103,31 +103,35 @@ class Multiple extends Component {
       const correct = answers.find((text) => text === correctAnswer);
       return (
         <>
-          <p data-testid="question-category">{category}</p>
-          <p data-testid="question-text">{question}</p>
-          { answers.map((answer, mapIndex) => (
-            correct === answer
-              ? (
-                <Button
-                  key={ mapIndex }
-                  text={ correct }
-                  id="correct-answer"
-                  dataTest="correct-answer"
-                  onClick={ this.handleClick }
-                  disabled={ isClicked }
-                />
-              )
-              : (
-                <Button
-                  key={ mapIndex }
-                  text={ answer }
-                  id="wrong-answer"
-                  dataTest={ `wrong-answer-${index}` }
-                  onClick={ this.handleClick }
-                  disabled={ isClicked }
-                />
-              )
-          )) }
+          <div className="trivia-game-question">
+            <p data-testid="question-category">{category}</p>
+            <p data-testid="question-text">{question}</p>
+          </div>
+          <div className="trivia-game-buttons">
+            { answers.map((answer, mapIndex) => (
+              correct === answer
+                ? (
+                  <Button
+                    key={ mapIndex }
+                    text={ correct }
+                    id="correct-answer"
+                    dataTest="correct-answer"
+                    onClick={ this.handleClick }
+                    disabled={ isClicked }
+                  />
+                )
+                : (
+                  <Button
+                    key={ mapIndex }
+                    text={ answer }
+                    id="wrong-answer"
+                    dataTest={ `wrong-answer-${index}` }
+                    onClick={ this.handleClick }
+                    disabled={ isClicked }
+                  />
+                )
+            )) }
+          </div>
         </>
       );
     }
@@ -143,15 +147,18 @@ class Multiple extends Component {
     }
     if (redirect) return <Redirect to="/feedback" />;
     return (
-      <>
-        { this.renderQuestionAndAnswers() }
-        { isVisible
+      <div className="trivia-game">
+        <div className="trivia-game-container">
+          { this.renderQuestionAndAnswers() }
+          { isVisible
         && <Button
           text="Próxima"
           dataTest="btn-next"
           onClick={ this.changeQuestion }
         />}
-      </>
+        </div>
+
+      </div>
     );
   }
 }

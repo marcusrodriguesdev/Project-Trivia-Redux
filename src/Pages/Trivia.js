@@ -11,7 +11,7 @@ class Trivia extends Component {
   render() {
     const { statusCronometer } = this.props;
     return (
-      <div>
+      <div className="trivia-page">
         <Header />
         <Multiple />
         { statusCronometer === 'on' ? <Timer /> : null }
