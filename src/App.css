@@ -90,13 +90,20 @@
 
 .alternatives-container .alternative {
   background-color: #bdbdbdf8;
+  border: none;
   cursor: pointer;
   font-size: 24px;
   margin: 4px 0;
   padding: 8px 0;
   text-align: center;
+  transition: transform 200ms;
   width: 90%;
 }
+
+.alternatives-container .alternative:hover {
+  transform: scale(1.03);
+}
+
 
 .alternatives-container .submit {
   background-color: #61dafb;
