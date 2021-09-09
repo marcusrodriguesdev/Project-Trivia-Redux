@@ -7,20 +7,20 @@ const tres = 3;
 class Feedback extends React.Component {
   render() {
     const { avatar, name } = this.props;
-    const storageInfos = localStorage.getItem('player');
+    const storageInfos = localStorage.getItem('state');
     const scorePlayer = JSON.parse(storageInfos);
     return (
       <header>
         <h1 data-testid="feedback-text">Feedbacks</h1>
         <div data-testid="header-profile-picture">{avatar}</div>
         <p data-testid="header-player-name">{name}</p>
-        <div data-testid="header-score">{scorePlayer.score}</div>
-        {scorePlayer.assertions < tres ? (
+        <div data-testid="header-score">{scorePlayer.player.score}</div>
+        {scorePlayer.player.assertions < tres ? (
           <p data-testid="feedback-text">Podia ser melhor...</p>
         ) : (
           ''
         )}
-        {scorePlayer.assertions >= tres ? (
+        {scorePlayer.player.assertions >= tres ? (
           <p data-testid="feedback-text">Mandou bem!</p>
         ) : (
           ''

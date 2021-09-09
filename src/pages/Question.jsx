@@ -55,8 +55,10 @@ class Question extends React.Component {
     const { countQuestion } = this.state;
     if (countQuestion === cinco) {
       const { name, gravatarEmail, score, assertions } = this.props;
-      localStorage.setItem('player', JSON.stringify({
-        name, gravatarEmail, score, assertions,
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name, gravatarEmail, score, assertions,
+        },
       }));
       return <Redirect to="/feedback" />;
     }
@@ -185,8 +187,10 @@ class Question extends React.Component {
     if (loading) return <h1>Loading...</h1>;
     if (countQuestion === cinco) {
       const { name, gravatarEmail, score, assertions } = this.props;
-      localStorage.setItem('player', JSON.stringify({
-        name, gravatarEmail, score, assertions,
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name, gravatarEmail, score, assertions,
+        },
       }));
       return <Redirect to="/feedback" />;
     }
