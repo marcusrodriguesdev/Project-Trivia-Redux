@@ -10,7 +10,7 @@ class Feedback extends React.Component {
     return (
       <div>
         <div>
-          <span data-testid="feedback-text">FIM DE JOGO</span>
+          <span data-testid="feedback-text">FIM DE JOGO!</span>
         </div>
         {/* Requisito 12 */}
         <header>
