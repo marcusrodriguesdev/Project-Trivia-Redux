@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { updateScore } from '../actions';
 import Header from '../components/Header';
 import setInitialState from '../helpers';
@@ -15,6 +16,7 @@ class Game extends Component {
       alreadyShuffled: false,
       questionIndex: 0,
       disabled: false,
+      redirect: false,
     };
     this.bindings();
   }
@@ -143,6 +145,17 @@ class Game extends Component {
   }
 
   nextQuestion() {
+    const questionIndex = this.state;
+    const questionLength = 4;
+    if (questionIndex < questionLength) {
+      this.setState((prevstate) => ({
+        questionIndex: prevstate.questionIndex + 1,
+        disabled: false }));
+    } else {
+      this.setState({
+        redirect: true,
+      });
+    }
     this.setState((prevstate) => ({
       questionIndex: prevstate.questionIndex + 1,
       disabled: false,
@@ -212,7 +225,10 @@ class Game extends Component {
 
   render() {
     const { questions } = this.props;
-    const { over, shuffledArray, questionIndex, disabled } = this.state;
+    const { over, shuffledArray, questionIndex, disabled, redirect } = this.state;
+    if (redirect) {
+      return (<Redirect to="/FeedBack" />);
+    }
     return (
       <div>
         <Header />
