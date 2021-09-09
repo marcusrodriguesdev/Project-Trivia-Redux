@@ -7,7 +7,7 @@ class FeedBack extends Component {
     return (
       <div>
         <Header />
-        <h2 data-testid="feedback-text">Deu não eihn!</h2>
+        <h2 data-testid="feedback-text">agora vai eihn!</h2>
         <Link to="/">
           <button
             type="button"

@@ -143,19 +143,13 @@ class Game extends Component {
     );
   }
 
-  updateTimer() {
-    const interval = 1000;
-    const setTime = setInterval(this.timer, interval);
-    return (setTime);
-  }
-
   nextQuestion() {
     const { questionIndex } = this.state;
     const questionLength = 4;
     if (questionIndex < questionLength) {
       this.setState((prevstate) => ({
         questionIndex: prevstate.questionIndex + 1,
-        disabled: false }), () => this.updateTimer());
+        disabled: false }));
     } else {
       this.setState({
         redirect: true,
@@ -226,8 +220,7 @@ class Game extends Component {
 
   render() {
     const { questions } = this.props;
-    const {
-      over, shuffledArray, questionIndex, disabled, redirect } = this.state;
+    const { over, shuffledArray, questionIndex, disabled, redirect } = this.state;
     if (redirect) {
       return (<Redirect to="/FeedBack" />);
     }
