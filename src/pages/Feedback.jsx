@@ -53,7 +53,6 @@ class Feedback extends React.Component {
             type="button"
           >
             Ver Ranking
-            {/* adicionar test id no titulo da page ranking */}
           </button>
         </Link>
       </div>
