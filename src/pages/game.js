@@ -186,7 +186,6 @@ game.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   fetchQuestions: PropTypes.func.isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = (dispath) => ({
