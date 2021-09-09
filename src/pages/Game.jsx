@@ -106,35 +106,33 @@ class Game extends Component {
 
   arrayAnswersButtons() {
     const { trivia, index, border, randomKey, next } = this.state;
-    const { stop } = this.props;
-    const { timer } = this.props;
+    const { stop, timer } = this.props;
     let buttonDisabled = timer <= 0;
     if (stop === true) buttonDisabled = true;
     let newArray = this.arrayAnswers(trivia[index]);
-    newArray = newArray
-      .map((element, indic) => (indic < newArray.length - 1 ? (
+    newArray = newArray.map((element, indic) => (indic < newArray.length - 1 ? (
+      <button
+        className="wrong"
+        type="button"
+        data-testid={ `wrong-answer-${indic}` }
+        onClick={ this.addBorder }
+        style={ border.wrongStyle }
+        disabled={ buttonDisabled }
+      >
+        {element}
+      </button>)
+      : (
         <button
-          className="wrong"
+          name={ trivia[index].difficulty }
+          className="correct"
           type="button"
-          data-testid={ `wrong-answer-${indic}` }
+          data-testid="correct-answer"
           onClick={ this.addBorder }
-          style={ border.wrongStyle }
+          style={ border.correctStyle }
           disabled={ buttonDisabled }
         >
           {element}
-        </button>)
-        : (
-          <button
-            name={ trivia[index].difficulty }
-            className="correct"
-            type="button"
-            data-testid="correct-answer"
-            onClick={ this.addBorder }
-            style={ border.correctStyle }
-            disabled={ buttonDisabled }
-          >
-            {element}
-          </button>)));
+        </button>)));
     if (randomKey) {
       this.randomizeAnswers(newArray);
     }
