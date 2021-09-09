@@ -2,23 +2,32 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import playAction from '../Redux/Action';
 
 class Feedback extends React.Component {
+  constructor() {
+    super();
+    this.resetPoints = this.resetPoints.bind(this);
+  }
+
+  resetPoints() {
+    const { resetScoreAssertion } = this.props;
+    resetScoreAssertion({
+      score: 0,
+      assertions: 0,
+    });
+  }
+
   render() {
     const { playerName, playerScore, playerAssertions } = this.props;
     const ASSERTIONS = 3;
     return (
       <div>
-        {/* Requisito 12 */}
         <header>
           <img src="" alt="Gravatar" data-testid="header-profile-picture" />
           <span data-testid="header-player-name">{ playerName }</span>
           <span data-testid="header-score">{ playerScore }</span>
         </header>
-
-        {/* Requisito 13 Mensagem de feedback,
-        "Podia ser melhor..." para <3,
-        "Mandou bem!" para >- 3 hits */}
         <div>
           <p
             data-testid="feedback-text"
@@ -28,21 +37,29 @@ class Feedback extends React.Component {
               : 'Podia ser melhor...'}
           </p>
         </div>
-
-        {/* Requisito 14 */}
         <div>
           <span data-testid="feedback-total-score">{ playerScore }</span>
           <span data-testid="feedback-total-question">{ playerAssertions }</span>
         </div>
 
-        {/* Requisito 15 */}
         <Link to="/">
-          <button type="button" data-testid="btn-play-again">Jogar novamente</button>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ this.resetPoints }
+          >
+            Jogar novamente
+          </button>
         </Link>
 
-        {/* Requisito 16 */}
         <Link to="/ranking">
-          <button type="button" data-testid="btn-ranking">Ver Ranking</button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.resetPoints }
+          >
+            Ver Ranking
+          </button>
         </Link>
       </div>
     );
@@ -53,6 +70,7 @@ Feedback.propTypes = {
   playerAssertions: PropTypes.number.isRequired,
   playerName: PropTypes.string.isRequired,
   playerScore: PropTypes.number.isRequired,
+  resetScoreAssertion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -61,4 +79,8 @@ const mapStateToProps = (state) => ({
   playerScore: state.player.score,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  resetScoreAssertion: (payload) => dispatch(playAction(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

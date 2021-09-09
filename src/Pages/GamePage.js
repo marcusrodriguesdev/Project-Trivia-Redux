@@ -88,14 +88,29 @@ class GamePage extends Component {
 
   nextButtonClick() {
     const { index, questionIsAnswered } = this.state;
+    const { playerName, playerScore, playerEmail } = this.props;
     const { history } = this.props;
     const MAX_INDEX = 4;
+    // Gravatar //
+    const imgPath = 'https://www.gravatar.com/avatar/$ce11fce876c93ed5d2a72da660496473';
+    const hash = md5(playerEmail).toString();
+    const image = `${imgPath}${hash}`;
     if (index < MAX_INDEX) {
       this.setState({
         index: index + 1,
         questionIsAnswered: !questionIsAnswered,
       });
     } else {
+      let rank = JSON.parse(localStorage.getItem('ranking'));
+      const player = {
+        name: playerName,
+        picture: image,
+        score: playerScore,
+      };
+      rank.push(player);
+      rank = JSON.stringify(rank);
+      localStorage.setItem('ranking', rank);
+
       history.push('/feedback');
     }
   }

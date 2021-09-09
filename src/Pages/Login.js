@@ -24,6 +24,8 @@ class Login extends Component {
     const { updateNameEmail, sendTokenToState } = this.props;
     sendTokenToState();
     updateNameEmail({ gravatarEmail, name });
+    const rank = localStorage.getItem('ranking');
+    if (!rank) localStorage.setItem('ranking', '[]');
   }
 
   handleChange({ target }) {
