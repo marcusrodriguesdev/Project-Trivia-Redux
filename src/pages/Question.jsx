@@ -96,6 +96,7 @@ class Question extends Component {
         gravatarEmail,
       },
     };
+
     if (!localStorage.getItem('state')) {
       localStorage.setItem('state', JSON.stringify(playerInfo));
     }

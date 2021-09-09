@@ -15,6 +15,8 @@ function playerReducer(state = INITIAL_STATE, action) {
       ...state,
       name: action.payload.name,
       gravatarEmail: action.payload.email,
+      assertions: 0,
+      score: 0,
     };
   case SET_TOKEN:
     return {

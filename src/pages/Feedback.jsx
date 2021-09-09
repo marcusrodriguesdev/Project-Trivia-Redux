@@ -10,6 +10,8 @@ class Feedback extends Component {
     this.handleEmailConversion = this.handleEmailConversion.bind(this);
     this.handleFeedbackMessage = this.handleFeedbackMessage.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleSaveScore = this.handleSaveScore.bind(this);
+    this.handleSaveLocal = this.handleSaveLocal.bind(this);
   }
 
   handleEmailConversion() {
@@ -25,9 +27,31 @@ class Feedback extends Component {
     return assertions >= minAssertion ? 'Mandou bem!' : 'Podia ser melhor...';
   }
 
-  handleClick() {
+  handleSaveScore() {
+    const { name, score } = this.props;
+    const picture = this.handleEmailConversion();
+    return {
+      name,
+      score,
+      picture,
+    };
+  }
+
+  handleSaveLocal() {
+    const rankingData = this.handleSaveScore();
+    const savedData = JSON.parse(localStorage.getItem('ranking'));
+    if (!savedData) {
+      localStorage.setItem('ranking', JSON.stringify([rankingData]));
+    } else {
+      savedData.push(rankingData);
+      localStorage.setItem('ranking', JSON.stringify(savedData));
+    }
+  }
+
+  handleClick(nameRoute) {
     const { history } = this.props;
-    history.push('/');
+    this.handleSaveLocal();
+    history.push(nameRoute);
   }
 
   render() {
@@ -55,9 +79,16 @@ class Feedback extends Component {
         <button
           data-testid="btn-play-again"
           type="button"
-          onClick={ this.handleClick }
+          onClick={ () => this.handleClick('/') }
         >
           Jogar novamente
+        </button>
+        <button
+          data-testid="btn-ranking"
+          type="button"
+          onClick={ () => this.handleClick('/ranking') }
+        >
+          Ver Ranking
         </button>
       </>
     );
