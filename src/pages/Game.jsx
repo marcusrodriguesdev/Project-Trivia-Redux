@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateScore } from '../actions';
+import { Redirect } from 'react-router-dom';
 
 class Game extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class Game extends Component {
       alreadyShuffled: false,
       questionIndex: 0,
       disabled: false,
+      redirect: false,
     };
     this.bindings();
   }
@@ -151,10 +153,17 @@ class Game extends Component {
   }
 
   nextQuestion() {
-    this.setState((prevstate) => ({
-      questionIndex: prevstate.questionIndex + 1,
-      disabled: false
-    }));
+    const questionIndex = this.state;
+    const questionLength = 4;
+    if (questionIndex < questionLength) {
+      this.setState((prevstate) => ({
+        questionIndex: prevstate.questionIndex + 1,
+        disabled: false }));
+    } else {
+      this.setState({
+        redirect: true,
+      });
+    }
   }
 
   renderCorrectButton(questions, questionIndex, index, disabled) {
@@ -220,7 +229,10 @@ class Game extends Component {
 
   render() {
     const { name, questions, score } = this.props;
-    const { over, shuffledArray, questionIndex, disabled } = this.state;
+    const { over, shuffledArray, questionIndex, disabled, redirect } = this.state;
+    if (redirect) {
+      return (<Redirect to="/FeedBack" />);
+    }
     return (
       <div>
         <header>

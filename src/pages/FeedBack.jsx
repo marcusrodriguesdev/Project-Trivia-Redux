@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 class FeedBack extends Component {
   render() {
-    const { name } = this.props;
+    const { name, score } = this.props;
     return (
       <header>
         <img
@@ -16,7 +16,7 @@ class FeedBack extends Component {
           { name }
         </h3>
         <p data-testid="correct-answer">test</p>
-        <p data-testid="header-score">3</p>
+        <p data-testid="header-score">{ score }</p>
         <button type="button" data-testid="btn-next">test</button>
       </header>
     );
@@ -25,10 +25,12 @@ class FeedBack extends Component {
 
 const mapStateToProps = (state) => ({
   name: state.player.name,
+  score: state.player.score,
 });
 
 FeedBack.propTypes = {
   name: PropTypes.string.isRequired,
+  score: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(FeedBack);
