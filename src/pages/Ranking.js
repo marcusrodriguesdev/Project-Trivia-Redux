@@ -19,21 +19,21 @@ class Ranking extends React.Component {
   }
 
   render() {
-    const userRanking = JSON.parse(localStorage.getItem('ranking'))
     // Logica retirada na referência https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
+    const userRanking = JSON.parse(localStorage.getItem('ranking'))
       .sort((a, b) => {
         if (a.score - b.score === 0) {
           const fa = a.picture.toLowerCase();
           const fb = b.picture.toLowerCase();
-          const retunrNegative = -1;
+          const returnNegative = -1;
           if (fa < fb) {
-            return retunrNegative;
+            return returnNegative;
           }
           if (fa > fb) {
             return 1;
           }
+          return 0;
         }
-
         return b.score - a.score;
       });
 
