@@ -7,16 +7,37 @@ class Game extends React.Component {
     super();
     this.state = {
       questions: [],
+      questionIndex: 0,
       isAnswered: false,
       assertions: 0,
+      isTimeOver: false,
+      time: 30,
+      countdown: {},
+      score: 0,
     };
 
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.selectHandler = this.selectHandler.bind(this);
+    this.interval = this.interval.bind(this);
+    this.renderButton = this.renderButton.bind(this);
+    this.renderQuestion = this.renderQuestion.bind(this);
   }
 
   componentDidMount() {
     this.fetchQuestions();
+    this.interval();
+  }
+
+  interval() {
+    const interval = 1000;
+    const countdown = setInterval(() => {
+      this.setState((previousState) => ({
+        time: previousState.time - 1,
+      }));
+    }, interval);
+    this.setState({
+      countdown,
+    });
   }
 
   fetchQuestions() {
@@ -27,47 +48,94 @@ class Game extends React.Component {
   }
 
   selectHandler(e) {
+    const { questionIndex, questions, time } = this.state;
+    let points;
+    const HARD_POINT = 3;
+    const TEN = 10;
     this.setState({ isAnswered: true });
     const { id } = e.target;
-    if (id === 'correct') {
-      this.setState((prevState) => ({
-        assertions: prevState.assertions + 1,
-      }));
-    }
+    if (id === 'wrong') return;
+    if (questions.length > 0) {
+      if (id === 'correct') {
+        if (questions[questionIndex].difficulty === 'easy') {
+          points = 1;
+        } else if (questions[questionIndex].difficulty === 'medium') {
+          points = 2;
+        } else if (questions[questionIndex].difficulty === 'hard') {
+          points = HARD_POINT;
+        }
+      }
+    } else points = TEN;
+    this.setState((prevState) => ({
+      assertions: prevState.assertions + 1,
+      score: prevState.score + TEN + (time * points),
+    }));
   }
 
   renderAlternative(isCorrect, content, index = 1) {
-    const { isAnswered } = this.state;
+    const { isAnswered, isTimeOver } = this.state;
     const style = isAnswered ? { border: isCorrect
       ? '3px solid rgb(6, 240, 15)' : '3px solid rgb(255, 0, 0)' } : {};
     return (
-      <div
+      <button
         id={ isCorrect ? 'correct' : 'wrong' }
         style={ style }
+        className="alternative"
+        disabled={ isTimeOver }
         onClick={ this.selectHandler }
-        role="button"
         tabIndex={ 0 }
+        type="button"
         onKeyDown={ (e) => console.log(e.key) }
         data-testid={ `${isCorrect ? 'correct-answer' : `wrong-answer${index}`}` }
       >
         { content }
+      </button>
+    );
+  }
+
+  renderButton() {
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        className="submit"
+      >
+        PRÓXIMA
+      </button>
+    );
+  }
+
+  renderQuestion() {
+    const { time, countdown, isTimeOver, questions } = this.state;
+    if (time === 0 && !isTimeOver) {
+      clearInterval(countdown);
+      this.setState({
+        isTimeOver: true,
+      });
+    }
+    return (
+      <div className="questions-container">
+        <h1 data-testid="question-category">CATEGORY</h1>
+        <p data-testid="question-text">
+          {questions[0] ? questions[0].question : '' }
+        </p>
+        <h2>
+          { `TEMPO: ${time}` }
+        </h2>
       </div>
     );
   }
 
   render() {
-    const { questions } = this.state;
-    console.log(questions);
+    const { questions, assertions, score, isAnswered } = this.state;
     return (
       <>
-        <Header />
+        <Header
+          assertions={ assertions }
+          score={ score }
+        />
         <div className="game-page">
-          <div className="questions-container">
-            <h1 data-testid="question-category">CATEGORY</h1>
-            <p data-testid="question-text">
-              {questions[0] ? questions[0].question : '' }
-            </p>
-          </div>
+          { this.renderQuestion() }
           <div className="alternatives-container">
             {questions[0] ? (
               [questions[0].correct_answer, ...questions[0].incorrect_answers]
@@ -88,7 +156,7 @@ class Game extends React.Component {
                 { this.renderAlternative(false, ' ', 1) }
               </>
             )}
-            <button type="button">PRÓXIMA</button>
+            { isAnswered && this.renderButton()}
           </div>
         </div>
       </>
