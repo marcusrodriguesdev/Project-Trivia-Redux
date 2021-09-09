@@ -145,9 +145,8 @@ class game extends Component {
       return loading;
     }
     return (
-      <div className="App">
+      <div>
         <HeaderInfo />
-        Tela de jogo
         <div className={ tighten ? 'show' : 'question-board' }>
           <h1 data-testid="question-category">{data[id].category}</h1>
           <h2 data-testid="question-text">{data[id].question}</h2>

@@ -11,7 +11,6 @@ class HeaderInfo extends React.Component {
   render() {
     const { propState } = this.props;
     const { name, score, gravatarImagem } = propState;
-    console.log(gravatarImagem);
     return (
       <div>
         <img

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
 import Input from '../components/Input';
-import logo from '../trivia.png';
+import logo from '../logo.jpeg';
 import { actionFunctionThunk, getTokenApi, setEmail } from '../actions';
 
 class login extends Component {
