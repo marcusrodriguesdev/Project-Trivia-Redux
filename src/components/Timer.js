@@ -15,12 +15,11 @@ export default class Timer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { isRunning, timeExpired, counter, instaLose } = this.props;
+    const { isRunning, timeExpired, counter } = this.props;
 
     if (prevState.seconds === 1) {
       clearInterval(this.timer);
       timeExpired();
-      instaLose();
     }
     if (!isRunning) {
       clearInterval(this.timer);
@@ -31,6 +30,9 @@ export default class Timer extends Component {
   }
 
   startTimer() {
+    const { getRemainingTime } = this.props;
+    const { seconds } = this.state;
+    getRemainingTime(seconds);
     this.setState({ seconds: 30 });
     const ONE_SECOND = 1000;
     this.timer = setInterval(() => {
