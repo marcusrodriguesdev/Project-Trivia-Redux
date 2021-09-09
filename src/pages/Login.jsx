@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import { logged } from '../redux/actions';
+import { logged, setScore } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,6 +18,11 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.validateButton = this.validateButton.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { getScore } = this.props;
+    getScore(0);
   }
 
   validateButton() {
@@ -91,6 +96,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getInfo: (name, email) => dispatch(logged(name, email)),
+  getScore: (score) => dispatch(setScore(score)),
 });
 
 Login.propTypes = {
@@ -98,6 +104,7 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  getScore: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
