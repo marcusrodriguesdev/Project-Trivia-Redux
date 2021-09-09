@@ -40,12 +40,14 @@ class Game extends Component {
       score: 0,
       gravatarEmail: '',
     } };
-    localStorage.setItem('state', JSON.stringify(player));
-    localStorage.setItem('ranking', JSON.stringify([]));
-    // ranking = [
-    //   { name: nome-da-pessoa, score: 10, picture: url-da-foto-no-gravatar }
-    // ]
 
+    // const playerLocal = JSON.parse(localStorage.getItem('player'));
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    localStorage.setItem('state', JSON.stringify(player));
+
+    if (ranking === null) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
     this.createClock();
   }
 
@@ -91,11 +93,11 @@ class Game extends Component {
       break;
     }
     const number = 10;
+    const { assertions, difficulty, time } = this.state;
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
+
     if (id === results[next].correct_answer) {
       this.setState((prev) => ({ assertions: prev.assertions + 1 }), () => {
-        const { assertions, difficulty, time } = this.state;
-        const { player: { score } } = JSON.parse(localStorage.getItem('state'));
-
         const player = { player: {
           name,
           assertions,
@@ -105,6 +107,9 @@ class Game extends Component {
         localStorage.setItem('state', JSON.stringify(player));
         this.setState({ score: player.player.score });
       });
+    } else {
+      const player = { player: { name, assertions, score, gravatarEmail: email } };
+      localStorage.setItem('state', JSON.stringify(player));
     }
   }
 
@@ -116,6 +121,16 @@ class Game extends Component {
       correct: 'correct-answer-css ',
       disabled: true,
     });
+  }
+
+  createRanking() {
+    const player = JSON.parse(localStorage.getItem('state'));
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const profileAvatar = `https://www.gravatar.com/avatar/${md5(player.player.gravatarEmail).toString()}`;
+    const newRaking = [
+      ...ranking,
+      { name: player.player.name, score: player.player.score, picture: profileAvatar }];
+    localStorage.setItem('ranking', JSON.stringify(newRaking));
   }
 
   nextQuestion() {
@@ -133,13 +148,10 @@ class Game extends Component {
       });
       this.createClock();
     }
-    const player = JSON.parse(localStorage.getItem('state'));
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
-    const profileAvatar = `https://www.gravatar.com/avatar/${md5(player.player.gravatarEmail).toString()}`;
-    const newRaking = [...ranking, { ...player.player, profileAvatar }];
+
     if (next + 1 > results.length - 1) {
       history.push('/feedback');
-      localStorage.setItem('ranking', JSON.stringify(newRaking));
+      this.createRanking();
     }
   }
 
