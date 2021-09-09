@@ -6,7 +6,7 @@ const tres = 3;
 
 class Feedback extends React.Component {
   render() {
-    const { avatar, name, history } = this.props;
+    const { avatar, name } = this.props;
     const storageInfos = localStorage.getItem('state');
     const scorePlayer = JSON.parse(storageInfos);
     return (
@@ -55,8 +55,7 @@ const mapStateToProps = (state) => ({
 Feedback.propTypes = {
   avatar: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  history: PropTypes.objectOf().isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
-// Teste erro lint
+// Teste
