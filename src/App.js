@@ -4,13 +4,15 @@ import './App.css';
 import ConfigScreen from './pages/ConfigScreen';
 import Login from './pages/Login';
 import PageGame from './pages/PageGame';
+import Feedback from './pages/Feedback';
 
 export default function App() {
   return (
     <Switch>
       <Route exact path="/" component={ Login } />
-      <Route exact path="/config" component={ ConfigScreen } />
       <Route exact path="/game" component={ PageGame } />
+      <Route exact path="/feedback" component={ Feedback } />
+      <Route exact path="/config" component={ ConfigScreen } />
     </Switch>
   );
 }
