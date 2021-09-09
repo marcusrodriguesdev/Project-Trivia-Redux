@@ -22,9 +22,9 @@ FeedbackHeader.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  name: state.reducer.name,
-  image: state.reducer.image,
-  score: state.reducer.score,
+  name: state.userReducer.name,
+  image: state.userReducer.image,
+  score: state.scoreReducer.score,
 });
 
 export default connect(mapStateToProps)(FeedbackHeader);

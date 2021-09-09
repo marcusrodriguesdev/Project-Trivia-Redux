@@ -5,7 +5,7 @@ export function loadRanking() {
 }
 
 export function loadScore() {
-  const result = JSON.parse(localStorage.getItem('score'));
-  if (result == null || result === '') return 0;
+  const result = JSON.parse(localStorage.getItem('state'));
+  if (result == null || result === '') return {};
   return result;
 }
