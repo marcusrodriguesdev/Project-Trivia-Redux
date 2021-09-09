@@ -12,33 +12,31 @@ class Alternatives extends React.Component {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
     } = results[questionNumber];
+    const answers = [correctAnswer, ...incorrectAnswer];
+    answers.sort();
 
     return (
       <div>
-        <button
-          type="button"
-          data-testid="correct-answer"
-          disabled={ seconds === 0 || next }
-          className="correct"
-          onClick={ applyColor }
-          name={ correctAnswer }
-        >
-          { decode(correctAnswer) }
-        </button>
+        {answers.map((answer, index, array) => {
+          const wrongIndex = array.filter((alternative) => (
+            alternative !== correctAnswer
+          ));
 
-        {incorrectAnswer.map((wrongAnswer, index) => (
-          <button
-            type="button"
-            key={ index }
-            data-testid={ `wrong-answer-${index}` }
-            id="wrong-answer"
-            onClick={ applyColor }
-            className="incorrect"
-            disabled={ seconds === 0 || next }
-            name={ wrongAnswer }
-          >
-            { decode(wrongAnswer) }
-          </button>))}
+          return (
+            <button
+              key={ index }
+              type="button"
+              data-testid={ answer === correctAnswer ? 'correct-answer'
+                : `wrong-answer-${wrongIndex.indexOf(answer)}` }
+              disabled={ seconds === 0 || next }
+              className={ answer === correctAnswer ? 'correct' : 'incorrect' }
+              onClick={ applyColor }
+              name={ answer }
+            >
+              { decode(answer) }
+            </button>
+          );
+        }) }
       </div>
     );
   }
