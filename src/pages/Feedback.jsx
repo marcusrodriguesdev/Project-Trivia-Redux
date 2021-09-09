@@ -11,7 +11,7 @@ class Feedback extends Component {
       <div>
         <Header score={ score } />
         <p data-testid="feedback-text">
-          { assertions < result ? 'Podia ser melhor...' : 'Mandou bem!' }
+          { assertions >= result ? 'Mandou bem!' : 'Podia ser melhor...'}
         </p>
         <p data-testid="feedback-total-score">{ score }</p>
         <p data-testid="feedback-total-question">{ assertions }</p>
