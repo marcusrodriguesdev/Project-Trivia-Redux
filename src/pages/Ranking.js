@@ -22,19 +22,16 @@ class Ranking extends React.Component {
     // Logica retirada na referência https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
     const userRanking = JSON.parse(localStorage.getItem('ranking'))
       .sort((a, b) => {
-        if (a.score - b.score === 0) {
-          const fa = a.picture.toLowerCase();
-          const fb = b.picture.toLowerCase();
-          const returnNegative = -1;
-          if (fa < fb) {
-            return returnNegative;
-          }
-          if (fa > fb) {
-            return 1;
-          }
-          return 0;
+        const fa = a.picture.toLowerCase();
+        const fb = b.picture.toLowerCase();
+        const returnNegative = -1;
+        if (fa < fb) {
+          return returnNegative;
         }
-        return b.score - a.score;
+        if (fa > fb) {
+          return 1;
+        }
+        return 0;
       });
 
     return (
@@ -44,8 +41,8 @@ class Ranking extends React.Component {
           { userRanking.map((user, index) => (
             <li key={ user }>
               <Gravatar email={ user.email } />
-              <span data-testid={ `player-name-${index}` }>{user.name}</span>
-              <span data-testid={ `player-score-${index}` }>{user.score}</span>
+              <p data-testid={ `player-name-${index}` }>{user.name}</p>
+              <p data-testid={ `player-score-${index}` }>{user.score}</p>
             </li>
           ))}
         </ul>
