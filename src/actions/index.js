@@ -4,7 +4,7 @@ export const SAVE_NAME = 'SAVE_NAME';
 export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 
-export const saveQuestions = (payload) => ({
+const saveQuestions = (payload) => ({
   type: SAVE_QUESTIONS,
   payload,
 });
@@ -14,7 +14,7 @@ export const login = (payload) => ({
   payload,
 });
 
-export const saveToken = (token) => ({
+const saveToken = (token) => ({
   type: TOKEN,
   token,
 });
