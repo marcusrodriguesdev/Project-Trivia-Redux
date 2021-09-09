@@ -17,10 +17,11 @@ class BtnPlayAgain extends Component {
   }
 
   render() {
+    const { testid } = this.props;
     return (
       <button
         type="button"
-        data-testid="btn-go-home"
+        data-testid={ testid }
         onClick={ this.playAgain }
       >
         JOGAR NOVAMENTE
@@ -34,6 +35,7 @@ BtnPlayAgain.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  testid: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
