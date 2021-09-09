@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  token: state.myReducer.token,
+  token: state.game.token,
 
 });
 
