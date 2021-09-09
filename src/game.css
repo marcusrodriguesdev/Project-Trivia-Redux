@@ -1,0 +1,94 @@
+body {
+  background-color: #012e28;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  font-size: 1.3em;
+}
+
+.show, .question-board {
+  background-color: #012e28;
+  background-image: url("https://www.transparenttextures.com/patterns/random-grey-variations.png");
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  width: 70vw;
+}
+
+.category {
+  font-style: italic;
+  font-size: 1em;
+}
+
+.question {
+  background-color: #0FA36B;
+  border: 3px solid white;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+.btn {
+  border-radius: 10px;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 900;
+  padding: 5px;
+}
+
+.answers {
+  flex: 1;
+}
+
+.btn-answer {
+  display: block;
+  background-color: rgb(22, 76, 175);
+  border: 3px solid white;
+  margin: 6px auto;
+  width: 70%;
+}
+
+.timer {
+  font-size: 1.3em;
+}
+
+.btn-next {
+  background: transparent;
+  border: 3px solid white;
+  color: white;
+}
+
+.btn-answer:hover, .btn-next:hover {
+  cursor: pointer;
+}
+
+.show .correct {
+  background-color: rgb(6, 240, 15, 0.6);
+  border: 3px solid
+    rgb(6, 240, 15);
+}
+
+.show .wrong {
+  background-color: rgb(255, 0, 0, 0.6);
+  border: 3px solid
+    red;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.image {
+  border: 3px solid white;
+}
+
+img {
+  width: 30vw;
+  height: 100%;
+}

@@ -8,10 +8,11 @@ import {
   setScore as setScoreAction,
 } from '../actions';
 
-import '../App.css';
-import '../gameButton.css';
 import HeaderInfo from '../components/HeaderInfo';
 import AnswersId from '../components/AnswersId';
+
+import '../game.css';
+import silvioSantos from '../images/silvioSantos.jpeg';
 
 class game extends Component {
   constructor(props) {
@@ -136,36 +137,49 @@ class game extends Component {
     const { data, answers, timer, tighten, id } = this.state;
     const loading = <div className="loading">Loading</div>;
     const buttonNext = (
-      <button data-testid="btn-next" type="button" onClick={ this.changingId }>
+      <button
+        className="btn btn-next"
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.changingId }
+      >
         Próximo
       </button>
     );
-
     if (data === '' || answers === []) {
       return loading;
     }
     return (
       <div>
         <HeaderInfo />
-        <div className={ tighten ? 'show' : 'question-board' }>
-          <h1 data-testid="question-category">{data[id].category}</h1>
-          <h2 data-testid="question-text">{data[id].question}</h2>
-          {answers.map((answer, index) => (
-            <AnswersId
-              key={ index }
-              answer={ answer }
-              index={ index }
-              data={ data }
-              id={ id }
-              handleIncorrectAnswer={ this.handleIncorrectAnswer }
-              handleCorrectAnswer={ this.handleCorrectAnswer }
-              timer={ timer }
-            />)) }
-          <div>
-            {timer}
+        <main className="container">
+          <div className={ tighten ? 'show' : 'question-board' }>
+            <h1 className="category" data-testid="question-category">{data[id].category}</h1>
+            <h2 className="question" data-testid="question-text">{data[id].question}</h2>
+            <div className="answers">
+              {answers.map((answer, index) => (
+                <AnswersId
+                  key={ index }
+                  answer={ answer }
+                  index={ index }
+                  data={ data }
+                  id={ id }
+                  handleIncorrectAnswer={ this.handleIncorrectAnswer }
+                  handleCorrectAnswer={ this.handleCorrectAnswer }
+                  timer={ timer }
+                />)) }
+            </div>
+            <div className="footer">
+              <div className="timer">
+                {timer}
+              </div>
+              { tighten && buttonNext }
+            </div>
           </div>
-          { tighten && buttonNext }
-        </div>
+          <aside className="image">
+            <img src={ silvioSantos } alt="Silvio Santos" />
+          </aside>
+        </main>
       </div>
     );
   }
