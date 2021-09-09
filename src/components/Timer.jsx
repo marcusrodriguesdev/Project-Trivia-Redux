@@ -44,7 +44,6 @@ Timer.propTypes = {
   timer: PropTypes.number.isRequired,
   addTimer: PropTypes.func.isRequired,
   stop: PropTypes.bool.isRequired,
-  addStop: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
