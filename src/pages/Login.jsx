@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import {
@@ -22,6 +23,21 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.createLocalStorage = this.createLocalStorage.bind(this);
+  }
+
+  createLocalStorage() {
+    const { name, email } = this.state;
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   handleChange({ target }) {
@@ -41,11 +57,13 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { fetchToken, setName, setEmail } = this.props;
+    const { fetchToken, setName, setEmail, history } = this.props;
     const { name, email } = this.state;
     fetchToken();
     setName(name);
     setEmail(email);
+    this.createLocalStorage();
+    history.push('/game');
   }
 
   render() {
@@ -76,19 +94,18 @@ class Login extends React.Component {
           />
         </label>
         <ConfigButton
-          link="/game"
           test="btn-play"
           name="Jogar"
           onClick={ this.handleClick }
           disable={ !validEmail || !validName }
         />
-        <ConfigButton
-          link="/config"
-          test="btn-settings"
-          name="Configurações"
-          onClick={ null }
-          disable={ false }
-        />
+        <Link to="/config">
+          <ConfigButton
+            test="btn-settings"
+            name="Configurações"
+            disable={ false }
+          />
+        </Link>
       </form>
     );
   }

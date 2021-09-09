@@ -22,6 +22,7 @@ class QuestionsComponent extends React.Component {
       assertions: 0,
       name,
       gravatarEmail: email,
+      hidden: true,
     };
 
     this.timer = this.timer.bind(this);
@@ -45,8 +46,8 @@ class QuestionsComponent extends React.Component {
       },
     };
 
-    localStorage.setItem('state', JSON.stringify(state));
     setScore(score);
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   // timer() {
@@ -94,15 +95,28 @@ class QuestionsComponent extends React.Component {
 
     this.setState({
       answerSelected: true,
+      hidden: false,
     });
 
     // Retirado da documentação https://developer.mozilla.org/pt-BR/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals
     clearInterval(COUNTER);
   }
 
+  // nextQuestion() {
+  //   const MAX_QUESTIONS = 4;
+
+  //   this.setState((prevState) => ({
+  //     questionIndex: prevState.questionIndex + 1,
+  //   }));
+
+  //   if(questionIndex === MAX_QUESTIONS) {
+
+  //   }
+  // }
+
   render() {
     const { questions } = this.props;
-    const { count, questionIndex, answerSelected } = this.state;
+    const { count, questionIndex, answerSelected, hidden } = this.state;
     return (
       <div>
         <h3>
@@ -116,11 +130,11 @@ class QuestionsComponent extends React.Component {
             { questions[questionIndex].question }
           </h2>
           <ol>
-            <li classNme="incorrect">
+            <li>
               {(questions[questionIndex].incorrect_answers).map((incorrect, index) => (
                 <ConfigButton
                   key={ index }
-                  className={ answerSelected && 'incorrect' }
+                  className={ (answerSelected || count <= 0) && 'incorrect' }
                   test={ `wrong-answer-${index}` }
                   name={ incorrect }
                   onClick={ this.updateScore }
@@ -130,7 +144,7 @@ class QuestionsComponent extends React.Component {
             </li>
             <li>
               <ConfigButton
-                className={ answerSelected && 'correct' }
+                className={ (answerSelected || count <= 0) && 'correct' }
                 test="correct-answer"
                 onClick={ this.updateScore }
                 name={ questions[questionIndex].correct_answer }
@@ -138,6 +152,12 @@ class QuestionsComponent extends React.Component {
               />
             </li>
           </ol>
+          <ConfigButton
+            test="btn-next"
+            name="Próxima"
+            hidden={ hidden }
+            // onClick={}
+          />
         </fieldset>
       </div>
     );
