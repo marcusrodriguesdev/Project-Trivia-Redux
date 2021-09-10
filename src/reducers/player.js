@@ -1,9 +1,10 @@
-import { SAVE_NAME, UPDATE_SCORE } from '../actions';
+import { SAVE_NAME, UPDATE_SCORE, SAVE_EMAIL, CLEAR_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   score: 0,
   assertions: 0,
+  gravatarEmail: '',
 };
 
 function player(state = INITIAL_STATE, action) {
@@ -21,6 +22,17 @@ function player(state = INITIAL_STATE, action) {
       ...state,
       score: state.score + action.points,
       assertions: state.assertions + 1,
+    };
+  case SAVE_EMAIL:
+    return {
+      ...state,
+      email: action.email,
+    };
+  case CLEAR_SCORE:
+    return {
+      ...state,
+      score: 0,
+      assertions: 0,
     };
   default:
     return state;
