@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import ConfigButton from '../components/ConfigButton';
 
 export default class Ranking extends Component {
@@ -6,7 +7,12 @@ export default class Ranking extends Component {
     return (
       <div data-testid="ranking-title">
         Ranking
-        <ConfigButton link="/" test="btn-go-home" name="Inicio" />
+        <Link to="/">
+          <ConfigButton
+            test="btn-go-home"
+            name="Inicio"
+          />
+        </Link>
       </div>
     );
   }
