@@ -5,9 +5,10 @@ class Input extends Component {
   render() {
     const { label, type, name, value, onChange, testId } = this.props;
     return (
-      <label htmlFor={ name }>
+      <label className="textolabel" htmlFor={ name }>
         {label}
         <input
+          className="inputescrito"
           type={ type }
           id={ name }
           name={ name }

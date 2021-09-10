@@ -1,0 +1,42 @@
+.inputs {
+  width: 15em;
+  height: 10em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.textolabel {
+  color: #012e28;
+  font-weight:bold
+}
+
+.inputescrito {
+  margin-left: 3%;
+  height: 2em;
+  width: 15em;
+  border-radius: 10px;
+  border-color: #012e28;
+  border-style: solid;
+}
+
+.buttonconf {
+  width: 10em;
+  height: 2em;
+  border-radius: 30px;
+  border-color: #012e28;
+  background-color: #0FA36B;
+  color: #012e28;
+  font-weight: bold;
+}
+
+.buttonjogar {
+  width: 10em;
+  height: 2em;
+  border-radius: 30px;
+  font-weight: bold;
+}
+
+.caixa {
+  background-color: white;
+}

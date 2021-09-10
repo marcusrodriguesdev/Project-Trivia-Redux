@@ -6,6 +6,7 @@ import md5 from 'crypto-js/md5';
 import Input from '../components/Input';
 import logo from '../images/logo.jpeg';
 import { actionFunctionThunk, getTokenApi, setEmail } from '../actions';
+import '../login.css';
 
 class login extends Component {
   constructor(props) {
@@ -38,9 +39,9 @@ class login extends Component {
     const { name, email } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
+        <header className="App-header caixa">
           <img src={ logo } className="App-logo" alt="logo" />
-          <div>
+          <div className="inputs">
             <Input
               label="Nome"
               name="name"
@@ -57,12 +58,13 @@ class login extends Component {
               testId="input-gravatar-email"
             />
             <Link to="/gameConfig">
-              <button type="button" data-testid="btn-settings">
+              <button className="buttonconf" type="button" data-testid="btn-settings">
                 Config
               </button>
             </Link>
             <Link to="/game">
               <button
+                className="buttonjogar"
                 type="button"
                 data-testid="btn-play"
                 disabled={ !(name && email) }
