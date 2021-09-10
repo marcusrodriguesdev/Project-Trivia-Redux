@@ -13,8 +13,6 @@ const cinco = 5;
 const dez = 10;
 const time = 30;
 let timer = time;
-let assertion = 0;
-let pontos = 0;
 
 class Question extends React.Component {
   constructor() {
@@ -29,6 +27,8 @@ class Question extends React.Component {
           },
         ],
       },
+      assertion: 0,
+      pontos: 0,
       nextQuestion: false,
       countQuestion: 0,
       loading: true,
@@ -47,6 +47,7 @@ class Question extends React.Component {
   componentDidUpdate() {
     const { countQuestion } = this.state;
     if (countQuestion === cinco) {
+      timer = '';
       return <Redirect to="/feedback" />;
     }
     document.querySelectorAll(idIncorrect).forEach((button) => {
@@ -113,9 +114,9 @@ class Question extends React.Component {
   }
 
   calculatedPoints(target) {
+    let { assertion, pontos } = this.state;
     const { submitPlayerPoints } = this.props;
     if (target.id === 'correta') {
-      assertion += 1;
       const { difficulty } = this.state;
       let difficultyValue = 0;
       switch (difficulty) {
@@ -131,7 +132,10 @@ class Question extends React.Component {
       default:
         break;
       }
-      pontos += dez + timer * difficultyValue;
+      this.setState({
+        pontos: (pontos += dez + timer * difficultyValue),
+        assertion: (assertion += 1),
+      });
     }
     submitPlayerPoints({ pontos, assertion });
     const { name, gravatarEmail } = this.props;
