@@ -23,9 +23,8 @@ class GamePage extends React.Component {
   }
 
   async componentDidMount() {
-    const { fetchQuestions, player } = this.props;
-    await fetchQuestions();
-
+    const { fetchQuestions, player, settings } = this.props;
+    await fetchQuestions(settings);
     this.updateSeconds();
     localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
@@ -147,7 +146,7 @@ class GamePage extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchQuestions: () => dispatch(fetchQuestionsAction()),
+  fetchQuestions: (settings) => dispatch(fetchQuestionsAction(settings)),
   getScore: (score) => dispatch(setScore(score)),
   getAssertions: (assert) => dispatch(setAssertions(assert)),
 });
@@ -155,6 +154,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   questions: state.gamePage.questions,
   player: state.player,
+  settings: state.settings,
 });
 
 GamePage.propTypes = {
@@ -171,6 +171,7 @@ GamePage.propTypes = {
     assertions: PropTypes.number,
   }).isRequired,
   getAssertions: PropTypes.func.isRequired,
+  settings: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

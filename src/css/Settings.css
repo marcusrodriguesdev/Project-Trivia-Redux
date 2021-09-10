@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+  font-family: Montserrat , sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.settingHeader {
+  align-items: center;
+  display: flex;
+  font-size: 25px;
+  height: 10vh;
+  justify-content: center;
+  margin: 20px 1px;
+}
+
+.settingForm {
+  align-items: center;
+  background-color: #46178f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 84vh;
+  justify-content: center;
+}
+
+.settingForm button {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 1px 4px #f0f3f3;
+  font-size: 20px;
+  height: 30px;
+  margin-top: 15px;
+  width: 200px;
+}
+
+.settingForm button:hover {
+  font-weight: 800;
+}
+
+.selectsDiv {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.selectsDiv label {
+  display: flex;
+  flex-direction: column;
+  font-size: 30px;
+  padding: 20px;
+}
+
+.selectsDiv label select {
+  font-size: 30px;
+  text-align: center;
+}
+
+.selectsDiv label select, option {
+  text-align-last: center;
+}
+
+.selectsDiv label input {
+  font-size: 30px;
+  text-align: center;
+}
