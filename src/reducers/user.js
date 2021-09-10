@@ -1,8 +1,13 @@
-import { SET_PLAYER_INFO, SET_QUESTIONS } from '../actions';
+import { SET_PLAYER_INFO, SET_QUESTIONS, SET_SETTINGS } from '../actions';
 
 const INITIAL_STATE = {
   player: {},
   questions: '',
+  settings: {
+    category: 'All',
+    difficulty: 'All',
+    type: 'All',
+  },
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +16,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
     return { ...state, player: action.payload };
   case SET_QUESTIONS:
     return { ...state, questions: action.payload };
+  case SET_SETTINGS:
+    return { ...state, settings: action.payload };
   default:
     return state;
   }
