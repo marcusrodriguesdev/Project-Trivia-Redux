@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+  font-family: Montserrat , sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.main-login {
+  align-items: center;
+  background-color: #46178f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+
+.logo-container {
+  margin-bottom: 25px;
+  margin-top: 56px;
+}
+
+.logo-trivia {
+  height: 65px;
+  width: 190px;
+}
+
+.inputs-name-email {
+  align-items: center;
+  background-color: white;
+  border-radius: 4px;
+  color: #3333;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  padding: 16px;
+  text-align: center;
+  width: 320px;
+}
+
+.input-name, .input-email, .button-login, .button-config {
+  border: 2px solid #cccc;
+  border-radius: 4px;
+  color: #303033;
+  font-size: 16px;
+  font-weight: 700;
+  height: 46px;
+  text-align: center;
+  width: 288px;
+}
+
+.input-name, .input-email {
+  margin-top: 5px;
+}
+
+.button-login, .button-config {
+  background-color: #2f2f2f;
+  border: #2f2f2f;
+  box-shadow: 1px 4px black;
+  color: white;
+  cursor: pointer;
+  height: 46px;
+  margin-top: 10px;
+  opacity: 1;
+  width: 288px;
+}
+
+.button-config {
+  background-color: #3cc;
+  box-shadow: 1px 4px #028282;
+}
+
+.button-login:hover {
+  box-shadow: 0 2px black;
+}
+
+.button-config:hover {
+  box-shadow: 1px 2px #028282;
+}
