@@ -80,8 +80,8 @@ class PageGame extends React.Component {
           <h3 data-testid="question-category">{ results[counter].category }</h3>
           <p data-testid="question-text">{results[counter].question}</p>
           { this.questionsSort() }
-
         </div>
+
       );
     } return <p>Carregando...</p>;
   }
