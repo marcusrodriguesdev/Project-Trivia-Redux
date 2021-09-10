@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const RANKING_KEY = 'ranking';
 const one = -1;
 
 class Ranking extends React.Component {
   render() {
+    const { history } = this.props;
     const rankings = JSON.parse(localStorage.getItem(RANKING_KEY));
     // SOURCE: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
     rankings.sort((a, b) => {
@@ -28,6 +30,13 @@ class Ranking extends React.Component {
             <span data-testid={ `player-score-${index}` }>{ ` - ${score} pontos` }</span>
           </div>
         )) }
+        <button
+          type="button"
+          data-testid="btn-go-home"
+          onClick={ () => history.push('/') }
+        >
+          Início
+        </button>
       </main>
     );
   }
@@ -36,5 +45,9 @@ class Ranking extends React.Component {
 const mapStateToProps = (state) => ({
   state: state.player,
 });
+
+Ranking.propTypes = {
+  history: PropTypes.objectOf().isRequired,
+};
 
 export default connect(mapStateToProps)(Ranking);
