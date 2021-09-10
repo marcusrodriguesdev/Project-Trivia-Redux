@@ -99,17 +99,19 @@ class Home extends React.Component {
     return (
       <>
         <Header />
-        <Question
-          key={ currentQuestion.question }
-          category={ currentQuestion.category }
-          question={ currentQuestion.question }
-          correctAnswer={ currentQuestion.correct_answer }
-          incorrectAnswers={ currentQuestion.incorrect_answers }
-          answerClick={ this.answerClick }
-          nextClick={ this.nextClick }
-          difficulty={ currentQuestion.difficulty }
-        />
-        <StopWatch />
+        <div className="container-main">
+          <Question
+            key={ currentQuestion.question }
+            category={ currentQuestion.category }
+            question={ currentQuestion.question }
+            correctAnswer={ currentQuestion.correct_answer }
+            incorrectAnswers={ currentQuestion.incorrect_answers }
+            answerClick={ this.answerClick }
+            nextClick={ this.nextClick }
+            difficulty={ currentQuestion.difficulty }
+          />
+          <StopWatch />
+        </div>
       </>
     );
   }

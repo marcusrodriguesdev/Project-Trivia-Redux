@@ -70,6 +70,7 @@ class Question extends React.Component {
       <button
         type="button"
         data-testid="btn-next"
+        className="btn btn-next"
         onClick={ () => {
           nextClick();
           setTimeGlobal(false);
@@ -85,42 +86,48 @@ class Question extends React.Component {
     const { category, question, isTimer } = this.props;
     const { correctAnswerIdentifier, answerList } = this.state;
     return (
-      <div>
-        <div data-testid="question-category">
-          Categoria:
-          { category }
+      <div className="container-question-main">
+        <div data-testid="question-category" className="container-question-category">
+          { `Categoria ${category}` }
         </div>
-        <div data-testid="question-text">
+        <div
+          data-testid="question-text"
+          className="container-question-question"
+        >
           Pergunta:
           { question }
         </div>
-        { answerList.map((element) => {
-          if (element === correctAnswerIdentifier) {
+        <div className="container-question-buttons">
+          { answerList.map((element) => {
+            if (element === correctAnswerIdentifier) {
+              return (
+                <button
+                  onClick={ this.handleClick }
+                  type="button"
+                  data-testid="correct-answer"
+                  key={ element }
+                  disabled={ isTimer }
+                  className="btn btn-questions"
+                >
+                  {element}
+                </button>
+              );
+            }
             return (
               <button
                 onClick={ this.handleClick }
                 type="button"
-                data-testid="correct-answer"
+                data-testid="wrong-answer"
                 key={ element }
                 disabled={ isTimer }
+                className="btn btn-questions"
               >
                 {element}
               </button>
             );
-          }
-          return (
-            <button
-              onClick={ this.handleClick }
-              type="button"
-              data-testid="wrong-answer"
-              key={ element }
-              disabled={ isTimer }
-            >
-              {element}
-            </button>
-          );
-        }) }
-        { isTimer ? this.renderNexButton() : undefined }
+          }) }
+          { isTimer ? this.renderNexButton() : undefined }
+        </div>
       </div>
     );
   }

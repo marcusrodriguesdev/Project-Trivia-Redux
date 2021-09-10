@@ -9,6 +9,7 @@ function Gravatar({ email }) {
       src={ `https://www.gravatar.com/avatar/${emailString}` }
       alt="Icon's User"
       data-testid="header-profile-picture"
+      className="gravatar-icon"
     />
   );
 }

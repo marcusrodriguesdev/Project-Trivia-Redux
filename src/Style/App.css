@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap");
+html {
+  font-size: 14px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,6 +17,10 @@ body {
   font-family: "Montserrat";
 }
 
+button {
+  cursor: pointer;
+}
+
 .login-container {
   display: flex;
   justify-content: space-evenly;
@@ -20,14 +28,16 @@ body {
   align-items: center;
   flex-wrap: wrap;
   height: 100vh;
-  background: linear-gradient(#32a4a8, white);
+  background: linear-gradient(#48bfe3, #fff);
 }
+
 .login-container-logo {
   width: 30%;
   height: 150px;
   animation: myAnimation 3s infinite linear;
   position: relative;
 }
+
 @keyframes myAnimation {
   0% {
     width: 30%;
@@ -43,9 +53,11 @@ body {
   font-size: 3rem;
   font-weight: 300;
 }
+
 .login-container-forms {
   width: 80%;
 }
+
 .login-container-inputs {
   height: 50vh;
   width: 100%;
@@ -55,6 +67,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
 }
+
 .login-container input {
   border: none;
   border-bottom: 2px solid gray;
@@ -69,37 +82,167 @@ body {
   z-index: 1;
 }
 
+.header-container-main {
+  background: linear-gradient(90deg, #48bfe3, #5e60ce);
+  border-bottom: 15px solid linear-gradient(90deg, #48bfe3, #5e60ce);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 5rem;
+  border-bottom: 10px solid gray;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.header-container-score {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100px;
+  text-transform: uppercase;
+}
+
+.header-container-score::before {
+  content: "Score:";
+}
+
+.header-container-user {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100px;
+  text-transform: uppercase;
+}
+
+.header-container-user::before {
+  content: "Player:";
+}
+
+.container-question-main {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 2rem;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  font-weight: 300;
+}
+
+.container-question-category {
+  font-size: 3rem;
+  color: #48bfe3;
+  font-weight: 500;
+}
+
+.container-question-buttons {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 450px;
+  margin: 1rem 0;
+}
+
+.timer {
+  margin: auto;
+  text-align: center;
+  border: 5px solid #48bfe3;
+  width: 100px;
+  padding: 2rem 1rem;
+  border-radius: 50px;
+  color: #48bfe3;
+}
+
 .btn {
   padding: 1rem 3rem;
   border-radius: 1rem;
   border: none;
   font-size: 1rem;
-  transition: 0.3s;
+  transition: 0.2s;
 }
+
 .btn-login {
   background: green;
   color: white;
 }
+
 .btn-login:hover {
   color: green;
   background: white;
   border: 2px solid green;
 }
+
 .btn-login:disabled {
   background: gray;
 }
+
 .btn-login:disabled:hover {
   border: none;
   color: white;
 }
+
 .btn-config {
   background: orange;
   color: white;
 }
+
 .btn-config:hover {
   color: orange;
   background: white;
   border: 2px solid orange;
+}
+
+.btn-next {
+  background: #5e60ce;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.btn-next:hover {
+  transform: scale(1.3);
+}
+
+.btn-questions {
+  margin: 0.5rem;
+  font-size: 1.3rem;
+  padding: 1rem 3rem;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), #48bfe3;
+  color: white;
+  font-weight: 300;
+}
+
+.btn-questions:hover {
+  transform: scale(1.3);
+}
+
+.btn-questions:disabled {
+  background: #484848;
+  color: white;
+}
+
+.gravatar-icon {
+  border-radius: 50px;
+}
+
+.answer-wrong {
+  border: 5px solid red;
+}
+
+.answer-correct {
+  border: 5px solid green;
 }
 
 /*# sourceMappingURL=App.css.map */

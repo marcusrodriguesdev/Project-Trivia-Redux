@@ -1,0 +1,31 @@
+@use '../1-Base/_varibles' as var
+@use '../1-Base/utilities' as Mixin
+
+$color-test: linear-gradient(90deg, var.$bg-color, var.$bg-color2)
+
+.header-container
+  &-main
+    background: linear-gradient(90deg, var.$bg-color, var.$bg-color2)
+    border-bottom: 15px solid $color-test
+    padding: 1rem
+    @include Mixin.display-flex-row
+    margin-bottom: 5rem
+    border-bottom: 10px solid gray
+    font-size: 2rem
+    color: var.$light-color
+  &-score
+    @include Mixin.display-flex-row
+    align-items: center
+    width: 100px
+    text-transform: uppercase
+    &::before
+      content: 'Score:'
+
+  &-user
+    @include Mixin.display-flex-row
+    align-items: center
+    width: 100px
+    text-transform: uppercase
+
+    &::before
+      content: 'Player:'

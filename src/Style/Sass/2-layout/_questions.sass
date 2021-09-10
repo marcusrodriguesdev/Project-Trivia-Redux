@@ -1,0 +1,33 @@
+@use '../1-Base/_varibles' as Var
+@use '../1-Base/utilities' as Mixin
+
+.container-question
+  &-main
+    min-height: 50vh
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    font-size: 2rem
+    text-align: center
+    @include Mixin.display-flex-column
+    font-weight: 300
+
+  &-category
+    font-size: 3rem
+    color: Var.$bg-color
+    font-weight: 500
+
+  &-buttons
+    @include Mixin.display-flex-column
+    width: 100%
+    height: 450px
+    margin: 1rem 0
+
+.timer
+  margin: auto
+  text-align: center
+  border: 5px solid Var.$bg-color
+  width: 100px
+  padding: 2rem 1rem
+  border-radius: 50px
+  color: Var.$bg-color
