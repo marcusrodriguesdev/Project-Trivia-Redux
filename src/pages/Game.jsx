@@ -106,7 +106,7 @@ class Game extends Component {
 
   handleAnswers(questions) {
     if (questions.length > 1) {
-      const questionIndex = 0;
+      const { questionIndex } = this.state;
       const arrayOfAnswers = [{ id: 4,
         correct: true,
         answer: questions[questionIndex].correct_answer }];
@@ -147,13 +147,14 @@ class Game extends Component {
   }
 
   nextQuestion() {
-    this.setState({
+    this.setState((prevstate) => ({
+      questionIndex: prevstate.questionIndex + 1,
       alreadyShuffled: false,
       timer: 30,
       over: false,
       answered: false,
       disabled: false,
-    });
+    }));
     const questionContainer = document.querySelectorAll('#question-container button');
     for (let index = 0; index < questionContainer.length; index += 1) {
       questionContainer[index].classList.remove('correct-answer');
@@ -163,12 +164,9 @@ class Game extends Component {
     }
     const { questionIndex } = this.state;
     const FOUR = 4;
-    this.setState((prevstate) => ({
-      questionIndex: prevstate.questionIndex + 1,
-      disabled: false,
-    }));
     if (questionIndex === FOUR) {
       this.setState({
+        alreadyShuffled: true,
         redirect: true,
       });
     }
