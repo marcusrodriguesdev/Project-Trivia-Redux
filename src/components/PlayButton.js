@@ -59,7 +59,7 @@ PlayButton.propTypes = {
   fetchQuestion: Proptypes.func.isRequired,
   fetchToken: Proptypes.func.isRequired,
   token: Proptypes.string.isRequired,
-  buttonCheck: Proptypes.func.isRequired,
+  buttonCheck: Proptypes.bool.isRequired,
   setName: Proptypes.func.isRequired,
   setEmail: Proptypes.func.isRequired,
   playerEmail: Proptypes.string.isRequired,
