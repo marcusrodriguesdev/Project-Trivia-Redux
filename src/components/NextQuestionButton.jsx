@@ -10,7 +10,7 @@ class NextQuestionButton extends Component {
         data-testid="btn-next"
         onClick={ handleNextButton }
       >
-        Pŕoxima
+        Próxima
       </button>
     );
   }
