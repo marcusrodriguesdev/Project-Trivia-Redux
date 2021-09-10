@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import GameScreen from './pages/GameScreen';
 import SettingsScreen from './pages/SettingsScreen';
 import Ranking from './pages/Ranking';
-import FeedBack from './pages/FeedBack';
 
 import logo from './trivia.png';
 import './App.css';
@@ -24,7 +23,6 @@ export default function App() {
         <Route exact path="/gameplay" component={ GameScreen } />
         <Route exact path="/settings" component={ SettingsScreen } />
         <Route exact path="/ranking" component={ Ranking } />
-        <Route exact path="/feedback" component={ FeedBack } />
       </Switch>
     </div>
   );

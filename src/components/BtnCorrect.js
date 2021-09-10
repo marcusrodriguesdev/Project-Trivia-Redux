@@ -7,7 +7,7 @@ export default class BtnCorrect extends Component {
     return (
       <div>
         <button
-          className="btn-correct btn"
+          className="btn-correct"
           onClick={ onClick }
           type="button"
           disabled={ disable }

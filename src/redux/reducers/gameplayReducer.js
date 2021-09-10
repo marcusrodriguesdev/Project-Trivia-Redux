@@ -1,4 +1,4 @@
-import { RESET_SCORE, SET_SCORE } from '../actions';
+import { SET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   assertions: 0,
@@ -28,12 +28,6 @@ const gameplayReducer = (state = INITIAL_STATE, action) => {
       ...state,
       assertions: state.assertions + 1,
       score: calcScore(action, state),
-    };
-  case RESET_SCORE:
-    return {
-      ...state,
-      score: 0,
-      assertions: 0,
     };
   default:
     return state;
