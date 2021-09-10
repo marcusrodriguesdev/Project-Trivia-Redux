@@ -13,6 +13,7 @@ class GravatarHeader extends Component {
     };
 
     this.handleImg = this.handleImg.bind(this);
+    this.handleScore = this.handleScore.bind(this);
   }
 
   async componentDidMount() {
@@ -29,8 +30,9 @@ class GravatarHeader extends Component {
   }
 
   handleScore() {
-    const localScore = localStorage.getItem('score');
-    this.setState({ score: localScore });
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { player: { score } } = state;
+    this.setState({ score });
   }
 
   render() {

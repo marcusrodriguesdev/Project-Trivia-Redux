@@ -54,8 +54,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  token: state.myReducer.token,
+  token: state.game.token,
   config: state.config.selection,
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
@@ -64,7 +65,7 @@ PlayButton.propTypes = {
   fetchQuestion: Proptypes.func.isRequired,
   fetchToken: Proptypes.func.isRequired,
   token: Proptypes.string.isRequired,
-  buttonCheck: Proptypes.func.isRequired,
+  buttonCheck: Proptypes.bool.isRequired,
   setName: Proptypes.func.isRequired,
   setEmail: Proptypes.func.isRequired,
   playerEmail: Proptypes.string.isRequired,
