@@ -10,43 +10,34 @@ const THREE = 3;
 const TWO = 2;
 const ONE = 1;
 const ZERO = 0;
-const STYLE_BUTTON = 'button is-light my-2';
+const ID_CORRECT = 'correct-answer';
+let ARRAY;
 
 class Questions extends Component {
   constructor() {
     super();
     this.state = {
-      correct: STYLE_BUTTON,
-      incorrect: STYLE_BUTTON,
+      correct: null,
+      incorrect: null,
       seconds: 30,
       disable: false,
       numberQuestion: 0,
       visibilit: 'hide',
       redirect: false,
       scori: 0,
-      correctAs: '',
-      alea: [],
-      question: '',
-      category: '',
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
     this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.aleatoryQuestion = this.aleatoryQuestion.bind(this);
+    this.questions = this.questions.bind(this);
   }
 
   componentDidMount() {
-    const { resp } = this.props;
-    const { numberQuestion } = this.state;
-    this.aleatoryQuestion();
     const ONE_SECOND = 1000;
     this.intervalId = setInterval(() => {
       this.setState((estadoAnterior) => ({ seconds: estadoAnterior.seconds - 1 }));
     }, ONE_SECOND);
-    this.setState({ correctAs: resp[numberQuestion].correct_answer,
-      question: resp[numberQuestion].question,
-      category: resp[numberQuestion].category });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -58,8 +49,8 @@ class Questions extends Component {
   rulesOfUpdate() {
     this.setState({
       seconds: 0,
-      incorrect: 'button is-danger my-2',
-      correct: 'button is-success my-2',
+      incorrect: 'incorrect',
+      correct: 'correct',
       disable: true });
   }
 
@@ -80,8 +71,7 @@ class Questions extends Component {
     this.handleClickClassNameHelper(target.name);
     const { resp, player, playerStatus: { score, assertions } } = this.props;
     const { seconds } = this.state;
-
-    if (target.id === 'correct-answer') {
+    if (target.id === ID_CORRECT) {
       const { difficulty } = resp[0];
       const pointsFromDifficulty = this.checkDifficulty(difficulty);
       const timerPoints = seconds;
@@ -101,45 +91,72 @@ class Questions extends Component {
     }
   }
 
+  questions() {
+    const { correct, incorrect, disable, seconds,
+      numberQuestion } = this.state;
+    const { resp } = this.props;
+    const TRIRTY = 30;
+    if (seconds === TRIRTY) {
+      ARRAY = [...resp[numberQuestion].incorrect_answers,
+        resp[numberQuestion].correct_answer];
+      this.shuffle(ARRAY);
+      this.shuffle(ARRAY);
+    }
+    const tut = ARRAY.map((element, index) => (
+      <div key={ index }>
+        <button
+          name="incorrect"
+          className={ element === resp[numberQuestion].correct_answer
+            ? correct : incorrect }
+          onClick={ this.handleClickClassName }
+          type="button"
+          key={ index }
+          data-testid={ element === resp[numberQuestion].correct_answer
+            ? ID_CORRECT : `wrong-answer-${index}` }
+          id={ element === resp[numberQuestion].correct_answer
+            ? ID_CORRECT : `wrong-answer-${index}` }
+          disabled={ disable }
+        >
+          {element}
+        </button>
+      </div>
+    ));
+    return tut;
+  }
+
+  // source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  shuffle(array) {
+    let currentIndex = array.length;
+    let randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
+  }
+
   handleClickClassNameHelper(a) {
-    this.setState({ incorrect: 'button is-danger my-2',
-      correct: 'button is-success my-2' });
+    this.setState({ incorrect: 'incorrect', correct: 'correct' });
     const n = a;
     if (n === 'correct' || n === 'incorrect') {
       this.setState({
-        visibilit: 'button is-info',
+        visibilit: 'show',
       });
     }
   }
 
-  shuffle(array) {
-    let arrKeys = Object.keys(array);
-    const newArray = [];
-    while (arrKeys.length > 0) {
-      const randomIndex = Math.floor(Math.random() * (arrKeys.length - 1));
-
-      newArray.push(array[arrKeys[randomIndex]]);
-
-      delete arrKeys[randomIndex];
-      arrKeys = arrKeys.filter(() => true);
-    }
-    return newArray;
-  }
-
-  aleatoryQuestion() {
-    const { numberQuestion } = this.state;
-    const { resp } = this.props;
-    const correct = resp[numberQuestion].correct_answer;
-    const incorrect = resp[numberQuestion].incorrect_answers.join(',');
-    const allAnswers = `${correct},${incorrect}`;
-    const answers = allAnswers.split(',');
-    const arrayAleatory = this.shuffle(answers);
-    this.setState({ alea: arrayAleatory });
-  }
-
   nextQuestion() {
     const { numberQuestion, scori } = this.state;
-    const { resp }= this.props;
     const { user, arrayOfScoreAndName, playerStatus: { assertions } } = this.props;
     const question = 4;
     if (numberQuestion === question) {
@@ -154,69 +171,32 @@ class Questions extends Component {
       this.setState({ redirect: true });
       arrayOfScoreAndName(playerScore);
     }
-    const teste = resp[numberQuestion].correct_answer;
     this.setState((estadoAnterior) => ({
       numberQuestion: estadoAnterior.numberQuestion + 1,
       seconds: 30,
-      correct: STYLE_BUTTON,
-      incorrect: STYLE_BUTTON,
+      correct: null,
+      incorrect: null,
       visibilit: 'hide',
-      correctAs: teste,
-      question: resp[numberQuestion].question,
-      category: resp[numberQuestion].category,
     }));
-    this.aleatoryQuestion();
   }
 
   render() {
-    const { redirect, correct, incorrect, seconds, disable, numberQuestion, visibilit, correctAs, alea, question, category } = this.state;
+    const { redirect, seconds,
+      numberQuestion, visibilit } = this.state;
     const { resp } = this.props;
     if (redirect === true) { return <Redirect to="/feedback" />; }
     return (
-      <div className="has-text-warning-light">
-        <h1 className="title is-3">Bem vindo ao Quiz Trivia! responda em 30 segundos para acumular pontos!</h1>
-        <seconds className="title is-3">{seconds}</seconds>
-        <p className="title is-3" data-testid="question-category">{`Categoria ${category}`}</p>
-        <p className="subtitle is-4" data-testid="question-text">{question}</p>
-        {console.log(alea)}
-        {alea.map((element, index) => {
-          console.log(element, correctAs);
-          if (element === correctAs) {
-            return (
-              <button
-                className={ correct }
-                name="correct"
-                onClick={ this.handleClickClassName }
-                data-testid="correct-answer"
-                id="correct-answer"
-                type="button"
-                disabled={ disable }
-              >
-                {element}
-              </button>
-            );
-          }
-          return( <button
-                  name="incorrect"
-                  className={ incorrect }
-                  onClick={ this.handleClickClassName }
-                  type="button"
-                  key={ index }
-                  data-testid={ `wrong-answer-${index}` }
-                  disabled={ disable }
-                >
-                  {element}
-                </button>    
-          )
-          })
-        }
-)
-<div>
+      <div>
+        <seconds>{seconds}</seconds>
+        <p data-testid="question-category">{resp[numberQuestion].category}</p>
+        <p data-testid="question-text">{resp[numberQuestion].question}</p>
+        { this.questions() }
+        <div>
           <button
             type="button"
             data-testid="btn-next"
             onClick={ this.nextQuestion }
-            className={ seconds === 0 ? 'button is-info' : visibilit }
+            className={ seconds === 0 ? 'show' : visibilit }
           >
             Próxima
           </button>

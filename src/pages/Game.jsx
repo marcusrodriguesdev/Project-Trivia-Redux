@@ -28,8 +28,19 @@ class Game extends Component {
             alt="Gravatar"
             data-testid="header-profile-picture"
           />
-          <h2 className="title is-3 is-centered" data-testid="header-player-name">{name}</h2>
-          <h2 className="subtitle is-5" data-testid="header-score">{`Pontos:${totalPoints}`}</h2>
+          <h2
+            className="title is-3 is-centered"
+            data-testid="header-player-name"
+          >
+            { name }
+            {' '}
+          </h2>
+          <h2
+            className="subtitle is-5"
+            data-testid="header-score"
+          >
+            {`Pontos:${totalPoints}`}
+          </h2>
         </header>
         {response ? <Questions resp={ response } /> : <h3>Loading...</h3>}
         <label htmlFor="gravatar-email" data-testid="input-gravatar-email">
