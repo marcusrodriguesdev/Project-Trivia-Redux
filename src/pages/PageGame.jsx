@@ -108,6 +108,7 @@ class PageGame extends React.Component {
 
   handleNextButton() {
     const { counter } = this.state;
+    const { history } = this.props;
     const lastIndexQuestion = 4;
     if (counter < lastIndexQuestion) {
       this.setState((prevState) => ({
@@ -119,7 +120,9 @@ class PageGame extends React.Component {
         },
         disabledButtons: false,
       }));
+      return;
     }
+    history.push('/feedback');
   }
 
   decreaseTime() {
