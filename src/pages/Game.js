@@ -104,7 +104,7 @@ export class Game extends React.Component {
   }
 
   randomAnswers(questions) {
-    const { questionNumber, timer, clicked } = this.state;
+    const { questionNumber, clicked } = this.state;
     const allQuestions = [
       questions[questionNumber].correct_answer,
       ...questions[questionNumber].incorrect_answers,
@@ -118,7 +118,7 @@ export class Game extends React.Component {
                 type="button"
                 onClick={ this.handleClick }
                 data-testid="correct-answer"
-                disabled={ timer <= 0 ? true : clicked }
+                disabled={ clicked }
                 id="correct"
                 className={ clicked ? 'green-border' : '' }
                 name="correct-answer"
@@ -130,7 +130,7 @@ export class Game extends React.Component {
           return (
             <button
               type="button"
-              disabled={ timer <= 0 ? true : clicked }
+              disabled={ clicked }
               id={ index }
               className={ clicked ? 'red-border' : '' }
               name="wrong-answer"
@@ -187,7 +187,7 @@ export class Game extends React.Component {
         </header>
         <div>
           <p data-testid="question-category">
-            Categoria:
+            Category:
             {decodeURIComponent(questions[questionNumber].category)}
           </p>
           <h3 data-testid="question-text">

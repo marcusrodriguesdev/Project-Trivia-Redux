@@ -25,10 +25,10 @@ class Login extends React.Component {
   }
 
   async handleSubmit() {
-    const { history, sendToken, sendPlayer } = this.props;
+    const { history, sendToken, sendPlayer, settings } = this.props;
     const { email } = this.state;
     const token = await fetchPlayerToken();
-    const questions = await fetchQuestions(token);
+    const questions = await fetchQuestions(token, settings);
     localStorage.setItem('token', token);
     sendToken(questions);
 
@@ -97,7 +97,11 @@ const mapDispatchToProps = (dispatch) => ({
   sendPlayer: (payload) => dispatch(setPlayerInfo(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  settings: state.user.settings,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   history: PropTypes.shape({
@@ -105,4 +109,5 @@ Login.propTypes = {
   }).isRequired,
   sendPlayer: PropTypes.func.isRequired,
   sendToken: PropTypes.func.isRequired,
+  settings: PropTypes.objectOf(PropTypes.object).isRequired,
 };
