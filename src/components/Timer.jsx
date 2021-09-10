@@ -31,7 +31,6 @@ class Timer extends React.Component {
 
   render() {
     const { timer } = this.props;
-
     return (
       <h2>
         {timer}
@@ -52,8 +51,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  timer: state.reducer.timer,
-  stop: state.reducer.stop,
+  timer: state.timerReducer.timer,
+  stop: state.timerReducer.stop,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);

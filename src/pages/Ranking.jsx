@@ -11,9 +11,9 @@ export default class Ranking extends Component {
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         {rankingList.map((player, index) => (
-          <div key={ player.id } data-testid={ `player-name-${index}` }>
+          <div key={ player.id }>
             <img src={ player.image } alt="User logo" />
-            {player.name}
+            <div data-testid={ `player-name-${index}` }>{player.name}</div>
             <span data-testid={ `player-score-${index}` }>{player.score}</span>
           </div>
         ))}

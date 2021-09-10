@@ -18,7 +18,7 @@ FeedbackMsg.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  hits: state.reducer.hits,
+  hits: state.scoreReducer.hits,
 });
 
 export default connect(mapStateToProps)(FeedbackMsg);
