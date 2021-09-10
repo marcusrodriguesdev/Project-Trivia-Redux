@@ -4,6 +4,7 @@ export const GET_TOKEN = 'GET_TOKEN';
 export const SET_QUESTION = 'SET_QUESTION';
 export const SET_NAME = 'SET_NAME';
 export const SET_EMAIL = 'SET_EMAIL';
+export const SET_CORRECTS = 'SET_CORRECTS';
 export const SET_SCORE = 'SET_SCORE';
 
 export const getToken = (payload) => ({
@@ -38,5 +39,10 @@ export const setName = (payload) => ({
 
 export const setEmail = (payload) => ({
   type: SET_EMAIL,
+  payload,
+});
+
+export const setCorrects = (payload) => ({
+  type: SET_CORRECTS,
   payload,
 });

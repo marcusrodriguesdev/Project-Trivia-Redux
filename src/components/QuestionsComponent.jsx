@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-
 import './Questions.css';
+import { Link } from 'react-router-dom';
 import ConfigButton from './ConfigButton';
-import { setScore as setScoreAction } from '../redux/actions';
+import { setScore as setScoreAction, setCorrects } from '../redux/actions';
 
 class QuestionsComponent extends React.Component {
   constructor(props) {
@@ -36,7 +35,7 @@ class QuestionsComponent extends React.Component {
 
   componentDidUpdate() {
     const { score, assertions, name, gravatarEmail } = this.state;
-    const { setScore } = this.props;
+    const { setScore, setAnswersCorrects } = this.props;
 
     const state = {
       player: {
@@ -48,6 +47,7 @@ class QuestionsComponent extends React.Component {
     };
 
     setScore(score);
+    setAnswersCorrects(assertions);
     localStorage.setItem('state', JSON.stringify(state));
   }
 
@@ -179,6 +179,7 @@ QuestionsComponent.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object),
   name: PropTypes.string,
   email: PropTypes.string,
+  setCorrects: PropTypes.func,
 }.isRequired;
 
 const mapStateToProps = ({ user: { name, email } }) => ({
@@ -188,6 +189,7 @@ const mapStateToProps = ({ user: { name, email } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setScore: (payload) => dispatch(setScoreAction(payload)),
+  setAnswersCorrects: (payload) => dispatch(setCorrects(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionsComponent);

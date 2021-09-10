@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import Header from '../components/Header';
 import { getQuestionThunk } from '../redux/actions';
 import QuestionsComponent from '../components/QuestionsComponent';
@@ -13,27 +12,38 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
+    const { name, email, questions, score } = this.props;
     return (
       <div>
-        <Header />
-        { questions.length > 0 && <QuestionsComponent questions={ questions } /> }
+        <Header
+          name={ name }
+          email={ email }
+          score={ score }
+        />
+        { questions.length > 0 && <QuestionsComponent questions={ questions } />}
       </div>
     );
   }
 }
 
 Game.propTypes = {
-  token: PropTypes.string.isRequired,
-  fetchQuestions: PropTypes.func.isRequired,
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+  name: PropTypes.string,
+  email: PropTypes.string,
+  score: PropTypes.number,
+  token: PropTypes.string,
+  fetchQuestions: PropTypes.func,
+  questions: PropTypes.arrayOf(PropTypes.object),
+}.isRequired;
 
-const mapStateToProps = ({ user: { token, name, email }, results: { questions } }) => ({
+const mapStateToProps = ({
+  user: { token, name, email, score },
+  results: { questions },
+}) => ({
   questions,
   token,
   name,
   email,
+  score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
