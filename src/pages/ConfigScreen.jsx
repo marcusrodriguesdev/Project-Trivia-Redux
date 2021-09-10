@@ -11,8 +11,8 @@ class ConfigScreen extends Component {
 
     this.state = {
       category: 'All',
-      difficulty: 'Easy',
-      type: 'Multiple',
+      difficulty: 'Mixed',
+      type: 'Both',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -33,14 +33,20 @@ class ConfigScreen extends Component {
     const { updateSelection, categoriesGlobal } = this.props;
     const { category, difficulty, type } = this.state;
     const config = {
-      category: '',
+      category,
       difficulty,
       type,
     };
-    const categoryId = categoriesGlobal
-      .filter((eachCategory) => eachCategory.name === category);
-    config.category = categoryId;
-    updateSelection(config);
+    if (category === 'All') {
+      console.log(config);
+      updateSelection(config);
+    } else {
+      const categoryObj = categoriesGlobal
+        .filter((eachCategory) => eachCategory.name === category);
+      config.category = categoryObj[0].id;
+      console.log(config);
+      updateSelection(config);
+    }
   }
 
   renderCategorys() {
@@ -62,8 +68,8 @@ class ConfigScreen extends Component {
 
   render() {
     const { difficulty, type } = this.state;
-    const difficulties = ['Easy', 'Medium', 'Hard'];
-    const types = ['Multiple', 'True/False', 'Both'];
+    const difficulties = ['Mixed', 'Easy', 'Medium', 'Hard'];
+    const types = ['Both', 'Multiple', 'True or False'];
     return (
       <div>
         <h1 data-testid="settings-title">Configurações</h1>

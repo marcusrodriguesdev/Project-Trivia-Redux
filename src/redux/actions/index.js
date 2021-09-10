@@ -52,25 +52,76 @@ export const fetchTokenThunk = () => async (dispatch) => {
 const handleURL = (config, token) => {
   const { category, difficulty, type } = config;
   let baseURL = 'https://opentdb.com/api.php?amount=5';
-  if (category !== /all/i) {
+  if (category !== 'All') {
     baseURL += `&category=${category}`;
   }
-  if (difficulty !== /mixed/i) {
-    baseURL += `&difficulty=${difficulty}`;
+  if (difficulty !== 'Mixed') {
+    const lowerCase = difficulty.toLowerCase();
+    baseURL += `&difficulty=${lowerCase}`;
   }
-  if (type !== /both/i) {
-    baseURL += `&type=${type}`;
+  if (type === 'Multiple') {
+    baseURL += '&type=multiple';
+  } else if (type === 'True or False') {
+    baseURL += '&type=boolean';
   }
   baseURL += `&token=${token}`;
   return baseURL;
 };
 
+// export const handleURLAlter = (config, token) => {
+//   const { category, difficulty, type } = config;
+//   const baseURL = 'https://opentdb.com/api.php?amount=5';
+//   const URLToken = `&token=${token}`;
+//   const options = {
+//     category: {
+//       9: '&category=9',
+//       10: '&category=10',
+//       11: '&category=11',
+//       12: '&category=12',
+//       13: '&category=13',
+//       14: '&category=14',
+//       15: '&category=15',
+//       16: '&category=16',
+//       17: '&category=17',
+//       18: '&category=18',
+//       19: '&category=19',
+//       20: '&category=20',
+//       21: '&category=21',
+//       22: '&category=22',
+//       23: '&category=23',
+//       24: '&category=24',
+//       25: '&category=25',
+//       26: '&category=26',
+//       27: '&category=27',
+//       28: '&category=28',
+//       29: '&category=29',
+//       30: '&category=30',
+//       31: '&category=31',
+//       32: '&category=32',
+//     },
+//     difficulty: {
+//       easy: '&difficulty=easy',
+//       medium: '&difficulty=medium',
+//       hard: '&difficulty=hard',
+//     },
+//     type: {
+//       Multiple: '&type=multiple',
+//       'True or False': '&type=boolean',
+//     },
+//   };
+//   let finalURL = baseURL + options.category[category] + options.difficulty[difficulty];
+//   finalURL += options.type[type] + URLToken;
+//   return finalURL;
+// };
+
 export const fetchQuestionThunk = (config, token) => async (dispatch) => {
   const defaultConfig = {
-    category: 'all',
-    difficulty: 'easy',
-    type: 'both',
+    category: 'All',
+    difficulty: 'Mixed',
+    type: 'Both',
   };
+  console.log(token);
+  // console.log(config);
   if (config === defaultConfig) {
     try {
       const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
