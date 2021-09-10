@@ -33,10 +33,9 @@ class Login extends React.Component {
     const { name, email } = this.state;
     return (
       <div>
-        <label htmlFor="input-player-name" className="display-container">
+        <label htmlFor="input-player-name">
           Name:
           <input
-            className="login form-control white"
             type="text"
             name="name"
             value={ name }
@@ -44,10 +43,9 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <label htmlFor="input-player-name" className="display-container">
+        <label htmlFor="input-player-name">
           Email:
           <input
-            className="login form-control white "
             type="text"
             name="email"
             value={ email }
@@ -67,33 +65,31 @@ class Login extends React.Component {
     }
     return (
       <main>
-        <form action="" className="display-container black">
+        <form action="">
           {this.renderInputs()}
-          <div>
-            <Link to="/gameplay">
-              <button
-                className="buttonLogin btn btn-primary display-container"
-                type="button"
-                data-testid="btn-play"
-                disabled={ handleButton }
-                onClick={ this.handleClick }
-              >
-                Jogar
-              </button>
-            </Link>
-
-            <Link to="/settings">
-              <button
-                className="btn submit-button btn-primary display-container"
-                type="button"
-                data-testid="btn-settings"
-              >
-                Configurações
-              </button>
-            </Link>
-
-          </div>
-
+          <Link to="/gameplay">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ handleButton }
+              onClick={ this.handleClick }
+            >
+              Jogar
+            </button>
+          </Link>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
+          <Link to="/ranking">
+            <button type="button" data-testid="btn-ranking">
+              Ver Ranking
+            </button>
+          </Link>
         </form>
       </main>
     );
