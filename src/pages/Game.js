@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import Timer from '../components/Timer';
 import './Game.css';
+import Header from '../components/Header';
+import Feedback from './Feedback';
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    // const { name, email } = props;
+    const { name, email } = this.props;
     this.state = {
       player: {
-        name: '',
+        name,
         assertions: 0,
         score: 0,
-        gravatarEmail: '',
+        gravatarEmail: email,
       },
       time: 30,
       questionIndex: 0,
       questions: [],
       isVisible: false,
+      renderFeedback: false,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.saveQuestions = this.saveQuestions.bind(this);
@@ -39,6 +41,12 @@ class Game extends Component {
   }
 
   nextQuestion() {
+    const LAST_QUESTION = 4;
+    const { questionIndex } = this.state;
+    if (questionIndex === LAST_QUESTION) {
+      this.setState({ renderFeedback: true });
+    }
+
     this.setState((prevState) => ({
       ...prevState,
       questionIndex: prevState.questionIndex + 1,
@@ -58,9 +66,9 @@ class Game extends Component {
   changeColor() {
     const rightBtn = document.querySelector('.correct-btn');
     const wrongBtn = document.querySelectorAll('.wrong-btn');
-    rightBtn.className = 'correct-answer button';
+    rightBtn.className = 'correct-answer';
     wrongBtn.forEach((button) => {
-      button.className = 'wrong-answer button';
+      button.className = 'wrong-answer';
     });
   }
 
@@ -125,7 +133,7 @@ class Game extends Component {
             disabled={ disabled }
             type="button"
             data-testid="correct-answer"
-            className="correct-btn button"
+            className="correct-btn"
             onClick={ this.handleClick }
             value={ correctAnswer }
           >
@@ -136,7 +144,7 @@ class Game extends Component {
               disabled={ disabled }
               value={ answer }
               onClick={ this.handleClick }
-              className="wrong-btn button"
+              className="wrong-btn"
               type="button"
               key={ index }
               data-testid={ `wrong-answers-${index}` }
@@ -150,21 +158,11 @@ class Game extends Component {
   }
 
   render() {
-    const { name, email } = this.props;
-    const { questions, time, player, isVisible } = this.state;
+    const { questions, time, player, isVisible, renderFeedback } = this.state;
     const isFetching = questions.length === 0;
-    const emailHash = md5(email).toString();
-    return (
+    return !renderFeedback ? (
       <>
-        <header>
-          <img
-            data-testid="header-profile-picture"
-            src={ `https://www.gravatar.com/avatar/${emailHash}` }
-            alt="Avatar"
-          />
-          <span data-testid="header-player-name">{ name }</span>
-          <span data-testid="header-score">{player.score}</span>
-        </header>
+        <Header score={ player.score } />
         <Timer setTimer={ this.setTimer } time={ time } />
         { !isFetching && this.renderQuestions() }
 
@@ -173,7 +171,7 @@ class Game extends Component {
             Próxima
           </button>)}
       </>
-    );
+    ) : (<Feedback player={ player } />);
   }
 }
 
