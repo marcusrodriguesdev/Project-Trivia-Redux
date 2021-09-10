@@ -6,7 +6,6 @@ import NextQuestionButton from '../components/NextQuestionButton';
 
 import Timer from '../components/Timer';
 import Answers from '../components/Answers';
-import Score from '../components/Score';
 
 class PageGame extends React.Component {
   constructor(props) {
@@ -71,7 +70,7 @@ class PageGame extends React.Component {
   }
 
   saveScoreStorage() {
-    const { name, imgPath, email } = this.props;
+    const { name, email } = this.props;
     const { assertions, score } = this.state;
 
     const data = {
@@ -79,8 +78,7 @@ class PageGame extends React.Component {
         name,
         assertions,
         score,
-        email,
-        gravatar: imgPath,
+        gravatarEmail: email,
       },
     };
     const teste = JSON.stringify(data);
@@ -158,7 +156,7 @@ class PageGame extends React.Component {
               src={ imgPath }
             />
             <p data-testid="header-player-name">{ name }</p>
-            <Score score={ score } />
+            <p data-testid="header-score">{ score }</p>
           </header>
 
           <h2>Game</h2>
