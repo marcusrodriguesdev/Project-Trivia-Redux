@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Header from '../components/Header';
 
@@ -26,8 +27,30 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    const state = this.createState();
+    localStorage.setItem('state', JSON.stringify(state));
+
     this.fetchQuestions();
     this.interval();
+  }
+
+  componentDidUpdate() {
+    const state = this.createState();
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  createState() {
+    const { score, assertions } = this.state;
+    const { name, gravatarEmail } = this.props;
+    const state = {
+      player: {
+        name,
+        gravatarEmail,
+        score,
+        assertions,
+      },
+    };
+    return state;
   }
 
   interval() {
@@ -50,13 +73,19 @@ class Game extends React.Component {
   }
 
   selectHandler(e) {
-    const { questionIndex, questions, time, countdown } = this.state;
-    clearInterval(countdown);
-    let points;
-    const HARD_POINT = 3;
-    const TEN = 10;
-    this.setState({ isAnswered: true });
+    const { questionIndex, questions, time, countdown, isAnswered } = this.state;
     const { id } = e.target;
+    const NUMBERS = {
+      TEN: 10,
+      HARD_POINT: 3,
+    };
+
+    let points;
+
+    if (isAnswered) return;
+    clearInterval(countdown);
+    this.setState({ isAnswered: true });
+
     if (id === 'wrong') return;
     if (questions.length > 0) {
       if (id === 'correct') {
@@ -65,13 +94,14 @@ class Game extends React.Component {
         } else if (questions[questionIndex].difficulty === 'medium') {
           points = 2;
         } else if (questions[questionIndex].difficulty === 'hard') {
-          points = HARD_POINT;
+          points = NUMBERS.HARD_POINT;
         }
       }
-    } else points = TEN;
+    } else points = NUMBERS.TEN;
+
     this.setState((prevState) => ({
       assertions: prevState.assertions + 1,
-      score: prevState.score + TEN + (time * points),
+      score: prevState.score + NUMBERS.TEN + (time * points),
     }));
   }
 
@@ -150,15 +180,15 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions, assertions, score, isAnswered, questionIndex } = this.state;
-
-    console.log(questionIndex);
+    const { questions, score, isAnswered, questionIndex } = this.state;
+    const { gravatarEmail, name } = this.props;
 
     return (
       <>
         <Header
-          assertions={ assertions }
+          gravatarEmail={ gravatarEmail }
           score={ score }
+          name={ name }
         />
         <div className="game-page">
           { this.renderQuestion() }
@@ -192,10 +222,17 @@ class Game extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  name: state.user.name,
+  gravatarEmail: state.user.email,
+});
+
 Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
-export default Game;
+export default connect(mapStateToProps)(Game);
