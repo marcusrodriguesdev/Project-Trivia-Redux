@@ -20,7 +20,6 @@ class Game extends Component {
         correctStyle: {},
         wrongStyle: {},
       },
-      randomKey: true,
     };
 
     this.fetchTriviaGame = this.fetchTriviaGame.bind(this);
@@ -110,7 +109,7 @@ class Game extends Component {
   }
 
   arrayAnswersButtons() {
-    const { trivia, index, border, randomKey } = this.state;
+    const { trivia, index, border } = this.state;
     const { stop, timer } = this.props;
     let { next } = this.state;
     let buttonDisabled = timer <= 0;
@@ -140,9 +139,7 @@ class Game extends Component {
         >
           {element}
         </button>)));
-    if (randomKey) {
-      this.randomizeAnswers(newArray);
-    }
+    this.randomizeAnswers(newArray);
     return (
       <div>
         <p data-testid="question-category">{trivia[index].category}</p>
@@ -161,7 +158,6 @@ class Game extends Component {
   }
 
   render() {
-    // const { name, image } = this.props;
     const { isLoading } = this.state;
     return (
       <>
