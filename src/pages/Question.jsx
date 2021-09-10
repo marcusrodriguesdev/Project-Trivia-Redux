@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { playerPoints } from '../actions';
+import CreateNewQuestion from './CreateNewQuestion';
 
 const trivialink = 'https://opentdb.com/api.php?amount=5&token=';
-const um = 1;
-const dois = 2;
+const idIncorrect = '#incorreta';
 const tres = 3;
 const cinco = 5;
 const dez = 10;
@@ -34,9 +34,6 @@ class Question extends React.Component {
       loading: true,
     };
 
-    this.Answer = this.Answer.bind(this);
-    this.correctAnswer = this.correctAnswer.bind(this);
-    this.incorrectAnswer = this.incorrectAnswer.bind(this);
     this.getTriviaApiResponse = this.getTriviaApiResponse.bind(this);
     this.borderColor = this.borderColor.bind(this);
     this.calculatedPoints = this.calculatedPoints.bind(this);
@@ -52,10 +49,12 @@ class Question extends React.Component {
     if (countQuestion === cinco) {
       return <Redirect to="/feedback" />;
     }
-    document.querySelectorAll('#incorreta').forEach((button) => {
+    document.querySelectorAll(idIncorrect).forEach((button) => {
       button.className = '';
+      button.disabled = false;
     });
     document.getElementById('correta').className = '';
+    document.getElementById('correta').disabled = false;
     timer = time;
   }
 
@@ -91,7 +90,7 @@ class Question extends React.Component {
 
   borderColor({ target }) {
     this.setState({ nextQuestion: true }, () => {
-      document.querySelectorAll('#incorreta').forEach((button) => {
+      document.querySelectorAll(idIncorrect).forEach((button) => {
         button.className = 'red-border';
       });
       document.getElementById('correta').className = 'green-border';
@@ -103,54 +102,17 @@ class Question extends React.Component {
     const ONE_SECOND = 1000;
     setInterval(() => {
       if (timer === 0) {
-        document.querySelectorAll('button').forEach((button) => {
+        document.querySelectorAll(idIncorrect).forEach((button) => {
           button.disabled = true;
         });
+        document.getElementById('correta').disabled = true;
         this.questionNext();
       }
       timer -= 1;
     }, ONE_SECOND);
   }
 
-  correctAnswer(alternative, index) {
-    return (
-      <button
-        id="correta"
-        type="button"
-        data-testid="correct-answer"
-        key={ index }
-        onClick={ this.borderColor }
-      >
-        {alternative}
-      </button>
-    );
-  }
-
-  incorrectAnswer(alternative, index) {
-    return (
-      <button
-        id="incorreta"
-        type="button"
-        data-testid={ `wrong-answer-${index}` }
-        key={ index }
-        onClick={ this.borderColor }
-      >
-        {alternative}
-      </button>
-    );
-  }
-
-  Answer(alternative, correctAnswer, index) {
-    for (let i = 0; i < alternative.length; i += 1) {
-      if (alternative === correctAnswer) {
-        return this.correctAnswer(alternative, index);
-      }
-    }
-    return this.incorrectAnswer(alternative, index);
-  }
-
   calculatedPoints(target) {
-    console.log(target.id, assertion, pontos);
     const { submitPlayerPoints } = this.props;
     if (target.id === 'correta') {
       assertion += 1;
@@ -158,10 +120,10 @@ class Question extends React.Component {
       let difficultyValue = 0;
       switch (difficulty) {
       case 'easy':
-        difficultyValue = um;
+        difficultyValue = 1;
         break;
       case 'medium':
-        difficultyValue = dois;
+        difficultyValue = 2;
         break;
       case 'hard':
         difficultyValue = tres;
@@ -187,6 +149,7 @@ class Question extends React.Component {
   }
 
   render() {
+    const { borderColor } = this;
     const { questions, loading, countQuestion, nextQuestion } = this.state;
 
     if (loading) return <h1>Loading...</h1>;
@@ -206,21 +169,13 @@ class Question extends React.Component {
       return <Redirect to="/feedback" />;
     }
 
-    const questionTrivia = questions.results[countQuestion];
-    const alternatives = [
-      ...questionTrivia.incorrect_answers,
-      questionTrivia.correct_answer,
-    ].sort();
-
     return (
       <div>
-        <h2 data-testid="question-text">{questionTrivia.question}</h2>
-        <span data-testid="question-category">{questionTrivia.category}</span>
-        <div>
-          {alternatives.map((alternative, index) => this.Answer(
-            alternative, questionTrivia.correct_answer, index,
-          ))}
-        </div>
+        <CreateNewQuestion
+          questions={ questions }
+          countQuestion={ countQuestion }
+          borderColor={ borderColor }
+        />
         {nextQuestion ? this.questionNext() : ''}
       </div>
     );
