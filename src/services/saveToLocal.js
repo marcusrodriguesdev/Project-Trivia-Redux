@@ -29,7 +29,3 @@ export function saveScore(score) {
   if (score !== 0) result.player.assertions += 1;
   localStorage.setItem('state', JSON.stringify(result));
 }
-
-/* export function resetScore() {
-  localStorage.setItem('state', JSON.stringify(0));
-} */

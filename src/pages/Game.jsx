@@ -6,7 +6,6 @@ import FeedbackHeader from '../components/FeedbackHeader';
 import Timer from '../components/Timer';
 import { changeStop, getHits, getScore, getTimer } from '../redux/actions';
 import { saveScore } from '../services/saveToLocal';
-// import ShowAnswers from '../components/ShowAnswers';
 
 class Game extends Component {
   constructor(props) {
@@ -21,7 +20,6 @@ class Game extends Component {
         correctStyle: {},
         wrongStyle: {},
       },
-      // randomKey: true,
     };
 
     this.fetchTriviaGame = this.fetchTriviaGame.bind(this);
@@ -160,7 +158,6 @@ class Game extends Component {
   }
 
   render() {
-    // const { name, image } = this.props;
     const { isLoading } = this.state;
     return (
       <>
