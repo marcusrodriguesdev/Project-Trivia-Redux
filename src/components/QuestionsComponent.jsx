@@ -5,6 +5,7 @@ import './Questions.css';
 import { Link } from 'react-router-dom';
 import ConfigButton from './ConfigButton';
 import { setScore as setScoreAction, setCorrects } from '../redux/actions';
+import { setRanking } from '../helpers/localStorage';
 
 class QuestionsComponent extends React.Component {
   constructor(props) {
@@ -49,6 +50,11 @@ class QuestionsComponent extends React.Component {
     setScore(score);
     setAnswersCorrects(assertions);
     localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  componentWillUnmount() {
+    const { name, score, email } = this.props;
+    setRanking(name, score, email);
   }
 
   timer() {
@@ -182,9 +188,10 @@ QuestionsComponent.propTypes = {
   setCorrects: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ user: { name, email } }) => ({
+const mapStateToProps = ({ user: { name, email, score } }) => ({
   name,
   email,
+  score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
