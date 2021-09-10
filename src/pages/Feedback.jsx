@@ -22,7 +22,7 @@ class Feedback extends Component {
   }
 
   render() {
-    const { name, score, email, answersCorrects, assertions } = this.props;
+    const { name, score, email, answersCorrects } = this.props;
     return (
       <>
         <Header
@@ -31,7 +31,13 @@ class Feedback extends Component {
           score={ score }
         />
         <p data-testid="feedback-text"><Message hits={ answersCorrects } /></p>
-        <div data-testid="feedback-total-question">{ assertions }</div>
+        <p>Total de acertos:</p>
+        <div data-testid="feedback-total-question">
+          { answersCorrects }
+        </div>
+        <p>Placar:</p>
+        <div data-testid="feedback-total-score">{ score }</div>
+
         <ConfigButton
           test="btn-play-again"
           name="Jogar novamente"
@@ -55,11 +61,12 @@ Feedback.propTypes = {
 }.isRequired;
 
 const mapStateToProps = ({
-  user: { name, email },
+  user: { name, email, score },
   Corrects: { answersCorrects },
 }) => ({
   name,
   email,
+  score,
   answersCorrects,
 });
 
