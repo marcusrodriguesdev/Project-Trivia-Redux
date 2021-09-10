@@ -48,8 +48,8 @@ class Settings extends Component {
 
   render() {
     const difficulties = [
-      { name: 'Any', id: '' }, { name: 'easy', id: 'easy' },
-      { name: 'medium', id: 'medium' }, { name: 'hard', id: 'hard' }];
+      { name: 'Any', id: '' }, { name: 'Easy', id: 'easy' },
+      { name: 'Medium', id: 'medium' }, { name: 'Hard', id: 'hard' }];
     const { categories, quantity } = this.state;
 
     return (
