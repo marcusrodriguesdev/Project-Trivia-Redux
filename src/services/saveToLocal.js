@@ -26,6 +26,7 @@ export function savePlayer(name, gravatarEmail) {
 export function saveScore(score) {
   const result = loadScore();
   result.player.score += score;
+  if (score !== 0) result.player.assertions += 1;
   localStorage.setItem('state', JSON.stringify(result));
 }
 
