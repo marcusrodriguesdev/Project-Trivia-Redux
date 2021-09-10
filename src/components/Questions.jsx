@@ -27,7 +27,7 @@ class Questions extends Component {
       correctAs: '',
       alea: [],
       question: '',
-      category:'',
+      category: '',
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
