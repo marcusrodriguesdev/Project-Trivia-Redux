@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { logged, setScore } from '../redux/actions';
+import '../css/Login.css';
+import LogoTrivia from '../images/logo-trivia.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -58,38 +60,48 @@ class Login extends React.Component {
   render() {
     const { btnStatus } = this.state;
     const { history } = this.props;
-
     return (
-      <div>
-        <Input
-          type="text"
-          testid="input-player-name"
-          id="name"
-          label="Name"
-          name="name"
-          change={ this.handleChange }
-        />
-        <Input
-          type="email"
-          testid="input-gravatar-email"
-          id="email"
-          label="Email"
-          name="email"
-          change={ this.handleChange }
-        />
-        <Button
-          label="Jogar"
-          type="button"
-          click={ this.handleClick }
-          testid="btn-play"
-          disable={ btnStatus }
-        />
-        <Button
-          label="Configurações"
-          testid="btn-settings"
-          click={ () => history.push('/settings') }
-        />
-      </div>
+      <main className="main-login">
+        <div className="logo-container">
+          <img src={ LogoTrivia } alt="logo trivia" className="logo-trivia" />
+        </div>
+        <div className="inputs-name-email">
+          <Input
+            type="text"
+            testid="input-player-name"
+            id="name"
+            // label="Name"
+            placeholder="Nome do jogador"
+            className="input-name"
+            name="name"
+            change={ this.handleChange }
+          />
+          <Input
+            type="email"
+            testid="input-gravatar-email"
+            id="email"
+            // label="Email"
+            placeholder="Email do jogador"
+            className="input-email"
+            name="email"
+            change={ this.handleChange }
+          />
+          <Button
+            label="Jogar"
+            type="button"
+            className="button-login"
+            click={ this.handleClick }
+            testid="btn-play"
+            disable={ btnStatus }
+          />
+          <Button
+            label="Configurações"
+            testid="btn-settings"
+            className="button-config"
+            click={ () => history.push('/settings') }
+          />
+        </div>
+      </main>
     );
   }
 }
