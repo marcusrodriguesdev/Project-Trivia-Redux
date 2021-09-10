@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import '../css/Ranking.css';
 
 export default class PlayersList extends Component {
   render() {
@@ -10,10 +11,23 @@ export default class PlayersList extends Component {
     return (
       <ul>
         { ranking.map(({ name, score, picture }, index) => (
-          <li key={ index }>
-            <img src={ picture } alt="avatar" />
-            <span data-testid={ `player-name-${index}` }>{ name }</span>
-            <span data-testid={ `player-score-${index}` }>{ score }</span>
+          <li className="list" key={ index }>
+            <img className="invisible" src={ picture } alt="avatar" />
+            <div className="listContainer">
+              <span
+                className="player-name"
+                data-testid={ `player-name-${index}` }
+              >
+                <span className="number">{ index + 1 }</span>
+                { name }
+              </span>
+              <span
+                className="player-score"
+                data-testid={ `player-score-${index}` }
+              >
+                { score }
+              </span>
+            </div>
           </li>
         )) }
       </ul>

@@ -1,0 +1,108 @@
+*{
+    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 115px;
+}
+
+h1 {
+    color: #333333;
+    font-size: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.invisible {
+    display: none;
+}
+
+
+.playerContainer {
+    display: flex;
+    height: 100vh;
+    background-color: #46178F;
+    flex-direction: column;
+}
+
+.playerList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+}
+
+.listContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 1200px;
+}
+
+ul {
+    font-size: 35px;
+    font-weight: 600;
+    color:#FFFFFF;
+    list-style-type: none;
+    margin-top: 80px;
+}
+
+button {
+    border: 0px;
+    cursor: pointer;
+    box-shadow: rgb(0 0 0 / 25%) 0px -4px inset;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    min-height: 48px;
+    padding: 0px 16px 4px;
+    width: 100%;
+}
+
+.player-name {
+    display: flex;
+    font-size: 35px;
+    font-weight: 600;
+    color:#FFFFFF;
+}
+
+.number {
+    display: flex;
+    font-size: 17px;
+    margin-right: 15px;
+    align-items: center;
+}
+
+.logoTrivia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+}
+
+.logoTrivia img {
+    height: 60px;
+    margin-left: 224px;
+    margin-top: 25px;
+}
+
+.logoButtonContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.buttonContainer {
+    background-color: red;
+    display: flex;
+    justify-content: flex-end;
+    width: 180px;
+    margin: 20px 25px;
+}
