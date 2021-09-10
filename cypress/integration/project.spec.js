@@ -355,7 +355,7 @@ describe('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga d
 
 // feedback
 
-describe.only('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
+describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -681,7 +681,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   });
 });
 
-describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
+describe.only('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
   it('Volta para a tela inicial', () => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
