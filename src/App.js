@@ -3,9 +3,9 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 
 import ConfigScreen from './pages/ConfigScreen';
+import Feedback from './pages/Feedback';
 import Login from './pages/Login';
 import Game from './pages/Game';
-import Feedback from './pages/Feedback';
 
 export default function App() {
   return (

@@ -191,7 +191,7 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  results: state.myReducer.results,
+  results: state.game.results,
   name: state.user.name,
   email: state.user.email,
   imgPath: state.user.imgPath,
