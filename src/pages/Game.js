@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
 
@@ -21,6 +22,7 @@ class Game extends React.Component {
     this.interval = this.interval.bind(this);
     this.renderButton = this.renderButton.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
+    this.nextHandler = this.nextHandler.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +50,8 @@ class Game extends React.Component {
   }
 
   selectHandler(e) {
-    const { questionIndex, questions, time } = this.state;
+    const { questionIndex, questions, time, countdown } = this.state;
+    clearInterval(countdown);
     let points;
     const HARD_POINT = 3;
     const TEN = 10;
@@ -72,10 +75,42 @@ class Game extends React.Component {
     }));
   }
 
+  nextHandler() {
+    const { questionIndex } = this.state;
+    const { history } = this.props;
+    const maxIndex = 4;
+
+    this.setState({
+      isAnswered: false,
+      time: 30,
+    });
+
+    if (questionIndex < maxIndex) {
+      this.interval();
+      this.setState({ questionIndex: questionIndex + 1 });
+    }
+
+    if (questionIndex >= maxIndex) history.push('/feedback');
+  }
+
+  renderButton() {
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        className="submit"
+        onClick={ this.nextHandler }
+      >
+        PRÓXIMA
+      </button>
+    );
+  }
+
   renderAlternative(isCorrect, content, index = 1) {
     const { isAnswered, isTimeOver } = this.state;
     const style = isAnswered ? { border: isCorrect
       ? '3px solid rgb(6, 240, 15)' : '3px solid rgb(255, 0, 0)' } : {};
+
     return (
       <button
         id={ isCorrect ? 'correct' : 'wrong' }
@@ -89,21 +124,6 @@ class Game extends React.Component {
         data-testid={ `${isCorrect ? 'correct-answer' : `wrong-answer${index}`}` }
       >
         { content }
-      </button>
-    );
-  }
-
-  renderButton() {
-    return (
-      <button
-        data-testid="btn-next"
-        type="button"
-        className="submit"
-        onClick={ () => this.setState((previState) => ({
-          questionIndex: previState.questionIndex + 1,
-        })) }
-      >
-        PRÓXIMA
       </button>
     );
   }
@@ -131,6 +151,9 @@ class Game extends React.Component {
 
   render() {
     const { questions, assertions, score, isAnswered, questionIndex } = this.state;
+
+    console.log(questionIndex);
+
     return (
       <>
         <Header
@@ -168,5 +191,11 @@ class Game extends React.Component {
     );
   }
 }
+
+Game.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Game;
