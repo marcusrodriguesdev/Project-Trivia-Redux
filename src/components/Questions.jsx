@@ -10,31 +10,43 @@ const THREE = 3;
 const TWO = 2;
 const ONE = 1;
 const ZERO = 0;
+const STYLE_BUTTON = 'button is-light my-2';
 
 class Questions extends Component {
   constructor() {
     super();
     this.state = {
-      correct: null,
-      incorrect: null,
+      correct: STYLE_BUTTON,
+      incorrect: STYLE_BUTTON,
       seconds: 30,
       disable: false,
       numberQuestion: 0,
       visibilit: 'hide',
       redirect: false,
       scori: 0,
+      correctAs: '',
+      alea: [],
+      question: '',
+      category:'',
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
     this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.aleatoryQuestion = this.aleatoryQuestion.bind(this);
   }
 
   componentDidMount() {
+    const { resp } = this.props;
+    const { numberQuestion } = this.state;
+    this.aleatoryQuestion();
     const ONE_SECOND = 1000;
     this.intervalId = setInterval(() => {
       this.setState((estadoAnterior) => ({ seconds: estadoAnterior.seconds - 1 }));
     }, ONE_SECOND);
+    this.setState({ correctAs: resp[numberQuestion].correct_answer,
+      question: resp[numberQuestion].question,
+      category: resp[numberQuestion].category });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -46,8 +58,8 @@ class Questions extends Component {
   rulesOfUpdate() {
     this.setState({
       seconds: 0,
-      incorrect: 'incorrect',
-      correct: 'correct',
+      incorrect: 'button is-danger my-2',
+      correct: 'button is-success my-2',
       disable: true });
   }
 
@@ -90,17 +102,44 @@ class Questions extends Component {
   }
 
   handleClickClassNameHelper(a) {
-    this.setState({ incorrect: 'incorrect', correct: 'correct' });
+    this.setState({ incorrect: 'button is-danger my-2',
+      correct: 'button is-success my-2' });
     const n = a;
     if (n === 'correct' || n === 'incorrect') {
       this.setState({
-        visibilit: 'show',
+        visibilit: 'button is-info',
       });
     }
   }
 
+  shuffle(array) {
+    let arrKeys = Object.keys(array);
+    const newArray = [];
+    while (arrKeys.length > 0) {
+      const randomIndex = Math.floor(Math.random() * (arrKeys.length - 1));
+
+      newArray.push(array[arrKeys[randomIndex]]);
+
+      delete arrKeys[randomIndex];
+      arrKeys = arrKeys.filter(() => true);
+    }
+    return newArray;
+  }
+
+  aleatoryQuestion() {
+    const { numberQuestion } = this.state;
+    const { resp } = this.props;
+    const correct = resp[numberQuestion].correct_answer;
+    const incorrect = resp[numberQuestion].incorrect_answers.join(',');
+    const allAnswers = `${correct},${incorrect}`;
+    const answers = allAnswers.split(',');
+    const arrayAleatory = this.shuffle(answers);
+    this.setState({ alea: arrayAleatory });
+  }
+
   nextQuestion() {
     const { numberQuestion, scori } = this.state;
+    const { resp }= this.props;
     const { user, arrayOfScoreAndName, playerStatus: { assertions } } = this.props;
     const question = 4;
     if (numberQuestion === question) {
@@ -115,58 +154,69 @@ class Questions extends Component {
       this.setState({ redirect: true });
       arrayOfScoreAndName(playerScore);
     }
+    const teste = resp[numberQuestion].correct_answer;
     this.setState((estadoAnterior) => ({
       numberQuestion: estadoAnterior.numberQuestion + 1,
       seconds: 30,
-      correct: null,
-      incorrect: null,
+      correct: STYLE_BUTTON,
+      incorrect: STYLE_BUTTON,
       visibilit: 'hide',
+      correctAs: teste,
+      question: resp[numberQuestion].question,
+      category: resp[numberQuestion].category,
     }));
+    this.aleatoryQuestion();
   }
 
   render() {
-    const { redirect, correct, incorrect, seconds, disable,
-      numberQuestion, visibilit } = this.state;
+    const { redirect, correct, incorrect, seconds, disable, numberQuestion, visibilit, correctAs, alea, question, category } = this.state;
     const { resp } = this.props;
     if (redirect === true) { return <Redirect to="/feedback" />; }
     return (
-      <div>
-        <seconds>{seconds}</seconds>
-        <p data-testid="question-category">{resp[numberQuestion].category}</p>
-        <p data-testid="question-text">{resp[numberQuestion].question}</p>
-        <button
-          className={ correct }
-          name="correct"
-          onClick={ this.handleClickClassName }
-          data-testid="correct-answer"
-          id="correct-answer"
-          type="button"
-          disabled={ disable }
-        >
-          {resp[numberQuestion].correct_answer}
-        </button>
-        {resp[numberQuestion].incorrect_answers
-          .map((element, index) => (
-            <div key={ index }>
+      <div className="has-text-warning-light">
+        <h1 className="title is-3">Bem vindo ao Quiz Trivia! responda em 30 segundos para acumular pontos!</h1>
+        <seconds className="title is-3">{seconds}</seconds>
+        <p className="title is-3" data-testid="question-category">{`Categoria ${category}`}</p>
+        <p className="subtitle is-4" data-testid="question-text">{question}</p>
+        {console.log(alea)}
+        {alea.map((element, index) => {
+          console.log(element, correctAs);
+          if (element === correctAs) {
+            return (
               <button
-                name="incorrect"
-                className={ incorrect }
+                className={ correct }
+                name="correct"
                 onClick={ this.handleClickClassName }
+                data-testid="correct-answer"
+                id="correct-answer"
                 type="button"
-                key={ index }
-                data-testid={ `wrong-answer-${index}` }
                 disabled={ disable }
               >
                 {element}
               </button>
-            </div>
-          ))}
-        <div>
+            );
+          }
+          return( <button
+                  name="incorrect"
+                  className={ incorrect }
+                  onClick={ this.handleClickClassName }
+                  type="button"
+                  key={ index }
+                  data-testid={ `wrong-answer-${index}` }
+                  disabled={ disable }
+                >
+                  {element}
+                </button>    
+          )
+          })
+        }
+)
+<div>
           <button
             type="button"
             data-testid="btn-next"
             onClick={ this.nextQuestion }
-            className={ seconds === 0 ? 'show' : visibilit }
+            className={ seconds === 0 ? 'button is-info' : visibilit }
           >
             Próxima
           </button>

@@ -8,22 +8,22 @@ class Ranking extends Component {
     const { arrayOfScore } = this.props;
     const arrCert = arrayOfScore.sort((a, b) => b.player.score - a.player.score);
     return (
-      <div>
-        <h1 data-testid="ranking-title">Ranking</h1>
+      <div className="content">
+        <h1 className="is-size-2" data-testid="ranking-title">Ranking</h1>
         <ul>
           {arrCert.map((element, index) => (
-            <div key={ index }>
-              <li data-testid={ `player-name-${index}` }>{element.player.name}</li>
-              <li data-testid={ `player-score-${index}` }>
+            <ul type="1">
+              <li className="subtitle is-3"data-testid={ `player-name-${index}` }>{element.player.name}</li>
+              <li className="subtitle is-3" data-testid={ `player-score-${index}` }>
                 {' '}
                 {element.player.score}
                 {' '}
               </li>
-            </div>
+            </ul>
           ))}
         </ul>
         <Link to="/" data-testid="btn-go-home">
-          <button type="button">Home</button>
+          <button className="button is-success" type="button">Home</button>
         </Link>
       </div>
     );

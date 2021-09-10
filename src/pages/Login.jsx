@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { MdEmail } from 'react-icons/md';
 import actionLogin, { actionPlayerScore } from '../actions';
+import img from '../img/pngaaa.com-56983.png';
 
 class Login extends Component {
   constructor() {
@@ -21,7 +24,6 @@ class Login extends Component {
     this.token();
     const playerScore = {
       player: {
-        // name: '',
         assertions: 0,
         score: 0,
         // gravatarEmail: '',
@@ -48,7 +50,9 @@ class Login extends Component {
   }
 
   async token() {
-    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const response = await fetch(
+      'https://opentdb.com/api_token.php?command=request'
+    );
     const tokien = await response.json();
     const tokienData = tokien.token;
     localStorage.setItem('token', JSON.stringify(tokienData));
@@ -69,43 +73,79 @@ class Login extends Component {
   render() {
     const { user, email } = this.state;
     return (
-      <div>
-        <h1>Loginn</h1>
-        <label htmlFor="email">
-          Email::
-          <input
-            type="text"
-            name="email"
-            id="email"
-            onChange={ this.handleChange }
-            data-testid="input-gravatar-email"
-          />
-        </label>
-        <label htmlFor="user">
-          User:
-          <input
-            type="text"
-            name="user"
-            id="user"
-            onChange={ this.handleChange }
-            data-testid="input-player-name"
-          />
-        </label>
-        <Link to="/settings">
-          <button type="button" data-testid="btn-settings">
-            Settings
-          </button>
-        </Link>
-        <Link to="/play">
-          <button
-            disabled={ this.validateEmailAndUser() }
-            type="button"
-            data-testid="btn-play"
-            onClick={ () => this.handleSubmit(user, email) }
-          >
-            Jogar
-          </button>
-        </Link>
+      <div className="hero is-primary is-fullheight">
+        <div style={{ textAlign: 'center' }}>
+          <img width="350px" src={img}></img>
+        </div>
+        <div className="hero-body">
+          <div className="container">
+            <div className="columns is-centered">
+              <div className="column is-4">
+                <form action="" className="box">
+                  <div className="field">
+                    <label htmlFor="email" className="label">
+                      Email:
+                    </label>
+                    <div className="control has-icons-left">
+                      <input
+                        type="text"
+                        placeholder="john@example.com"
+                        name="email"
+                        className="input"
+                        onChange={this.handleChange}
+                      />
+                      <span className="icon is-small is-left">
+                        <i>
+                          <MdEmail />
+                        </i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="field">
+                    <label htmlFor="user" className="label">
+                      Usuário:
+                    </label>
+                    <div className="control has-icons-left">
+                      <input
+                        type="text"
+                        placeholder="..."
+                        name="user"
+                        className="input"
+                        onChange={this.handleChange}
+                      />
+                      <span className="icon is-small is-left">
+                        <i>
+                          <FiUser />
+                        </i>
+                      </span>
+                    </div>
+                  </div>
+                  <Link to="/play">
+                    <button
+                      disabled={this.validateEmailAndUser()}
+                      type="button"
+                      data-testid="btn-play"
+                      className="button is-primary is-normal"
+                      onClick={() => this.handleSubmit(user, email)}
+                    >
+                      Jogar
+                    </button>
+                  </Link>
+                  <Link to="/settings">
+                    <button
+                      style={{textAlign:'right'}}
+                      type="button"
+                      className="button is-info is-small"
+                      data-testid="btn-settings"
+                    >
+                      Configurações
+                    </button>
+                  </Link>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
