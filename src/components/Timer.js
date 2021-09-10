@@ -56,5 +56,4 @@ Timer.propTypes = {
   isRunning: Proptypes.bool,
   timeExpired: Proptypes.func,
   counter: Proptypes.number,
-  instaLose: Proptypes.func,
 }.isRequired;

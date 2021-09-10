@@ -122,6 +122,14 @@ class Game extends React.Component {
       }));
       return;
     }
+    // https://stackoverflow.com/questions/19635077/adding-objects-to-array-in-localstorage
+    const loadRanking = JSON.parse(localStorage.getItem('ranking'));
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { player } = state;
+    const ranking = (loadRanking || []);
+    ranking.push(player);
+    ranking.sort((player1, player2) => player2.score - player1.score);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
     history.push('/feedback');
   }
 
