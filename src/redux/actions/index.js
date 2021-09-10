@@ -74,6 +74,7 @@ const handleURL = (config, token) => {
 //   const URLToken = `&token=${token}`;
 //   const options = {
 //     category: {
+//       All: '',
 //       9: '&category=9',
 //       10: '&category=10',
 //       11: '&category=11',
@@ -100,11 +101,13 @@ const handleURL = (config, token) => {
 //       32: '&category=32',
 //     },
 //     difficulty: {
+//       Mixed: '',
 //       easy: '&difficulty=easy',
 //       medium: '&difficulty=medium',
 //       hard: '&difficulty=hard',
 //     },
 //     type: {
+//       Both: '',
 //       Multiple: '&type=multiple',
 //       'True or False': '&type=boolean',
 //     },
@@ -120,8 +123,6 @@ export const fetchQuestionThunk = (config, token) => async (dispatch) => {
     difficulty: 'Mixed',
     type: 'Both',
   };
-  console.log(token);
-  // console.log(config);
   if (config === defaultConfig) {
     try {
       const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
@@ -133,7 +134,6 @@ export const fetchQuestionThunk = (config, token) => async (dispatch) => {
   } else {
     try {
       const fetchURL = handleURL(config, token);
-      console.log(fetchURL);
       const response = await fetch(fetchURL);
       const data = await response.json();
       return dispatch(fetchQuestionSuccess(data.results));

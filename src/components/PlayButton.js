@@ -50,7 +50,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(fetchTokenThunk()),
   setName: (payload) => dispatch(setNameAction(payload)),
   setEmail: (payload) => dispatch(setEmailAction(payload)),
-  fetchQuestion: (results) => dispatch(fetchQuestionThunk(results)),
+  fetchQuestion: (config, token) => dispatch(fetchQuestionThunk(config, token)),
 });
 
 const mapStateToProps = (state) => ({

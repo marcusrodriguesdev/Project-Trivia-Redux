@@ -38,13 +38,11 @@ class ConfigScreen extends Component {
       type,
     };
     if (category === 'All') {
-      console.log(config);
       updateSelection(config);
     } else {
       const categoryObj = categoriesGlobal
         .filter((eachCategory) => eachCategory.name === category);
       config.category = categoryObj[0].id;
-      console.log(config);
       updateSelection(config);
     }
   }
@@ -111,7 +109,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   categoriesFetch: () => dispatch(categoriesFetchThunk()),
-  updateSelection: () => dispatch(updateSelectionAction()),
+  updateSelection: (config) => dispatch(updateSelectionAction(config)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfigScreen);
