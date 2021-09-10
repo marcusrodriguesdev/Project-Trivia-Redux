@@ -1,10 +1,26 @@
+@use '../1-Base/_varibles' as Var
+@use '../1-Base/utilities' as Mixin
+
 .login-container
-  @include display-flex-column($justify: space-evenly)
+  @include Mixin.display-flex-column($justify: space-evenly)
   height: 100vh
-  background: linear-gradient(#32a4a8, white)
+  background: linear-gradient(Var.$bg-color-login, white)
 
   &-logo
-    width: 50%
+    width: 30%
+    height: 150px
+    animation: myAnimation 3s infinite linear
+    position: relative
+
+    @keyframes myAnimation
+      0%
+        width: 30%
+
+      75%
+        width: 40%
+
+      100%
+        width: 30%
 
   &-title
     font-size: 3rem
@@ -16,7 +32,7 @@
   &-inputs
     height: 50vh
     width: 100%
-    @include display-flex-column
+    @include Mixin.display-flex-column
 
   input
     border: none

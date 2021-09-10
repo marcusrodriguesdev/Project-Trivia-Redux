@@ -23,7 +23,21 @@ body {
   background: linear-gradient(#32a4a8, white);
 }
 .login-container-logo {
-  width: 50%;
+  width: 30%;
+  height: 150px;
+  animation: myAnimation 3s infinite linear;
+  position: relative;
+}
+@keyframes myAnimation {
+  0% {
+    width: 30%;
+  }
+  75% {
+    width: 40%;
+  }
+  100% {
+    width: 30%;
+  }
 }
 .login-container-title {
   font-size: 3rem;
