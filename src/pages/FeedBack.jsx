@@ -39,6 +39,14 @@ class FeedBack extends Component {
             Jogar novamente
           </button>
         </Link>
+        <Link to="/Ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
       </div>
     );
   }
