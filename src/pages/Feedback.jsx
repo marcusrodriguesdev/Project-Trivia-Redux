@@ -1,11 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Feedback extends Component {
+import GravatarHeader from '../components/GravatarHeader';
+import FeedbackMensage from '../components/FeedbackMensage';
+
+export default class Feedback extends React.Component {
   render() {
     return (
-      <p data-testid="feedback-text">Aqui está seu fedback moço</p>
+      <div>
+        <GravatarHeader />
+        <FeedbackMensage />
+      </div>
     );
   }
 }
-
-export default Feedback;
