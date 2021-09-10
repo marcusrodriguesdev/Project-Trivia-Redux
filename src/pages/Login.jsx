@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getToken, saveName } from '../actions';
+import { getToken, saveName, saveEmail, clearScore } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -13,6 +13,14 @@ class Login extends Component {
       validEmail: false,
     };
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleClick(name, email) {
+    const { getTokenProps, getPlayerName, getPlayerEmail, clearScoreProp } = this.props;
+    getTokenProps();
+    getPlayerName(name);
+    getPlayerEmail(email);
+    clearScoreProp();
   }
 
   handleChange({ target }) {
@@ -47,9 +55,7 @@ class Login extends Component {
   }
 
   render() {
-    const { getTokenProps } = this.props;
-    const { getPlayerName } = this.props;
-    const { validEmail, validName, name } = this.state;
+    const { validEmail, validName, name, email } = this.state;
     return (
       <div>
         <form>
@@ -69,12 +75,12 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link onClick={ () => (getPlayerName(name)) } to="/game">
+          <Link to="/game">
             <button
               disabled={ !validName || !validEmail }
               type="button"
               data-testid="btn-play"
-              onClick={ getTokenProps }
+              onClick={ () => this.handleClick(name, email) }
             >
               Jogar
             </button>
@@ -96,11 +102,15 @@ class Login extends Component {
 const mapDispatchToProps = (dispatch) => ({
   getTokenProps: () => dispatch(getToken()),
   getPlayerName: (name) => dispatch(saveName(name)),
+  getPlayerEmail: (email) => dispatch(saveEmail(email)),
+  clearScoreProp: () => dispatch(clearScore()),
 });
 
 Login.propTypes = {
   getPlayerName: PropTypes.func.isRequired,
   getTokenProps: PropTypes.func.isRequired,
+  getPlayerEmail: PropTypes.func.isRequired,
+  clearScoreProp: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
