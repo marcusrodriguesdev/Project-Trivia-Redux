@@ -74,7 +74,6 @@ class Game extends Component {
       disabled: true,
       answered: true,
     });
-
     const { target } = event;
     const parentDiv = target.parentElement;
     const buttons = parentDiv.querySelectorAll('button');
@@ -221,11 +220,9 @@ class Game extends Component {
     const base64Category = JSON.stringify(questions[questionIndex].category);
     const buffCategory = Buffer.from(base64Category, 'base64');
     const stringCategory = buffCategory.toString('utf-8');
-
     const base64Question = JSON.stringify(questions[questionIndex].question);
     const buffQuestion = Buffer.from(base64Question, 'base64');
     const stringQuestion = buffQuestion.toString('utf-8');
-
     if (questions.length > 1) {
       const { disabled } = this.state;
       return (
@@ -287,18 +284,14 @@ class Game extends Component {
     );
   }
 }
-
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
 });
-
 const mapDispatchToProps = (dispatch) => ({
   updateScoreProp: (points) => dispatch(updateScore(points)),
 });
-
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   updateScoreProp: PropTypes.func.isRequired,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
