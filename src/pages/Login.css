@@ -1,0 +1,52 @@
+.logo {
+  position: relative;
+  margin-left: 70px;
+  bottom: 100px;
+  max-width: 300px;
+  animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+    10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+
+.input {
+  max-width: 70%;
+  margin: 2px;
+}
+
+label {
+  margin-top: 10px;
+}
+
+.login-form {
+  display: flex;
+  border: 1px solid black;
+  padding: 150px 50px 0 50px;
+  height: 400px;
+  flex-direction: column;
+  border-radius: 10px;
+  width: 450px;
+  background-color: rgb(236, 246, 255);
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}

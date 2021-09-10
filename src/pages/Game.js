@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import Timer from '../components/Timer';
-import '../App.css';
+import './Game.css';
 
 class Game extends Component {
   constructor(props) {
@@ -43,6 +43,7 @@ class Game extends Component {
       ...prevState,
       questionIndex: prevState.questionIndex + 1,
       isVisible: false,
+      time: 30,
     }));
   }
 
@@ -57,9 +58,9 @@ class Game extends Component {
   changeColor() {
     const rightBtn = document.querySelector('.correct-btn');
     const wrongBtn = document.querySelectorAll('.wrong-btn');
-    rightBtn.className = 'correct-answer';
+    rightBtn.className = 'correct-answer button';
     wrongBtn.forEach((button) => {
-      button.className = 'wrong-answer';
+      button.className = 'wrong-answer button';
     });
   }
 
@@ -116,33 +117,35 @@ class Game extends Component {
       question } = questions[questionIndex];
 
     return (
-      <div>
-        <p data-testid="question-category">{ category }</p>
+      <>
+        <h2 data-testid="question-category">{ category }</h2>
         <p data-testid="question-text">{ question }</p>
-        <button
-          disabled={ disabled }
-          type="button"
-          data-testid="correct-answer"
-          className="correct-btn"
-          onClick={ this.handleClick }
-          value={ correctAnswer }
-        >
-          { correctAnswer }
-        </button>
-        {incorrectAnswer.map((answer, index) => (
+        <div className="answers">
           <button
             disabled={ disabled }
-            value={ answer }
-            onClick={ this.handleClick }
-            className="wrong-btn"
             type="button"
-            key={ index }
-            data-testid={ `wrong-answers-${index}` }
+            data-testid="correct-answer"
+            className="correct-btn button"
+            onClick={ this.handleClick }
+            value={ correctAnswer }
           >
-            { answer }
+            { correctAnswer }
           </button>
-        ))}
-      </div>
+          {incorrectAnswer.map((answer, index) => (
+            <button
+              disabled={ disabled }
+              value={ answer }
+              onClick={ this.handleClick }
+              className="wrong-btn button"
+              type="button"
+              key={ index }
+              data-testid={ `wrong-answers-${index}` }
+            >
+              { answer }
+            </button>
+          ))}
+        </div>
+      </>
     );
   }
 

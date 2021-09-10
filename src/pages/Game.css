@@ -1,0 +1,28 @@
+header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgb(18, 161, 161);
+  color: white;
+  font-size: 30px;
+}
+
+main {
+  display: flex;
+  width: 80vw;
+  justify-content: space-between;
+}
+
+.question {
+  border: 1px solid black;
+  max-width: 500px;
+  height: 500px;
+}
+
+.answers {
+  max-width: 500px;
+}
