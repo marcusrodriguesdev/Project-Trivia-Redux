@@ -10,6 +10,8 @@ const THREE = 3;
 const TWO = 2;
 const ONE = 1;
 const ZERO = 0;
+const ID_CORRECT = 'correct-answer';
+let ARRAY;
 
 class Questions extends Component {
   constructor() {
@@ -28,6 +30,7 @@ class Questions extends Component {
     this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
     this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.questions = this.questions.bind(this);
   }
 
   componentDidMount() {
@@ -68,8 +71,7 @@ class Questions extends Component {
     this.handleClickClassNameHelper(target.name);
     const { resp, player, playerStatus: { score, assertions } } = this.props;
     const { seconds } = this.state;
-
-    if (target.id === 'correct-answer') {
+    if (target.id === ID_CORRECT) {
       const { difficulty } = resp[0];
       const pointsFromDifficulty = this.checkDifficulty(difficulty);
       const timerPoints = seconds;
@@ -87,6 +89,60 @@ class Questions extends Component {
       player(1, sum);
       this.setState((estadoAnterior) => ({ scori: estadoAnterior.scori + sum }));
     }
+  }
+
+  questions() {
+    const { correct, incorrect, disable, seconds,
+      numberQuestion } = this.state;
+    const { resp } = this.props;
+    const TRIRTY = 30;
+    if (seconds === TRIRTY) {
+      ARRAY = [...resp[numberQuestion].incorrect_answers,
+        resp[numberQuestion].correct_answer];
+      this.shuffle(ARRAY);
+      this.shuffle(ARRAY);
+    }
+    const tut = ARRAY.map((element, index) => (
+      <div key={ index }>
+        <button
+          name="incorrect"
+          className={ element === resp[numberQuestion].correct_answer
+            ? correct : incorrect }
+          onClick={ this.handleClickClassName }
+          type="button"
+          key={ index }
+          data-testid={ element === resp[numberQuestion].correct_answer
+            ? ID_CORRECT : `wrong-answer-${index}` }
+          id={ element === resp[numberQuestion].correct_answer
+            ? ID_CORRECT : `wrong-answer-${index}` }
+          disabled={ disable }
+        >
+          {element}
+        </button>
+      </div>
+    ));
+    return tut;
+  }
+
+  // source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  shuffle(array) {
+    let currentIndex = array.length;
+    let randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
   }
 
   handleClickClassNameHelper(a) {
@@ -125,7 +181,7 @@ class Questions extends Component {
   }
 
   render() {
-    const { redirect, correct, incorrect, seconds, disable,
+    const { redirect, seconds,
       numberQuestion, visibilit } = this.state;
     const { resp } = this.props;
     if (redirect === true) { return <Redirect to="/feedback" />; }
@@ -134,33 +190,7 @@ class Questions extends Component {
         <seconds>{seconds}</seconds>
         <p data-testid="question-category">{resp[numberQuestion].category}</p>
         <p data-testid="question-text">{resp[numberQuestion].question}</p>
-        <button
-          className={ correct }
-          name="correct"
-          onClick={ this.handleClickClassName }
-          data-testid="correct-answer"
-          id="correct-answer"
-          type="button"
-          disabled={ disable }
-        >
-          {resp[numberQuestion].correct_answer}
-        </button>
-        {resp[numberQuestion].incorrect_answers
-          .map((element, index) => (
-            <div key={ index }>
-              <button
-                name="incorrect"
-                className={ incorrect }
-                onClick={ this.handleClickClassName }
-                type="button"
-                key={ index }
-                data-testid={ `wrong-answer-${index}` }
-                disabled={ disable }
-              >
-                {element}
-              </button>
-            </div>
-          ))}
+        { this.questions() }
         <div>
           <button
             type="button"
