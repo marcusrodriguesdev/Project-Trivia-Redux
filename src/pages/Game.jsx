@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import md5 from 'crypto-js/md5';
+import Header from '../components/Header';
 import { getQuestionThunk } from '../redux/actions';
 import QuestionsComponent from '../components/QuestionsComponent';
 import Header from '../components/Header';
@@ -14,14 +14,13 @@ class Game extends React.Component {
   }
 
   render() {
-    const { name, email, questions } = this.props;
-    const avatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
+    const { name, email, questions, score } = this.props;
     return (
       <div>
         <Header
           name={ name }
-          avatar={ avatar }
-          score={ 0 }
+          email={ email }
+          score={ score }
         />
         {/* <header>
           <img
@@ -42,15 +41,14 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ({ user: { token, name, email }, results: { questions } }) => ({
+const mapStateToProps = ({ user: { token, name, email, score }, results: { questions } }) => ({
   questions,
   token,
   name,
   email,
+  score,
 });
 
 const mapDispatchToProps = (dispatch) => ({

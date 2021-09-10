@@ -9,14 +9,16 @@ import ConfigButton from '../components/ConfigButton';
 class Feedback extends Component {
   render() {
     const { name, score, email, answersCorrects, assertions } = this.props;
-    const urlAvatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     return (
       <>
         <Header
           name={ name }
-          avatar={ urlAvatar }
+          email={ email }
           score={ score }
         />
+        <h1 data-testid="feedback-text">
+          Pagina de Feedback
+        </h1>
         <p><Message hits={ answersCorrects } /></p>
         <div data-testid="feedback-total-question">{ assertions }</div>
         <ConfigButton link="/" test="btn-play-again" name="Jogar novamente" />
@@ -26,6 +28,7 @@ class Feedback extends Component {
     );
   }
 }
+
 
 Feedback.propTypes = {
   name: PropTypes.string,

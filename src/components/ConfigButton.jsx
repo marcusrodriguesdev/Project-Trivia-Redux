@@ -1,37 +1,38 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class ConfigButton extends Component {
   render() {
-    const { link, test, name, onClick, disable, className } = this.props;
+    const { test, name, onClick, disable, className, hidden } = this.props;
     return (
-      <Link to={ link }>
-        <button
-          className={ className }
-          data-testid={ test }
-          type="button"
-          onClick={ onClick }
-          disabled={ disable }
-        >
-          { name }
-        </button>
-      </Link>
+      <button
+        className={ className }
+        data-testid={ test }
+        type="button"
+        onClick={ onClick }
+        disabled={ disable }
+        hidden={ hidden }
+        name={ name }
+      >
+        { name }
+      </button>
     );
   }
 }
 
 ConfigButton.propTypes = ({
-  link: PropTypes.string,
   test: PropTypes.string,
   name: PropTypes.string,
   onClick: PropTypes.func,
   disable: PropTypes.bool,
   className: PropTypes.string,
+  hidden: PropTypes.bool,
 }).isRequired;
 
 ConfigButton.defaultProps = {
   disable: false,
+  className: '',
+  hidden: false,
 };
 
 export default ConfigButton;
