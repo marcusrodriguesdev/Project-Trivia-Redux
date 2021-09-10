@@ -12,9 +12,9 @@ class Feedback extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick({ target: { name } }) {
+  handleClick({ target }) {
     const { history } = this.props;
-    if (name === 'Jogar novamente') {
+    if (target.name === 'Jogar novamente') {
       history.push('/');
     } else {
       history.push('/ranking');
