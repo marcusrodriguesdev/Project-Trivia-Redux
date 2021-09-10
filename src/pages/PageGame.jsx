@@ -6,6 +6,7 @@ import NextQuestionButton from '../components/NextQuestionButton';
 
 import Timer from '../components/Timer';
 import Answers from '../components/Answers';
+import Score from '../components/Score';
 
 class PageGame extends React.Component {
   constructor(props) {
@@ -19,17 +20,34 @@ class PageGame extends React.Component {
         incorrect: { border: '' },
       },
       isRunning: true,
+      time: 0,
     };
 
     this.handleImg = this.handleImg.bind(this);
     this.handleQuestionClick = this.handleQuestionClick.bind(this);
     this.handleNextButton = this.handleNextButton.bind(this);
-    this.handleTimeOut = this.handleTimeOut.bind(this);
     this.timeExpired = this.timeExpired.bind(this);
+    this.getTime = this.getTime.bind(this);
+    this.getScore = this.getScore.bind(this);
   }
 
   async componentDidMount() {
     this.handleImg();
+  }
+
+  getScore(event) {
+    const { counter, time } = this.state;
+    const { results } = this.props;
+    const score = {
+      correct: event.target.className === 'correct-answer',
+      difficulty: results[counter].difficulty,
+      time: this.getTime(time),
+    };
+    localStorage.setItem('state', JSON.stringify(score));
+  }
+
+  getTime(time) {
+    return time;
   }
 
   handleImg() {
@@ -51,6 +69,7 @@ class PageGame extends React.Component {
         isRunning: false,
       });
     }
+    this.getScore();
   }
 
   handleNextButton() {
@@ -82,11 +101,8 @@ class PageGame extends React.Component {
         incorrect: { border: '3px solid red' },
       },
       isRunning: false,
+      disabledButtons: true,
     });
-  }
-
-  handleTimeOut() {
-    this.setState({ disabledButtons: true });
   }
 
   render() {
@@ -108,12 +124,13 @@ class PageGame extends React.Component {
           </header>
 
           <h2>Game</h2>
-
+          <Score />
           <Timer
             isRunning={ isRunning }
             timeExpired={ this.timeExpired }
-            instaLose={ this.handleTimeOut }
             counter={ counter }
+            getTime={ this.getTime }
+
           />
 
           <h3 data-testid="question-category">{ results[counter].category }</h3>

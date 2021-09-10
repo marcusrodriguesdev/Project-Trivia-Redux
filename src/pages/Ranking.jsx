@@ -12,19 +12,25 @@ class Ranking extends Component {
   }
 
   mockRanking() {
+    const maxPoints = 100;
+    const maxAssertions = 5;
     localStorage.clear();
     const ranking = [
       { name: 'leonardo',
-        score: 7,
+        score: Math.floor(Math.random() * maxPoints),
+        assertion: Math.floor(Math.random() * maxAssertions),
         picture: 'leonardomartins07@gmail.com',
       }, { name: 'lucio',
-        score: 6,
+        score: Math.floor(Math.random() * maxPoints),
+        assertion: Math.floor(Math.random() * maxAssertions),
         picture: '',
       }, { name: 'guilherme',
-        score: 8,
+        score: Math.floor(Math.random() * maxPoints),
+        assertion: Math.floor(Math.random() * maxAssertions),
         picture: '',
       }, { name: 'paulynho',
-        score: 10,
+        score: Math.floor(Math.random() * maxPoints),
+        assertion: Math.floor(Math.random() * maxAssertions),
         picture: '',
       }];
     ranking.sort((player1, player2) => player2.score - player1.score);
@@ -34,14 +40,18 @@ class Ranking extends Component {
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     return (
-      <ol>
-        {ranking.map((player, index) => (
-          <li key={ index }>
-            {`Jogador: ${player.name} Pontuação: ${player.score}`}
-            <img src={ this.handleGravatar(player.picture) } alt={ player.name } />
-          </li>
-        ))}
-      </ol>
+      <div>
+        <header data-testid="ranking-title">Ranking</header>
+        <ol>
+          {ranking.map((player, index) => (
+            <li key={ index }>
+              {`Jogador: ${player.name} Pontuação: ${player.score}
+              Acertos: ${player.assertion}`}
+              <img src={ this.handleGravatar(player.picture) } alt={ player.name } />
+            </li>
+          ))}
+        </ol>
+      </div>
     );
   }
 }

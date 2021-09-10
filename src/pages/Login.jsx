@@ -4,6 +4,7 @@ import EmailInput from '../components/EmailInput';
 import logo from '../trivia.png';
 import PlayButton from '../components/PlayButton';
 import ConfigButton from '../components/ConfigButton';
+import RankingButton from '../components/RankingButton';
 
 class Login extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class Login extends Component {
             playerEmail={ email }
           />
           <ConfigButton />
+          <RankingButton />
         </header>
       </div>
     );
