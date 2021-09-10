@@ -2,7 +2,7 @@ export default function setInitialState() {
   const playerObj = {
     player: {
       name: '',
-      assertions: '',
+      assertions: 0,
       score: 0,
       gravatarEmail: '',
     },
