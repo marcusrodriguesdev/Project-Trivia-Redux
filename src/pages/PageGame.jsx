@@ -81,8 +81,7 @@ class PageGame extends React.Component {
         gravatarEmail: email,
       },
     };
-    const teste = JSON.stringify(data);
-    localStorage.setItem('state', teste);
+    localStorage.setItem('state', JSON.stringify(data));
   }
 
   handleImg() {
