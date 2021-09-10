@@ -36,6 +36,7 @@ class Feedback extends React.Component {
           <span data-testid="feedback-total-question">
             {scorePlayer.player.assertions}
           </span>
+          <br />
           <button
             type="button"
             data-testid="btn-play-again"
@@ -69,4 +70,3 @@ Feedback.propTypes = {
 };
 
 export default connect(mapStateToProps)(Feedback);
-// Teste
