@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import RankingButton from '../components/RankingButton';
 
-class Feedback extends Component {
+import GravatarHeader from '../components/GravatarHeader';
+import FeedbackMensage from '../components/FeedbackMensage';
+import PlayerResults from '../components/PlayerResults';
+
+export default class Feedback extends Component {
   render() {
     return (
       <div>
-        <p data-testid="feedback-text">Aqui está seu fedback moço</p>
         <RankingButton />
+        <GravatarHeader />
+        <FeedbackMensage />
+        <PlayerResults />
       </div>
     );
   }
 }
-
-export default Feedback;
