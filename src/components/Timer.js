@@ -15,15 +15,13 @@ export default class Timer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { isRunning, timeExpired, counter, getTime } = this.props;
-    const { seconds } = this.state;
+    const { isRunning, timeExpired, counter } = this.props;
 
     if (prevState.seconds === 1) {
       clearInterval(this.timer);
       timeExpired();
     }
     if (!isRunning) {
-      getTime(seconds);
       clearInterval(this.timer);
     }
     if (prevProps.counter !== counter) {
@@ -32,6 +30,9 @@ export default class Timer extends Component {
   }
 
   startTimer() {
+    const { getRemainingTime } = this.props;
+    const { seconds } = this.state;
+    getRemainingTime(seconds);
     this.setState({ seconds: 30 });
     const ONE_SECOND = 1000;
     this.timer = setInterval(() => {
@@ -40,24 +41,6 @@ export default class Timer extends Component {
       }));
     }, ONE_SECOND);
   }
-
-  // handleDifficulty() {
-  //   const { difficulty } = this.props;
-  //   const hardValue = 3;
-  //   const mediumValue = 2;
-  //   const easyValue = 1;
-  //   if (difficulty === 'hard') return hardValue;
-  //   if (difficulty === 'medium') return mediumValue;
-  //   if (difficulty === 'easy') return easyValue;
-  // }
-
-  // handlePoints(timeLeft, difficulty) {
-  //   const correctAnswer = 10;
-  //   // const totalPoints = parseFloat(localStorage.getItem('points'));
-  //   const difficultyValue = handleDifficulty(difficulty);
-  //   const currentPoints = correctAnswer + (timeLeft * difficultyValue) + totalPoints;
-  //   localStorage.setItem('points', JSON.stringify(currentPoints));
-  // }
 
   render() {
     const { seconds } = this.state;

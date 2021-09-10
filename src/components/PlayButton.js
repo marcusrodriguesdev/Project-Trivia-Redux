@@ -19,13 +19,6 @@ class PlayButton extends Component {
     setName(playerName);
     await fetchToken();
     localStorage.setItem('token', token);
-    const player = {
-      name: playerName,
-      gravatarEmail: playerEmail,
-      score: 0,
-      assertions: 0,
-    };
-    localStorage.setItem('state', JSON.stringify(player));
     await fetchQuestion(token);
   }
 

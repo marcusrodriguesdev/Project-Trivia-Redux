@@ -4,9 +4,8 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import NextQuestionButton from '../components/NextQuestionButton';
 
-import Timer from '../components/Timer';
 import Answers from '../components/Answers';
-import Score from '../components/Score';
+import Timer from '../components/Timer';
 
 class PageGame extends React.Component {
   constructor(props) {
@@ -20,34 +19,69 @@ class PageGame extends React.Component {
         incorrect: { border: '' },
       },
       isRunning: true,
-      time: 0,
+      score: 0,
+      timeRemaining: null,
+      assertions: 0,
     };
 
     this.handleImg = this.handleImg.bind(this);
     this.handleQuestionClick = this.handleQuestionClick.bind(this);
     this.handleNextButton = this.handleNextButton.bind(this);
     this.timeExpired = this.timeExpired.bind(this);
-    this.getTime = this.getTime.bind(this);
-    this.getScore = this.getScore.bind(this);
+    this.getRemainingTime = this.getRemainingTime.bind(this);
+    this.getTurnResult = this.getTurnResult.bind(this);
+    this.getDifficultyFactor = this.getDifficultyFactor.bind(this);
+    this.saveScoreStorage = this.saveScoreStorage.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.handleImg();
   }
 
-  getScore(event) {
-    const { counter, time } = this.state;
-    const { results } = this.props;
-    const score = {
-      correct: event.target.className === 'correct-answer',
-      difficulty: results[counter].difficulty,
-      time: this.getTime(time),
-    };
-    localStorage.setItem('state', JSON.stringify(score));
+  componentDidUpdate() {
+    this.saveScoreStorage();
   }
 
-  getTime(time) {
-    return time;
+  getRemainingTime(time) {
+    this.setState({ timeRemaining: time });
+  }
+
+  getDifficultyFactor(difficulty) {
+    const easyFactor = 1;
+    const mediumFactor = 2;
+    const hardFactor = 3;
+    if (difficulty === 'easy') return easyFactor;
+    if (difficulty === 'medium') return mediumFactor;
+    if (difficulty === 'hard') return hardFactor;
+  }
+
+  getTurnResult(className) {
+    const { counter, timeRemaining } = this.state;
+    const { results } = this.props;
+    const minimumPoint = 10;
+    if (className === 'correct-answer') {
+      const result = minimumPoint + (timeRemaining
+        * this.getDifficultyFactor(results[counter].difficulty));
+      this.setState((prevState) => ({
+        score: prevState.score + result,
+        assertions: prevState.assertions + 1,
+      }));
+    }
+  }
+
+  saveScoreStorage() {
+    const { name, email } = this.props;
+    const { assertions, score } = this.state;
+
+    const data = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(data));
   }
 
   handleImg() {
@@ -58,7 +92,7 @@ class PageGame extends React.Component {
     });
   }
 
-  handleQuestionClick() {
+  handleQuestionClick({ target }) {
     const { isRunning } = this.state;
     if (isRunning) {
       this.setState({
@@ -68,12 +102,13 @@ class PageGame extends React.Component {
         },
         isRunning: false,
       });
+      this.getTurnResult(target.className);
     }
-    this.getScore();
   }
 
   handleNextButton() {
     const { counter } = this.state;
+    const { history } = this.props;
     const lastIndexQuestion = 4;
     if (counter < lastIndexQuestion) {
       this.setState((prevState) => ({
@@ -85,7 +120,17 @@ class PageGame extends React.Component {
         },
         disabledButtons: false,
       }));
+      return;
     }
+    // https://stackoverflow.com/questions/19635077/adding-objects-to-array-in-localstorage
+    const loadRanking = JSON.parse(localStorage.getItem('ranking'));
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { player } = state;
+    const ranking = (loadRanking || []);
+    ranking.push(player);
+    ranking.sort((player1, player2) => player2.score - player1.score);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+    history.push('/feedback');
   }
 
   decreaseTime() {
@@ -100,13 +145,14 @@ class PageGame extends React.Component {
         correct: { border: '3px solid rgb(6, 240, 15)' },
         incorrect: { border: '3px solid red' },
       },
-      isRunning: false,
       disabledButtons: true,
+      isRunning: false,
     });
   }
 
   render() {
-    const { counter, imgPath, isRunning, disabledButtons, styleButtons } = this.state;
+    const { counter, imgPath, isRunning, disabledButtons,
+      styleButtons, score } = this.state;
 
     const { results, name } = this.props;
 
@@ -120,17 +166,15 @@ class PageGame extends React.Component {
               src={ imgPath }
             />
             <p data-testid="header-player-name">{ name }</p>
-            <p data-testid="header-score">0</p>
+            <p data-testid="header-score">{ score }</p>
           </header>
 
           <h2>Game</h2>
-          <Score />
           <Timer
             isRunning={ isRunning }
             timeExpired={ this.timeExpired }
             counter={ counter }
-            getTime={ this.getTime }
-
+            getRemainingTime={ this.getRemainingTime }
           />
 
           <h3 data-testid="question-category">{ results[counter].category }</h3>
@@ -156,6 +200,7 @@ const mapStateToProps = (state) => ({
   results: state.myReducer.results,
   name: state.user.name,
   email: state.user.email,
+  imgPath: state.user.imgPath,
 });
 
 PageGame.propTypes = {
