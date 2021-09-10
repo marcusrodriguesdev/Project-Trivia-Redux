@@ -105,7 +105,8 @@ class Questions extends Component {
     const tut = ARRAY.map((element, index) => (
       <div key={ index }>
         <button
-          name="incorrect"
+          name={ element === resp[numberQuestion].correct_answer
+            ? 'correct' : 'incorrect' }
           className={ element === resp[numberQuestion].correct_answer
             ? correct : incorrect }
           onClick={ this.handleClickClassName }
