@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import fetchTrivia from '../services/fetchTrivia';
 import FeedbackHeader from '../components/FeedbackHeader';
 import Timer from '../components/Timer';
-import { changeStop, getTimer } from '../redux/actions';
+import { changeStop, getHits, getScore, getTimer } from '../redux/actions';
+import { saveScore } from '../services/saveToLocal';
 
 class Game extends Component {
   constructor(props) {
@@ -37,7 +38,6 @@ class Game extends Component {
   async fetchTriviaGame() {
     const { endpoint, token } = this.props;
     const response = await fetchTrivia(endpoint, token);
-    // console.log(response);
     this.setState({
       trivia: [...response],
       isLoading: false,
@@ -45,11 +45,10 @@ class Game extends Component {
   }
 
   nextButton() {
-    const { addStop, addTimer } = this.props;
+    const { addStop, addTimer, timer, history } = this.props;
     const { trivia } = this.state;
     let { index } = this.state;
     const thirty = 30;
-    // console.log(trivia.length);
     if (index < trivia.length - 1) {
       index += 1;
       this.setState({
@@ -57,9 +56,9 @@ class Game extends Component {
         border: {},
         next: { display: 'none' },
       });
-      addStop();
+      if (timer !== 0) addStop();
       addTimer(thirty);
-    }
+    } else { history.push('/feedback'); }
   }
 
   arrayAnswers({ incorrect_answers: incorrectAnswers, correct_answer: correctAnswer }) {
@@ -82,6 +81,13 @@ class Game extends Component {
     return array;
   }
 
+  save(points) {
+    const { addScore, addHit } = this.props;
+    saveScore(points);
+    addScore(points);
+    addHit();
+  }
+
   addBorder(event) {
     const correctStyle = { border: '3px solid rgb(6, 240, 15)' };
     const wrongStyle = { border: '3px solid rgb(255, 0, 0)' };
@@ -90,7 +96,6 @@ class Game extends Component {
       border: { correctStyle, wrongStyle },
       next: {},
     });
-    console.log(event.target.className);
     addStop();
     if (event.target.className === 'correct') {
       let difficulty = event.target.name;
@@ -100,14 +105,16 @@ class Game extends Component {
       if (difficulty === 'medium') difficulty = 2;
       if (difficulty === 'easy') difficulty = 1;
       const points = ten + (timer * difficulty);
-      console.log(points);
-    }
+      this.save(points);
+    } else saveScore(0);
   }
 
   arrayAnswersButtons() {
-    const { trivia, index, border, randomKey, next } = this.state;
+    const { trivia, index, border, randomKey } = this.state;
     const { stop, timer } = this.props;
+    let { next } = this.state;
     let buttonDisabled = timer <= 0;
+    if (timer === 0) next = {};
     if (stop === true) buttonDisabled = true;
     let newArray = this.arrayAnswers(trivia[index]);
     newArray = newArray.map((element, indic) => (indic < newArray.length - 1 ? (
@@ -174,12 +181,19 @@ Game.propTypes = {
   timer: PropTypes.number.isRequired,
   addStop: PropTypes.func.isRequired,
   addTimer: PropTypes.func.isRequired,
+  addScore: PropTypes.func.isRequired,
+  addHit: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   stop: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   addStop: () => dispatch(changeStop()),
+  addHit: () => dispatch(getHits()),
   addTimer: (timer) => dispatch(getTimer(timer)),
+  addScore: (score) => dispatch(getScore(score)),
 });
 
 const mapStateToProps = (state) => ({

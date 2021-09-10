@@ -22,8 +22,8 @@ export const getScore = (score) => ({
   type: ACTIONS.SCORE, score,
 });
 
-export const getHits = (hits) => ({
-  type: ACTIONS.HITS, hits,
+export const getHits = () => ({
+  type: ACTIONS.HITS,
 });
 
 export const getTimer = (timer) => ({

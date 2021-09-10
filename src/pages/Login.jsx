@@ -6,6 +6,7 @@ import logo from '../trivia.png';
 import fetchToken from '../services/fetchToken';
 import fetchImage from '../services/fetchImage';
 import { getToken, getNameAndEmail, getImage } from '../redux/actions';
+import { resetScore } from '../services/saveToLocal';
 
 class Login extends Component {
   constructor(props) {
@@ -50,13 +51,12 @@ class Login extends Component {
 
   render() {
     const { name, email, isDisable } = this.state;
+    resetScore();
     return (
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <p>
-            LOGIN
-          </p>
+          <p>LOGIN</p>
           <form>
             <label htmlFor="name">
               Nome:

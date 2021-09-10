@@ -6,7 +6,7 @@ class FeedbackMsg extends Component {
   render() {
     const { hits } = this.props;
     const VERIFY = 3;
-    const msg = (hits < VERIFY ? 'Poderia ser melhor...' : 'Mandou bem!');
+    const msg = (hits < VERIFY ? 'Podia ser melhor...' : 'Mandou bem!');
     return (
       <div data-testid="feedback-text">{ msg }</div>
     );
