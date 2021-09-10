@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import Proptypes from 'prop-types';
+
 import NameInput from '../components/NameInput';
 import EmailInput from '../components/EmailInput';
 import logo from '../trivia.png';
 import PlayButton from '../components/PlayButton';
 import ConfigButton from '../components/ConfigButton';
+import RankingButton from '../components/RankingButton';
 
 class Login extends Component {
   constructor(props) {
@@ -24,6 +27,7 @@ class Login extends Component {
 
   render() {
     const { name, email } = this.state;
+    const { history } = this.props;
     return (
       <div className="App">
         <header className="App-header">
@@ -34,8 +38,10 @@ class Login extends Component {
             buttonCheck={ !(name.length && email.length) }
             playerName={ name }
             playerEmail={ email }
+            history={ history }
           />
           <ConfigButton />
+          <RankingButton />
         </header>
       </div>
     );
@@ -43,3 +49,7 @@ class Login extends Component {
 }
 
 export default Login;
+
+Login.propTypes = {
+  history: Proptypes.objectOf().isRequired,
+};

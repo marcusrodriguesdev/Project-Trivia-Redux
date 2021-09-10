@@ -5,13 +5,9 @@ class HomeButton extends React.Component {
   render() {
     return (
       <div>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-go-home"
-          >
-            Home Page
-          </button>
+        <Link to="/" data-testid="btn-go-home">
+
+          Home Page
         </Link>
       </div>
     );
