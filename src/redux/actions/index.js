@@ -37,29 +37,22 @@ const requestTriviaError = (payload) => ({
   payload,
 });
 
-export const requestTokenThunk = () => async (dispatch) => {
+export const requestTokenThunk = (history) => async (dispatch) => {
   try {
     const response = await fetchToken();
-    return dispatch(requestTokenSuccess(response));
+    dispatch(requestTokenSuccess(response));
+    localStorage.setItem('token', JSON.stringify(response.token));
+    history.push('/game');
   } catch (error) {
     dispatch(requestTokenError(error));
   }
 };
 
-// export function requestQuestionsThunk(token) {
-//   return (dispatch) => { // thunk declarado
-//     dispatch(requestTrivia());
-//     return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
-//       .then((response) => response.json())
-//       .then((questions) => dispatch(requestTriviaSuccess(questions)));
-//   };
-// }
-
 export const requestQuestionsThunk = (token) => async (dispatch) => {
+  console.log('token', token);
   try {
     const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
     const data = await response.json();
-    console.log(data);
     return dispatch(requestTriviaSuccess(data));
   } catch (error) {
     dispatch(requestTriviaError(error));
