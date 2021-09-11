@@ -156,6 +156,11 @@ html {
 }
 
 .box {
-  box-shadow: 1px 1px 14px rgb(255, 235, 123);
+  box-shadow: 1px 1px 14px grey;
   border-radius: 20px;
+}
+
+.label {
+  box-shadow: 1px 1px 14px grey;
+  margin-bottom: 10px;
 }
