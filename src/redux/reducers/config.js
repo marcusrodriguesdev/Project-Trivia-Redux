@@ -8,7 +8,6 @@ const INITIAL_STATE = {
 };
 
 function configReducer(state = INITIAL_STATE, { type, payload }) {
-  console.log(payload);
   const casesObj = {
     CATEGORY_SUCCESS: ({ ...state, categories: payload }),
     CATEGORY_FAIL: ({ ...state, categories: payload }),

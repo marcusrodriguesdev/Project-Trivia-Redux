@@ -31,8 +31,10 @@ class GravatarHeader extends Component {
 
   handleScore() {
     const state = JSON.parse(localStorage.getItem('state'));
-    const { player: { score } } = state;
-    this.setState({ score });
+    if (state) {
+      const { player: { score } } = state;
+      this.setState({ score });
+    }
   }
 
   render() {
