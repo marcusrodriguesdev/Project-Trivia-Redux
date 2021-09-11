@@ -96,7 +96,7 @@ input {
   background-color: #e08e45;
   border: 10px;
   display: flex;
-  font-family: 'Play' , sans-serif;
+  font-family: Play , sans-serif;
   font-size: 20px;
   justify-content: space-around;
 }
@@ -118,22 +118,22 @@ body {
 }
 
 .options button {
-  font-family: 'Play' , sans-serif;
+  font-family: Play , sans-serif;
   font-size: 15px;
   margin-top: 10px;
   padding: 10px;
 }
 
 .game p {
-  font-family: 'Play' , sans-serif;
+  font-family: Play , sans-serif;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .timer {
-  font-family: 'Play' , sans-serif;
+  font-family: Play , sans-serif;
   font-size: 30px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .loading {
@@ -141,7 +141,7 @@ body {
 }
 
 .next-question {
-  font-family: 'Play' , sans-serif;
+  font-family: Play , sans-serif;
   font-size: 15px;
   margin-top: 10px;
   padding: 10px;
@@ -149,12 +149,12 @@ body {
 
 .feedback {
   color: white;
-  font-family: 'Play' , sans-serif;
+  font-family: Play , sans-serif;
   font-size: 25px;
 }
 
 .feedback button {
-  font-family: 'Play' , sans-serif;
+  font-family: Play , sans-serif;
   font-size: 15px;
   margin: 10px;
   margin-top: 10px;
