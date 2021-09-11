@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
+import HomeButton from '../components/HomeButton';
 
 class Ranking extends Component {
   // componentDidMount() {
@@ -41,21 +42,27 @@ class Ranking extends Component {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     return (
       <div>
-        <header data-testid="ranking-title">Ranking</header>
-        <ol>
-          {ranking.map((player, index) => (
-            <li key={ index }>
-              <span data-testid={ `player-name-${index}` }>
-                { `${player.name}` }
-              </span>
-              <span data-testid={ `player-score-${index}` }>
-                { `Pontuação: ${player.score} ` }
-              </span>
-              <img src={ this.handleGravatar(player.picture) } alt={ player.name } />
-            </li>
-          ))}
-        </ol>
+        <div>
+          <header data-testid="ranking-title">Ranking</header>
+          <ol>
+            {ranking.map((player, index) => (
+              <li key={ index }>
+                <span data-testid={ `player-name-${index}` }>
+                  { `${player.name}` }
+                </span>
+                <span data-testid={ `player-score-${index}` }>
+                  { `Pontuação: ${player.score} ` }
+                </span>
+                <img src={ this.handleGravatar(player.picture) } alt={ player.name } />
+              </li>
+            ))}
+          </ol>
+
+        </div>
+
+        <HomeButton />
       </div>
+
     );
   }
 }
