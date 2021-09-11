@@ -51,7 +51,6 @@ class Answers extends Component {
                 data-testid="correct-answer"
                 onClick={ handleQuestionClick }
               >
-                { console.log(results) }
                 {answer}
               </button>);
           }
