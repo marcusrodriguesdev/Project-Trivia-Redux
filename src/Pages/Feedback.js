@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Header from '../Components/Header';
 import { clearState as cleaner } from '../Actions';
 
+import '../Styles/feedback.css';
+
 class Feedback extends React.Component {
   handlePlayAgainBtn() {
     const { history, clearState } = this.props;
@@ -21,7 +23,7 @@ class Feedback extends React.Component {
   render() {
     const { assertions, points } = this.props;
     const standardValue = 3;
-    const message = assertions < standardValue ? 'Podia ser melhor...' : 'Mandou bem!';
+    const message = assertions < standardValue ? 'You can do better next time...' : 'You rocked!';
 
     return (
       <div data-testid="feedback-text">
@@ -32,17 +34,19 @@ class Feedback extends React.Component {
           <p data-testid="feedback-total-question">{ assertions }</p>
           <button
             type="button"
+            id="play-again"
             data-testid="btn-play-again"
             onClick={ this.handlePlayAgainBtn.bind(this) }
           >
-            Jogar novamente
+            Play Again
           </button>
           <button
             type="button"
+            id="btn-ranking"
             data-testid="btn-ranking"
             onClick={ this.handleRankingBtn.bind(this) }
           >
-            Ver ranking
+            Ranking
           </button>
         </main>
       </div>

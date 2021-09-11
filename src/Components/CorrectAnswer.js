@@ -8,6 +8,7 @@ class CorrectAnswer extends React.Component {
     return (
       <button
         type="submit"
+        id="correct"
         data-testid="correct-answer"
         className={ btnClass }
         onClick={ handleClick }

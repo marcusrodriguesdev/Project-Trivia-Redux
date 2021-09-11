@@ -85,10 +85,11 @@ class Trivia extends React.Component {
           { showButton && (
             <button
               type="submit"
+              id="btn-next"
               data-testid="btn-next"
               onClick={ this.handleClick }
             >
-              Próxima
+              Next
             </button>) }
         </main>
       </div>

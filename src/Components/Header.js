@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import '../Styles/trivia.css';
+
 const CryptoJS = require('crypto-js');
 
 class Header extends React.Component {
@@ -36,7 +38,9 @@ class Header extends React.Component {
           alt="Foto de perfil do Usuario"
         />
         <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">{ score }</p>
+        <p data-testid="header-score" id="header-score">
+          {`${score} points`}
+        </p>
       </header>
     );
   }

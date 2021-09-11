@@ -3,5 +3,69 @@
 }
 
 .wrong-btn {
+  align-items: center;
   border: 3px solid red;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  margin: 0 auto;
+  width: 400px;
+}
+
+p {
+  color: #ffff;
+  display: flex;
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  justify-content: center;
+  padding-top: 15px;
+  text-align: center;
+}
+
+#header-score {
+  margin-left: 25px;
+}
+
+header {
+  display: flex;
+  font-size: 45px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+img {
+  margin-right: 20px;
+}
+
+h1, h2, h3 {
+  color: #ffff;
+  font-family: 'Roboto', sans-serif;
+  margin: 20px 0px;
+  text-align: center;
+}
+
+#wrong {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  margin: 0 auto;
+  width: 400px;
+}
+
+#correct {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  margin: 0 auto;
+  width: 400px;
+  -webkit-box-shadow: none;
+}
+
+#btn-next {
+  font-size: 18px;
+  height: 35px;
+  margin-left: 50px;
+  width: 120px;
 }

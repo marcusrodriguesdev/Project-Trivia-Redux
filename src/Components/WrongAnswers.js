@@ -7,6 +7,7 @@ class WrongAnswers extends React.Component {
     return (
       <button
         type="submit"
+        id="wrong"
         data-testid={ `wrong-answer-${index}` }
         className={ btnClass }
         onClick={ handleClick }

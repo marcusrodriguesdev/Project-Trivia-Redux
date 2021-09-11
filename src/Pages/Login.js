@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { setUser as setUserAction, getTokenApi as getTokenApiAction } from '../Actions';
+import '../Styles/login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -60,36 +61,39 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div id="div">
+        <h1 id="trivia-txt">TRIVIA</h1>
         <label htmlFor="input-player-name">
-          Nome:
+          Name
           <input
             type="text"
             data-testid="input-player-name"
-            placeholder="Insira seu nome"
+            placeholder="Enter your name"
             name="name"
             onChange={ this.handleChange }
           />
         </label>
         <label htmlFor="input-gravatar-email">
-          Email:
+          Email
           <input
             type="email"
             data-testid="input-gravatar-email"
-            placeholder="Insira seu email"
+            placeholder="Enter your email"
             name="email"
             onChange={ this.handleChange }
           />
         </label>
         <button
           type="submit"
+          id="play-button"
           data-testid="btn-play"
           disabled={ !this.canBeSubmitted() }
           onClick={ this.handlePlayButton }
         >
-          Jogar
+          Play
         </button>
         <button
+          id="setting-button"
           type="button"
           data-testid="btn-settings"
           onClick={ this.handleSettingsButton }

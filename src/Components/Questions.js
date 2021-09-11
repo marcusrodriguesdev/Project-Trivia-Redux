@@ -93,7 +93,7 @@ class Questions extends React.Component {
     return (
       <main>
         <p>
-          Tempo:
+          Time:
           { timer }
         </p>
         <h1 data-testid="question-category">{category}</h1>
