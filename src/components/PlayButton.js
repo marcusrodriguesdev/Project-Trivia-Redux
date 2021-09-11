@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 
-import { fetchTokenThunk, setNameAction,
-  fetchQuestionThunk, setEmailAction } from '../redux/actions';
+import { setNameAction, fetchQuestionThunk, setEmailAction } from '../redux/actions';
 
 class PlayButton extends Component {
   constructor(props) {
@@ -11,22 +10,13 @@ class PlayButton extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidUpdate() {
-    const { fetchQuestion, token, config, history } = this.props;
-    if (token.length > 0) {
-      localStorage.setItem('token', token);
-      console.log(token);
-      fetchQuestion(config, token);
-      history.push('/game');
-    }
-  }
-
   handleClick() {
-    const { fetchToken, setEmail, setName,
-      playerName, playerEmail } = this.props;
+    const { setEmail, setName, playerName, playerEmail,
+      fetchQuestion, config, token, history } = this.props;
     setEmail(playerEmail);
     setName(playerName);
-    fetchToken();
+    fetchQuestion(config, token);
+    history.push('/game');
   }
 
   render() {
@@ -47,7 +37,6 @@ class PlayButton extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchToken: () => dispatch(fetchTokenThunk()),
   setName: (payload) => dispatch(setNameAction(payload)),
   setEmail: (payload) => dispatch(setEmailAction(payload)),
   fetchQuestion: (config, token) => dispatch(fetchQuestionThunk(config, token)),
@@ -56,14 +45,12 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   token: state.game.token,
   config: state.config.selection,
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayButton);
 
 PlayButton.propTypes = {
   fetchQuestion: Proptypes.func.isRequired,
-  fetchToken: Proptypes.func.isRequired,
   token: Proptypes.string.isRequired,
   buttonCheck: Proptypes.bool.isRequired,
   setName: Proptypes.func.isRequired,
