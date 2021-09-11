@@ -6,6 +6,7 @@ import Question from '../components/Question';
 import
 { fetchQuestions as fetchQuestionsAction, setAssertions, setScore }
   from '../redux/actions/index';
+import '../css/GamePage.css';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class GamePage extends React.Component {
     this.showNextQuestion = this.showNextQuestion.bind(this);
     this.removeColor = this.removeColor.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
+    this.getCategory = this.getCategory.bind(this);
   }
 
   async componentDidMount() {
@@ -36,6 +38,10 @@ class GamePage extends React.Component {
       clearInterval(this.countDown);
       this.applyColor();
     }
+  }
+
+  getCategory(category) {
+    this.setState({ category });
   }
 
   calculateScore({ target: { name } }) {
@@ -117,31 +123,41 @@ class GamePage extends React.Component {
   }
 
   render() {
-    const { questionNumber, seconds } = this.state;
+    const { questionNumber, seconds, category } = this.state;
     return (
-      <div>
-        <p>{ seconds }</p>
+      <main className="main-game">
         <Question
           questionNumber={ questionNumber }
+          getCategory={ this.getCategory }
         />
+
+        <div className="center-div">
+          <div className="seconds">
+            <p>{ seconds }</p>
+          </div>
+
+          <div className="category">
+            <span>{ category }</span>
+          </div>
+
+          <div className="next">
+            <button
+              type="button"
+              onClick={ this.showNextQuestion }
+              data-testid="btn-next"
+              id="btn-next"
+              className="notDisplay"
+            >
+              Proxima
+            </button>
+          </div>
+        </div>
 
         <Alternatives
           calculateScore={ this.calculateScore }
           questionNumber={ questionNumber }
         />
-
-        <div>
-          <button
-            type="button"
-            onClick={ this.showNextQuestion }
-            data-testid="btn-next"
-            id="btn-next"
-            className="notDisplay"
-          >
-            Proxima
-          </button>
-        </div>
-      </div>
+      </main>
     );
   }
 }

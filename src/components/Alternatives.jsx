@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../css/Alternatives.css';
 
 import { connect } from 'react-redux';
 import decode from '../GlobalFuncs/DecodeFunc';
@@ -16,7 +15,7 @@ class Alternatives extends React.Component {
     answers.sort();
 
     return (
-      <div>
+      <>
         {answers.map((answer, index, array) => {
           const wrongIndex = array.filter((alternative) => (
             alternative !== correctAnswer
@@ -36,14 +35,14 @@ class Alternatives extends React.Component {
             </button>
           );
         }) }
-      </div>
+      </>
     );
   }
 
   render() {
     const { loading, calculateScore } = this.props;
     return (
-      <div>
+      <div className="alternatives">
         {!loading && this.displayAnswer(calculateScore)}
       </div>
     );

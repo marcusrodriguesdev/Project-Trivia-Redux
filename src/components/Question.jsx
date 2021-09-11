@@ -5,11 +5,12 @@ import decode from '../GlobalFuncs/DecodeFunc';
 
 class Question extends React.Component {
   displayQuestion() {
-    const { questions: { results }, questionNumber } = this.props;
+    const { questions: { results }, questionNumber, getCategory } = this.props;
     const { question, category } = results[questionNumber];
+    getCategory(category);
     return (
-      <div>
-        <p data-testid="question-category">{ category }</p>
+      <div className="question">
+        {/* <p data-testid="question-category">{ category }</p> */}
         <p data-testid="question-text">{ decode(question) }</p>
       </div>
     );

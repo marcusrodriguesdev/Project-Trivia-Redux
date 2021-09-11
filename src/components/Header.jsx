@@ -2,7 +2,6 @@ import { MD5 } from 'crypto-js';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import '../css/Header.css';
 
 export const GRAVATAR = 'https://www.gravatar.com/avatar/';
 export const CONVERT_HASH = (props) => MD5(props).toString();
@@ -12,23 +11,24 @@ class Header extends Component {
     const { name, score, email } = this.props;
 
     return (
-      <header className="cabecalho">
-        <div>
+      <header className="header">
+        <div className="name-header">
           <img
             src={ `${GRAVATAR}${CONVERT_HASH(email)}` }
             alt="avatar"
             data-testid="header-profile-picture"
           />
-        </div>
-        <div>
-          <span
+
+          <strong
             data-testid="header-player-name"
           >
             { name }
-          </span>
+          </strong>
         </div>
-        <div>
-          <span data-testid="header-score">{ score }</span>
+
+        <div className="score-header">
+          <span>Score: </span>
+          <strong data-testid="header-score">{ score }</strong>
         </div>
       </header>
     );
