@@ -6,7 +6,6 @@ class HomeButton extends React.Component {
     return (
       <div>
         <Link to="/" data-testid="btn-go-home">
-
           Home Page
         </Link>
       </div>
