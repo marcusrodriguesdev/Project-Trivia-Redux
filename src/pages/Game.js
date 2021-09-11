@@ -145,8 +145,8 @@ class Game extends React.Component {
       <div className="game">
         <Header score={ score } />
         <p className="timer">{timer}</p>
-        <p className="question" data-testid="question-category">{ results[indexQuestion].category }</p>
-        <p className="question" data-testid="question-text">
+        <p data-testid="question-category">{ results[indexQuestion].category }</p>
+        <p data-testid="question-text">
           { results[indexQuestion].question }
         </p>
         <div className="options">
