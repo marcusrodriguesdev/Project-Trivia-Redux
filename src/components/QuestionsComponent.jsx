@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import ConfigButton from './ConfigButton';
 import { setScore as setScoreAction, setCorrects } from '../redux/actions';
 import { setRanking } from '../helpers/localStorage';
+import './QuestionsComponent.css';
 
 class QuestionsComponent extends React.Component {
   constructor(props) {
@@ -140,19 +141,22 @@ class QuestionsComponent extends React.Component {
     const { questions } = this.props;
     const { count, questionIndex, answerSelected } = this.state;
     return (
-      <div>
-        <h3>
-          { count > 0 ? (`TEMPO RESTANTE: ${count} segundos`) : 'TEMPO ESGOTADO!' }
-        </h3>
-        <fieldset>
+      <div className="container-game">
+        <div className="questions">
+          <h3>
+            { count > 0 ? (`TEMPO RESTANTE: ${count} segundos`) : 'TEMPO ESGOTADO!' }
+          </h3>
           <h1 data-testid="question-category">
             { questions[questionIndex].category }
           </h1>
           <h2 data-testid="question-text">
             { questions[questionIndex].question }
           </h2>
-          <ol>
-            <li>
+        </div>
+
+        <div className="answers">
+          <ul className="list-answers">
+            <li className="itens-answers">
               {(questions[questionIndex].incorrect_answers).map((incorrect, index) => (
                 <ConfigButton
                   key={ index }
@@ -164,7 +168,7 @@ class QuestionsComponent extends React.Component {
                 />
               ))}
             </li>
-            <li>
+            <li className="itens-answers">
               <ConfigButton
                 className={ (answerSelected || count <= 0) && 'correct' }
                 test="correct-answer"
@@ -173,9 +177,9 @@ class QuestionsComponent extends React.Component {
                 disable={ count <= 1 || answerSelected }
               />
             </li>
-          </ol>
-          {this.renderNextButton()}
-        </fieldset>
+          </ul>
+        </div>
+        {this.renderNextButton()}
       </div>
     );
   }

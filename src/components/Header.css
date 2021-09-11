@@ -1,0 +1,15 @@
+.container-header {
+  align-items: center;
+  background-color: rgb(82, 183, 136);
+  color: aliceblue;
+  display: flex;
+  flex-direction: row;
+  height: 75px;
+  justify-content: space-around;
+  margin-bottom: 100px;
+}
+
+.profile-picture {
+  height: 40px;
+  width: 60px;
+}

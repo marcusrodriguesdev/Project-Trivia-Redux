@@ -9,7 +9,8 @@ import {
   setName as setNameAction,
 } from '../redux/actions';
 import ConfigButton from '../components/ConfigButton';
-// import trivia from '../trivia.png';
+import trivia from '../trivia.png';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -69,44 +70,48 @@ class Login extends React.Component {
   render() {
     const { name, email, validEmail, validName } = this.state;
     return (
-    //   <img src={ trivia } alt="trivia" />
-      <form>
-        <label htmlFor="email">
-          <input
-            type="email"
-            id="email"
-            name="email"
-            data-testid="input-gravatar-email"
-            value={ email }
-            onChange={ this.handleChange }
-            placeholder="exemplo@exemplo.com"
-          />
-        </label>
+      <div className="container-login">
+        <img className="logo-game" src={ trivia } alt="trivia" />
+        <form>
+          <label htmlFor="email">
+            Email:
+            <input
+              type="email"
+              id="email"
+              name="email"
+              data-testid="input-gravatar-email"
+              value={ email }
+              onChange={ this.handleChange }
+              placeholder="exemplo@exemplo.com"
+            />
+          </label>
 
-        <label htmlFor="name">
-          <input
-            type="name"
-            id="name"
-            name="name"
-            data-testid="input-player-name"
-            value={ name }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <ConfigButton
-          test="btn-play"
-          name="Jogar"
-          onClick={ this.handleClick }
-          disable={ !validEmail || !validName }
-        />
-        <Link to="/config">
+          <label htmlFor="name">
+            Nome de usuario:
+            <input
+              type="name"
+              id="name"
+              name="name"
+              data-testid="input-player-name"
+              value={ name }
+              onChange={ this.handleChange }
+            />
+          </label>
           <ConfigButton
-            test="btn-settings"
-            name="Configurações"
-            disable={ false }
+            test="btn-play"
+            name="Jogar"
+            onClick={ this.handleClick }
+            disable={ !validEmail || !validName }
           />
-        </Link>
-      </form>
+          <Link to="/config">
+            <ConfigButton
+              test="btn-settings"
+              name="Configurações"
+              disable={ false }
+            />
+          </Link>
+        </form>
+      </div>
     );
   }
 }
