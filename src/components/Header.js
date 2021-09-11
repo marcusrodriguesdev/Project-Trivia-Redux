@@ -26,7 +26,7 @@ class Header extends React.Component {
     const { user, score } = this.props;
     const { imgPath } = this.state;
     return (
-      <>
+      <div className="header">
         <span data-testid="header-player-name">{user.nome}</span>
         <span data-testid="header-score">{score}</span>
         <img
@@ -34,7 +34,7 @@ class Header extends React.Component {
           src={ `https://www.gravatar.com/avatar/${imgPath}` }
           alt="User Avatar"
         />
-      </>
+      </div>
 
     );
   }

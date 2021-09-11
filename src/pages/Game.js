@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import { requestQuestionsThunk } from '../redux/actions';
 import Header from '../components/Header';
 
@@ -25,6 +26,7 @@ class Game extends React.Component {
     this.checkAnswer = this.checkAnswer.bind(this);
     this.timer = this.timer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.createRanking = this.createRanking.bind(this);
   }
 
   componentDidMount() {
@@ -48,9 +50,13 @@ class Game extends React.Component {
 
   async handleQuestions() {
     const { getQuestions, token } = this.props;
-    // console.log(token);
+    console.log(token);
+    const { loading } = this.state;
     const data = await getQuestions(token);
-    console.log(data);
+    // ref https://trybecourse.slack.com/archives/C0219LZPB9N/p1631125450081800 (três estava quebrando no teste)
+    if (loading && data === undefined) {
+      return loading;
+    }
     this.setState({
       loading: false,
     });
@@ -83,10 +89,26 @@ class Game extends React.Component {
     });
   }
 
+  createRanking() {
+    const rankingKey = localStorage.key(2);
+    if (!rankingKey) localStorage.setItem('ranking', JSON.stringify([]));
+    const { user: { email } } = this.props;
+    const userImg = md5(email).toString();
+    const player = JSON.parse(localStorage.getItem('state'));
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const novoRanking = [
+      ...ranking, { name: player.player.name,
+        score: player.player.score,
+        picture: userImg },
+    ];
+
+    localStorage.setItem('ranking', JSON.stringify(novoRanking));
+  }
+
   nextQuestion() {
     const { history } = this.props;
     const { indexQuestion } = this.state;
-    const ARRAY = 4;
+    const LAST_QUESTION = 4;
 
     this.setState((previous) => ({
       indexQuestion: previous.indexQuestion + 1,
@@ -98,8 +120,9 @@ class Game extends React.Component {
       timer: 30,
     });
 
-    if (indexQuestion === ARRAY) {
+    if (indexQuestion === LAST_QUESTION) {
       history.push('/feedback');
+      this.createRanking();
     }
   }
 
@@ -117,41 +140,42 @@ class Game extends React.Component {
     const { loading,
       clicked, timer, disabled, hidden, indexQuestion, score } = this.state;
     const { questions: { results } } = this.props;
-
-    if (loading) return <h1>Carregando jogo</h1>;
+    if (loading) return <h1 className="loading">Carregando jogo...</h1>;
     return (
-      <>
+      <div className="game">
         <Header score={ score } />
-        <span>{timer}</span>
-        <span data-testid="question-category">{ results[indexQuestion].category }</span>
-        <span data-testid="question-text">
+        <p className="timer">{timer}</p>
+        <p className="question" data-testid="question-category">{ results[indexQuestion].category }</p>
+        <p className="question" data-testid="question-text">
           { results[indexQuestion].question }
-        </span>
+        </p>
+        <div className="options">
+          <button
+            type="button"
+            className={ clicked ? 'correct-answer' : null }
+            value={ results[indexQuestion].correct_answer }
+            data-testid="correct-answer"
+            onClick={ this.checkAnswer }
+            disabled={ timer < 1 ? true : disabled }
+          >
+            { results[indexQuestion].correct_answer }
+          </button>
+          {results[indexQuestion].incorrect_answers
+            .map((answer, index) => (
+              <button
+                type="button"
+                className={ clicked ? 'incorrect-answer' : null }
+                key={ index }
+                value={ answer }
+                data-testid={ `wrong-answer-${index}` }
+                onClick={ this.checkAnswer }
+                disabled={ timer < 1 ? true : disabled }
+              >
+                {answer}
+              </button>))}
+        </div>
         <button
-          type="button"
-          className={ clicked ? 'correct-answer' : null }
-          value={ results[indexQuestion].correct_answer }
-          data-testid="correct-answer"
-          onClick={ this.checkAnswer }
-          disabled={ timer < 1 ? true : disabled }
-        >
-          { results[indexQuestion].correct_answer }
-        </button>
-        {results[indexQuestion].incorrect_answers
-          .map((answer, index) => (
-            <button
-              type="button"
-              className={ clicked ? 'incorrect-answer' : null }
-              key={ index }
-              value={ answer }
-              data-testid={ `wrong-answer-${index}` }
-              onClick={ this.checkAnswer }
-              disabled={ timer < 1 ? true : disabled }
-            >
-              {answer}
-            </button>))}
-
-        <button
+          className="next-question"
           type="button"
           data-testid="btn-next"
           hidden={ hidden }
@@ -159,7 +183,7 @@ class Game extends React.Component {
         >
           Próxima
         </button>
-      </>
+      </div>
     );
   }
 }
@@ -170,7 +194,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   user: state.reducerLogin.user,
-  token: state.token.token,
+  token: state.token.token.token,
   questions: state.questionsReducer.questions,
 });
 

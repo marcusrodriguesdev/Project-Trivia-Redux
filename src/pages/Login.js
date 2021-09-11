@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import { login, requestTokenThunk } from '../redux/actions';
-import fetchToken from '../services/tokenAPI';
 
 class Login extends React.Component {
   constructor(props) {
@@ -21,11 +20,6 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // componentDidMount() {
-  //   const { token } = this.props;
-  //   localStorage.setItem('token', JSON.stringify(token()));
-  // }
-
   handleChange({ target }) {
     const { name, value } = target;
     this.setState({
@@ -34,8 +28,7 @@ class Login extends React.Component {
     const { email, nome } = this.state;
     const VALIDATE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const VALID_EMAIL = VALIDATE_EMAIL.test(email);
-    const MIN_CHAR = 3;
-    if (nome.length > MIN_CHAR && VALID_EMAIL) {
+    if (nome.length > 0 && VALID_EMAIL) {
       this.setState({
         disabled: false,
       });
@@ -48,15 +41,8 @@ class Login extends React.Component {
 
   async handleClick() {
     const { history, getToken, getUser } = this.props;
-    // const { nome, email } = this.state;
-
-    const data = await fetchToken();
-    getToken(data.token);
-    localStorage.setItem('token', JSON.stringify(data.token));
     getUser(this.state);
-    // getUser(email);
-    history.push('/game');
-    // r2
+    getToken(history);
   }
 
   render() {
@@ -66,7 +52,7 @@ class Login extends React.Component {
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <p>
+          <div className="login-inputs">
             <label htmlFor="nome">
               <input
                 id="nome"
@@ -76,9 +62,9 @@ class Login extends React.Component {
                 data-testid="input-player-name"
                 placeholder="Nome"
                 onChange={ this.handleChange }
+                autoComplete="off"
               />
             </label>
-
             <label htmlFor="email">
               <input
                 id="email"
@@ -88,9 +74,9 @@ class Login extends React.Component {
                 placeholder="exemplo@exemplo.com"
                 data-testid="input-gravatar-email"
                 onChange={ this.handleChange }
+                autoComplete="off"
               />
             </label>
-
             <button
               type="button"
               data-testid="btn-play"
@@ -99,11 +85,10 @@ class Login extends React.Component {
             >
               Jogar
             </button>
-
             <Link to="/settings">
               <button type="button" data-testid="btn-settings">Configurações</button>
             </Link>
-          </p>
+          </div>
         </header>
       </div>
 
@@ -112,12 +97,12 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getToken: () => dispatch(requestTokenThunk()),
+  getToken: (history) => dispatch(requestTokenThunk(history)),
   getUser: (payload) => dispatch(login(payload)),
 });
 
 const mapStateToProps = (state) => ({
-  token: state.token.token,
+  token: state.token.token.token,
 });
 
 Login.propTypes = {
