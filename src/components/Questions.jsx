@@ -28,7 +28,7 @@ class Questions extends Component {
     };
     this.handleClickClassName = this.handleClickClassName.bind(this);
     this.handleClickClassNameHelper = this.handleClickClassNameHelper.bind(this);
-    this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
+    // this.rulesOfUpdate = this.rulesOfUpdate.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.questions = this.questions.bind(this);
   }
@@ -36,23 +36,27 @@ class Questions extends Component {
   componentDidMount() {
     const ONE_SECOND = 1000;
     this.intervalId = setInterval(() => {
-      this.setState((estadoAnterior) => ({ seconds: estadoAnterior.seconds - 1 }));
+      this.setState((estadoAnterior) => ({
+        seconds: estadoAnterior.seconds - 1,
+      }));
     }, ONE_SECOND);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.seconds === 0) {
-      this.rulesOfUpdate();
+      // this.rulesOfUpdate();
+      this.nextQuestion();
     }
   }
 
-  rulesOfUpdate() {
-    this.setState({
-      seconds: 0,
-      incorrect: 'incorrect',
-      correct: 'correct',
-      disable: true });
-  }
+  // rulesOfUpdate() {
+  //   this.setState({
+  //     seconds: 0,
+  //     incorrect: 'incorrect',
+  //     correct: 'correct',
+  //     disable: true,
+  //   });
+  // }
 
   checkDifficulty(e) {
     switch (e) {
@@ -151,6 +155,7 @@ class Questions extends Component {
     if (n === 'correct' || n === 'incorrect') {
       this.setState({
         visibilit: 'show',
+        disable: true,
       });
     }
   }
@@ -177,6 +182,7 @@ class Questions extends Component {
       correct: null,
       incorrect: null,
       visibilit: 'hide',
+      disable: false,
     }));
   }
 
@@ -186,12 +192,14 @@ class Questions extends Component {
     const { resp } = this.props;
     if (redirect === true) { return <Redirect to="/feedback" />; }
     return (
-      <div>
+      <div className="game-page-questions">
         <seconds>{seconds}</seconds>
         <p data-testid="question-category">{resp[numberQuestion].category}</p>
         <p data-testid="question-text">{resp[numberQuestion].question}</p>
-        { this.questions() }
-        <div>
+        <div className="game-page-buttons">
+          { this.questions() }
+        </div>
+        <div className="game-page-next">
           <button
             type="button"
             data-testid="btn-next"

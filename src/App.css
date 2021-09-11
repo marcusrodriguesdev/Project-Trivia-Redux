@@ -1,3 +1,8 @@
+html {
+  background-color: #00d1b2;
+  padding: 50px;
+}
+
 .App {
   text-align: center;
 }
@@ -25,7 +30,7 @@
 .App-header {
   align-items: center;
   background-color: #282c34;
-  color: white;
+  color: #282c34;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
@@ -54,4 +59,84 @@
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+.game-page {
+  box-shadow: 1px 1px 10px black;
+  border-radius: 20px;
+  margin: 50px;
+  padding: auto;
+  align-items: center;
+  background-color: #00b99e;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.game-header {
+  box-shadow: inset 1px 1px 10px black;
+  border-radius: 100%;
+  margin: 10px;
+  height: 200px;
+  width: 200px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game-header img {
+  box-shadow: 1px 1px 10px black;
+  border-radius: 100%;
+}
+
+.game-page-questions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-page-questions p, seconds, label {
+  box-shadow: 1px 1px 10px black;
+  color: #363636;
+  margin: 10px 20%;
+  padding: 5px;
+  background:rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+}
+
+.game-page-questions button {
+  box-shadow: 1px 1px 10px black;
+  color: #363636;
+  margin: 10px 50px;
+  padding: 5px;
+  background:rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+}
+
+.game-page-buttons {
+  display: flex;
+  margin: 10px;
+}
+
+.game-page-next {
+  height: 100px
+}
+
+#question-text {
+  height: 600px;
+}
+#gravatar-email {
+  font-size: 20px;
+  height: 50px;
+  border-radius: 10px;
+  margin: 8px;
+}
+
+.game-page-questions label {
+  padding: 10px;
 }
