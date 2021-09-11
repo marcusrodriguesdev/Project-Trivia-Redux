@@ -82,6 +82,7 @@ input {
   border: 3px solid red;
 }
 
+
 .login-inputs input {
   border-radius: 10px;
   display: flex;
@@ -164,3 +165,4 @@ body {
   color: white;
   font-family: 'Play' , sans-serif;
 }
+
