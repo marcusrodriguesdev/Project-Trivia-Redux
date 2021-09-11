@@ -37,6 +37,7 @@ Question.propTypes = {
   questions: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
+  getCategory: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(Question);
