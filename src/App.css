@@ -1,5 +1,5 @@
 html {
-  background-color: #00d1b2;
+  background-color: #0084d1;
   padding: 50px;
 }
 
@@ -67,7 +67,7 @@ html {
   margin: 50px;
   padding: auto;
   align-items: center;
-  background-color: #00b99e;
+  background-color: #fcd100;
   color: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
@@ -139,4 +139,23 @@ html {
 
 .game-page-questions label {
   padding: 10px;
+}
+
+.hero-body {
+  background-color: #fcd100;
+  margin: 20px;
+  box-shadow: inset 1px 1px 14px black;
+  border-radius: 20px;
+}
+
+.hero {
+  background-color:#0071d1;
+  border-radius: 20px;
+  box-shadow: 1px 1px 14px black;
+  padding: 20px;
+}
+
+.box {
+  box-shadow: 1px 1px 14px rgb(255, 235, 123);
+  border-radius: 20px;
 }
