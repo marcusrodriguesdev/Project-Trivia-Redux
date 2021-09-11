@@ -109,11 +109,9 @@
 
 .alternatives button {
   align-items: center;
-  align-self: flex-end;
   border-radius: 0.2rem;
   color: white;
   display: flex;
-  flex-shrink: 2;
   font-size: 1.5rem;
   height: 100%;
   padding: 0 0.8rem;
