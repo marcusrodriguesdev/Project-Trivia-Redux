@@ -8,9 +8,9 @@ class Feedback extends React.Component {
   assertionsVerify(assert) {
     const minAssert = 3;
     if (assert < minAssert) {
-      return <p>Podia ser melhor...</p>;
+      return <h3><strong>Podia ser melhor...</strong></h3>;
     }
-    return <p>Mandou bem!</p>;
+    return <h3><strong>Mandou bem !</strong></h3>;;
   }
 
   render() {
@@ -19,7 +19,7 @@ class Feedback extends React.Component {
     const { name, email } = this.props;
     const hashEmail = md5(email).toString();
     return (
-      <div>
+      <div className="content">
         <header>
           <img
             src={ `https://www.gravatar.com/avatar/${hashEmail}` }
@@ -27,18 +27,17 @@ class Feedback extends React.Component {
             data-testid="header-profile-picture"
           />
           <h2 data-testid="header-player-name">{name}</h2>
-          <h2 data-testid="header-score">{score}</h2>
+          <h2 data-testid="header-score">{`Pontos: ${score}`}</h2>
           <p data-testid="feedback-text">{this.assertionsVerify(assertions)}</p>
         </header>
         <section>
-          <p data-testid="feedback-total-score">{score}</p>
-          <p data-testid="feedback-total-question">{assertions}</p>
+          <p className="subtitle is-3 my-2"data-testid="feedback-total-question">{`Acertos: ${assertions}`}</p>
         </section>
-        <Link to="/" data-testid="btn-play-again">
+        <Link className="button is-link" to="/" data-testid="btn-play-again">
           Jogar novamente
         </Link>
         <Link to="/ranking" data-testid="btn-ranking">
-          <button type="button">Ver Ranking</button>
+          <button className="button is-success" type="button">Ver Ranking</button>
         </Link>
       </div>
     );
