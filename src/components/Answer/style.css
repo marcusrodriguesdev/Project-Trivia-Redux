@@ -1,7 +1,10 @@
 .correct {
-  border: 3px solid rgb(6, 240, 15);
+  box-shadow: 0 0 0 3px rgb(6, 240, 15);
+  transform: scale(1.1);
 }
 
 .incorrect {
-  border: 3px solid red;
+  box-shadow: 0 0 0 3px red;
+  transform: scale(0.9);
+  text-decoration: line-through;
 }

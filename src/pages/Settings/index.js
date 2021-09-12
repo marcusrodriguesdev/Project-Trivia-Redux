@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import SelectInput from '../../components/SelectInput';
+import Button from '../../components/Button';
+
+import { fetchCategoriesThunk } from '../../redux/actions/questionActions';
 
 import {
-  getCategories,
   difficulties,
   types,
   getUserConfigs,
 } from '../../services/questionApi';
+
+import './style.css';
 
 class Settings extends Component {
   constructor() {
@@ -18,17 +23,17 @@ class Settings extends Component {
       category: 9,
       difficulty: 'easy',
       type: '',
-      categoryList: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.fetchCategories = this.fetchCategories.bind(this);
     this.getUserConfigs = this.getUserConfigs.bind(this);
   }
 
   componentDidMount() {
-    this.fetchCategories();
+    const { getCategories } = this.props;
+
+    getCategories();
     this.getUserConfigs();
   }
 
@@ -64,58 +69,67 @@ class Settings extends Component {
     history.push('/');
   }
 
-  async fetchCategories() {
-    const categoryList = await getCategories();
-
-    this.setState({
-      categoryList,
-    });
-  }
-
   render() {
-    const { category, difficulty, type, categoryList } = this.state;
+    const { category, difficulty, type } = this.state;
+    const { categoryList, history } = this.props;
 
     return (
       <div>
-        <h1 data-testid="settings-title">Configurações</h1>
-        <form>
-          <SelectInput
-            labelText="Categoria"
-            id="category"
-            options={ categoryList }
-            value={ category }
-            onChange={ this.handleChange }
-          />
+        <form className="settings-form">
+          <div className="select-section">
+            <SelectInput
+              labelText="Category"
+              id="category"
+              options={ categoryList }
+              value={ category }
+              onChange={ this.handleChange }
+            />
 
-          <SelectInput
-            labelText="Dificuldade"
-            id="difficulty"
-            options={ difficulties }
-            value={ difficulty }
-            onChange={ this.handleChange }
-          />
+            <SelectInput
+              labelText="Difficulty"
+              id="difficulty"
+              options={ difficulties }
+              value={ difficulty }
+              onChange={ this.handleChange }
+            />
 
-          <SelectInput
-            labelText="Tipo"
-            id="type"
-            options={ types }
-            value={ type }
-            onChange={ this.handleChange }
-          />
+            <SelectInput
+              labelText="Type"
+              id="type"
+              options={ types }
+              value={ type }
+              onChange={ this.handleChange }
+            />
+          </div>
+          <div className="buttons-section">
+            <Button type="submit" text="Save" onClick={ this.handleClick } />
 
-          <button type="submit" onClick={ this.handleClick }>
-            Salvar
-          </button>
+            <Button
+              type="button"
+              text="Cancel"
+              onClick={ () => history.push('/') }
+            />
+          </div>
         </form>
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ questions }) => ({
+  categoryList: questions.categoryList,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCategories: () => dispatch(fetchCategoriesThunk()),
+});
+
 Settings.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  categoryList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getCategories: PropTypes.func.isRequired,
 };
 
-export default Settings;
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

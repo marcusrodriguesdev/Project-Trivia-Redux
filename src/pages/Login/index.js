@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MD5 } from 'crypto-js';
 
+import { MdSettings } from 'react-icons/md';
+
 import { fetchToken, setGravatar, setPlayerData } from '../../redux/actions';
+import { fetchCategoriesThunk } from '../../redux/actions/questionActions';
 
 import './style.css';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 
 class Login extends Component {
   constructor() {
@@ -21,6 +26,12 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.getGravatar = this.getGravatar.bind(this);
+  }
+
+  componentDidMount() {
+    const { getCategories } = this.props;
+
+    getCategories();
   }
 
   getGravatar(email) {
@@ -71,46 +82,37 @@ class Login extends Component {
     const { history } = this.props;
 
     return (
-      <div>
-        <form className="login-form">
-          <input
-            data-testid="input-player-name"
-            data-validation="validName"
-            placeholder="Nome"
-            type="text"
-            name="name"
-            value={ name }
-            onChange={ this.handleChange }
-          />
+      <form className="login-form">
+        <Input
+          placeholder="Name"
+          type="text"
+          validation="validName"
+          name="name"
+          value={ name }
+          onChange={ this.handleChange }
+        />
 
-          <input
-            data-testid="input-gravatar-email"
-            data-validation="validEmail"
-            placeholder="Email"
-            type="email"
-            name="email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
+        <Input
+          placeholder="Email"
+          type="email"
+          validation="validEmail"
+          name="email"
+          value={ email }
+          onChange={ this.handleChange }
+        />
 
-          <button
-            data-testid="btn-play"
-            type="submit"
-            disabled={ !validName || !validEmail }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
+        <Button
+          type="submit"
+          disabled={ !validName || !validEmail }
+          onClick={ this.handleClick }
+          text="Play"
+          color={ !validName || !validEmail ? '#8b8b8b' : undefined }
+        />
 
-          <button
-            data-testid="btn-settings"
-            type="button"
-            onClick={ () => history.push('/settings') }
-          >
-            Configurações
-          </button>
-        </form>
-      </div>
+        <div className="settings-button">
+          <MdSettings onClick={ () => history.push('/settings') } />
+        </div>
+      </form>
     );
   }
 }
@@ -123,6 +125,7 @@ Login.propTypes = {
   setGravatarToState: PropTypes.func.isRequired,
   setPlayerToState: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  getCategories: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -133,6 +136,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetch: () => dispatch(fetchToken()),
   setGravatarToState: (gravatar) => dispatch(setGravatar(gravatar)),
   setPlayerToState: (name, email) => dispatch(setPlayerData(name, email)),
+  getCategories: () => dispatch(fetchCategoriesThunk()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -2,27 +2,39 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import './style.css';
+
 class Header extends React.Component {
   render() {
-    const { name, gravatarEmail, score } = this.props;
+    const { name, gravatarEmail = '', score } = this.props;
     return (
-      <>
-        <img
-          data-testid="header-profile-picture"
-          alt="Foto de perfil"
-          src={ gravatarEmail }
-        />
-        <h3 data-testid="header-player-name">{name}</h3>
-        <h3 data-testid="header-score">{score}</h3>
-      </>
+      <header>
+        <div className="header-container">
+          <div className="left-section">
+            <img
+              data-testid="header-profile-picture"
+              alt="Foto de perfil"
+              src={ gravatarEmail }
+            />
+            <h4 data-testid="header-player-name">{name}</h4>
+          </div>
+          <div className="right-section">
+            <h3 data-testid="header-score">{score}</h3>
+          </div>
+        </div>
+      </header>
     );
   }
 }
 
 Header.propTypes = {
-  gravatarEmail: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string,
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+};
+
+Header.defaultProps = {
+  gravatarEmail: '',
 };
 
 const mapStateToProps = ({ auth, game }) => ({

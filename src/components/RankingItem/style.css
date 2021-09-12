@@ -1,0 +1,20 @@
+.ranking-item {
+  background: #501E78;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.5em 1.5em;
+  margin: 1em 0;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.315);
+}
+
+.ranking-item img {
+  width: 3em;
+  border-radius: 10px;
+}
+
+.name {
+  flex-grow: 1;
+}

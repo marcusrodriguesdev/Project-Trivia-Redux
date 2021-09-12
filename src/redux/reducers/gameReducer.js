@@ -3,7 +3,9 @@ import GAME_ACTIONS from '../actions/gameActions';
 const INITIAL_STATE = {
   guessed: false,
   score: 0,
-  time: 30,
+  assertions: 0,
+  totalQuestions: 5,
+  time: 3000,
   currentQuestion: 0,
 };
 
@@ -19,6 +21,8 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     };
   case GAME_ACTIONS.INCREASE_SCORE:
     return { ...state, score: state.score + action.payload };
+  case GAME_ACTIONS.INCREASE_ASSERTIONS:
+    return { ...state, assertions: state.assertions + 1 };
   case GAME_ACTIONS.SET_TIME:
     return { ...state, time: action.payload };
   case GAME_ACTIONS.RESET_GAME:

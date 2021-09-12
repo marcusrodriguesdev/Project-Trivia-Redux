@@ -3,81 +3,43 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Question from '../../components/Question';
-import Timer from '../../components/Timer';
+import Header from '../../components/Header';
+import Loading from '../../components/Loading';
 
 import { fetchQuestionsThunk } from '../../redux/actions/questionActions';
-
-import {
-  nextQuestion as nextQuestionAction,
-  setTime,
-} from '../../redux/actions/gameActions';
+import { resetGame as resetGameAction } from '../../redux/actions/gameActions';
 
 class Game extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      timeOver: false,
-    };
-
-    this.setTimeOver = this.setTimeOver.bind(this);
-    this.handleNextQuestion = this.handleNextQuestion.bind(this);
-  }
-
   componentDidMount() {
-    const { fetchQuestions } = this.props;
+    const { fetchQuestions, email, history, resetGame } = this.props;
 
-    fetchQuestions();
-  }
-
-  setTimeOver() {
-    this.setState({
-      timeOver: true,
-    });
-  }
-
-  handleNextQuestion() {
-    const DEFAULT_TIME = 30;
-
-    const {
-      history,
-      nextQuestion,
-      currentQuestion,
-      questions,
-      setTimeRedux,
-    } = this.props;
-
-    if (currentQuestion < questions.length - 1) {
-      nextQuestion();
-      setTimeRedux(DEFAULT_TIME);
+    if (!email) {
+      resetGame();
+      history.push('/');
     } else {
-      history.push('/feedback');
+      fetchQuestions();
     }
   }
 
   render() {
-    const { timeOver } = this.state;
+    const { questions, isFetching, currentQuestion } = this.props;
 
-    const { guessed, questions, currentQuestion } = this.props;
+    if (isFetching) {
+      return (
+        <div>
+          <Header />
+          <Loading />
+        </div>
+      );
+    }
+
+    console.log(questions, currentQuestion);
 
     return (
       <div>
-        <h1>Game</h1>
-        <Timer key={ currentQuestion } setTimeOver={ this.setTimeOver } />
+        <Header />
         {questions.length && (
-          <Question
-            timeOver={ timeOver }
-            questionInfo={ questions[currentQuestion] }
-          />
-        )}
-        {guessed && (
-          <button
-            data-testid="btn-next"
-            type="button"
-            onClick={ this.handleNextQuestion }
-          >
-            Próxima
-          </button>
+          <Question questionInfo={ questions[currentQuestion] } { ...this.props } />
         )}
       </div>
     );
@@ -85,27 +47,27 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-  guessed: PropTypes.bool.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentQuestion: PropTypes.number.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
+  resetGame: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  email: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  currentQuestion: PropTypes.number.isRequired,
-  fetchQuestions: PropTypes.func.isRequired,
-  nextQuestion: PropTypes.func.isRequired,
-  setTimeRedux: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ game, questions }) => ({
-  guessed: game.guessed,
+const mapStateToProps = ({ game, questions, auth }) => ({
   questions: questions.questionsArray,
   currentQuestion: game.currentQuestion,
+  isFetching: questions.isFetching,
+  email: auth.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: () => dispatch(fetchQuestionsThunk()),
-  nextQuestion: () => dispatch(nextQuestionAction()),
-  setTimeRedux: (time) => dispatch(setTime(time)),
+  resetGame: () => dispatch(resetGameAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

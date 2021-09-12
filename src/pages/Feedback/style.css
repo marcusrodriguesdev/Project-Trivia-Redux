@@ -1,0 +1,47 @@
+.feedback-section {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  flex-direction: column;
+  background: white;
+  padding: 2em 5em;
+  border-radius: 0.7em;
+  width: 30em;
+  box-shadow: 0 0 15px;
+  text-align: center;
+}
+
+.buttons-section {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.feedback-message {
+  font-weight: 700;
+  font-size: 1.6em;
+  margin-top: 1em;
+}
+
+.feedback-emoticon {
+  font-weight: 700;
+  font-size: 1.4em;
+}
+
+.success,
+.failure {
+  border: 4px solid black;
+  border-radius: 50%;
+  font-size: 4em;
+}
+
+.success {
+  filter: invert(37%) sepia(78%) saturate(5315%) hue-rotate(101deg)
+    brightness(100%) contrast(102%);
+}
+
+.failure {
+  filter: invert(21%) sepia(97%) saturate(6869%) hue-rotate(358deg)
+    brightness(101%) contrast(114%);
+}

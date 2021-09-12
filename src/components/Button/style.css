@@ -1,0 +1,29 @@
+.game-button {
+  flex-shrink: 0;
+  padding: 0.8em 2em;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: #501E78;
+  font-weight: 700;
+  border-radius: 0.3em;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  transition: filter 0.2s;
+}
+
+.game-button:hover {
+  filter: brightness(1.3);
+}
+
+.game-button:not([disabled]):not(.answer-button):active {
+  transform: scale(0.99);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.game-button[disabled] {
+  cursor: initial;
+}
+
+.game-button[disabled]:hover {
+  filter: none;
+}

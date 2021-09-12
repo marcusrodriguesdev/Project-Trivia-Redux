@@ -1,47 +1,49 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import Button from '../Button';
+
 import { guess as guessAction } from '../../redux/actions/gameActions';
 
 import './style.css';
 
 class Answer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const { guess, checkAnswer, questionInfo, answer } = this.props;
+    const { difficulty } = questionInfo;
+
+    guess();
+    checkAnswer(answer, difficulty);
+  }
+
   render() {
     const {
       answer,
-      index,
       guessed,
-      guess,
       timeOver,
-      checkAnswer,
-      questionInfo,
     } = this.props;
-    const { difficulty } = questionInfo;
 
-    const testId = answer.isCorrect
-      ? 'correct-answer'
-      : `wrong-answer-${index}`;
+    let className = 'answer-button';
 
-    let className = '';
-
-    if (guessed) {
-      className = answer.isCorrect ? 'correct' : 'incorrect';
+    if (guessed || timeOver) {
+      className = answer.isCorrect ? 'answer-button correct' : 'answer-button incorrect';
     }
 
     return (
-      <button
-        data-testid={ testId }
+      <Button
         type="button"
-        key={ answer }
         className={ className }
-        onClick={ () => {
-          guess();
-          checkAnswer(answer, difficulty);
-        } }
-        disabled={ timeOver }
-      >
-        {answer.text}
-      </button>
+        onClick={ this.handleClick }
+        disabled={ timeOver || guessed }
+        text={ answer.text }
+      />
     );
   }
 }
@@ -54,7 +56,6 @@ Answer.propTypes = {
   checkAnswer: PropTypes.func.isRequired,
   guess: PropTypes.func.isRequired,
   guessed: PropTypes.bool.isRequired,
-  index: PropTypes.number.isRequired,
   questionInfo: PropTypes.shape({
     difficulty: PropTypes.string.isRequired,
   }).isRequired,

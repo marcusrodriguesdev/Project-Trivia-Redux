@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import RankingItem from '../../components/RankingItem';
+import Button from '../../components/Button';
+
 import { resetGame as resetGameAction } from '../../redux/actions/gameActions';
+
+import './style.css';
 
 class Ranking extends Component {
   constructor() {
@@ -39,24 +45,21 @@ class Ranking extends Component {
   render() {
     const { players } = this.state;
     return (
-      <div>
-        <p data-testid="ranking-title">RANKING</p>
-        {players.map((player, index) => (
-          <div key={ index }>
-            <img src={ player.picture } alt="foto de perfil" />
-            <h3 key={ index } data-testid={ `player-name-${index}` }>
-              {player.name}
-            </h3>
-            <h3 data-testid={ `player-score-${index}` }>{player.score}</h3>
-          </div>
-        ))}
-        <button
+      <div className="ranking-section">
+        <h2 data-testid="ranking-title">RANKING</h2>
+
+        <div className="ranking">
+          {players.map((player, index) => (
+            <RankingItem key={ index } player={ player } index={ index } />
+          ))}
+        </div>
+
+        <Button
+          className="ranking-button"
           type="button"
           onClick={ this.handleHomeClick }
-          data-testid="btn-go-home"
-        >
-          Home
-        </button>
+          text="Home"
+        />
       </div>
     );
   }

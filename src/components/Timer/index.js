@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setTime } from '../../redux/actions/gameActions';
 
+import './style.css';
+
 class Timer extends Component {
   constructor(props) {
     super(props);
@@ -14,8 +16,12 @@ class Timer extends Component {
     this.startTimer();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   startTimer() {
-    const second = 1000;
+    const second = 10;
     this.interval = setInterval(() => {
       this.countDown();
     }, second);
@@ -24,7 +30,7 @@ class Timer extends Component {
   countDown() {
     const { setTimeOver, setTimeRedux, time } = this.props;
     setTimeRedux(time - 1);
-    if (time === 1) {
+    if (time <= 0) {
       clearInterval(this.interval);
       setTimeOver();
     }
@@ -32,11 +38,17 @@ class Timer extends Component {
 
   render() {
     const { time, guessed } = this.props;
+    const MAX_TIME = 3000;
 
     if (guessed) clearInterval(this.interval);
 
     return (
-      <h2>{time}</h2>
+      <div className="time-bar">
+        <div
+          className="time-progress"
+          style={ { width: `${(time * 100) / MAX_TIME}%` } }
+        />
+      </div>
     );
   }
 }

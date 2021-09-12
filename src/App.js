@@ -11,12 +11,14 @@ import './App.css';
 
 export default function App() {
   return (
-    <Switch>
-      <Route exact path="/" component={ Login } />
-      <Route path="/settings" component={ Settings } />
-      <Route path="/game" component={ Game } />
-      <Route path="/feedback" component={ Feedback } />
-      <Route path="/ranking" component={ Ranking } />
-    </Switch>
+    <div className="app">
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Route path="/settings" component={ Settings } />
+        <Route path="/game" component={ Game } />
+        <Route path="/feedback" component={ Feedback } />
+        <Route path="/ranking" component={ Ranking } />
+      </Switch>
+    </div>
   );
 }

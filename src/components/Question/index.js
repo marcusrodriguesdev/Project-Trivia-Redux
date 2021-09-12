@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
+
 import Answer from '../Answer';
-import Header from '../Header';
-import { increaseScore } from '../../redux/actions/gameActions';
+import Timer from '../Timer';
+import Button from '../Button';
+
+import {
+  increaseScore,
+  nextQuestion as nextQuestionAction,
+  setTime,
+  increaseAssertions as increaseAssertionsAction,
+} from '../../redux/actions/gameActions';
+
+import './style.css';
 
 const dificulties = {
   easy: 1,
@@ -16,70 +25,134 @@ class Question extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      timeOver: false,
+    };
+
+    this.setTimeOver = this.setTimeOver.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
+  }
+
+  setTimeOver() {
+    this.setState({
+      timeOver: true,
+    });
+  }
+
+  handleNextQuestion() {
+    const DEFAULT_TIME = 3000;
+
+    const {
+      history,
+      nextQuestion,
+      currentQuestion,
+      totalQuestions,
+      setTimeRedux,
+    } = this.props;
+
+    if (currentQuestion < totalQuestions - 1) {
+      nextQuestion();
+      setTimeRedux(DEFAULT_TIME);
+
+      this.setState({
+        timeOver: false,
+      });
+    } else {
+      history.push('/feedback');
+    }
   }
 
   checkAnswer({ text }, dificulty) {
-    const { questionInfo, time, increaseGlobalScore } = this.props;
+    const { questionInfo, time, increaseGlobalScore, increaseAssertions } = this.props;
+
     const { correctAnswer } = questionInfo;
-    const baseScore = 10;
+    const BASE_SCORE = 10;
 
     if (text === correctAnswer) {
-      const score = baseScore + time * dificulties[dificulty];
+      const score = BASE_SCORE + (time / 100).toFixed(0) * dificulties[dificulty];
       increaseGlobalScore(score);
-      const local = JSON.parse(window.localStorage.getItem('state'));
-      local.player.score += score;
-      local.player.assertions += 1;
-      window.localStorage.setItem('state', JSON.stringify(local));
+      increaseAssertions();
     }
   }
 
   render() {
-    const { questionInfo, timeOver } = this.props;
+    const { guessed, currentQuestion, questionInfo } = this.props;
     const { shuffledAnswers } = questionInfo;
+    const { timeOver } = this.state;
 
     return (
-      <>
-        <Header />
-        <div className="question">
-          <p data-testid="question-category">{`Category: ${questionInfo.category}`}</p>
-          <p data-testid="question-text">{`Question: ${questionInfo.question}`}</p>
-          <div className="answers">
-            {shuffledAnswers.map((answer, index) => (
-              <Answer
-                key={ answer.text }
-                timeOver={ timeOver }
-                answer={ answer }
-                index={ index }
-                checkAnswer={ this.checkAnswer }
-                questionInfo={ questionInfo }
-              />
-            ))}
+      <div className="question">
+        <div className="question-header">
+          <div className="question-info">
+            <p data-testid="question-category">{`Category: ${questionInfo.category}`}</p>
+            <p className="difficulty">
+              {`Difficulty: ${dificulties[questionInfo.difficulty]}`}
+            </p>
           </div>
+          <p>{`${currentQuestion + 1}/5`}</p>
         </div>
-      </>
+        <Timer key={ currentQuestion } setTimeOver={ this.setTimeOver } />
+        <p data-testid="question-text" className="question-text">
+          {questionInfo.question}
+        </p>
+        <div className="answers">
+          {shuffledAnswers.map((answer, index) => (
+            <Answer
+              key={ answer.text }
+              timeOver={ timeOver }
+              answer={ answer }
+              index={ index }
+              checkAnswer={ this.checkAnswer }
+              questionInfo={ questionInfo }
+            />
+          ))}
+        </div>
+        <Button
+          type="button"
+          onClick={ this.handleNextQuestion }
+          text="Próxima"
+          className="next-button"
+          visibility={ guessed || timeOver ? 'visible' : 'hidden' }
+        />
+      </div>
     );
   }
 }
 
 Question.propTypes = {
+  guessed: PropTypes.bool.isRequired,
+  currentQuestion: PropTypes.number.isRequired,
+  totalQuestions: PropTypes.number.isRequired,
+  time: PropTypes.number.isRequired,
   increaseGlobalScore: PropTypes.func.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
+  setTimeRedux: PropTypes.func.isRequired,
+  increaseAssertions: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   questionInfo: PropTypes.shape({
+    question: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     correctAnswer: PropTypes.string.isRequired,
+    difficulty: PropTypes.string.isRequired,
     shuffledAnswers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    question: PropTypes.string.isRequired,
   }).isRequired,
-  time: PropTypes.number.isRequired,
-  timeOver: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  time: state.game.time,
+const mapStateToProps = ({ game }) => ({
+  time: game.time,
+  guessed: game.guessed,
+  currentQuestion: game.currentQuestion,
+  totalQuestions: game.totalQuestions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   increaseGlobalScore: (amount) => dispatch(increaseScore(amount)),
+  increaseAssertions: () => dispatch(increaseAssertionsAction()),
+  nextQuestion: () => dispatch(nextQuestionAction()),
+  setTimeRedux: (time) => dispatch(setTime(time)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

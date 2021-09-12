@@ -1,0 +1,38 @@
+.question {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  background: white;
+  width: 70vw;
+  padding: 2em 3em;
+  border-radius: 1em;
+  flex-wrap: wrap;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.question-text {
+  padding: 1.5em 0;
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+.question-info {
+  display: flex;
+  gap: 2em;
+  font-size: 0.8em;
+}
+
+.next-button {
+  align-self: flex-end;
+}
+
+.answers {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+}

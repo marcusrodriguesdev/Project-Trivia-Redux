@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { GrFormClose, GrFormCheckmark } from 'react-icons/gr';
+
 import Header from '../../components/Header';
+import Button from '../../components/Button';
+
 import { resetGame as resetGameAction } from '../../redux/actions/gameActions';
+
+import './style.css';
 
 class Feedback extends Component {
   constructor(props) {
@@ -14,11 +20,8 @@ class Feedback extends Component {
     this.setPlayer = this.setPlayer.bind(this);
   }
 
-  getAssertions() {
-    const local = window.localStorage.getItem('state');
-    const parsedLocal = JSON.parse(local);
-
-    return parsedLocal.player.assertions;
+  componentDidMount() {
+    this.setPlayer();
   }
 
   setPlayer() {
@@ -40,45 +43,49 @@ class Feedback extends Component {
 
   handleClick() {
     const { history } = this.props;
-    this.setPlayer();
     history.push('/ranking');
   }
 
   render() {
     const MIN_ASSERTIONS = 3;
-    const assertions = this.getAssertions();
-    const { score } = this.props;
+    const { score, assertions } = this.props;
 
     return (
-      <div>
+      <>
         <Header />
-        <p data-testid="feedback-text">
-          {assertions >= MIN_ASSERTIONS ? 'Mandou bem!' : 'Podia ser melhor...'}
-        </p>
-        <p>
-          {'Pontuação final: '}
-          <span data-testid="feedback-total-score">{score}</span>
-        </p>
-        <p>
-          {'Respostas corretas: '}
-          <span data-testid="feedback-total-question">{assertions}</span>
-        </p>
+        <div className="feedback-section">
+          {assertions >= MIN_ASSERTIONS ? (
+            <div className="message-section">
+              <GrFormCheckmark className="success" />
+              <p className="feedback-message">Good Job!</p>
+            </div>
+          ) : (
+            <div className="message-section">
+              <GrFormClose className="failure" />
+              <p className="feedback-message">You could have done better...</p>
+            </div>
+          )}
+          <div className="results">
+            <p>
+              {'Points: '}
+              <span data-testid="feedback-total-score">{score}</span>
+            </p>
+            <p>
+              {'Correct answers: '}
+              <span data-testid="feedback-total-question">{assertions}</span>
+            </p>
+          </div>
+          <div className="buttons-section">
+            <Button type="button" onClick={ this.handleClick } text="Ranking" />
 
-        <button
-          data-testid="btn-ranking"
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Ver Ranking
-        </button>
-        <button
-          type="button"
-          onClick={ this.handlePlayAgain }
-          data-testid="btn-play-again"
-        >
-          Jogar novamente
-        </button>
-      </div>
+            <Button
+              type="button"
+              onClick={ this.handlePlayAgain }
+              text="Play again"
+            />
+          </div>
+        </div>
+      </>
     );
   }
 }
@@ -91,12 +98,14 @@ Feedback.propTypes = {
   name: PropTypes.string.isRequired,
   resetGame: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = ({ game, auth }) => ({
   score: game.score,
   name: auth.name,
   gravatar: auth.gravatar,
+  assertions: game.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
