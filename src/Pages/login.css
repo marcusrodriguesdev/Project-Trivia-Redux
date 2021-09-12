@@ -171,3 +171,13 @@
 Gradiente retirado do site:
 https://cssgradient.io/
 */
+
+/* Classes do Requisito 7 */
+
+.correct-color {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.incorrect-color {
+  border: 3px solid red;
+}
