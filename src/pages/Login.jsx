@@ -52,7 +52,7 @@ class Login extends React.Component {
     return (
       <>
         <div id="trivia">
-          <img id="ghost" src={ ghost } alt="Ghost Trivia" />
+          <img className="ghost" src={ ghost } alt="Ghost Trivia" />
         </div>
         <div id="login">
           <label htmlFor="name">

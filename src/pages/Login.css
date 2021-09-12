@@ -8,9 +8,9 @@ body {
   font-family: sans-serif;
 }
 
-#ghost {
-  width: 500px;
+.ghost {
   justify-items: center;
+  width: 500px;
 }
 
 label {
