@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import fetchApi from '../services/api';
+import { Redirect } from 'react-router';
 import QuestionsComponent from '../components/QuestionsComponent';
+import fetchApi from '../services/api';
 import { setScoreAndAssertions as setScoreAndAssertionsAction } from '../actions';
 
 class Question extends Component {
@@ -15,12 +16,15 @@ class Question extends Component {
     this.handleTime = this.handleTime.bind(this);
     this.handleClickCorrectAnswer = this.handleClickCorrectAnswer.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.handleClass = this.handleClass.bind(this);
 
     this.state = {
+      questions: [],
       loading: true,
       timer: 30,
       index: 0,
       disableButton: false,
+      answerMap: [],
     };
   }
 
@@ -52,6 +56,37 @@ class Question extends Component {
     }, maxTime);
   }
 
+  // amigo que trabalha com programação que mandou essa handleShuffle!
+  handleShuffle(array) {
+    let arrKeys = Object.keys(array);
+    const newArray = [];
+
+    while (arrKeys.length > 0) {
+      const randomIndex = Math.floor(Math.random() * (arrKeys.length - 1));
+
+      newArray.push(array[arrKeys[randomIndex]]);
+
+      delete arrKeys[randomIndex];
+      arrKeys = arrKeys.filter(() => true);
+    }
+
+    return newArray;
+  }
+
+  handleClass() {
+    const { questions, index } = this.state;
+    console.log(questions);
+    const FOUR = 4;
+    if (index <= FOUR) {
+      const correct = questions[index].correct_answer;
+      const incorrect = questions[index].incorrect_answers.join('|-|');
+      const allAnswers = `${correct}|-|${incorrect}`;
+      const answers = allAnswers.split('|-|');
+      const answerMap = this.handleShuffle(answers);
+      this.setState({ answerMap });
+    }
+  }
+
   async handleQuestions() {
     const { token } = this.props;
     const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
@@ -60,6 +95,7 @@ class Question extends Component {
       questions: results,
       loading: false,
     });
+    this.handleClass();
   }
 
   handleClickCorrectAnswer() {
@@ -83,11 +119,14 @@ class Question extends Component {
   }
 
   handleNextQuestion() {
-    this.setState((old) => ({ index: old.index + 1, timer: 30 }));
+    this.setState((old) => (
+      { index: old.index + 1, timer: 30, answerMap: [] }
+    ), () => this.handleClass());
   }
 
   render() {
     const { name, score, assertions, gravatarEmail } = this.props;
+    const { questions, loading, index, disableButton, timer, answerMap } = this.state;
     const playerInfo = {
       player: {
         name,
@@ -100,8 +139,11 @@ class Question extends Component {
     if (!localStorage.getItem('state')) {
       localStorage.setItem('state', JSON.stringify(playerInfo));
     }
+    const FOUR = 4;
+    if (index > FOUR) {
+      return <Redirect to="/feedback" />;
+    }
 
-    const { questions, loading, index, disableButton, timer } = this.state;
     return (
       <>
         <header>
@@ -123,7 +165,9 @@ class Question extends Component {
           handleClick={ this.handleClickCorrectAnswer }
           handleNextQuestion={ this.handleNextQuestion }
           buttonDisable={ disableButton }
-          index={ index }
+          number={ index }
+          timer={ timer }
+          answerMap={ answerMap }
         />}
       </>
     );

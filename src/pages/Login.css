@@ -1,0 +1,25 @@
+* {
+  justify-content: center;
+}
+
+body {
+  background-color: rgb(235, 235, 235);
+  display: flex;
+  font-family: sans-serif;
+}
+
+#ghost {
+  width: 500px;
+  justify-items: center;
+}
+
+label {
+  display: block;
+  margin-left: 40px;
+}
+
+input {
+  display: block;
+  margin: 10px 20px;
+  width: 300px;
+}

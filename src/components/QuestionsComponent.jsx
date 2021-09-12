@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import { Redirect } from 'react-router';
+import React, { Component } from 'react';
 
 import './QuestionsComponent.css';
 
-export default class QuestionsComponent extends React.Component {
+export default class QuestionsComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -12,6 +11,7 @@ export default class QuestionsComponent extends React.Component {
     this.renderNextBtn = this.renderNextBtn.bind(this);
     this.handleClickCorrect = this.handleClickCorrect.bind(this);
     this.handleNext = this.handleNext.bind(this);
+    this.handleAnswers = this.handleAnswers.bind(this);
 
     this.state = {
       clicked: false,
@@ -30,13 +30,47 @@ export default class QuestionsComponent extends React.Component {
 
   handleNext() {
     const { handleNextQuestion } = this.props;
-    handleNextQuestion();
     this.setState({ clicked: false });
+    handleNextQuestion();
+  }
+
+  handleAnswers() {
+    const { clicked } = this.state;
+    const { buttonDisable, answerMap, question } = this.props;
+    return answerMap.map((answer, index) => {
+      if (answer === question.correct_answer) {
+        return (
+          <button
+            key={ index }
+            data-testid="correct-answer"
+            type="button"
+            disabled={ buttonDisable }
+            onClick={ this.handleClickCorrect }
+            className={ clicked && 'correct' }
+          >
+            {answerMap[index]}
+          </button>
+        );
+      }
+      return (
+        <button
+          key={ index }
+          data-testid={ `wrong-answer-${index}` }
+          type="button"
+          disabled={ buttonDisable }
+          onClick={ this.handleClicked }
+          className={ clicked && 'incorrect' }
+        >
+          {answerMap[index]}
+        </button>
+      );
+    });
   }
 
   renderNextBtn() {
     const { clicked } = this.state;
-    if (clicked) {
+    const { timer } = this.props;
+    if (clicked || timer === 0) {
       return (
         <button
           data-testid="btn-next"
@@ -50,37 +84,12 @@ export default class QuestionsComponent extends React.Component {
   }
 
   render() {
-    const { question, buttonDisable, index } = this.props;
-    const { clicked } = this.state;
-    const four = 4;
-    if (index > four) {
-      return <Redirect to="/feedback" />;
-    }
+    const { question } = this.props;
     return (
       <div>
         <p data-testid="question-category">{question.category}</p>
         <p data-testid="question-text">{question.question}</p>
-        <button
-          data-testid="correct-answer"
-          type="button"
-          disabled={ buttonDisable }
-          className={ clicked && 'correct' }
-          onClick={ this.handleClickCorrect }
-        >
-          {question.correct_answer}
-        </button>
-        {question.incorrect_answers.map((incorrect, number) => (
-          <button
-            key={ number }
-            data-testid={ `wrong-answer-${number}` }
-            type="button"
-            disabled={ buttonDisable }
-            className={ clicked && 'incorrect' }
-            onClick={ this.handleClicked }
-          >
-            {incorrect}
-          </button>
-        ))}
+        {this.handleAnswers()}
         {this.renderNextBtn()}
       </div>
     );
@@ -92,5 +101,6 @@ QuestionsComponent.propTypes = {
   handleClick: PropTypes.func.isRequired,
   handleNextQuestion: PropTypes.func.isRequired,
   question: PropTypes.objectOf().isRequired,
-  index: PropTypes.number.isRequired,
+  timer: PropTypes.number.isRequired,
+  answerMap: PropTypes.arrayOf().isRequired,
 };
