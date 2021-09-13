@@ -33,7 +33,12 @@ class Ranking extends React.Component {
     const { ranking } = this.state;
     return (
       <div>
-        <h1 data-testid="ranking-title">Ranking</h1>
+        <h1
+          className="App-header"
+          data-testid="ranking-title"
+        >
+          Ranking
+        </h1>
         <ul>
           { ranking.length === 0 ? undefined : ranking.map((user) => (
             <li key={ user }>

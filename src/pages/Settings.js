@@ -55,19 +55,23 @@ class Settings extends Component {
     if (loading) return <p>Loading</p>;
     return (
       <>
-        <header>
+        <header className="App-header">
           <h1 data-testid="settings-title"> Configurações </h1>
           {error ? <p>error</p> : ''}
         </header>
-        <form onSubmit={ this.addSetting }>
+        <form
+          className="margin"
+          onSubmit={ this.addSetting }
+        >
           <Select
-            labelText="Selecione uma categoria"
+            labelText="Selecione uma categoria:"
             id="category-input"
             name="category"
             value={ category }
             change={ this.onHandlerChange }
             options={ categories }
           />
+          <br />
           <InputCard
             labelText="Quantidade de perguntas:"
             id="amount"
@@ -76,7 +80,14 @@ class Settings extends Component {
             value={ amount }
             onChange={ this.onHandlerChange }
           />
-          <Link to="/"><button type="submit">Aplicar</button></Link>
+          <Link to="/">
+            <button
+              className="button is-primary is-rounded button-login-pg"
+              type="submit"
+            >
+              Aplicar
+            </button>
+          </Link>
         </form>
       </>
     );
