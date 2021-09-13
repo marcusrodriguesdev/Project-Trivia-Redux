@@ -6,6 +6,7 @@ import NextQuestionButton from '../components/NextQuestionButton';
 import Timer from '../components/Timer';
 import Answers from '../components/Answers';
 import GameHeader from '../components/GameHeader';
+import loadingIcon from '../loading-icon.png';
 
 class Game extends React.Component {
   constructor(props) {
@@ -136,17 +137,18 @@ class Game extends React.Component {
     });
   }
 
+  // const mockResults = [{
+  //   category: 'Token Expirado, favor direcionar para a Home e recarregar a página!',
+  //   correct_answer: '',
+  //   difficulty: '',
+  //   incorrect_answers: [],
+  //   question: '',
+  //   type: '',
+  // }];
+
   render() {
     const { counter, isRunning, disabledButtons, styleButtons, score } = this.state;
     const { results } = this.props;
-    // const mockResults = [{
-    //   category: 'Token Expirado, favor direcionar para a Home e recarregar a página!',
-    //   correct_answer: '',
-    //   difficulty: '',
-    //   incorrect_answers: [],
-    //   question: '',
-    //   type: '',
-    // }];
     if (results.length) {
       return (
         <div className="quiz-container">
@@ -182,7 +184,11 @@ class Game extends React.Component {
             : <NextQuestionButton handleNextButton={ this.handleNextButton } /> }
         </div>
       );
-    } return <p className-="main-container">Carregando...</p>;
+    } return (
+      <p className="main-container loading">
+        <img src={ loadingIcon } alt="Loading icon" className="loading-icon" />
+        Carregando...
+      </p>);
   }
 }
 

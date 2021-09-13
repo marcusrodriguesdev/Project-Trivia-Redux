@@ -39,21 +39,23 @@ class Ranking extends Component {
         <header data-testid="ranking-title" className="ranking-header">
           <p className="ranking-title">Ranking</p>
         </header>
-        <ul className="ranking-list">
-          {ranking.map((player, index) => (
-            <li key={ index } className="ranking-player">
-              <div className="player-position">
-                <p className="podium-number">{ `${index + 1}°` }</p>
-                <div data-testid={ `player-name-${index}` }>
-                  { `${player.name}` }
+        <div className="ranking-list">
+          <ul>
+            {ranking.map((player, index) => (
+              <li key={ index } className="ranking-player">
+                <div className="player-position">
+                  <p className="podium-number">{ `${index + 1}°` }</p>
+                  <div data-testid={ `player-name-${index}` }>
+                    { `${player.name}` }
+                  </div>
                 </div>
-              </div>
-              <div data-testid={ `player-score-${index}` } className="player-score">
-                { `${player.score} Pontos` }
-              </div>
-            </li>
-          ))}
-        </ul>
+                <div data-testid={ `player-score-${index}` } className="player-score">
+                  { `${player.score} Pontos` }
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
         <HomeButton />
       </div>
     );

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap') ;
 
 :root {
 
@@ -12,7 +12,7 @@
 }
 
 * {
-  font-family: 'Raleway' , sans-serif;
+  font-family: Raleway , sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -103,21 +103,21 @@
 
 .system-btn {
   background-color: var(--primary_color);
-  text-decoration: none;
-  color: white;
   border-radius: 10px;
-  font-family: 'Raleway', sans-serif;
-  font-weight: bold;
+  border-style: none;
+  color: white;
+  font-family: Raleway , sans-serif;
   font-size: 40px;
+  font-weight: 800;
   height: 60px;
   padding: 0 20px;
-  border-style: none;
+  text-decoration: none;
 }
 
 .system-btn:hover {
   font-size: 45px;
-  transition: all 0.3s;
   transform-origin: center center;
+  transition: all 0.3s;
 }
 
 .system-btn:active {
@@ -127,17 +127,17 @@
 
 .input-div {
   display: flex;
+  font-family: Raleway , sans-serif;
   margin: 10px;
-  font-family: 'Raleway', sans-serif;
 }
 
-.input, .select  {
-  height: 30px;
-  width: 350px;
-  font-size: 25px;
-  padding: 5px;
+.input, .select {
   border-radius: 10px;
+  font-size: 25px;
+  height: 30px;
   margin-left: 10px;
+  padding: 5px;
+  width: 350px;
 }
 
 .config-icon {
@@ -152,32 +152,36 @@
   .config-icon:hover {
     animation: rotate infinite 5s linear;
   }
-  
+
+  .loading-icon {
+    animation: rotate infinite 5s linear;
+  }
 }
 
 @keyframes rotate {
+
   to {
     transform: rotateZ(360deg);
   }
 }
 
 .play-btn {
-  margin-top: 10px;
-  display: flex;
   align-items: center;
+  display: flex;
+  margin-top: 10px;
 }
 
 .ranking-btn {
-  position: absolute;
   bottom: 3%;
+  position: absolute;
   right: 3%;
 }
 
 .config-title {
-  display: flex;
   color: var(--primary_color);
+  display: flex;
   font-size: 50px;
-  font-weight: bold;
+  font-weight: 800;
   margin-bottom: 100px;
 }
 
@@ -214,20 +218,20 @@
 }
 
 .feedback-container {
+  align-items: center;
+  background-color: var(--alt_secondary_color);
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background-color: var(--alt_secondary_color);
   padding: 80px;
-  border-radius: 10px;
   text-align: center;
 }
 
 .feedback-msg {
-  font-size: 70px;
-  font-weight: bold;
   color: var(--primary_color);
+  font-size: 70px;
+  font-weight: 800;
 }
 
 .play-again-btn {
@@ -235,29 +239,29 @@
 }
 
 .question-container {
+  background-color: var(--secondary_color);
   display: flex;
   justify-content: center;
-  background-color: var(--secondary_color);
 }
 
 .question {
   align-items: center;
-  justify-content: center;
   background-color: var(--secondary_color);
   background-image: url('question-shape.svg');
   background-size: cover;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-height: 250px;
   min-width: 650px;
 
 }
 
 .quiz-container {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   background-color: var(--secondary_color);
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
@@ -275,26 +279,26 @@
 }
 
 .timer {
-  display: flex;
-  color: white;
-  justify-content: center;
   align-items: center;
+  color: white;
+  display: flex;
   font-size: 30px;
+  justify-content: center;
 }
 
 
 .score {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
   align-items: center;
   background-color: var(--primary_color);
-  color: white;
-  min-width: 200px;
-  height: 55px;
-  font-size: 30px;
-  font-weight: bold;
   border-radius: 10px;
+  color: white;
+  display: flex;
+  font-size: 30px;
+  font-weight: 800;
+  height: 55px;
+  justify-content: center;
+  margin: 20px 0;
+  min-width: 200px;
 }
 
 
@@ -305,50 +309,60 @@
 
 
 .answers-container {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  max-width: 950px;
-  align-items: center;
   justify-content: center;
+  max-width: 950px;
 }
 
 .answers-container button {
-  height: 65px;
-  min-width: 450px;
-  margin: 10px;
-  border-radius: 10px;
   background-color: white;
+  border-radius: 10px;
   color: black;
   font-size: 26px;
+  height: 65px;
+  margin: 10px;
+  min-width: 450px;
 }
 
 .next-btn {
-  margin-top: 15px;
   font-size: 30px;
+  margin-top: 15px;
 }
 
 .ranking-header {
+  align-items: center;
   background-color: var(--primary_color);
   display: flex;
+  font-size: 35px;
+  font-weight: 800;
   justify-content: center;
   margin-bottom: 30px;
-  width: 100vw;
   position: absolute;
   top: 0;
-  align-items: center;
-  font-size: 35px;
-  padding: 10px;
-  font-weight: bold;
+  width: 100vw;
 }
 
 .ranking-list {
   border-radius: 10px;
-  list-style: none;
-  width: 85vw;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  list-style: none;
   max-height: 70vh;
+  overflow-y: scroll;
+  width: 85vw;
+}
+
+.ranking-list::-webkit-scrollbar {
+  background-color: white;
+  border-radius: 10px;
+  width: 20px;
+}
+
+.ranking-list::-webkit-scrollbar-thumb {
+  background-color: var(--primary_color);
+  border-radius: 10px;
 }
 
 .ranking-list li {
@@ -356,13 +370,13 @@
   border-radius: 5px;
   color: black;
   display: flex;
+  justify-content: space-between;
   margin: 5px;
   padding: 5px;
-  justify-content: space-between;
 }
 
 .podium-number {
-  font-weight: bold;
+  font-weight: 800;
 }
 
 .player-position {
@@ -380,4 +394,9 @@
 
 .home-btn {
   margin-top: 30px;
+}
+
+.loading {
+  font-size: 50px;
+  font-weight: 800;
 }
