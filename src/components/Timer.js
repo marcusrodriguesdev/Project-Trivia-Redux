@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
+import timerIcon from '../timer-icon.svg';
 
 export default class Timer extends Component {
   constructor(props) {
@@ -45,9 +46,12 @@ export default class Timer extends Component {
   render() {
     const { seconds } = this.state;
     return (
-      <h2>
-        { seconds > 0 ? seconds : 0 }
-      </h2>
+      <div className="timer-container">
+        <img src={ timerIcon } alt="icone relógio timer" className="timer-icon" />
+        <h2 className="timer">
+          {`${seconds > 0 ? seconds : 0} segundos`}
+        </h2>
+      </div>
     );
   }
 }
