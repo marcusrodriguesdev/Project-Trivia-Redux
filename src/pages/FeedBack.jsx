@@ -10,11 +10,26 @@ class FeedBack extends Component {
     this.getAssertions = this.getAssertions.bind(this);
   }
 
+  componentDidMount() {
+    const { name, score, assertionsGlobal } = this.props;
+    const playerObj = { name, score, picture: 'https://www.gravatar.com/avatar/' };
+    let ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (ranking === null) {
+      ranking = [];
+    }
+    ranking = [...ranking, playerObj];
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+
+    const playerLSinObj = JSON.parse(localStorage.getItem('state'));
+    playerLSinObj.player.assertions = assertionsGlobal;
+    localStorage.setItem('state', JSON.stringify(playerLSinObj));
+  }
+
   getAssertions() {
     const THREE = 3;
-    const { assertions } = this.props;
+    const { assertionsGlobal } = this.props;
     let feedbackMessage = '';
-    if (assertions < THREE) {
+    if (assertionsGlobal < THREE) {
       feedbackMessage = <p>Podia ser melhor...</p>;
     } else {
       feedbackMessage = <p>Mandou bem!</p>;
@@ -23,7 +38,7 @@ class FeedBack extends Component {
   }
 
   render() {
-    const { score, assertions } = this.props;
+    const { score, assertionsGlobal } = this.props;
     return (
       <div>
         <Header />
@@ -31,16 +46,14 @@ class FeedBack extends Component {
           data-testid="feedback-text"
         >
           { this.getAssertions() }
-          <p data-testid="feedback-total-question">
-            Você acertou
-            { ' ' }
-            { assertions }
-            { ' ' }
-            perguntas.
+          <p
+            data-testid="feedback-total-question"
+          >
+            { assertionsGlobal }
           </p>
-          <p data-testid="feedback-total-score">
-            E fez um total de pontos de
-            { ' ' }
+          <p
+            data-testid="feedback-total-score"
+          >
             { score }
           </p>
         </div>
@@ -66,12 +79,14 @@ class FeedBack extends Component {
 }
 
 FeedBack.propTypes = {
-  assertions: PropTypes.number.isRequired,
+  assertionsGlobal: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  assertions: state.player.assertions,
+  assertionsGlobal: state.player.assertions,
+  name: state.player.name,
   score: state.player.score,
 });
 
