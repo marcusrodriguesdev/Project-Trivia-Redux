@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import NextQuestionButton from '../components/NextQuestionButton';
 import Timer from '../components/Timer';
 import Answers from '../components/Answers';
-import questionShape from '../question-shape.svg';
 import GameHeader from '../components/GameHeader';
 
 class Game extends React.Component {
@@ -154,7 +153,9 @@ class Game extends React.Component {
           <GameHeader counter={ counter } />
           <div className="question-container">
             <div className="question">
-              <h3 data-testid="question-category" className="category">{ results[counter].category } </h3>
+              <h3 data-testid="question-category" className="category">
+                { results[counter].category }
+              </h3>
               <div className="question-text">
                 <p data-testid="question-text">{results[counter].question}</p>
               </div>
@@ -181,7 +182,7 @@ class Game extends React.Component {
             : <NextQuestionButton handleNextButton={ this.handleNextButton } /> }
         </div>
       );
-    } return <p>Carregando...</p>;
+    } return <p className-="main-container">Carregando...</p>;
   }
 }
 
