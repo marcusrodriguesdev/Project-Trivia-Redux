@@ -11,7 +11,6 @@ import GameRanking from './pages/GameRanking';
 export default function App() {
   return (
     <div className="App">
-      <Header />
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route path="/config" component={ ConfigWindow } />
