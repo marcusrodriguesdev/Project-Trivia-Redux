@@ -23,6 +23,7 @@ class FeedBack extends Component {
   }
 
   render() {
+    const { score, assertions } = this.props;
     return (
       <div>
         <Header />
@@ -30,6 +31,18 @@ class FeedBack extends Component {
           data-testid="feedback-text"
         >
           { this.getAssertions() }
+          <p data-testid="feedback-total-question">
+            Você acertou
+            { ' ' }
+            { assertions }
+            { ' ' }
+            perguntas.
+          </p>
+          <p data-testid="feedback-total-score">
+            E fez um total de pontos de
+            { ' ' }
+            { score }
+          </p>
         </div>
         <Link to="/">
           <button
@@ -54,10 +67,12 @@ class FeedBack extends Component {
 
 FeedBack.propTypes = {
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
+  score: state.player.score,
 });
 
 export default connect(mapStateToProps)(FeedBack);
