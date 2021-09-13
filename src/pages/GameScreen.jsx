@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { questActionThunk, scoreAction } from '../actions';
+import Header from '../components/Header';
 
 class GameScreen extends React.Component {
   constructor() {
@@ -203,6 +204,7 @@ class GameScreen extends React.Component {
 
     return (
       <div>
+        <Header />
         { this.renderButtons() }
         { disable
           && (
