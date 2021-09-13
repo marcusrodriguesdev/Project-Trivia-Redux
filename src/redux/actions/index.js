@@ -7,6 +7,12 @@ const SET_EMAIL = 'SET_EMAIL';
 const CATEGORY_SUCCESS = 'CATEGORY_SUCCESS';
 const CATEGORY_FAIL = 'CATEGORY_FAIL';
 const UPDATE_SELECTION = 'UPDATE_SELECTION';
+const defaultConfig = {
+  category: 'All',
+  difficulty: 'Mixed',
+  type: 'Both',
+};
+const tokenExpiredCode = 3;
 
 export const fetchTokenSuccess = (payload) => ({
   type: TOKEN_SUCCESS,
@@ -118,15 +124,20 @@ const handleURL = (config, token) => {
 // };
 
 export const fetchQuestionThunk = (config, token) => async (dispatch) => {
-  const defaultConfig = {
-    category: 'All',
-    difficulty: 'Mixed',
-    type: 'Both',
-  };
   if (config === defaultConfig) {
     try {
       const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
       const data = await response.json();
+      if (data.response_code === tokenExpiredCode) {
+        data.results = [{
+          category: 'Token Expirado, favor direcionar para a Home e recarregar a página!',
+          correct_answer: '',
+          difficulty: '',
+          incorrect_answers: [],
+          question: '',
+          type: '',
+        }];
+      }
       return dispatch(fetchQuestionSuccess(data.results));
     } catch (error) {
       return dispatch(fetchQuestionFail(error));

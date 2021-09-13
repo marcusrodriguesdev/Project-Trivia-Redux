@@ -1,18 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
-import NextQuestionButton from '../components/NextQuestionButton';
 
+import NextQuestionButton from '../components/NextQuestionButton';
 import Timer from '../components/Timer';
 import Answers from '../components/Answers';
+import GameHeader from '../components/GameHeader';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       counter: 0,
-      imgPath: '',
       disabledButtons: false,
       styleButtons: {
         correct: { border: '' },
@@ -24,7 +23,6 @@ class Game extends React.Component {
       assertions: 0,
     };
 
-    this.handleImg = this.handleImg.bind(this);
     this.handleQuestionClick = this.handleQuestionClick.bind(this);
     this.handleNextButton = this.handleNextButton.bind(this);
     this.timeExpired = this.timeExpired.bind(this);
@@ -32,10 +30,6 @@ class Game extends React.Component {
     this.getTurnResult = this.getTurnResult.bind(this);
     this.getDifficultyFactor = this.getDifficultyFactor.bind(this);
     this.saveScoreStorage = this.saveScoreStorage.bind(this);
-  }
-
-  componentDidMount() {
-    this.handleImg();
   }
 
   componentDidUpdate() {
@@ -82,14 +76,6 @@ class Game extends React.Component {
       },
     };
     localStorage.setItem('state', JSON.stringify(data));
-  }
-
-  handleImg() {
-    const { email } = this.props;
-    const path = md5(email).toString();
-    this.setState({
-      imgPath: `https://www.gravatar.com/avatar/${path}`,
-    });
   }
 
   handleQuestionClick({ target }) {
@@ -151,26 +137,33 @@ class Game extends React.Component {
   }
 
   render() {
-    const { counter, imgPath, isRunning, disabledButtons,
-      styleButtons, score } = this.state;
-
-    const { results, name } = this.props;
-
+    const { counter, isRunning, disabledButtons, styleButtons, score } = this.state;
+    const { results } = this.props;
+    // const mockResults = [{
+    //   category: 'Token Expirado, favor direcionar para a Home e recarregar a página!',
+    //   correct_answer: '',
+    //   difficulty: '',
+    //   incorrect_answers: [],
+    //   question: '',
+    //   type: '',
+    // }];
     if (results.length) {
       return (
-        <div>
-          <header>
-            <img
-              data-testid="header-profile-picture"
-              alt="gravatar img"
-              src={ imgPath }
-            />
-            <p data-testid="header-player-name">{ name }</p>
-            <p data-testid="header-score">{ score }</p>
-          </header>
-
-          <h2>Game</h2>
-
+        <div className="quiz-container">
+          <GameHeader counter={ counter } />
+          <div className="question-container">
+            <div className="question">
+              <h3 data-testid="question-category" className="category">
+                { results[counter].category }
+              </h3>
+              <div className="question-text">
+                <p data-testid="question-text">{results[counter].question}</p>
+              </div>
+            </div>
+          </div>
+          <div className="score">
+            <p>{`${score} pontos`}</p>
+          </div>
           <Timer
             isRunning={ isRunning }
             timeExpired={ this.timeExpired }
@@ -178,9 +171,6 @@ class Game extends React.Component {
             counter={ counter }
             getRemainingTime={ this.getRemainingTime }
           />
-
-          <h3 data-testid="question-category">{ results[counter].category }</h3>
-          <p data-testid="question-text">{results[counter].question}</p>
           <Answers
             counter={ counter }
             disabledButtons={ disabledButtons }
@@ -188,13 +178,11 @@ class Game extends React.Component {
             handleQuestionClick={ this.handleQuestionClick }
             results={ results }
           />
-
           { isRunning ? null
             : <NextQuestionButton handleNextButton={ this.handleNextButton } /> }
-
         </div>
       );
-    } return <p>Carregando...</p>;
+    } return <p className-="main-container">Carregando...</p>;
   }
 }
 

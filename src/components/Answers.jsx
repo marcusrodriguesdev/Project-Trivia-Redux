@@ -38,7 +38,7 @@ class Answers extends Component {
     let incorrectAnswersIndex = minimumIndex;
 
     return (
-      <div>
+      <div className="answers-container">
         {sortedAnswers.map((answer) => {
           if (answer === results[counter].correct_answer) {
             return (

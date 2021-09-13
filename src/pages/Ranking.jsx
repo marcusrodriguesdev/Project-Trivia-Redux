@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import md5 from 'crypto-js/md5';
+import HomeButton from '../components/HomeButton';
 
 class Ranking extends Component {
   // componentDidMount() {
   //   this.mockRanking();
   // }
-
-  handleGravatar(email) {
-    const path = md5(email).toString();
-    return `https://www.gravatar.com/avatar/${path}`;
-  }
 
   // mockRanking() {
   //   const maxPoints = 100;
@@ -40,21 +35,26 @@ class Ranking extends Component {
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     return (
-      <div>
-        <header data-testid="ranking-title">Ranking</header>
-        <ol>
+      <div className="main-container">
+        <header data-testid="ranking-title" className="ranking-header">
+          <p className="ranking-title">Ranking</p>
+        </header>
+        <ul className="ranking-list">
           {ranking.map((player, index) => (
-            <li key={ index }>
-              <span data-testid={ `player-name-${index}` }>
-                { `${player.name}` }
-              </span>
-              <span data-testid={ `player-score-${index}` }>
-                { `Pontuação: ${player.score} ` }
-              </span>
-              <img src={ this.handleGravatar(player.picture) } alt={ player.name } />
+            <li key={ index } className="ranking-player">
+              <div className="player-position">
+                <p className="podium-number">{ `${index + 1}°` }</p>
+                <div data-testid={ `player-name-${index}` }>
+                  { `${player.name}` }
+                </div>
+              </div>
+              <div data-testid={ `player-score-${index}` } className="player-score">
+                { `${player.score} Pontos` }
+              </div>
             </li>
           ))}
-        </ol>
+        </ul>
+        <HomeButton />
       </div>
     );
   }
