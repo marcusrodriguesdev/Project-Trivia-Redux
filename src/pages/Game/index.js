@@ -33,8 +33,6 @@ class Game extends Component {
       );
     }
 
-    console.log(questions, currentQuestion);
-
     return (
       <div>
         <Header />

@@ -66,30 +66,34 @@ export const getQuestions = async (token) => {
 
 export const difficulties = [
   {
-    name: 'Fácil',
+    name: 'Any',
+    id: '',
+  },
+  {
+    name: 'Easy',
     id: 'easy',
   },
   {
-    name: 'Médio',
+    name: 'Medium',
     id: 'medium',
   },
   {
-    name: 'Difícil',
+    name: 'Hard',
     id: 'hard',
   },
 ];
 
 export const types = [
   {
-    name: 'Ambos',
+    name: 'Both',
     id: '',
   },
   {
-    name: 'Multipla Escolha',
+    name: 'Multiple Choice',
     id: 'multiple',
   },
   {
-    name: 'Verdadeiro / Falso',
+    name: 'True / False',
     id: 'boolean',
   },
 ];

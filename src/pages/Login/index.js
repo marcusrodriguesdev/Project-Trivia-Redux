@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MD5 } from 'crypto-js';
-
 import { MdSettings } from 'react-icons/md';
+
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 
 import { fetchToken, setGravatar, setPlayerData } from '../../redux/actions';
 import { fetchCategoriesThunk } from '../../redux/actions/questionActions';
 
+import logo from '../../assets/logo-teste.jpg';
+
 import './style.css';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
 
 class Login extends Component {
   constructor() {
@@ -35,7 +37,10 @@ class Login extends Component {
   }
 
   getGravatar(email) {
-    const gravatarHash = MD5(email).toString();
+    const gravatarHash = MD5(email)
+      .toString()
+      .toLowerCase()
+      .trim();
     const gravatarEmail = `https://www.gravatar.com/avatar/${gravatarHash}`;
     return gravatarEmail;
   }
@@ -60,19 +65,7 @@ class Login extends Component {
     const gravatarEmail = this.getGravatar(email);
     setGravatarToState(gravatarEmail);
     setPlayerToState(name, email);
-    const playerDataString = JSON.stringify({
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        gravatarEmail,
-      },
-    });
-    // const rankingDataString = JSON.stringify([
-    //   { name, score: 10, picture: gravatarEmail },
-    // ]);
-    // window.localStorage.setItem('ranking', rankingDataString);
-    window.localStorage.setItem('state', playerDataString);
+
     window.localStorage.setItem('token', token);
     history.push('/game');
   }
@@ -83,6 +76,9 @@ class Login extends Component {
 
     return (
       <form className="login-form">
+
+        <img src={ logo } alt="Trivia" style={ { width: '15em' } } />
+
         <Input
           placeholder="Name"
           type="text"

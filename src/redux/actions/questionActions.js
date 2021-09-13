@@ -43,8 +43,6 @@ export const fetchCategoriesThunk = () => async (dispatch) => {
   try {
     const categoryList = await getCategories();
 
-    console.log(categoryList);
-
     dispatch(getCategoriesAction(categoryList));
   } catch (error) {
     dispatch(requestFailed(error.message));

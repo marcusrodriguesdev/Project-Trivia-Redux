@@ -8,5 +8,6 @@
   padding: 0.8em 0.5em;
   border: none;
   border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #e4e4e4;
 }
