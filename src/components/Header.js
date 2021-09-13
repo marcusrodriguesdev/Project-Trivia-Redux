@@ -8,14 +8,19 @@ class Header extends Component {
     const { playerName, hash } = this.props;
     const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     return (
-      <div>
+      <div className="App-header">
         <img
           src={ `https://www.gravatar.com/avatar/${hash}` }
           alt="Player"
           data-testid="header-profile-picture"
         />
-        <div data-testid="header-player-name">{ playerName }</div>
-        <div data-testid="header-score">{score}</div>
+        <div className="header-player-info">
+          <div data-testid="header-player-name">{ `Jogador: ${playerName}` }</div>
+          <div className="scoreboard">
+            <div>Placar:</div>
+            <div data-testid="header-score">{ score }</div>
+          </div>
+        </div>
       </div>
     );
   }

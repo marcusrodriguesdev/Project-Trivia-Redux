@@ -66,7 +66,9 @@ class Quiz extends Component {
                 type="button"
                 key={ index }
                 data-testid={ correct ? 'correct-answer' : `wrong-answer${i}` }
-                className={ showCorrect ? isCorrect : '' }
+                className={
+                  `quiz-button ${showCorrect ? isCorrect : ''}`
+                }
                 onClick={ this.handleClickButton }
               >
                 {alt}

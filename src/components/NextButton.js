@@ -5,7 +5,14 @@ class NextButton extends Component {
   render() {
     const { onClick } = this.props;
     return (
-      <button data-testid="btn-next" onClick={ onClick } type="button">Próxima</button>
+      <button
+        className="button is-primary is-rounded button-login-pg"
+        data-testid="btn-next"
+        onClick={ onClick }
+        type="button"
+      >
+        Próxima
+      </button>
     );
   }
 }

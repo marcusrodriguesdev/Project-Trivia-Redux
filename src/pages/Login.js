@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import InputCard from '../components/InputCard';
 import fetchToken from '../redux/actions/fetch/fetchToken';
 import { actionSaveDataUser } from '../redux/actions';
+import clipart128072 from '../clipart128072.png';
 
 class Login extends Component {
   constructor() {
@@ -65,10 +66,7 @@ class Login extends Component {
     if (redirect && token) { return <Redirect to="/game" />; }
     return (
       <main>
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvXYGoNTieKb55df0N0D6U-6iGhqqKtUIND23Rkbk_ppVnX0o6X_I0lJxTgGOOi_SrvJM&usqp=CAU"
-          alt="Trivia Logo"
-        />
+        <img src={ clipart128072 } alt="Trivia Logo" className="App-logo" />
         <form onSubmit={ this.onSubmit }>
           <InputCard
             labelText="Nome:"
@@ -77,6 +75,7 @@ class Login extends Component {
             type="text"
             value={ playerName }
             onChange={ this.onHandlerChange }
+            placeholder="User Name"
           />
           <InputCard
             labelText="Email:"
@@ -85,12 +84,14 @@ class Login extends Component {
             type="texto"
             value={ email }
             onChange={ this.onHandlerChange }
+            placeholder="email@mail.com"
           />
           <div>
             <button
               data-testid="btn-play"
               type="submit"
               disabled={ validation }
+              className="button is-primary is-rounded button-login-pg"
             >
               Jogar
             </button>
@@ -98,6 +99,7 @@ class Login extends Component {
               <button
                 data-testid="btn-settings"
                 type="button"
+                className="button is-warning is-rounded button-login-pg"
               >
                 Settings
               </button>

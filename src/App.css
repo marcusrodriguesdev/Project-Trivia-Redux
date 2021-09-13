@@ -1,9 +1,13 @@
 .App {
+  padding-bottom: 100%;
   text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 30vmin;
+  margin-bottom: 50px;
+  margin-top: 100px;
+  max-width: 80vmin;
   pointer-events: none;
 }
 
@@ -15,6 +19,38 @@
   border: 1px solid green;
 }
 
+.formInput {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.labelClass {
+  color: white;
+  text-align: left;
+}
+
+.selectClass {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.selectLabel {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+@import 'https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css' ;
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .App-logo {
@@ -22,19 +58,90 @@
   }
 }
 
+.input {
+  width: 350px;
+}
+
+.button-login-pg {
+  height: 40px;
+  margin: 20px;
+  width: 98px;
+}
+
+.feedback {
+  color: white;
+  font-size: 50px;
+  margin: 150px;
+}
+
+.button-fdbk-pg {
+  height: 40px;
+  margin: 20px;
+  width: 180px;
+}
+
+.margin {
+  margin: 25px;
+}
+
 .App-header {
   align-items: center;
-  background-color: #282c34;
+  background-color: #18191d;
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-flow: row;
   font-size: calc(10px + 2vmin);
   justify-content: center;
-  min-height: 100vh;
+  min-height: 10vh;
+}
+
+.alternatives {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px;
+}
+
+.header-player-info {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: column;
+  margin-left: 15px;
+}
+
+.scoreboard {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.question {
+  color: white;
+}
+
+p {
+  color: white;
+  margin: 15px;
+}
+
+.quiz-button {
+  background-color: whitesmoke;
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  justify-content: center;
+  margin: 5px;
+  padding: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  text-align: center;
+  white-space: nowrap;
+  width: 400px;
 }
 
 .correct-border {

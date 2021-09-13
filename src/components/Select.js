@@ -5,20 +5,28 @@ const Select = (props) => {
   const { labelText, id, value, change, name, options } = props;
 
   return (
-    <label htmlFor={ id }>
-      {labelText}
-      <select
-        id={ id }
-        data-testid={ id }
-        value={ value }
-        onChange={ change }
-        name={ name }
-      >
-        {
-          options.map((option) => <option key={ option }>{option}</option>)
-        }
-      </select>
-    </label>
+    <div className="field, selectClass">
+      <div>
+        <div className="selectLabel">
+          <label htmlFor={ id }>
+            {labelText}
+          </label>
+        </div>
+        <div className="select is-rounded">
+          <select
+            id={ id }
+            data-testid={ id }
+            value={ value }
+            onChange={ change }
+            name={ name }
+          >
+            {
+              options.map((option) => <option key={ option }>{option}</option>)
+            }
+          </select>
+        </div>
+      </div>
+    </div>
   );
 };
 

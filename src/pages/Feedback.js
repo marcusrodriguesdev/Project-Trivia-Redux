@@ -9,12 +9,16 @@ class FeedBack extends Component {
     return (
       <div>
         <Header />
-        <p data-testid="feedback-text">
+        <h1
+          className="feedback"
+          data-testid="feedback-text"
+        >
           {assertions >= three ? 'Mandou bem!' : 'Podia ser melhor...' }
-        </p>
+        </h1>
         <div>
           <Link to="/">
             <button
+              className="button is-primary is-rounded button-fdbk-pg"
               data-testid="btn-play-again"
               type="button"
             >
@@ -23,6 +27,7 @@ class FeedBack extends Component {
           </Link>
           <Link to="/ranking">
             <button
+              className="button is-warning is-rounded button-fdbk-pg"
               data-testid="btn-ranking"
               type="button"
             >
