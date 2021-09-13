@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import GameScreen from './pages/GameScreen';
 import Login from './pages/Login';
-import Header from './components/Header';
 import ConfigWindow from './pages/ConfigWindow';
 import FeedBack from './pages/FeedBack';
 import GameRanking from './pages/GameRanking';
