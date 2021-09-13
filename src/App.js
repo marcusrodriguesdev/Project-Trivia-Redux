@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import GamePage from './Pages/GamePage';
+// import GamePage from './Pages/GamePage';
 import Login from './Pages/Login';
 import Settings from './Pages/Settings';
 import Feedback from './Pages/Feedback';
 import Ranking from './Pages/Ranking';
 
 import './App.css';
+import Basecss from './Pages/Basecss';
 
 export default class App extends Component {
   render() {
@@ -15,7 +16,7 @@ export default class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={ Login } />
-          <Route path="/game" component={ GamePage } />
+          <Route path="/game" component={ Basecss } />
           <Route path="/settings" component={ Settings } />
           <Route path="/feedback" component={ Feedback } />
           <Route path="/ranking" component={ Ranking } />
