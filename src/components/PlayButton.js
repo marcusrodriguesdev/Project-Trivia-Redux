@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 
+import playIcon from '../play-button.svg';
 import { setNameAction, fetchQuestionThunk, setEmailAction } from '../redux/actions';
 
 class PlayButton extends Component {
@@ -28,7 +29,9 @@ class PlayButton extends Component {
           disabled={ buttonCheck }
           onClick={ this.handleClick }
           data-testid="btn-play"
+          className="system-btn play-btn"
         >
+          <img src={ playIcon } alt="play-icon" />
           Jogar!
         </button>
       </div>
