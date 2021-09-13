@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
@@ -6,15 +7,23 @@ class Header extends React.Component {
     return (
       <header className="header-container">
         <p className="header-timer" data-testid="header-score">
-          Time Left: { timer } seconds
+          Time Left:
+          { timer }
+          seconds
         </p>
 
         <p className="header-player-score" data-testid="header-score">
-          Score: { playerScore }
+          Score:
+          { playerScore }
         </p>
 
         <div className="player-info-container">
-          <p className="header-player-name" data-testid="header-player-name">{ playerName }</p>
+          <p
+            className="header-player-name"
+            data-testid="header-player-name"
+          >
+            { playerName }
+          </p>
           <p className="header-player-email">{ playerEmail }</p>
         </div>
 
@@ -29,5 +38,13 @@ class Header extends React.Component {
     );
   }
 }
+
+Header.propTypes = {
+  image: PropTypes.string.isRequired,
+  playerEmail: PropTypes.string.isRequired,
+  playerName: PropTypes.string.isRequired,
+  playerScore: PropTypes.number.isRequired,
+  timer: PropTypes.number.isRequired,
+};
 
 export default Header;

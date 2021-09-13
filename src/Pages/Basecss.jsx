@@ -19,9 +19,7 @@ class Basecss extends React.Component {
     this.questionMod = this.questionMod.bind(this);
     this.questionAnswered = this.questionAnswered.bind(this);
     this.handleChronometer = this.handleChronometer.bind(this);
-    // this.setTimer = this.setTimer.bind(this);
     this.nextButtonClick = this.nextButtonClick.bind(this);
-    this.returnHeaderComponents = this.returnHeaderComponents.bind(this);
     this.nextButton = this.nextButton.bind(this);
   }
 
@@ -167,31 +165,13 @@ class Basecss extends React.Component {
     );
   }
 
-  returnHeaderComponents() {
-    const { questions } = this.props;
-    if (!questions.length) return <div>Loading</div>;
-    const { playerName, playerEmail, playerScore } = this.props;
+  returnImage() {
+    const { playerEmail } = this.props;
     const imgPath = 'https://www.gravatar.com/avatar/$ce11fce876c93ed5d2a72da660496473';
     const hash = md5(playerEmail).toString();
     const image = `${imgPath}${hash}`;
-    return (
-      <div className="header-container">
-        {/* <p data-testid="header-score">
-          Score:
-          {playerScore}
-        </p> */}
-        {/* <p>
-          Time Left:
-          {this.setTimer()}
-        </p> */}
-        {/* <img src={ image } alt="Imagem Gravatar" data-testid="header-profile-picture" /> */}
-        {/* <h3 data-testid="header-player-name">{playerName}</h3> */}
-        {/* <p>
-          Email:
-          {playerEmail}
-        </p> */}
-      </div>
-    );
+
+    return image;
   }
 
   render() {
@@ -204,7 +184,7 @@ class Basecss extends React.Component {
         <Header
           playerScore={ playerScore }
           timer={ timer }
-          image={ image }
+          image={ this.returnImage() }
           playerName={ playerName }
           playerEmail={ playerEmail }
         />
@@ -226,7 +206,7 @@ class Basecss extends React.Component {
                 <div className="answer">
                   <span className="answer-field"><p>ASUHAUSDHUASHDUAHSUHA</p></span>
                   <div className="square">1</div>
-                </div>              
+                </div>
               </div>
             </div>
 
