@@ -51,7 +51,7 @@ class Login extends Component {
 
   async token() {
     const response = await fetch(
-      'https://opentdb.com/api_token.php?command=request'
+      'https://opentdb.com/api_token.php?command=request',
     );
     const tokien = await response.json();
     const tokienData = tokien.token;
@@ -73,9 +73,9 @@ class Login extends Component {
   render() {
     const { user, email } = this.state;
     return (
-      <div className="hero is-primary is-fullheight">
-        <div style={{ textAlign: 'center' }}>
-          <img width="350px" src={img}></img>
+      <div className="hero is-fullheight">
+        <div style={ { textAlign: 'center' } }>
+          <img width="350px" src={ img } />
         </div>
         <div className="hero-body">
           <div className="container">
@@ -92,7 +92,7 @@ class Login extends Component {
                         placeholder="john@example.com"
                         name="email"
                         className="input"
-                        onChange={this.handleChange}
+                        onChange={ this.handleChange }
                       />
                       <span className="icon is-small is-left">
                         <i>
@@ -111,7 +111,7 @@ class Login extends Component {
                         placeholder="..."
                         name="user"
                         className="input"
-                        onChange={this.handleChange}
+                        onChange={ this.handleChange }
                       />
                       <span className="icon is-small is-left">
                         <i>
@@ -122,18 +122,18 @@ class Login extends Component {
                   </div>
                   <Link to="/play">
                     <button
-                      disabled={this.validateEmailAndUser()}
+                      disabled={ this.validateEmailAndUser() }
                       type="button"
                       data-testid="btn-play"
                       className="button is-primary is-normal"
-                      onClick={() => this.handleSubmit(user, email)}
+                      onClick={ () => this.handleSubmit(user, email) }
                     >
                       Jogar
                     </button>
                   </Link>
                   <Link to="/settings">
                     <button
-                      style={{textAlign:'right'}}
+                      style={ { textAlign: 'right' } }
                       type="button"
                       className="button is-info is-small"
                       data-testid="btn-settings"

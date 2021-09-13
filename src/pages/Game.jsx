@@ -21,8 +21,8 @@ class Game extends Component {
     const { response, name, email, totalPoints } = this.props;
     const hashEmail = md5(email).toString();
     return (
-      <div className="">
-        <header className="has-background-info-light">
+      <div className="game-page  is-primary is-fullheight">
+        <header className="game-header has-background-info-light">
           <img
             src={ `https://www.gravatar.com/avatar/${hashEmail}` }
             alt="Gravatar"
