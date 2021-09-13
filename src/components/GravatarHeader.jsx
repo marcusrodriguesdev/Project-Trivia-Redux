@@ -41,8 +41,8 @@ class GravatarHeader extends Component {
     const { name } = this.props;
     const { imgPath, score } = this.state;
     return (
-      <header>
-        <img data-testid="header-profile-picture" alt="gravatar img" src={ imgPath } />
+      <header className="game-header-off">
+        <img data-testid="header-profile-picture" alt="gravatar img" src={ imgPath } className="header-profile-picture" />
         <p data-testid="header-player-name">{ name }</p>
         <p data-testid="header-score">{ score }</p>
       </header>

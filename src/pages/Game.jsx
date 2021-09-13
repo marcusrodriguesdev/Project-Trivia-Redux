@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import NextQuestionButton from '../components/NextQuestionButton';
 import Timer from '../components/Timer';
 import Answers from '../components/Answers';
-import GravatarHeader from '../components/GravatarHeader';
+import questionShape from '../question-shape.svg';
+import GameHeader from '../components/GameHeader';
 
 class Game extends React.Component {
   constructor(props) {
@@ -137,7 +138,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { counter, isRunning, disabledButtons, styleButtons } = this.state;
+    const { counter, isRunning, disabledButtons, styleButtons, score } = this.state;
     const { results } = this.props;
     // const mockResults = [{
     //   category: 'Token Expirado, favor direcionar para a Home e recarregar a página!',
@@ -149,9 +150,19 @@ class Game extends React.Component {
     // }];
     if (results.length) {
       return (
-        <div>
-          <GravatarHeader />
-          <h2>Game</h2>
+        <div className="quiz-container">
+          <GameHeader counter={ counter } />
+          <div className="question-container">
+            <div className="question">
+              <h3 data-testid="question-category" className="category">{ results[counter].category } </h3>
+              <div className="question-text">
+                <p data-testid="question-text">{results[counter].question}</p>
+              </div>
+            </div>
+          </div>
+          <div className="score">
+            <p>{`${score} pontos`}</p>
+          </div>
           <Timer
             isRunning={ isRunning }
             timeExpired={ this.timeExpired }
@@ -159,8 +170,6 @@ class Game extends React.Component {
             counter={ counter }
             getRemainingTime={ this.getRemainingTime }
           />
-          <h3 data-testid="question-category">{ results[counter].category }</h3>
-          <p data-testid="question-text">{results[counter].question}</p>
           <Answers
             counter={ counter }
             disabledButtons={ disabledButtons }
