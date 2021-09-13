@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import configPageIcon from '../config-page-icon.svg';
 import { categoriesFetchThunk, updateSelectionAction } from '../redux/actions';
 
 class ConfigScreen extends Component {
@@ -51,16 +52,19 @@ class ConfigScreen extends Component {
     const { categoriesGlobal } = this.props;
     const { category } = this.state;
     return (
-      <select
-        name="category"
-        onChange={ this.handleChange }
-        value={ category }
-      >
-        <option>All</option>
-        { categoriesGlobal
-          .map((eachCategory) => (
-            <option key={ eachCategory.id }>{ eachCategory.name }</option>)) }
-      </select>
+      <div>
+        <select
+          name="category"
+          onChange={ this.handleChange }
+          value={ category }
+          className="select"
+        >
+          <option>All</option>
+          { categoriesGlobal
+            .map((eachCategory) => (
+              <option key={ eachCategory.id }>{ eachCategory.name }</option>)) }
+        </select>
+      </div>
     );
   }
 
@@ -69,31 +73,46 @@ class ConfigScreen extends Component {
     const difficulties = ['Mixed', 'Easy', 'Medium', 'Hard'];
     const types = ['Both', 'Multiple', 'True or False'];
     return (
-      <div>
-        <h1 data-testid="settings-title">Configurações</h1>
-        { this.renderCategorys() }
-        <select
-          name="difficulty"
-          onChange={ this.handleChange }
-          value={ difficulty }
-        >
-          { difficulties
-            .map((eachDifficulty) => (
-              <option key={ eachDifficulty }>{ eachDifficulty }</option>)) }
-        </select>
-        <select
-          name="type"
-          onChange={ this.handleChange }
-          value={ type }
-        >
-          { types
-            .map((eachType) => (
-              <option key={ eachType }>{ eachType }</option>)) }
-        </select>
+      <div className="main-container">
+        <div className="config-title">
+          <img src={ configPageIcon } alt="" width="80px" />
+          <h1 data-testid="settings-title">Configurações</h1>
+        </div>
+        <div className="select-container">
+          <div className="config-subtitles">
+            <p>Categorias:</p>
+            <p>Dificuldade:</p>
+            <p>Tipo:</p>
+          </div>
+          <div className="config-selects">
+            { this.renderCategorys() }
+            <select
+              name="difficulty"
+              onChange={ this.handleChange }
+              value={ difficulty }
+              className="select"
+            >
+              { difficulties
+                .map((eachDifficulty) => (
+                  <option key={ eachDifficulty }>{ eachDifficulty }</option>)) }
+            </select>
+            <select
+              name="type"
+              onChange={ this.handleChange }
+              value={ type }
+              className="select"
+            >
+              { types
+                .map((eachType) => (
+                  <option key={ eachType }>{ eachType }</option>)) }
+            </select>
+          </div>
+        </div>
         <Link to="/">
           <button
             type="button"
             onClick={ this.handleClick }
+            className="system-btn"
           >
             Confirmar
           </button>

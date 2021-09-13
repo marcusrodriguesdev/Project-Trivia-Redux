@@ -26,7 +26,7 @@ export default class FeedbackMensage extends Component {
     const goodScore = 3;
     return (
       <div>
-        <p data-testid="feedback-text">
+        <p data-testid="feedback-text" className="feedback-msg">
           { assertions >= goodScore ? 'Mandou bem!' : 'Podia ser melhor...' }
         </p>
       </div>
