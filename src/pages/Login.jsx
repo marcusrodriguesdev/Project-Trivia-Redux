@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getTokenThunk, loginAction } from '../actions';
+import ghost from '../images/GhostEmoji.png';
+
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -48,42 +51,47 @@ class Login extends React.Component {
     const { validateEmail, validateName } = this.state;
     return (
       <>
-        <label htmlFor="name">
-          Nome:
-          <input
-            data-testid="input-player-name"
-            type="text"
-            name="name"
-            id="name"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            data-testid="input-gravatar-email"
-            type="text"
-            name="email"
-            id="email"
-            onChange={ this.handleChange }
-          />
-        </label>
+        <div id="trivia">
+          <img className="ghost" src={ ghost } alt="Ghost Trivia" />
+        </div>
+        <div id="login">
+          <label htmlFor="name">
+            Nome:
+            <input
+              data-testid="input-player-name"
+              type="text"
+              name="name"
+              id="name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            Email:
+            <input
+              data-testid="input-gravatar-email"
+              type="text"
+              name="email"
+              id="email"
+              onChange={ this.handleChange }
+            />
+          </label>
 
-        <button
-          data-testid="btn-play"
-          type="button"
-          disabled={ !validateEmail || !validateName }
-          onClick={ () => this.handleClick('question') }
-        >
-          Jogar
-        </button>
-        <button
-          data-testid="btn-settings"
-          type="button"
-          onClick={ () => this.handleClick('settings') }
-        >
-          Configurações
-        </button>
+          <button
+            data-testid="btn-play"
+            type="button"
+            disabled={ !validateEmail || !validateName }
+            onClick={ () => this.handleClick('question') }
+          >
+            Jogar
+          </button>
+          <button
+            data-testid="btn-settings"
+            type="button"
+            onClick={ () => this.handleClick('settings') }
+          >
+            Configurações
+          </button>
+        </div>
       </>
     );
   }
