@@ -2,51 +2,36 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { updateScore } from '../actions';
+import { updateScore, setDisabled, setOver, setTimer } from '../actions';
 import Header from '../components/Header';
-import setInitialState from '../helpers';
+import setInitialState, { shuffleArray, bindings } from '../helpers';
+import { countdownTimer, resetTimer,
+  timeIsOver, renderTimer, timerFunction } from '../helpers/cronometer';
 
 class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timer: 30,
-      over: false,
       shuffledArray: [],
       alreadyShuffled: false,
       questionIndex: 0,
-      disabled: false,
       answered: false,
       redirect: false,
     };
-    this.bindings();
+    bindings(this);
   }
 
   componentDidMount() { setInitialState(); }
 
   componentDidUpdate() {
-    const { timer, alreadyShuffled } = this.state;
-    const { questions } = this.props;
+    const { alreadyShuffled } = this.state;
+    const { questions, timer } = this.props;
     if (timer === 0) {
-      this.resetTimer();
+      resetTimer();
     }
     if (alreadyShuffled === false) {
       this.handleAnswers(questions);
     }
-  }
-
-  bindings() {
-    this.renderQuestion = this.renderQuestion.bind(this);
-    this.shuffleArray = this.shuffleArray.bind(this);
-    this.renderCorrectButton = this.renderCorrectButton.bind(this);
-    this.renderIncorrectButton = this.renderIncorrectButton.bind(this);
-    this.countdownTimer = this.countdownTimer.bind(this);
-    this.handleClickAnswer = this.handleClickAnswer.bind(this);
-    this.renderTimer = this.renderTimer.bind(this);
-    this.resetTimer = this.resetTimer.bind(this);
-    this.timeIsOver = this.timeIsOver.bind(this);
-    this.nextQuestion = this.nextQuestion.bind(this);
-    this.handleScore = this.handleScore.bind(this);
   }
 
   handleScore(questionIndex) {
@@ -57,7 +42,7 @@ class Game extends Component {
     const { questions, updateScoreProp } = this.props;
     const difficultyQ = questions[questionIndex].difficulty;
     let rightDifficulty = Buffer.from(difficultyQ, 'base64').toString('utf-8');
-    const { timer } = this.state;
+    const { timer } = this.props;
     if (rightDifficulty === 'easy') {
       rightDifficulty = ONE;
     } else if (rightDifficulty === 'medium') {
@@ -70,8 +55,9 @@ class Game extends Component {
   }
 
   handleClickAnswer(event) {
+    const { setDisabledAction } = this.props;
+    setDisabledAction(true);
     this.setState({
-      disabled: true,
       answered: true,
     });
     const { target } = event;
@@ -83,31 +69,10 @@ class Game extends Component {
     });
   }
 
-  resetTimer() {
-    const { interval } = this.state;
-    clearInterval(interval);
-    this.setState({
-      timer: 30,
-      over: true,
-    });
-  }
-
-  countdownTimer() {
-    const oneSecond = 1000;
-    const interval = setInterval(() => {
-      this.setState(({ timer }) => ({
-        timer: timer - 1,
-      }));
-    }, oneSecond);
-    this.setState({
-      interval,
-    });
-  }
-
   handleAnswers(questions) {
     if (questions.length > 1) {
       const { questionIndex } = this.state;
-      const arrayOfAnswers = [{ id: 4,
+      const arrayOfAnswers = [{ id: 3,
         correct: true,
         answer: questions[questionIndex].correct_answer }];
       questions[questionIndex].incorrect_answers.forEach((element, index) => (
@@ -115,8 +80,8 @@ class Game extends Component {
           correct: false,
           answer: questions[questionIndex].incorrect_answers[index] })
       ));
-      const shuffledArray = this.shuffleArray(arrayOfAnswers);
-      this.countdownTimer();
+      const shuffledArray = shuffleArray(arrayOfAnswers);
+      countdownTimer();
       this.setState({
         shuffledArray,
         alreadyShuffled: true,
@@ -124,36 +89,12 @@ class Game extends Component {
     }
   }
 
-  // Função que embaralha arrays
-  shuffleArray(array) { // Função provinda de "https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array"
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    return array;
-  }
-
-  timeIsOver(disabled) {
-    if (disabled === false) {
-      this.setState({
-        disabled: true,
-      });
-    }
-    return (
-      <h2>Tempo Esgotado</h2>
-    );
-  }
-
   nextQuestion() {
+    timerFunction();
     this.setState((prevstate) => ({
       questionIndex: prevstate.questionIndex + 1,
       alreadyShuffled: false,
-      timer: 30,
-      over: false,
       answered: false,
-      disabled: false,
     }));
     const questionContainer = document.querySelectorAll('#question-container button');
     for (let index = 0; index < questionContainer.length; index += 1) {
@@ -222,7 +163,8 @@ class Game extends Component {
     const buffQuestion = Buffer.from(base64Question, 'base64');
     const stringQuestion = buffQuestion.toString('utf-8');
     if (questions.length > 1) {
-      const { disabled } = this.state;
+      const { answered } = this.state;
+      const { disabled } = this.props;
       return (
         <div id="question-container">
           <h4 data-testid="question-category">{stringCategory}</h4>
@@ -234,35 +176,17 @@ class Game extends Component {
               : this
                 .renderIncorrectButton(questions, questionIndex, element.id, disabled)
           ))}
-          {over === false ? this.renderTimer() : this.timeIsOver(disabled)}
+          {over === false ? renderTimer(answered) : timeIsOver(disabled)}
         </div>
       );
     }
-    return (
-      <h4>Preparando Quiz</h4>
-    );
-  }
-
-  renderTimer() {
-    const { answered, timer, interval } = this.state;
-    if (answered) {
-      clearInterval(interval);
-      return (
-        <h2>{timer}</h2>
-      );
-    }
-    return (
-      <h2>{timer}</h2>
-    );
+    return <h4>Preparando Quiz</h4>;
   }
 
   render() {
-    const { questions } = this.props;
-    const {
-      over, shuffledArray, questionIndex, disabled, redirect } = this.state;
-    if (redirect) {
-      return (<Redirect to="/FeedBack" />);
-    }
+    const { questions, over, disabled } = this.props;
+    const { shuffledArray, questionIndex, redirect } = this.state;
+    if (redirect) return <Redirect to="/FeedBack" />;
     return (
       <div>
         <Header />
@@ -282,14 +206,29 @@ class Game extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
+  timer: state.cronometer.timer,
+  interval: state.cronometer.interval,
+  over: state.cronometer.over,
+  disabled: state.cronometer.disabled,
 });
+
 const mapDispatchToProps = (dispatch) => ({
+  setDisabledAction: (boolean) => dispatch(setDisabled(boolean)),
+  setTimerAction: (timer) => dispatch(setTimer(timer)),
+  setOverAction: (boolean) => dispatch(setOver(boolean)),
   updateScoreProp: (points) => dispatch(updateScore(points)),
 });
+
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   updateScoreProp: PropTypes.func.isRequired,
+  timer: PropTypes.number.isRequired,
+  over: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  setDisabledAction: PropTypes.func.isRequired,
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
