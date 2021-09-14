@@ -51,10 +51,10 @@ class Question extends React.Component {
       return <Redirect to="/feedback" />;
     }
     document.querySelectorAll(idIncorrect).forEach((button) => {
-      button.className = '';
+      button.classList.remove('red-border');
       button.disabled = false;
     });
-    document.getElementById('correta').className = '';
+    document.getElementById('correta').classList.remove('green-border');
     document.getElementById('correta').disabled = false;
     timer = time;
   }
@@ -93,9 +93,9 @@ class Question extends React.Component {
   borderColor({ target }) {
     this.setState({ nextQuestion: true }, () => {
       document.querySelectorAll(idIncorrect).forEach((button) => {
-        button.className = 'red-border';
+        button.classList.add('red-border');
       });
-      document.getElementById('correta').className = 'green-border';
+      document.getElementById('correta').classList.add('green-border');
     });
     this.calculatedPoints(target);
   }

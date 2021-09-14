@@ -14,6 +14,7 @@ class CreateNewQuestion extends Component {
     const { borderColor } = this.props;
     return (
       <button
+        className="correta"
         id="correta"
         type="button"
         data-testid="correct-answer"
@@ -29,6 +30,7 @@ class CreateNewQuestion extends Component {
     const { borderColor } = this.props;
     return (
       <button
+        className="incorreta"
         id="incorreta"
         type="button"
         data-testid={ `wrong-answer-${index}` }
