@@ -1,13 +1,14 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-// import { getQuestion } from '../Services/fetchAPI';
+import Header from '../components/Header';
+import Helps from '../components/Helps';
 import playAction, { getQuestionsThunk } from '../Redux/Action';
-// import Loading from './Loading';
-import '../App.css';
+import './gamepage.css';
+import Loading from './Loading';
 
-class GamePage extends Component {
+class GamePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,23 +20,15 @@ class GamePage extends Component {
     this.questionMod = this.questionMod.bind(this);
     this.questionAnswered = this.questionAnswered.bind(this);
     this.handleChronometer = this.handleChronometer.bind(this);
-    this.setTimer = this.setTimer.bind(this);
     this.nextButtonClick = this.nextButtonClick.bind(this);
+    this.nextButton = this.nextButton.bind(this);
+    this.incorrectAnswers = this.incorrectAnswers.bind(this);
+    this.correctAnswer = this.correctAnswer.bind(this);
   }
 
   componentDidMount() {
-    // this.setQuestions();
     const { sendQuestionsToState, token } = this.props;
     sendQuestionsToState(token);
-  }
-
-  setTimer() {
-    const { timer } = this.state;
-    this.handleChronometer();
-    return (
-      <p>
-        { timer }
-      </p>);
   }
 
   handleClick() {
@@ -54,14 +47,11 @@ class GamePage extends Component {
     updateScore({ assertions, score });
   }
 
-  // questionAnswered(event) {
-
   handleChronometer() {
     const { timer } = this.state;
     const { questionIsAnswered } = this.state;
     const INTERVAL = 1000;
     const ONE_SECOND = 1;
-
     if (timer > 0 && !questionIsAnswered) {
       setTimeout(() => {
         const time = timer - ONE_SECOND;
@@ -73,17 +63,53 @@ class GamePage extends Component {
   }
 
   questionAnswered() {
-    // const correctAnswer = document.querySelector('.correct-answer');
-    // const wrong = document.querySelectorAll('.wrong-answer');
     this.setState({
       questionIsAnswered: true,
     });
-    // correctAnswer.classList.add('correct-color');
-    // wrong.forEach((wrongAlternative) => {
-    //   wrongAlternative.classList.add('incorrect-color');
-    // });
+  }
 
-    // this.handleClick();
+  incorrectAnswers() {
+    const { index, questionIsAnswered } = this.state;
+    const { questions } = this.props;
+    const currentQuestion = questions[index];
+    const incorrectAnswers = currentQuestion.incorrect_answers;
+    return (
+      incorrectAnswers.map((answer, mapIndex) => (
+        <button
+          key={ mapIndex }
+          type="button"
+          data-testid={ `wrong-answer-${mapIndex}` }
+          onClick={ this.questionAnswered }
+          className={ questionIsAnswered ? 'incorrect-color' : 'answer' }
+        >
+          <span className="answer-field"><p>{ answer }</p></span>
+        </button>
+      ))
+    );
+  }
+
+  correctAnswer() {
+    const { index, timer, questionIsAnswered } = this.state;
+    const { questions } = this.props;
+    const currentQuestion = questions[index];
+    return (
+      <button
+        type="button"
+        className={ questionIsAnswered ? 'correct-color' : 'answer' }
+        data-testid="correct-answer"
+        onClick={ () => {
+          this.questionAnswered();
+          this.handleClick();
+        } }
+        disabled={ !timer || questionIsAnswered }
+      >
+        <span className="answer-field">
+          <p>
+            {currentQuestion.correct_answer}
+          </p>
+        </span>
+      </button>
+    );
   }
 
   nextButtonClick() {
@@ -91,7 +117,6 @@ class GamePage extends Component {
     const { playerName, playerScore, playerEmail } = this.props;
     const { history } = this.props;
     const MAX_INDEX = 4;
-    // Gravatar //
     const imgPath = 'https://www.gravatar.com/avatar/$ce11fce876c93ed5d2a72da660496473';
     const hash = md5(playerEmail).toString();
     const image = `${imgPath}${hash}`;
@@ -110,83 +135,81 @@ class GamePage extends Component {
       rank.push(player);
       rank = JSON.stringify(rank);
       localStorage.setItem('ranking', rank);
-
       history.push('/feedback');
     }
   }
 
-  questionMod() {
-    const { index, timer, questionIsAnswered } = this.state;
-
-    const nextButton = (
+  nextButton() {
+    return (
       <button
         type="button"
+        className="next-button"
         data-testid="btn-next"
         onClick={ this.nextButtonClick }
       >
         Próxima
       </button>
     );
+  }
 
+  questionMod() {
+    const { index, questionIsAnswered } = this.state;
     const { questions } = this.props;
     const currentQuestion = questions[index];
-    const incorrectAnswers = currentQuestion.incorrect_answers;
     return (
-      <>
-        <h3 data-testid="question-text">{currentQuestion.question}</h3>
-        <h5 data-testid="question-category">{currentQuestion.category}</h5>
-        {incorrectAnswers.map((answer, mapIndex) => (
-          <button
-            type="button"
-            data-testid={ `wrong-answer-${mapIndex}` }
-            // key="incorrectAnswer"
-            key={ mapIndex }
-            onClick={ this.questionAnswered }
-            className={ questionIsAnswered ? 'incorrect-color' : null }
-            disabled={ !timer || questionIsAnswered }
-          >
-            {answer}
-          </button>)) }
-        <button
-          type="button"
-          className={ questionIsAnswered ? 'correct-color' : null }
-          data-testid="correct-answer"
-          onClick={ () => {
-            this.questionAnswered();
-            this.handleClick();
-          } }
-          disabled={ !timer || questionIsAnswered }
-        >
-          {currentQuestion.correct_answer}
-        </button>
-        { questionIsAnswered && nextButton }
-      </>
+      <div className="main-gamepage-container">
+        <div className="question-container">
+          <span className="question" data-testid="question-text">
+            Question:
+            { currentQuestion.question }
+          </span>
+          <span className="category" data-testid="question-category">
+            Category:
+            { currentQuestion.category }
+          </span>
+        </div>
+        <div className="row-contents">
+          <div className="answers-container">
+            <div className="answer-items">
+              { this.incorrectAnswers() }
+              { this.correctAnswer() }
+            </div>
+          </div>
+          <div className="helps">
+            <Helps />
+          </div>
+        </div>
+        <div className="button-container">
+          { questionIsAnswered && this.nextButton() }
+        </div>
+      </div>
     );
   }
 
-  render() {
-    const { questions } = this.props;
-    if (!questions.length) return <div>Loading</div>;
-    const { playerName, playerEmail, playerScore } = this.props;
+  returnImage() {
+    const { playerEmail } = this.props;
     const imgPath = 'https://www.gravatar.com/avatar/$ce11fce876c93ed5d2a72da660496473';
     const hash = md5(playerEmail).toString();
     const image = `${imgPath}${hash}`;
+    return image;
+  }
 
+  render() {
+    const { questions, playerScore, playerName, playerEmail } = this.props;
+    const { timer } = this.state;
+    if (!questions.length) return <Loading />;
+    this.handleChronometer();
     return (
-      <>
-        <img src={ image } alt="Imagem Gravatar" data-testid="header-profile-picture" />
-        <h3 data-testid="header-player-name">{playerName}</h3>
-        <p>
-          Email:
-          {playerEmail}
-        </p>
-        <p data-testid="header-score">
-          Score:
-          {playerScore}
-        </p>
-        {questions ? this.questionMod() : null }
-        {this.setTimer()}
-      </>
+      <div className="wrapper">
+        <Header
+          playerScore={ playerScore }
+          timer={ timer }
+          image={ this.returnImage() }
+          playerName={ playerName }
+          playerEmail={ playerEmail }
+        />
+        { this.questionMod() }
+      </div>
     );
   }
 }
@@ -215,7 +238,6 @@ const mapStateToProps = (state) => ({
   token: state.token,
   questions: state.questions,
 });
-
 const mapDispatchToProps = (dispatch) => ({
   sendQuestionsToState: (token) => dispatch(getQuestionsThunk(token)),
   updateScore: (payload) => dispatch(playAction(payload)),
