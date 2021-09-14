@@ -6,11 +6,52 @@ import './styles.css';
 import nino from '../../Images/nino.webp';
 
 class Feedback extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messageBad: 'Plift ploft still, a porta não se abriu...',
+      feedbackBad: 'Podia ser melhor...',
+      messageGood: 'Plift ploft still, a porta se abriu!',
+      feedbackGood: 'Mandou bem!',
+    };
+  }
+
   phraseConstructor(number) {
     let message;
     const minNumber = 3;
-    if (number < minNumber) message = 'Plift ploft still, a porta não se abriu...';
-    else if (number >= minNumber) message = 'Plift ploft still, a porta se abriu!';
+    const { messageBad, feedbackBad, messageGood, feedbackGood } = this.state;
+    const elementBad = (
+      <div>
+        <p>
+          {
+            messageBad
+          }
+        </p>
+        <p>
+          {
+            feedbackBad
+          }
+        </p>
+      </div>
+    );
+
+    const elementGood = (
+      <div>
+        <p>
+          {
+            messageGood
+          }
+        </p>
+        <p>
+          {
+            feedbackGood
+          }
+        </p>
+      </div>
+    );
+
+    if (number < minNumber) message = elementBad;
+    else if (number >= minNumber) message = elementGood;
 
     return message;
   }
@@ -22,17 +63,21 @@ class Feedback extends Component {
         <HeaderFeedback />
         <section className="feedback-image-container">
           <div className="feedback-text-container">
-            <p data-testid="feedback-text">
+            <div data-testid="feedback-text">
               {this.phraseConstructor(correctQuestionCounter)}
-            </p>
-            <p data-testid="feedback-total-score">
+            </div>
+            <div>
               Pontuação:
-              {totalScore}
-            </p>
-            <p data-testid="feedback-total-question">
+              <p data-testid="feedback-total-score">
+                {totalScore}
+              </p>
+            </div>
+            <div>
               Respostas Corretas:
-              {correctQuestionCounter}
-            </p>
+              <p data-testid="feedback-total-question">
+                {correctQuestionCounter}
+              </p>
+            </div>
           </div>
           <img src={ nino } alt="nino" />
         </section>
