@@ -22,6 +22,7 @@ class Basecss extends React.Component {
     this.nextButtonClick = this.nextButtonClick.bind(this);
     this.nextButton = this.nextButton.bind(this);
     this.incorrectAnswers = this.incorrectAnswers.bind(this);
+    this.correctAnswer = this.correctAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -72,10 +73,9 @@ class Basecss extends React.Component {
     const { questions } = this.props;
     const currentQuestion = questions[index];
     const incorrectAnswers = currentQuestion.incorrect_answers;
-    // this.correctAnswers();
     return (
       incorrectAnswers.map((answer, mapIndex) => (
-        <div
+        <button
           key={ mapIndex }
           type="button"
           data-testid={ `wrong-answer-${mapIndex}` }
@@ -84,8 +84,33 @@ class Basecss extends React.Component {
         >
           <span className="answer-field"><p>{ answer }</p></span>
           <div className="square">{ mapIndex + 1 }</div>
-        </div>
+        </button>
       ))
+    );
+  }
+
+  correctAnswer() {
+    const { index, timer, questionIsAnswered } = this.state;
+    const { questions } = this.props;
+    const currentQuestion = questions[index];
+    return (
+      <button
+        type="button"
+        className={ questionIsAnswered ? 'correct-color' : 'answer' }
+        data-testid="correct-answer"
+        onClick={ () => {
+          this.questionAnswered();
+          this.handleClick();
+        } }
+        disabled={ !timer || questionIsAnswered }
+      >
+        <span className="answer-field">
+          <p>
+            {currentQuestion.correct_answer}
+          </p>
+        </span>
+        <div className="square">{questions.length - 1}</div>
+      </button>
     );
   }
 
@@ -94,7 +119,6 @@ class Basecss extends React.Component {
     const { playerName, playerScore, playerEmail } = this.props;
     const { history } = this.props;
     const MAX_INDEX = 4;
-    // Gravatar //
     const imgPath = 'https://www.gravatar.com/avatar/$ce11fce876c93ed5d2a72da660496473';
     const hash = md5(playerEmail).toString();
     const image = `${imgPath}${hash}`;
@@ -113,7 +137,6 @@ class Basecss extends React.Component {
       rank.push(player);
       rank = JSON.stringify(rank);
       localStorage.setItem('ranking', rank);
-
       history.push('/feedback');
     }
   }
@@ -122,6 +145,7 @@ class Basecss extends React.Component {
     return (
       <button
         type="button"
+        className="next-button"
         data-testid="btn-next"
         onClick={ this.nextButtonClick }
       >
@@ -131,10 +155,9 @@ class Basecss extends React.Component {
   }
 
   questionMod() {
-    const { index, timer, questionIsAnswered } = this.state;
+    const { index, questionIsAnswered } = this.state;
     const { questions } = this.props;
     const currentQuestion = questions[index];
-    const incorrectAnswers = currentQuestion.incorrect_answers;
     return (
       <div className="main-gamepage-container">
         <div className="question-container">
@@ -147,24 +170,11 @@ class Basecss extends React.Component {
             { currentQuestion.category }
           </span>
         </div>
-
         <div className="row-contents">
           <div className="answers-container">
             <div className="answer-items">
               { this.incorrectAnswers() }
-              <div
-              type="button"
-              className={ questionIsAnswered ? 'correct-color' : 'answer' }
-              data-testid="correct-answer"
-              onClick={ () => {
-                this.questionAnswered();
-                this.handleClick();
-              } }
-              disabled={ !timer || questionIsAnswered }
-            >
-              <span className="answer-field"><p>{currentQuestion.correct_answer}</p></span>
-              <div className="square">4</div>
-            </div>
+              { this.correctAnswer() }
             </div>
           </div>
           <div className="helps">
@@ -172,7 +182,7 @@ class Basecss extends React.Component {
           </div>
         </div>
         <div className="button-container">
-          <button className="next-button" type="button">Próxima</button>
+          { questionIsAnswered && this.nextButton() }
         </div>
       </div>
     );
@@ -183,12 +193,11 @@ class Basecss extends React.Component {
     const imgPath = 'https://www.gravatar.com/avatar/$ce11fce876c93ed5d2a72da660496473';
     const hash = md5(playerEmail).toString();
     const image = `${imgPath}${hash}`;
-
     return image;
   }
 
   render() {
-    const { questions, playerScore, image, playerName, playerEmail } = this.props;
+    const { questions, playerScore, playerName, playerEmail } = this.props;
     const { timer } = this.state;
     if (!questions.length) return <div>Loading</div>;
     this.handleChronometer();
@@ -202,8 +211,6 @@ class Basecss extends React.Component {
           playerEmail={ playerEmail }
         />
         { this.questionMod() }
-        {/* { this.returnHeaderComponents() }
-        {questions ? this.questionMod() : null } */}
       </div>
     );
   }
