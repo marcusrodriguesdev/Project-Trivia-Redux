@@ -57,44 +57,50 @@ class Login extends Component {
   render() {
     const { validEmail, validName, name, email } = this.state;
     return (
-      <div>
-        <form className="login-div">
-          <label htmlFor="name">
-            <input
-              type="text"
-              id="name"
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="email">
-            <input
-              type="text"
-              id="email"
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <Link to="/game">
-            <button
-              disabled={ !validName || !validEmail }
-              type="button"
-              data-testid="btn-play"
-              onClick={ () => this.handleClick(name, email) }
-            >
-              Jogar
-            </button>
-          </Link>
-        </form>
-        <Link to="/settings">
-          <button
-            type="button"
-            data-testid="btn-settings"
-          >
-            Configurações
-          </button>
-        </Link>
-      </div>
+      <body className="body-login">
+        <div>
+          <form className="login-form">
+            <label htmlFor="name" className="input-container">
+              <input
+                placeholder="Nome"
+                type="text"
+                id="name"
+                data-testid="input-player-name"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label htmlFor="email" className="input-container">
+              <input
+                placeholder="E-mail"
+                type="text"
+                id="email"
+                data-testid="input-gravatar-email"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <Link to="/game">
+              <button
+                className="one"
+                disabled={ !validName || !validEmail }
+                type="button"
+                data-testid="btn-play"
+                onClick={ () => this.handleClick(name, email) }
+              >
+                Jogar
+              </button>
+            </Link>
+            <Link to="/settings">
+              <button
+                className="two"
+                type="button"
+                data-testid="btn-settings"
+              >
+                Configurações
+              </button>
+            </Link>
+          </form>
+        </div>
+      </body>
     );
   }
 }
