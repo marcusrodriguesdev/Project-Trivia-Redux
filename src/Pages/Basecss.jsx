@@ -21,6 +21,7 @@ class Basecss extends React.Component {
     this.handleChronometer = this.handleChronometer.bind(this);
     this.nextButtonClick = this.nextButtonClick.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.incorrectAnswers = this.incorrectAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +65,27 @@ class Basecss extends React.Component {
     this.setState({
       questionIsAnswered: true,
     });
+  }
+
+  incorrectAnswers() {
+    const { index, questionIsAnswered } = this.state;
+    const { questions } = this.props;
+    const currentQuestion = questions[index];
+    const incorrectAnswers = currentQuestion.incorrect_answers;
+    return (
+      incorrectAnswers.map((answer, mapIndex) => (
+        <div
+          key={ mapIndex }
+          type="button"
+          data-testid={ `wrong-answer-${mapIndex}` }
+          onClick={ this.questionAnswered }
+          className={ questionIsAnswered ? 'incorrect-color' : 'answer' }
+        >
+          <span className="answer-field"><p>{ answer }</p></span>
+          <div className="square">{ mapIndex + 1 }</div>
+        </div>
+      ))
+    );
   }
 
   nextButtonClick() {
@@ -128,19 +150,7 @@ class Basecss extends React.Component {
         <div className="row-contents">
           <div className="answers-container">
             <div className="answer-items">
-              {incorrectAnswers.map((answer, mapIndex) => (
-                <div
-                  key={ mapIndex }
-                  type="button"
-                  data-testid={ `wrong-answer-${mapIndex}` }
-                  onClick={ this.questionAnswered }
-                  className={ questionIsAnswered ? 'incorrect-color' : 'answer' }
-                >
-                  <span className="answer-field"><p>{ answer }</p></span>
-                  <div className="square">{ mapIndex + 1 }</div>
-                </div>
-              ))}
-
+              { this.incorrectAnswers() }
             </div>
           </div>
           <div className="helps">
