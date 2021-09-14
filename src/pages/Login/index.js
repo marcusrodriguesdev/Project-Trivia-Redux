@@ -10,7 +10,7 @@ import Input from '../../components/Input';
 import { fetchToken, setGravatar, setPlayerData } from '../../redux/actions';
 import { fetchCategoriesThunk } from '../../redux/actions/questionActions';
 
-// import logo from '../../assets/logo-teste.jpg';
+import logo from '../../assets/logo.png';
 
 import './style.css';
 
@@ -75,40 +75,40 @@ class Login extends Component {
     const { history } = this.props;
 
     return (
-      <form className="login-form">
+      <div className="login-section">
+        <img src={ logo } alt="Trivia" style={ { width: '29em' } } />
+        <form className="login-form">
+          <Input
+            placeholder="Name"
+            type="text"
+            validation="validName"
+            name="name"
+            value={ name }
+            onChange={ this.handleChange }
+          />
 
-        {/* <img src={ logo } alt="Trivia" style={ { width: '15em' } } /> */}
+          <Input
+            placeholder="Email"
+            type="email"
+            validation="validEmail"
+            name="email"
+            value={ email }
+            onChange={ this.handleChange }
+          />
 
-        <Input
-          placeholder="Name"
-          type="text"
-          validation="validName"
-          name="name"
-          value={ name }
-          onChange={ this.handleChange }
-        />
+          <Button
+            type="submit"
+            disabled={ !validName || !validEmail }
+            onClick={ this.handleClick }
+            text="Play"
+            color={ !validName || !validEmail ? '#8b8b8b' : undefined }
+          />
 
-        <Input
-          placeholder="Email"
-          type="email"
-          validation="validEmail"
-          name="email"
-          value={ email }
-          onChange={ this.handleChange }
-        />
-
-        <Button
-          type="submit"
-          disabled={ !validName || !validEmail }
-          onClick={ this.handleClick }
-          text="Play"
-          color={ !validName || !validEmail ? '#8b8b8b' : undefined }
-        />
-
-        <div className="settings-button">
-          <MdSettings onClick={ () => history.push('/settings') } />
-        </div>
-      </form>
+          <div className="settings-button">
+            <MdSettings onClick={ () => history.push('/settings') } />
+          </div>
+        </form>
+      </div>
     );
   }
 }

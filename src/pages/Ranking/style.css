@@ -5,7 +5,8 @@
   justify-content: center;
   width: 50%;
   gap: 1em;
-  background: white;
+  background: var(--secondary-purple);
+  color: white;
   padding: 2em 3em;
   border-radius: 0.7em;
   box-shadow: 0 0 15px rgba(0, 0, 0, 1);

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
 
 * {
   padding: 0;
@@ -8,9 +8,26 @@
 
 body {
   margin: 0;
-  font-family: Noto Sans, sans-serif;
+  font-family: Arimo, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--main-green);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: var(--main-purple);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.2);
 }
 
 code {

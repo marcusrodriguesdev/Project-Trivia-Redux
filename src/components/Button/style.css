@@ -4,7 +4,7 @@
   border: none;
   cursor: pointer;
   color: white;
-  background-color: #501E78;
+  background-color: var(--main-purple);
   font-weight: 700;
   border-radius: 0.3em;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
