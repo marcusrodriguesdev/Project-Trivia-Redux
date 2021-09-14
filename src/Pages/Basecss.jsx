@@ -28,15 +28,6 @@ class Basecss extends React.Component {
     sendQuestionsToState(token);
   }
 
-  // setTimer() {
-  //   const { timer } = this.state;
-  //   this.handleChronometer();
-  //   return (
-  //     <p>
-  //       { timer }
-  //     </p>);
-  // }
-
   handleClick() {
     const questionDifficulties = {
       easy: 1,
@@ -124,43 +115,34 @@ class Basecss extends React.Component {
     return (
       <div className="main-gamepage-container">
         <div className="question-container">
-          <div className="question">
-            <h3 data-testid="question-text">Question: {currentQuestion.question}</h3>
-            <h5 data-testid="question-category">Category: {currentQuestion.category}</h5>
-          </div>
+          <span className="question" data-testid="question-text">
+            Question: { currentQuestion.question }
+          </span>
+          <span className="category" data-testid="question-category">
+            Category: { currentQuestion.category }
+          </span>
         </div>
-        <div className="setup-direction">
-          <div className="answer-container">
-            {incorrectAnswers.map((answer, mapIndex) => (
-              <button
-                type="button"
-                data-testid={ `wrong-answer-${mapIndex}` }
-                // key="incorrectAnswer"
-                key={ mapIndex }
-                onClick={ this.questionAnswered }
-                className={ questionIsAnswered ? 'incorrect-color' : null }
-                disabled={ !timer || questionIsAnswered }
-              >
-                <p>{answer}</p>
-              </button>)) }
-            <button
-              type="button"
-              className={ questionIsAnswered ? 'correct-color' : null }
-              data-testid="correct-answer"
-              onClick={ () => {
-                this.questionAnswered();
-                this.handleClick();
-              } }
-              disabled={ !timer || questionIsAnswered }
-            >
-              <p>{currentQuestion.correct_answer}</p>
-            </button>
+
+        <div className="row-contents">
+          <div className="answers-container">
+            <div className="answer-items">
+              <div className="answer">
+                <span className="answer-field"><p>ASUHAUSDHUASHDUAHSUHA</p></span>
+                <div className="square">1</div>
+              </div>
+            </div>
           </div>
-          <div className="help-container" />
+
+          <div className="helps">
+            <Helps />
+          </div>
+
         </div>
+
         <div className="button-container">
-          { questionIsAnswered && this.nextButton() }
+          <button className="next-button">Próxima</button>
         </div>
+
       </div>
     );
   }
@@ -188,39 +170,9 @@ class Basecss extends React.Component {
           playerName={ playerName }
           playerEmail={ playerEmail }
         />
+        { this.questionMod() }
         {/* { this.returnHeaderComponents() }
         {questions ? this.questionMod() : null } */}
-        <div className="main-gamepage-container">
-          <div className="question-container">
-            <span className="question">
-              Question: Normalmente, quantos litros de sangue uma pessoa tem? Em média, quantos são retirados numa doação de sangue?
-            </span>
-            <span className="category">
-              Category: Historia
-            </span>
-          </div>
-
-          <div className="row-contents">
-            <div className="answers-container">
-              <div className="answer-items">
-                <div className="answer">
-                  <span className="answer-field"><p>ASUHAUSDHUASHDUAHSUHA</p></span>
-                  <div className="square">1</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="helps">
-              <Helps />
-            </div>
-
-          </div>
-
-          <div className="button-container">
-            <button className="next-button">Próxima</button>
-          </div>
-
-        </div>
       </div>
     );
   }
