@@ -13,23 +13,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-::-webkit-scrollbar {
-  width: 0.5em;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--main-green);
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 50px;
-  background: var(--main-purple);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  filter: brightness(1.2);
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
