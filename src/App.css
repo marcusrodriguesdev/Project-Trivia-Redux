@@ -110,17 +110,28 @@ html {
 }
 
 .game-page-questions button {
-  box-shadow: 1px 1px 10px black;
-  color: #363636;
-  margin: 10px 50px;
-  padding: 5px;
-  background:rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
+    width: 100%;
+    box-shadow: 1px 1px 10px black;
+    color: #363636;
+    margin: 3px 0;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+}
+
+.game-page-questions button:hover {
+  background-color: rgba(255, 208, 0, 0.397);
 }
 
 .game-page-buttons {
-  display: flex;
-  margin: 10px;
+    border-radius: 10px;
+    padding: 15px;
+    width: 80%;
+    box-shadow: inset 1px 1px 20px 20px #090909;
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
+    margin: 10px;
 }
 
 .game-page-next {
