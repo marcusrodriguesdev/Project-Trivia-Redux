@@ -5,7 +5,8 @@ import md5 from 'crypto-js/md5';
 import Header from '../components/Header';
 import Helps from '../components/Helps';
 import playAction, { getQuestionsThunk } from '../Redux/Action';
-import './gamepage2.css';
+import './gamepage.css';
+import Loading from './Loading';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -82,7 +83,6 @@ class GamePage extends React.Component {
           className={ questionIsAnswered ? 'incorrect-color' : 'answer' }
         >
           <span className="answer-field"><p>{ answer }</p></span>
-          {/* <div className="square">{ mapIndex + 1 }</div> */}
         </button>
       ))
     );
@@ -108,9 +108,6 @@ class GamePage extends React.Component {
             {currentQuestion.correct_answer}
           </p>
         </span>
-        {
-        /* <div className="square">{(questions[index].type === 'boolean') ? '2' : '4'}</div> */
-        }
       </button>
     );
   }
@@ -200,7 +197,7 @@ class GamePage extends React.Component {
   render() {
     const { questions, playerScore, playerName, playerEmail } = this.props;
     const { timer } = this.state;
-    if (!questions.length) return <div>Loading</div>;
+    if (!questions.length) return <Loading />;
     this.handleChronometer();
     return (
       <div className="wrapper">
