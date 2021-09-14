@@ -116,33 +116,40 @@ class Basecss extends React.Component {
       <div className="main-gamepage-container">
         <div className="question-container">
           <span className="question" data-testid="question-text">
-            Question: { currentQuestion.question }
+            Question:
+            { currentQuestion.question }
           </span>
           <span className="category" data-testid="question-category">
-            Category: { currentQuestion.category }
+            Category:
+            { currentQuestion.category }
           </span>
         </div>
 
         <div className="row-contents">
           <div className="answers-container">
             <div className="answer-items">
-              <div className="answer">
-                <span className="answer-field"><p>ASUHAUSDHUASHDUAHSUHA</p></span>
-                <div className="square">1</div>
-              </div>
+              {incorrectAnswers.map((answer, mapIndex) => (
+                <div
+                  key={ mapIndex }
+                  type="button"
+                  data-testid={ `wrong-answer-${mapIndex}` }
+                  onClick={ this.questionAnswered }
+                  className={ questionIsAnswered ? 'incorrect-color' : 'answer' }
+                >
+                  <span className="answer-field"><p>{ answer }</p></span>
+                  <div className="square">{ mapIndex + 1 }</div>
+                </div>
+              ))}
+
             </div>
           </div>
-
           <div className="helps">
             <Helps />
           </div>
-
         </div>
-
         <div className="button-container">
           <button className="next-button">Próxima</button>
         </div>
-
       </div>
     );
   }
