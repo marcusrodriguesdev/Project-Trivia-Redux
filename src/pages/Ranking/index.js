@@ -6,7 +6,7 @@ import Primeiro from '../../utils/imgs/Primeiro.png';
 import Segundo from '../../utils/imgs/Segundo.png';
 import Terceiro from '../../utils/imgs/Terceiro.png';
 import emBranco from '../../utils/imgs/emBranco.png';
-import Logo from '../../utils/imgs/Logo.png';
+import LogoRanking from '../../utils/imgs/LogoRanking.png';
 
 export default class Ranking extends Component {
   constructor() {
@@ -38,7 +38,7 @@ export default class Ranking extends Component {
       <>
         <div className="header">
           <Link to="/">
-            <img src={ Logo } alt="logotipo do site" className="logotipo" />
+            <img src={ LogoRanking } alt="logotipo do site" className="logotipo" />
           </Link>
           <div>
             <h1 data-testid="ranking-title">Ranking</h1>
