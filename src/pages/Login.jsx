@@ -64,8 +64,8 @@ class Login extends Component {
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
         </header>
-        <form>
-          <label htmlFor="name">
+        <form className="form">
+          <label className="label-name" htmlFor="name">
             Nome:
             <input
               id="name"
@@ -76,7 +76,7 @@ class Login extends Component {
               data-testid="input-player-name"
             />
           </label>
-          <label htmlFor="email">
+          <label className="label-email" htmlFor="email">
             E-mail:
             <input
               id="email"

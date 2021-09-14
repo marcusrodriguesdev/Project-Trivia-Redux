@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.header-feed {
+  align-items: center;
+  background-color: #170059;
+  color: white;
+  display: flex;
+  height: 35px;
+  justify-content: space-between;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
+.img-avatar {
+  margin-left: 60px;
+}
+
+.name-player {
+  margin-left: auto;
+  padding: 20px;
+}
+
+.feedb-text {
+  color: black;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  text-align: center;
+  top: 80px;
+}
+
+.section {
+  margin-top: 150px;
+  text-align: center;
+
+}
+
+.div-pont {
+  background-color: black;
+  border-radius: 25px;
+  color: white;
+  margin: 10px auto;
+  padding: 10px;
+  width: 200px;
+}
+
+.score-total {
+  color: #83110a;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.div-questoes-corret {
+  background-color: #170059;
+  border-radius: 25px;
+  color: white;
+  margin: 10px auto;
+  padding: 10px;
+  width: 400px;
+}
+
+.quant-acertos {
+  color: #83110a;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+
+.botao-jogar-novamente {
+  background: #9635ae;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  height: 35px;
+  margin-right: 50px;
+  margin-top: 10px;
+  width: 155px;
+}
+
+.botao-ver-hanking {
+  background: #c4c4c4;
+  border: none;
+  border-radius: 20px;
+  color: black;
+  font-size: 10px;
+  font-weight: 700;
+  height: 35px;
+  margin-top: 10px;
+  width: 155px;
+}

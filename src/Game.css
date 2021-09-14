@@ -1,0 +1,42 @@
+.header-game {
+  align-items: center;
+  background-color: #170059;
+  display: flex;
+  height: 35px;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.player-name {
+  color: white;
+  font-weight: 700;
+  left: 250px;
+  position: absolute;
+  z-index: 1;
+}
+
+.score {
+  color: white;
+  font-weight: 700;
+  position: absolute;
+  right: 100px;
+  z-index: 1;
+}
+
+.header-score-points {
+  color: white;
+  font-weight: 700;
+  position: absolute;
+  right: 80px;
+  z-index: 1;
+}
+
+.avatar-image {
+  border-radius: 45px;
+  position: absolute;
+  right: 80px;
+  top: 70px;
+}

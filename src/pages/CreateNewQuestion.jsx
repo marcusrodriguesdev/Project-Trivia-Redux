@@ -14,6 +14,7 @@ class CreateNewQuestion extends Component {
     const { borderColor } = this.props;
     return (
       <button
+        className="correta"
         id="correta"
         type="button"
         data-testid="correct-answer"
@@ -29,6 +30,7 @@ class CreateNewQuestion extends Component {
     const { borderColor } = this.props;
     return (
       <button
+        className="incorreta"
         id="incorreta"
         type="button"
         data-testid={ `wrong-answer-${index}` }
@@ -59,10 +61,17 @@ class CreateNewQuestion extends Component {
       questionTrivia.correct_answer,
     ].sort();
     return (
-      <div>
-        <h2 data-testid="question-text">{questionTrivia.question}</h2>
-        <span data-testid="question-category">{questionTrivia.category}</span>
-        <div>
+      <div className="center-questoes">
+        <span
+          className="categoria-pergunta"
+          data-testid="question-category"
+        >
+          {questionTrivia.category}
+        </span>
+        <div className="caixa-pergunta">
+          <h2 data-testid="question-text">{questionTrivia.question}</h2>
+        </div>
+        <div className="div-alternativas">
           {alternatives.map((alternative, index) => this.Answer(
             alternative, questionTrivia.correct_answer, index,
           ))}

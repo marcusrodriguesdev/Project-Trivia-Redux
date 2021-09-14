@@ -30,34 +30,32 @@ class Feedback extends React.Component {
     const storageInfos = localStorage.getItem('state');
     const scorePlayer = JSON.parse(storageInfos);
     return (
-      <div>
-        <header>
-          <h1 data-testid="feedback-text">Feedbacks</h1>
-          <div data-testid="header-profile-picture">{avatar}</div>
-          <p data-testid="header-player-name">{name}</p>
-          <div data-testid="header-score">{scorePlayer.player.score}</div>
-          {scorePlayer.player.assertions < tres ? (
-            <p data-testid="feedback-text">Podia ser melhor...</p>
-          ) : (
-            ''
-          )}
-          {scorePlayer.player.assertions >= tres ? (
-            <p data-testid="feedback-text">Mandou bem!</p>
-          ) : (
-            ''
-          )}
+      <div className="div-gl">
+        <header className="header-feed">
+          <div className="img-avatar" data-testid="header-profile-picture">{avatar}</div>
+          <p className="name-player" data-testid="header-player-name">{name}</p>
+          <div className="scH" data-testid="header-score">{scorePlayer.player.score}</div>
         </header>
-        <section>
-          <h4>Pontuação Final:</h4>
-          <span data-testid="feedback-total-score">
+        {scorePlayer.player.assertions < tres ? (
+          <h4 className="feedb-text" data-testid="feedback-text">Podia ser melhor...</h4>
+        ) : (''
+        )}
+        {scorePlayer.player.assertions >= tres ? (
+          <h4 className="feedb-text" data-testid="feedback-text">Mandou bem!</h4>
+        ) : (''
+        )}
+        <section className="section">
+          <div className="div-pont"><h4>Pontuação Final:</h4></div>
+          <span className="score-total" data-testid="feedback-total-score">
             {scorePlayer.player.score}
           </span>
-          <h4>Número de questões corretas:</h4>
-          <span data-testid="feedback-total-question">
+          <div className="div-questoes-corret"><h4>Número de questões corretas:</h4></div>
+          <span className="quant-acertos" data-testid="feedback-total-question">
             {scorePlayer.player.assertions}
           </span>
           <br />
           <button
+            className="botao-jogar-novamente"
             type="button"
             data-testid="btn-play-again"
             onClick={ () => history.push('/') }
@@ -65,6 +63,7 @@ class Feedback extends React.Component {
             Jogar novamente
           </button>
           <button
+            className="botao-ver-hanking"
             type="button"
             data-testid="btn-ranking"
             onClick={ () => history.push('/ranking') }
