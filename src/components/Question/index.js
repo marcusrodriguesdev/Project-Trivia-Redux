@@ -111,7 +111,7 @@ class Question extends Component {
         <Button
           type="button"
           onClick={ this.handleNextQuestion }
-          text="Próxima"
+          text="Next"
           className="next-button"
           visibility={ guessed || timeOver ? 'visible' : 'hidden' }
         />

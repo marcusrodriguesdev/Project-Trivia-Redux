@@ -10,7 +10,7 @@ import Input from '../../components/Input';
 import { fetchToken, setGravatar, setPlayerData } from '../../redux/actions';
 import { fetchCategoriesThunk } from '../../redux/actions/questionActions';
 
-import logo from '../../assets/logo-teste.jpg';
+// import logo from '../../assets/logo-teste.jpg';
 
 import './style.css';
 
@@ -77,7 +77,7 @@ class Login extends Component {
     return (
       <form className="login-form">
 
-        <img src={ logo } alt="Trivia" style={ { width: '15em' } } />
+        {/* <img src={ logo } alt="Trivia" style={ { width: '15em' } } /> */}
 
         <Input
           placeholder="Name"
