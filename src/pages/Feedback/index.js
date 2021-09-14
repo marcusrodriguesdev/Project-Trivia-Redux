@@ -66,13 +66,13 @@ class Feedback extends Component {
             <div data-testid="feedback-text">
               {this.phraseConstructor(correctQuestionCounter)}
             </div>
-            <div>
+            <div className="feedback-score">
               Pontuação:
               <p data-testid="feedback-total-score">
                 {totalScore}
               </p>
             </div>
-            <div>
+            <div className="feedback-score">
               Respostas Corretas:
               <p data-testid="feedback-total-question">
                 {correctQuestionCounter}

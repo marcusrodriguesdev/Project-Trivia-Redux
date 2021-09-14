@@ -30,7 +30,13 @@ class Header extends React.Component {
     const { imgURL } = this.state;
     return (
       <header className="trivia-header">
-        <img src={ imgURL } alt="Your avatar" data-testid="header-profile-picture" />
+        <img
+          src={ imgURL }
+          alt="Your avatar"
+          data-testid="header-profile-picture"
+          width="45px"
+          height="50px"
+        />
         <h1 data-testid="header-player-name">{userName}</h1>
         <h2 data-testid="header-score">{userScore}</h2>
       </header>
