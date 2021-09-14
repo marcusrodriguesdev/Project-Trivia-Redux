@@ -1,0 +1,43 @@
+.header-game{
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  height: 35px;
+  background-color: #170059;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  }
+
+  .player-name{
+  position: absolute;
+  left: 250px;
+  color: #FFFFFF;
+  z-index: 1;
+  font-weight: bold;
+  } 
+
+.score {
+  position: absolute;
+  right: 100px;
+  color: #FFFFFF;
+  z-index: 1;
+  font-weight: bold;
+}
+
+  .header-score-points {
+  position: absolute;
+  right: 80px;
+  color: #FFFFFF;
+  z-index: 1;
+  font-weight: bold;
+  }
+
+  .avatar-image {
+  position: absolute;
+  right: 80px;
+  top: 70px;
+  border-radius: 45px;
+  }

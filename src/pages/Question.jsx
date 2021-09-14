@@ -75,6 +75,7 @@ class Question extends React.Component {
     let { countQuestion } = this.state;
     return (
       <button
+        className="botao-proxima"
         type="button"
         data-testid="btn-next"
         onClick={ () => {

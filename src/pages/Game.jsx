@@ -13,10 +13,12 @@ class Game extends React.Component {
 
     return (
       <div>
-        <header>
-          <p data-testid="header-player-name">{playerName}</p>
-          <p data-testid="header-score">0</p>
+        <header className="header-game">
+          <p className="player-name" data-testid="header-player-name">{playerName}</p>
+          <h4 className="score"> Score:</h4>
+          <p className="header-score-points" data-testid="header-score">0</p>
           <img
+            className="avatar-image"
             data-testid="header-profile-picture"
             src={ avatarPadrao }
             alt="Gravatar"

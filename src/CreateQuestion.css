@@ -1,0 +1,57 @@
+.center-questoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.categoria-pergunta {
+  margin-top: 70px;
+  color: black;
+  z-index: 1;
+}
+
+.caixa-pergunta {
+background-color: black;
+width:400px;
+margin: 100px auto;
+border-radius: 25px;
+color: white;
+padding: 8px;
+font-size: 15px;
+margin-bottom: 30px;
+}
+
+.botao-proxima {
+border: none;
+height: 35px;
+top: 500px;
+background: #9635AE;
+border-radius: 20px;
+font-weight: bold;
+width: 135px;
+color: white;
+font-size: 15px;
+float: right;
+margin-right: 300px;
+}
+
+.div-alternativas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+#correta , #incorreta{
+  width: 350px;
+  height: 50px;
+  top: 150px;
+  background: #170059;
+  border-radius: 10px;
+  color: white;
+  margin-top: 15px;
+  font-weight: bold;
+}

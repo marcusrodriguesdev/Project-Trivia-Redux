@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  align-items: center;
+  background: linear-gradient(95deg,#000000,#150050,#3F0071,#610094);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -20,18 +28,21 @@
   .App-logo {
     animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
+  /* .App-header{
+    animation: colors 15s ease infinite;
+  } */
 }
 
-.App-header {
+/* .App-header {
   align-items: center;
-  background-color: #282c34;
+  background: linear-gradient(95deg,#000000,#150050,#3F0071,#610094);
   color: white;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   justify-content: center;
   min-height: 100vh;
-}
+} */
 
 .App-link {
   color: #61dafb;
@@ -55,3 +66,18 @@
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.label-name {
+  color: #FFFFFF;
+  font-size: 15px;
+  display: block;
+  text-align: center;
+}
+
+.label-email {
+  color: #FFFFFF;
+  font-size: 15px;
+  display: block;
+  text-align: center;
+  margin-top: 30px;
+} 
