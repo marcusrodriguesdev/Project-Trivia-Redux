@@ -72,6 +72,7 @@ class Basecss extends React.Component {
     const { questions } = this.props;
     const currentQuestion = questions[index];
     const incorrectAnswers = currentQuestion.incorrect_answers;
+    // this.correctAnswers();
     return (
       incorrectAnswers.map((answer, mapIndex) => (
         <div
@@ -151,6 +152,19 @@ class Basecss extends React.Component {
           <div className="answers-container">
             <div className="answer-items">
               { this.incorrectAnswers() }
+              <div
+              type="button"
+              className={ questionIsAnswered ? 'correct-color' : 'answer' }
+              data-testid="correct-answer"
+              onClick={ () => {
+                this.questionAnswered();
+                this.handleClick();
+              } }
+              disabled={ !timer || questionIsAnswered }
+            >
+              <span className="answer-field"><p>{currentQuestion.correct_answer}</p></span>
+              <div className="square">4</div>
+            </div>
             </div>
           </div>
           <div className="helps">
@@ -158,7 +172,7 @@ class Basecss extends React.Component {
           </div>
         </div>
         <div className="button-container">
-          <button className="next-button">Próxima</button>
+          <button className="next-button" type="button">Próxima</button>
         </div>
       </div>
     );
