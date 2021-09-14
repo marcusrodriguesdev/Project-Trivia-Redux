@@ -6,9 +6,8 @@ import Login from './Pages/Login';
 import Settings from './Pages/Settings';
 import Feedback from './Pages/Feedback';
 import Ranking from './Pages/Ranking';
-
+import GamePage from './Pages/GamePage';
 import './App.css';
-import Basecss from './Pages/Basecss';
 
 export default class App extends Component {
   render() {
@@ -16,7 +15,7 @@ export default class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={ Login } />
-          <Route path="/game" component={ Basecss } />
+          <Route path="/game" component={ GamePage } />
           <Route path="/settings" component={ Settings } />
           <Route path="/feedback" component={ Feedback } />
           <Route path="/ranking" component={ Ranking } />

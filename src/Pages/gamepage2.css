@@ -1,3 +1,12 @@
+:root {
+
+  --rgb1: rgba(2, 0, 36, 1) 0%;
+
+  --rgb2: rgba(9, 9, 121, 1) 35%;
+
+  --rgb3: rgba(0, 212, 255, 1) 100%;
+}
+
 .wrapper {
   height: 100vh;
   overflow: hidden;
@@ -58,7 +67,7 @@
 }
 
 .main-gamepage-container {
-  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  background: linear-gradient(90deg, var(--rgb1), var(--rgb2), var(--rgb3));
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -98,8 +107,6 @@
 
 /* Estilo do container de Respostas */
 .answers-container {
-
-  /* background: yellow; */
   align-items: center;
   display: flex;
   height: 370px;
@@ -108,20 +115,21 @@
 }
 
 .answer-items {
-  /* background: black; */
   display: flex;
   flex-direction: column;
   height: 300px;
-  justify-content: space-between;
+  justify-content: center;
   opacity: 0.9;
   width: 100%;
 }
 
 .answer {
-  /* background: white; */
+  background: none;
+  border: none;
   cursor: pointer;
   display: flex;
   height: 45px;
+  margin-bottom: 20px;
   margin-left: 15px;
   width: 75%;
 }
@@ -144,14 +152,14 @@
   background: red;
   border-radius: 10px;
   height: 100%;
+  justify-content: center;
   left: 8px;
-  position: relative;
   width: 100%;
 }
 
 .answer-field p {
   color: white;
-  margin-left: 60px;
+  font-weight: 600;
 }
 
 /* Estilo do componente Helps */
@@ -204,7 +212,6 @@
 /* Estilo do botao de Next */
 .button-container {
   height: 55px;
-  /* background: lawngreen; */
 }
 
 .next-button {
@@ -229,3 +236,29 @@
   height: 50px;
   width: 120px;
 }
+
+/* Classes do Requisito 7 */
+.correct-color {
+  background: green;
+  border: 3px solid rgb(6, 240, 15);
+  border-radius: 10px;
+  height: 45px;
+  left: 8px;
+  margin-bottom: 20px;
+  margin-left: 15px;
+  position: relative;
+  width: 72%;
+}
+
+.incorrect-color {
+  background: rgb(233, 58, 96);
+  border: 3px solid red;
+  border-radius: 10px;
+  height: 45px;
+  left: 8px;
+  margin-bottom: 20px;
+  margin-left: 15px;
+  position: relative;
+  width: 72%;
+}
+
