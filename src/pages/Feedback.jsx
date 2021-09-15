@@ -6,7 +6,7 @@ import { saveRank } from '../services/saveToLocal';
 import FeedbackHeader from '../components/FeedbackHeader';
 import FeedbackMsg from '../components/FeedbackMsg';
 import BtnPlayAgain from '../components/BtnPlayAgain';
-import './Feedback.css';
+import '../styles/Feedback.css';
 
 class Feedback extends Component {
   render() {

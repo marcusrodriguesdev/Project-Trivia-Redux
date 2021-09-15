@@ -6,7 +6,7 @@ import FeedbackHeader from '../components/FeedbackHeader';
 import Timer from '../components/Timer';
 import { changeStop, getHits, getScore, getTimer } from '../redux/actions';
 import { saveScore } from '../services/saveToLocal';
-import './Game.css';
+import '../styles/Game.css';
 
 class Game extends Component {
   constructor(props) {

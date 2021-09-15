@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BtnPlayAgain from '../components/BtnPlayAgain';
 import { loadRanking } from '../services/getLocal';
-import './Ranking.css';
+import '../styles/Ranking.css';
 
 export default class Ranking extends Component {
   render() {
