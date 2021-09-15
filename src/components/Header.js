@@ -5,7 +5,7 @@ import md5 from 'crypto-js/md5';
 
 class Header extends Component {
   render() {
-    const { name, email, score } = this.props;
+    const { name, email, score, feedback } = this.props;
     const emailHash = md5(email).toString();
     return (
       <header>
@@ -19,7 +19,12 @@ class Header extends Component {
         </label>
         <label htmlFor="score">
           Pontuação
-          <h1 data-testid="header-score" id="score">{` ${score}`}</h1>
+          <h1
+            data-testid={ feedback ? 'feedback-total-score' : 'header-score' }
+            id="score"
+          >
+            {`${score}`}
+          </h1>
         </label>
       </header>
     );

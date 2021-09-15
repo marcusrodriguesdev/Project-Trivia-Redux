@@ -27,21 +27,20 @@ export default class Feedback extends Component {
   render() {
     const { player } = this.props;
     const { score, assertions } = player;
+    const assertionSpan = <span data-testid="feedback-total-question">{assertions}</span>;
     const THREE = 3;
     return (
       <div className="c-feedback-screen">
         <div className="feedback-screen">
-          <Header score={ score } />
+          <Header score={ score } feedback />
         </div>
         <h2 data-testid="feedback-text">
           {
             assertions >= THREE ? 'Mandou bem!' : 'Podia ser melhor...'
           }
         </h2>
-        <p
-          data-testid="feedback-total-question"
-        >
-          {` Voce acertou ${assertions} de 5 perguntas! `}
+        <p>
+          {assertionSpan}
         </p>
         <div className="feedback-buttons">
           <Link to="/">
