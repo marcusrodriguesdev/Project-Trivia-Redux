@@ -13,14 +13,15 @@ class Ranking extends Component {
 
   render() {
     const { rankingPage } = this.props;
-    console.log(rankingPage);
+    const playerID = rankingPage.sort((a, b) => (b.score - a.score));
+
     return (
       <fieldset className="App">
         <div>
           <h1 data-testid="ranking-title">Ranking</h1>
         </div>
 
-        {rankingPage
+        {playerID
           .map(({ name, gravatarImagem, score }, index) => (
             <div key={ index }>
               <img src={ gravatarImagem } alt="PlayerImage" />

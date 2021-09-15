@@ -6,8 +6,6 @@ const ranking = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ACTIONS.SET_RANKING:
     return [...state, action.payload];
-  case ACTIONS.GET_LOCALSTORAGE_RANKING:
-    return [...state, ...action.payload];
   default:
     return state;
   }

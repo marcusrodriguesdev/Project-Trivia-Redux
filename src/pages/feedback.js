@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { setRanking as setRankingAction,
-  localStorageRanking as localStorageSafe } from '../actions';
+import { setRanking as setRankingAction } from '../actions';
 import HeaderFeedback from '../components/HeaderFeedback';
 
 class feedback extends Component {
@@ -14,11 +13,6 @@ class feedback extends Component {
     this.state = {};
 
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentWillUnmount() {
-    const { localStorageRanking } = this.props;
-    localStorageRanking();
   }
 
   handleClick(name, score, gravatarImagem) {
@@ -96,8 +90,6 @@ const mapStateToProps = ({ player }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setRanking: (player) => dispatch(setRankingAction(player)),
-
-  localStorageRanking: () => dispatch(localStorageSafe()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(feedback);
