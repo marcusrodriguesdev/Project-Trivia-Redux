@@ -124,39 +124,41 @@ class GamePage extends React.Component {
   render() {
     const { questionNumber, seconds, category } = this.state;
     return (
-      <main className="main-game">
+      <>
         <Question
           questionNumber={ questionNumber }
           getCategory={ this.getCategory }
         />
 
-        <div className="center-div">
-          <div className="seconds">
-            <p>{ seconds }</p>
+        <main className="main-game">
+          <div className="center-div">
+            <div className="seconds">
+              <p>{ seconds }</p>
+            </div>
+
+            <div className="category">
+              <span>{ category }</span>
+            </div>
+
+            <div className="next">
+              <button
+                type="button"
+                onClick={ this.showNextQuestion }
+                data-testid="btn-next"
+                id="btn-next"
+                className="notDisplay"
+              >
+                Próxima
+              </button>
+            </div>
           </div>
 
-          <div className="category">
-            <span>{ category }</span>
-          </div>
-
-          <div className="next">
-            <button
-              type="button"
-              onClick={ this.showNextQuestion }
-              data-testid="btn-next"
-              id="btn-next"
-              className="notDisplay"
-            >
-              Proxima
-            </button>
-          </div>
-        </div>
-
-        <Alternatives
-          calculateScore={ this.calculateScore }
-          questionNumber={ questionNumber }
-        />
-      </main>
+          <Alternatives
+            calculateScore={ this.calculateScore }
+            questionNumber={ questionNumber }
+          />
+        </main>
+      </>
     );
   }
 }

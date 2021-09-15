@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { logged, setScore } from '../redux/actions';
 import '../css/Login.css';
-import LogoTrivia from '../images/logo-trivia.png';
+import LogoTrivia from '../images/logo.png';
 import LoginCard from '../components/LoginCard';
 
 class Login extends React.Component {

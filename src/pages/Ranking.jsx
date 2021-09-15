@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PlayersList from '../components/PlayersList';
 import '../css/Ranking.css';
-import logo from '../image/logo.png';
+import logo from '../images/logo.png';
 
 class Ranking extends React.Component {
   render() {

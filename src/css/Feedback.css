@@ -1,0 +1,68 @@
+.feedback {
+  height: 100vh;
+  width: 100vw;
+}
+
+.green {
+  background-color: #66bf39;
+}
+
+.red {
+  background-color: #ff3354;
+}
+
+.feedback-main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+  justify-content: center;
+}
+
+.feedback-questions, .feedback-score {
+  color: white;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.feedback-text {
+  color: white;
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 2rem;
+  text-align: center;
+
+}
+
+.feedback-button {
+  align-items: flex-end;
+  display: flex;
+  height: 60px;
+  width: 320px;
+}
+
+.feedback-button button {
+  color: white;
+  font-size: 1rem;
+  height: 46px;
+}
+
+.play-again button {
+  background-color: #2f2f2f;
+}
+
+.go-to-ranking button {
+  background-color: #1368ce;
+}
+
+.play-again button:hover {
+  background-color: #2b2b2b;
+  border-bottom: 1px solid rgb(0 0 0 / 0.25);
+}
+
+.go-to-ranking button:hover {
+  background-color: #1161c2;
+  border-bottom: 1px solid rgb(0 0 0 / 0.25);
+}

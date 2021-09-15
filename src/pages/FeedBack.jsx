@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Header, { CONVERT_HASH, GRAVATAR } from '../components/Header';
+import '../css/Feedback.css';
 
 class FeedBack extends React.Component {
   componentDidMount() {
@@ -21,40 +22,64 @@ class FeedBack extends React.Component {
     }
   }
 
+  checkAssertion() {
+    const { player: { assertions } } = this.props;
+
+    const NUMBER_THREE = 3;
+    if (assertions < NUMBER_THREE) {
+      return 'Podia ser melhor...';
+    } if (assertions >= NUMBER_THREE) {
+      return 'Mandou bem!';
+    }
+  }
+
   render() {
     const { history, player: { score, assertions } } = this.props;
-    const checkAssertion = () => {
-      const NUMBER_THREE = 3;
-      if (assertions < NUMBER_THREE) {
-        return <div>Podia ser melhor...</div>;
-      } if (assertions >= NUMBER_THREE) {
-        return <div>Mandou bem!</div>;
-      }
-    };
+    const message = this.checkAssertion()
     return (
-      <div>
-        <div>
-          <Header />
-          <h4 data-testid="feedback-total-score">{ score }</h4>
-          <h4 data-testid="feedback-total-question">{ assertions }</h4>
-          <button
-            onClick={ () => history.push('/') }
-            type="button"
-            data-testid="btn-play-again"
-          >
-            Jogar novamente
-          </button>
-          <button
-            onClick={ () => history.push('/ranking') }
-            type="button"
-            data-testid="btn-ranking"
-          >
-            Ver ranking
-          </button>
+      <div
+        className={
+          `feedback ${message === 'Mandou bem!' ? 'green' : 'red'}`
+        }
+      >
+        <div className="feedback-main">
+          <p data-testid="feedback-text" className="feedback-text">
+            { message }
+          </p>
+
+          <p data-testid="feedback-total-score" className="feedback-score">
+            Score:
+            <br />
+            { score }
+          </p>
+
+          <p data-testid="feedback-total-question" className="feedback-questions">
+            Respostas Corretas:
+            <br />
+            { assertions }
+          </p>
+
+          <div className="feedback-button play-again">
+            <button
+              onClick={ () => history.push('/') }
+              type="button"
+              data-testid="btn-play-again"
+            >
+              Jogar novamente
+            </button>
+          </div>
+
+          <div className="feedback-button go-to-ranking">
+            <button
+              onClick={ () => history.push('/ranking') }
+              type="button"
+              data-testid="btn-ranking"
+            >
+              Ver ranking
+            </button>
+          </div>
         </div>
-        <div data-testid="feedback-text">
-          { checkAssertion() }
-        </div>
+        <Header />
       </div>
     );
   }
