@@ -8,9 +8,9 @@ class Trivia extends React.Component {
     const { history } = this.props;
 
     return (
-      <div>
-        <Header />
+      <div className="game-page">
         <GamePage history={ history } />
+        <Header />
       </div>
     );
   }
