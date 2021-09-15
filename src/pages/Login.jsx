@@ -62,7 +62,7 @@ class Login extends Component {
               <input
                 data-testid="input-player-name"
                 type="text"
-                id="name"
+                className="name"
                 name="name"
                 value={ name }
                 onChange={ this.handleChange }
@@ -73,7 +73,7 @@ class Login extends Component {
               <input
                 data-testid="input-gravatar-email"
                 type="text"
-                id="email"
+                className="email"
                 name="email"
                 value={ email }
                 onChange={ this.handleChange }

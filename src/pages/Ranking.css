@@ -1,24 +1,23 @@
 .ranking {
-  color: orange;;
+  align-items: center;
+  color: orange;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .ranking-title {
+  color: orange;
   font-size: 40px;
-  color: orange;;
 }
+
 .ranking-list {
-  /* background-color: red; */
-  /* border: 1px solid red; */
+  border-radius: 5px;
+  display: flex;
   font-size: 20px;
+  justify-content: space-between;
   margin: 5px;
   padding: 5px;
-  display: flex;
-  justify-content: space-between;
   width: 500px;
-  border-radius: 5px;
 }
 
 .ranking-score {
@@ -26,7 +25,7 @@
 }
 
 .alt-name {
-  color: orange;;
+  color: orange;
 }
 
 .playagain-button {

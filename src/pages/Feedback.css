@@ -1,20 +1,20 @@
 .feedback-text {
-  font-size: 30px;
   color: orange;
   display: flex;
+  font-size: 30px;
+  font-weight: 400;
   justify-content: center;
-  margin: 50px;
-  font-weight: bolder;
   letter-spacing: 5px;
+  margin: 50px;
 }
 
 .buttons {
+  align-items: center;
   background-color: rgb(12, 11, 11);
+  border: none;
   color: orange;
   font-size: 30px;
-  font-weight: bolder;
-  border: none;
-  align-items: center;
+  font-weight: 400;
   margin-left: 50px;
   margin-top: 100px;
 }
@@ -28,6 +28,7 @@
   margin-top: 100px;
 }
 
-
-
-
+.hits {
+  margin-left: 10px;
+  margin-right: 10px;
+}

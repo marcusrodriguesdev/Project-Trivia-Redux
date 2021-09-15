@@ -19,12 +19,14 @@ class Feedback extends Component {
         <FeedbackMsg />
         <p className="feedback-text">
           {'Você acertou '}
-          <div data-testid="feedback-total-question">{ hits }</div>
+          <div data-testid="feedback-total-question" className="hits">
+            { hits }
+          </div>
           {' questões!'}
         </p>
         <p className="feedback-text">
           {'Um total de '}
-          <span data-testid="feedback-total-score">{ total }</span>
+          <span data-testid="feedback-total-score" className="hits">{ total }</span>
           {' pontos!'}
         </p>
         <Link to="/ranking">

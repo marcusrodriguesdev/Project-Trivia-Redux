@@ -27,7 +27,7 @@ class FeedbackHeader extends Component {
           data-testid="header-score"
           className="score"
         >
-          { score }
+          { total }
         </span>
       </header>
     );
