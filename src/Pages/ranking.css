@@ -23,15 +23,18 @@
   border-radius: 20px;
   display: flex;
   flex-direction: column;
-  height: 80%;
+  height: 83%;
+  max-height: 83%;
   opacity: 0.9;
+  overflow-y: hidden;
   width: 500px;
 }
 
-.rank-container span {
+.handle-title span {
   background: white;
+  bottom: 15px;
   height: 1px;
-  margin-bottom: 20px;
+  position: relative;
   width: 90%;
 }
 
@@ -43,8 +46,18 @@
   display: flex;
   justify-content: space-around;
   left: 500px;
-  margin-bottom: 20px;
+  margin-bottom: 23px;
   width: 450px;
+}
+
+.handle-title {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  max-width: 100%;
+  width: 100%;
+
 }
 
 .rank-title {
@@ -75,6 +88,7 @@
 .rank-player-name {
   color: white;
   font-weight: 800;
+  min-width: 180px;
 }
 
 .trophy {
@@ -85,7 +99,6 @@
 .rank-player-score {
   color: white;
 }
-
 
 .ranking-home-button {
   background: rgb(18, 64, 214);

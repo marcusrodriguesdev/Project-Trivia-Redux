@@ -10,8 +10,10 @@ class Ranking extends React.Component {
     return (
       <div className="ranking-wrapper">
         <div className="rank-container">
-          <h3 className="rank-title" data-testid="ranking-title">Ranking</h3>
-          <span />
+          <div className="handle-title">
+            <h3 className="rank-title" data-testid="ranking-title">Ranking</h3>
+            <span />
+          </div>
           {rank.map((player, index) => (
             <div className="rank-item" key={ index }>
               <div className="rank-box-index">
