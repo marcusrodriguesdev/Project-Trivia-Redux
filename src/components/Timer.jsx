@@ -32,7 +32,8 @@ class Timer extends React.Component {
   render() {
     const { timer } = this.props;
     return (
-      <h2>
+      <h2 id="teste" className="teste timer">
+        0:
         {timer}
       </h2>
     );

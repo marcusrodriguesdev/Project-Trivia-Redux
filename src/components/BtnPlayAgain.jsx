@@ -24,6 +24,7 @@ class BtnPlayAgain extends Component {
         type="button"
         data-testid={ testid }
         onClick={ this.playAgain }
+        className="buttons playagain-button"
       >
         JOGAR NOVAMENTE
       </button>

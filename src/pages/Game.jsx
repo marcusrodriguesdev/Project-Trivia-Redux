@@ -6,6 +6,7 @@ import FeedbackHeader from '../components/FeedbackHeader';
 import Timer from '../components/Timer';
 import { changeStop, getHits, getScore, getTimer } from '../redux/actions';
 import { saveScore } from '../services/saveToLocal';
+import './Game.css';
 
 class Game extends Component {
   constructor(props) {
@@ -112,9 +113,9 @@ class Game extends Component {
   arrayAnswersButtons() {
     const { trivia, index, border, randomKey } = this.state;
     const { stop, timer } = this.props;
-    let { next } = this.state;
+    // let { next } = this.state;
     let buttonDisabled = timer <= 0;
-    if (timer === 0) next = {};
+    // if (timer === 0) next = {};
     if (stop === true) buttonDisabled = true;
     let newArray = this.arrayAnswers(trivia[index]);
     newArray = newArray.map((element, indic) => (indic < newArray.length - 1 ? (
@@ -144,32 +145,47 @@ class Game extends Component {
       this.randomizeAnswers(newArray);
     }
     return (
-      <div>
-        <p data-testid="question-category">{trivia[index].category}</p>
-        <p data-testid="question-text">{trivia[index].question}</p>
-        { newArray.map((element, ordem) => <span key={ ordem }>{element}</span>)}
-        <button
-          type="button"
-          onClick={ this.nextButton }
-          data-testid="btn-next"
-          style={ next }
+      <div className="teste2">
+        <p
+          data-testid="question-category"
+          className="teste category"
         >
-          Próxima
-        </button>
+          {trivia[index].category}
+        </p>
+        <p data-testid="question-text" className="teste">{trivia[index].question}</p>
+        { newArray.map((element, ordem) => <span key={ ordem }>{element}</span>)}
       </div>
     );
   }
 
   render() {
-    // const { name, image } = this.props;
+    const { timer } = this.props;
     const { isLoading } = this.state;
+    let { next } = this.state;
+    if (timer === 0) next = {};
     return (
       <>
-        <FeedbackHeader />
         <Timer />
+        <FeedbackHeader />
         <section>
           { isLoading ? <p>Loading...</p> : this.arrayAnswersButtons() }
         </section>
+        <div className="line">
+          <div className="first-question questions" />
+          <div className="second-question questions" />
+          <div className="third-question questions" />
+          <div className="fourth-question questions" />
+          <div className="fifth-question questions" />
+        </div>
+        <button
+          type="button"
+          onClick={ this.nextButton }
+          data-testid="btn-next"
+          style={ next }
+          className="next-button"
+        >
+          Próxima
+        </button>
       </>
     );
   }

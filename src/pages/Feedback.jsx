@@ -6,6 +6,7 @@ import { saveRank } from '../services/saveToLocal';
 import FeedbackHeader from '../components/FeedbackHeader';
 import FeedbackMsg from '../components/FeedbackMsg';
 import BtnPlayAgain from '../components/BtnPlayAgain';
+import './Feedback.css';
 
 class Feedback extends Component {
   render() {
@@ -16,18 +17,24 @@ class Feedback extends Component {
         Tela de Feedback
         <FeedbackHeader />
         <FeedbackMsg />
-        <p>
+        <p className="feedback-text">
           {'Você acertou '}
           <span data-testid="feedback-total-score">{ hits }</span>
           {' questões!'}
         </p>
-        <p>
+        <p className="feedback-text">
           {'Um total de '}
           <span data-testid="feedback-total-question">{ total }</span>
           {' pontos!'}
         </p>
         <Link to="/ranking">
-          <button type="button" data-testid="btn-ranking">VER RANKING</button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            className="buttons ranking-button"
+          >
+            VER RANKING
+          </button>
         </Link>
         <BtnPlayAgain history={ history } testid="btn-play-again" />
       </div>

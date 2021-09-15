@@ -8,7 +8,7 @@ class FeedbackMsg extends Component {
     const VERIFY = 3;
     const msg = (hits < VERIFY ? 'Podia ser melhor...' : 'Mandou bem!');
     return (
-      <div data-testid="feedback-text">{ msg }</div>
+      <div data-testid="feedback-text" className="feedback-text teste3">{ msg }</div>
     );
   }
 }

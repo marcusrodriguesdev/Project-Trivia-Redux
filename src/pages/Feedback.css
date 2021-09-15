@@ -1,0 +1,33 @@
+.feedback-text {
+  font-size: 30px;
+  color: orange;
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+  font-weight: bolder;
+  letter-spacing: 5px;
+}
+
+.buttons {
+  background-color: rgb(12, 11, 11);
+  color: orange;
+  font-size: 30px;
+  font-weight: bolder;
+  border: none;
+  align-items: center;
+  margin-left: 50px;
+  margin-top: 100px;
+}
+
+.ranking-button {
+  margin-left: 600px;
+  margin-right: 200px;
+}
+
+.teste3 {
+  margin-top: 100px;
+}
+
+
+
+

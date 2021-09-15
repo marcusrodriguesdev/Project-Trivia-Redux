@@ -53,11 +53,11 @@ class Login extends Component {
     const { name, email, isDisable } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
+        <header className="App-header teste">
           <img src={ logo } className="App-logo" alt="logo" />
-          <p>LOGIN</p>
+          <p className="login">LOGIN</p>
           <form>
-            <label htmlFor="name">
+            <label htmlFor="name" className="login-form">
               Nome:
               <input
                 data-testid="input-player-name"
@@ -68,7 +68,7 @@ class Login extends Component {
                 onChange={ this.handleChange }
               />
             </label>
-            <label htmlFor="email">
+            <label htmlFor="email" className="login-form">
               Email:
               <input
                 data-testid="input-gravatar-email"
@@ -84,11 +84,12 @@ class Login extends Component {
               type="button"
               onClick={ this.onClick }
               disabled={ isDisable }
+              className="buttons"
             >
               Jogar
             </button>
             <Link to="/settings">
-              <button type="button" data-testid="btn-settings">
+              <button type="button" data-testid="btn-settings" className="buttons">
                 Configurações
               </button>
             </Link>

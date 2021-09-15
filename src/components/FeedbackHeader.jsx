@@ -6,10 +6,29 @@ class FeedbackHeader extends Component {
   render() {
     const { name, image, score } = this.props;
     return (
-      <header>
-        <img src={ image } alt="User logo" data-testid="header-profile-picture" />
-        <h2 data-testid="header-player-name">{ name }</h2>
-        <span data-testid="header-score">{ score }</span>
+      <header
+        className="header"
+      >
+        <img
+          src={ image }
+          alt="User logo"
+          data-testid="header-profile-picture"
+          className="gravatar"
+        />
+
+        <h2
+          data-testid="header-player-name"
+          className="player-name teste"
+        >
+          { name }
+        </h2>
+
+        <span
+          data-testid="header-score"
+          className="score"
+        >
+          { score }
+        </span>
       </header>
     );
   }

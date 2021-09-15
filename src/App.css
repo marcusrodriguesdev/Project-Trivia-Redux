@@ -15,16 +15,40 @@
   border: 1px solid green;
 }
 
+.login-form {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  align-items: flex-start;
+}
+
+#email, #name {
+  display: flex;
+  border-radius: 6px;
+  border: 2px solid orange;
+  width: 400px;
+  height: 20px;
+  margin-bottom: 20px;
+}
+
+.login {
+  margin: 10px 750px;
+  font-size: 25px;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .App-logo {
+    margin-bottom: 50px;
     animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
 }
 
 .App-header {
   align-items: center;
-  background-color: #282c34;
+  background-color: rgb(12, 11, 11);
   color: white;
   display: flex;
   flex-direction: column;
