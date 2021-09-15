@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { saveName, saveEmail, saveToken as saveTokenAction } from '../actions/index';
 import '../Login.css';
 import triviaLogo from '../trivia.png';
@@ -69,24 +70,16 @@ class Login extends React.Component {
   }
 
   render() {
-    const { btnDisabled } = this.state;
+    const { btnDisabled, email } = this.state;
     return (
       <>
         <img className="logo" src={ triviaLogo } alt="Logo Trivia" />
         <form className="login-form">
-          <div className="photo-container">
-            <img src="" alt="Foto da pessoa" />
-          </div>
-          <label htmlFor="input-player-name">
-            <p>Nome</p>
-            <input
-              name="name"
-              type="text"
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-            />
-          </label>
-
+          <img
+            src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
+            alt="Foto da pessoa"
+            className="photo-container"
+          />
           <label htmlFor="input-gravatar-email">
             <p>Email</p>
             <input
@@ -94,6 +87,15 @@ class Login extends React.Component {
               type="email"
               data-testid="input-gravatar-email"
               onChange={ (event) => this.handleChange(event) }
+            />
+          </label>
+          <label htmlFor="input-player-name">
+            <p>Nome</p>
+            <input
+              name="name"
+              type="text"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
             />
           </label>
           <div className="container-buttons">
