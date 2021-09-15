@@ -11,6 +11,7 @@ class HeaderFeedback extends React.Component {
   render() {
     const { propStatePlayer } = this.props;
     const { name, score, gravatarImagem } = propStatePlayer;
+
     return (
       <div>
         <h2>Info Player</h2>

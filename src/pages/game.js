@@ -26,6 +26,7 @@ class game extends Component {
     };
 
     this.fetchAPI = this.fetchAPI.bind(this);
+
     this.clickingState = this.clickingState.bind(this);
     this.changingId = this.changingId.bind(this);
     this.handleCorrectAnswer = this.handleCorrectAnswer.bind(this);
