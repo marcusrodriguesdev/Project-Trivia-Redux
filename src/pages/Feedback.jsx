@@ -48,7 +48,6 @@ Feedback.propTypes = {
   hits: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  // score: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,

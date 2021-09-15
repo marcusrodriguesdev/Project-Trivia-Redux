@@ -35,6 +35,15 @@ class Game extends Component {
     this.fetchTriviaGame();
   }
 
+  shouldComponentUpdate(_, nextState) {
+    const { index, isLoading } = this.state;
+    console.log(index, nextState.index, nextState.next);
+    if (isLoading === true && nextState.isLoading === false) return true;
+    if (!nextState.next.display) return true;
+    if (index === nextState.index) return false;
+    return true;
+  }
+
   async fetchTriviaGame() {
     const { endpoint, token } = this.props;
     const response = await fetchTrivia(endpoint, token);
@@ -112,9 +121,7 @@ class Game extends Component {
   arrayAnswersButtons() {
     const { trivia, index, border } = this.state;
     const { stop, timer } = this.props;
-    // let { next } = this.state;
     let buttonDisabled = timer <= 0;
-    // if (timer === 0) next = {};
     if (stop === true) buttonDisabled = true;
     let newArray = this.arrayAnswers(trivia[index]);
     newArray = newArray.map((element, indic) => (indic < newArray.length - 1 ? (
@@ -162,11 +169,13 @@ class Game extends Component {
     if (timer === 0) next = {};
     return (
       <>
-        <Timer />
-        <FeedbackHeader />
-        <section>
-          { isLoading ? <p>Loading...</p> : this.arrayAnswersButtons() }
-        </section>
+        { isLoading ? <p>Loading...</p> : (
+          <section>
+            <Timer />
+            <FeedbackHeader />
+            { this.arrayAnswersButtons() }
+          </section>
+        )}
         <div className="line">
           <div className="first-question questions" />
           <div className="second-question questions" />
