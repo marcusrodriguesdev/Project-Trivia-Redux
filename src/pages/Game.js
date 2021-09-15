@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
-import '../App.css';
+import '../Game.css';
 import Header from '../components/Header';
 import Feedback from './Feedback';
 
@@ -46,13 +46,19 @@ class Game extends Component {
     if (questionIndex === LAST_QUESTION) {
       this.setState({ renderFeedback: true });
     }
-
     this.setState((prevState) => ({
       ...prevState,
       questionIndex: prevState.questionIndex + 1,
       isVisible: false,
       time: 30,
     }));
+
+    const rightBtn = document.querySelector('.correct-btn');
+    const wrongBtn = document.querySelectorAll('.wrong-btn');
+    rightBtn.classList.remove('correct-answer');
+    wrongBtn.forEach((button) => {
+      button.classList.remove('wrong-answer');
+    });
   }
 
   handleClick(event) {
@@ -123,35 +129,44 @@ class Game extends Component {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
       question } = questions[questionIndex];
+    const questionsList = incorrectAnswer.map((answer, index) => (
+      <button
+        disabled={ disabled }
+        value={ answer }
+        onClick={ this.handleClick }
+        className="wrong-btn"
+        type="button"
+        key={ index }
+        data-testid={ `wrong-answers-${index}` }
+      >
+        { answer }
+      </button>
+    ));
 
+    questionsList.push(
+      <button
+        disabled={ disabled }
+        type="button"
+        data-testid="correct-answer"
+        className="correct-btn"
+        onClick={ this.handleClick }
+        value={ correctAnswer }
+      >
+        { correctAnswer }
+      </button>,
+    );
+    questionsList.sort((a, b) => b.props.value.localeCompare(a.props.value));
+    // got this solution on https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
     return (
-      <div>
-        <p data-testid="question-category">{ category }</p>
-        <p data-testid="question-text">{ question }</p>
-        <button
-          disabled={ disabled }
-          type="button"
-          data-testid="correct-answer"
-          className="correct-btn"
-          onClick={ this.handleClick }
-          value={ correctAnswer }
-        >
-          { correctAnswer }
-        </button>
-        {incorrectAnswer.map((answer, index) => (
-          <button
-            disabled={ disabled }
-            value={ answer }
-            onClick={ this.handleClick }
-            className="wrong-btn"
-            type="button"
-            key={ index }
-            data-testid={ `wrong-answers-${index}` }
-          >
-            { answer }
-          </button>
-        ))}
-      </div>
+      <>
+        <div className="question">
+          <h2 data-testid="question-category">{ category }</h2>
+          <p data-testid="question-text">{ question }</p>
+        </div>
+        <div className="options">
+          {questionsList}
+        </div>
+      </>
     );
   }
 
@@ -165,7 +180,12 @@ class Game extends Component {
         { !isFetching && this.renderQuestions() }
 
         {isVisible && (
-          <button onClick={ this.nextQuestion } type="button" data-testid="btn-next">
+          <button
+            onClick={ this.nextQuestion }
+            type="button"
+            data-testid="btn-next"
+            className="next-btn"
+          >
             Próxima
           </button>)}
       </>

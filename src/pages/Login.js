@@ -2,7 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { saveName, saveEmail, saveToken as saveTokenAction } from '../actions/index';
+import '../Login.css';
+import triviaLogo from '../trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -67,43 +70,52 @@ class Login extends React.Component {
   }
 
   render() {
-    const { btnDisabled } = this.state;
+    const { btnDisabled, email } = this.state;
     return (
-      <form>
-        <label htmlFor="input-player-name">
-          Nome :
-          <input
-            name="name"
-            type="text"
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
+      <>
+        <img className="logo" src={ triviaLogo } alt="Logo Trivia" />
+        <form className="login-form">
+          <img
+            src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
+            alt="Foto da pessoa"
+            className="photo-container"
           />
-        </label>
-
-        <label htmlFor="input-gravatar-email">
-          Email :
-          <input
-            name="email"
-            type="email"
-            data-testid="input-gravatar-email"
-            onChange={ (event) => this.handleChange(event) }
-          />
-        </label>
-
-        <button
-          data-testid="btn-play"
-          type="button"
-          disabled={ btnDisabled }
-          onClick={ this.saveNameAndEmail }
-        >
-          Jogar
-        </button>
-        <Link to="/config">
-          <button type="button" data-testid="btn-settings">
-            Configuracoes
-          </button>
-        </Link>
-      </form>
+          <label htmlFor="input-gravatar-email">
+            <p>Email</p>
+            <input
+              name="email"
+              type="email"
+              data-testid="input-gravatar-email"
+              onChange={ (event) => this.handleChange(event) }
+            />
+          </label>
+          <label htmlFor="input-player-name">
+            <p>Nome</p>
+            <input
+              name="name"
+              type="text"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <div className="container-buttons">
+            <button
+              className="play-btn"
+              data-testid="btn-play"
+              type="button"
+              disabled={ btnDisabled }
+              onClick={ this.saveNameAndEmail }
+            >
+              Jogar
+            </button>
+            <Link to="/config">
+              <button type="button" data-testid="btn-settings">
+                Configuracoes
+              </button>
+            </Link>
+          </div>
+        </form>
+      </>
     );
   }
 }

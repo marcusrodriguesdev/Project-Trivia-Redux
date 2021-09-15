@@ -1,0 +1,39 @@
+.ranking * {
+  list-style: none;
+  text-decoration: none;
+}
+
+.ranking-number {
+  display: inline-block;
+  font-size: 30px;
+}
+
+.ranking {
+  color: white;
+  font-size: 30px;
+  text-align: center;
+}
+
+.ranking li {
+  display: grid;
+  grid-template-columns: 0.5fr repeat(3, 2fr);
+  place-items: center;
+  text-align: center;
+}
+
+.ranking h1 {
+  bottom: 50px;
+  font-size: 60px;
+  margin-bottom: 30px;
+  position: relative;
+  text-align: center;
+}
+
+.ranking img {
+  border-radius: 50%;
+  width: 50px;
+}
+
+.ranking a button {
+  margin-top: 50px;
+}
