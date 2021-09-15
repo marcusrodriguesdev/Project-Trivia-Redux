@@ -40,39 +40,46 @@ class FeedBack extends Component {
   render() {
     const { score, assertionsGlobal } = this.props;
     return (
-      <div>
+      <div className="body-feedback">
         <Header />
-        <div
-          data-testid="feedback-text"
-        >
-          { this.getAssertions() }
-          <p
-            data-testid="feedback-total-question"
+        <div className="feedback-container">
+          <div
+            className="feedback-text"
+            data-testid="feedback-text"
           >
-            { assertionsGlobal }
-          </p>
-          <p
-            data-testid="feedback-total-score"
-          >
-            { score }
-          </p>
+            { this.getAssertions() }
+            <p
+              data-testid="feedback-total-question"
+            >
+              { `${assertionsGlobal} acertos` }
+            </p>
+            <p
+              data-testid="feedback-total-score"
+            >
+              { `${score} Pontos` }
+            </p>
+          </div>
+          <div>
+            <Link to="/">
+              <button
+                className="cross_line"
+                type="button"
+                data-testid="btn-play-again"
+              >
+                Jogar novamente
+              </button>
+            </Link>
+            <Link to="/Ranking">
+              <button
+                className="cross_line"
+                type="button"
+                data-testid="btn-ranking"
+              >
+                Ver Ranking
+              </button>
+            </Link>
+          </div>
         </div>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
-          >
-            Jogar novamente
-          </button>
-        </Link>
-        <Link to="/Ranking">
-          <button
-            type="button"
-            data-testid="btn-ranking"
-          >
-            Ver Ranking
-          </button>
-        </Link>
       </div>
     );
   }
