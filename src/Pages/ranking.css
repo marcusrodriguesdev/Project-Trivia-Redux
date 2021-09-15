@@ -8,48 +8,58 @@
 }
 
 .ranking-wrapper {
+  align-items: center;
   background: linear-gradient(90deg, var(--rgb1), var(--rgb2), var(--rgb3));
-  height: 100vh;
-  overflow: hidden;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-evenly;
+  overflow: hidden;
 }
 
 .rank-container {
+  align-items: center;
   background: black;
-  /* width: 600px; */
-  width: 500px;
-  opacity: 0.9;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 80%;
+  opacity: 0.9;
+  width: 500px;
+}
+
+.rank-container span {
+  background: white;
+  height: 1px;
+  margin-bottom: 20px;
+  width: 90%;
 }
 
 .rank-item {
-  background: linear-gradient(90deg, var(--rgb1), var(--rgb2), var(--rgb3));
-  display: flex;
-  width: 450px;
-  border: 1px white solid;
-  left: 500px;
   align-items: center;
-  justify-content: space-around;
+  background: linear-gradient(90deg, var(--rgb1), var(--rgb2), var(--rgb3));
+  border: 1px white solid;
   border-radius: 30px;
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+  left: 500px;
+  margin-bottom: 20px;
+  width: 450px;
 }
 
 .rank-title {
   color: white;
+  font-size: 30px;
 }
 
 .rank-box-index {
-  height: 30px;
-  width: 30px;
-  background: white;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  background: white;
   border-radius: 100%;
-  
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  width: 30px;
 }
 
 .rank-index {
@@ -58,7 +68,6 @@
 }
 
 .rank-image {
-
   height: 50px;
   width: 50px;
 }
@@ -69,9 +78,32 @@
 }
 
 .trophy {
-  width: 20px;
   height: 20px;
+  width: 20px;
 }
+
 .rank-player-score {
   color: white;
+}
+
+
+.ranking-home-button {
+  background: rgb(18, 64, 214);
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  height: 50px;
+  width: 120px;
+}
+
+.ranking-home-button:hover {
+  background: rgb(2, 17, 70);
+  border: 1px white solid;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 800;
+  height: 50px;
+  width: 120px;
 }
