@@ -134,6 +134,10 @@
   border-bottom: 1px solid rgb(0 0 0 / 25%);
 }
 
+.button-login button:disabled:hover {
+  border-bottom: 4px solid rgb(0 0 0 / 25%);
+}
+
 /* --------------------------------------/
 /-----------------FOOTER-----------------/
 /-------------------------------------- */
