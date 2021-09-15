@@ -2,10 +2,30 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router-dom';
+import { setRanking as setRankingAction,
+  localStorageRanking as localStorageSafe } from '../actions';
 import HeaderFeedback from '../components/HeaderFeedback';
 
 class feedback extends Component {
+  constructor() {
+    super();
+
+    this.state = {};
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentWillUnmount() {
+    const { localStorageRanking } = this.props;
+    localStorageRanking();
+  }
+
+  handleClick(name, score, gravatarImagem) {
+    const { setRanking } = this.props;
+    setRanking({ name, score, gravatarImagem });
+  }
+
   feedbackMessage(assertions) {
     const MIN_TO_BE_GOOD = 3;
     if (assertions >= MIN_TO_BE_GOOD) {
@@ -14,8 +34,12 @@ class feedback extends Component {
     return <h3 data-testid="feedback-text">Podia ser melhor...</h3>;
   }
 
+  sendLocalStorage(click) {
+    console.log(click);
+  }
+
   render() {
-    const { assertions, score, history } = this.props;
+    const { assertions, score, name, gravatarImagem } = this.props;
     return (
       <div className="App">
         <HeaderFeedback />
@@ -30,18 +54,22 @@ class feedback extends Component {
           { assertions === 1 ? ' questão' : ' questões'}
         </h4>
         <button
-          type="button"
+          type="submit"
           data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
+          onClick={ () => (this.handleClick(name, score, gravatarImagem)) }
         >
-          Jogar novamente
+          <Link to="/">
+            Jogar novamente
+          </Link>
         </button>
         <button
-          type="button"
+          type="submit"
           data-testid="btn-ranking"
-          onClick={ () => history.push('/ranking') }
+          onClick={ () => (this.handleClick(name, score, gravatarImagem)) }
         >
-          Ver Ranking
+          <Link to="/ranking">
+            Ver Ranking
+          </Link>
         </button>
       </div>
     );
@@ -49,14 +77,27 @@ class feedback extends Component {
 }
 
 feedback.propTypes = {
+  localStorageRanking: PropTypes.func.isRequired,
+  setRanking: PropTypes.func.isRequired,
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   history: PropTypes.shape(PropTypes.any).isRequired,
-};
+  name: PropTypes.string,
+  gravatarEmail: PropTypes.string,
+  gravatarImagem: PropTypes.string,
+}.isRequired;
 
 const mapStateToProps = ({ player }) => ({
   assertions: player.assertions,
   score: player.score,
+  name: player.name,
+  gravatarImagem: player.gravatarImagem,
 });
 
-export default connect(mapStateToProps)(feedback);
+const mapDispatchToProps = (dispatch) => ({
+  setRanking: (player) => dispatch(setRankingAction(player)),
+
+  localStorageRanking: () => dispatch(localStorageSafe()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(feedback);

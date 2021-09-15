@@ -5,6 +5,8 @@ export const ACTIONS = {
   SET_IMG_GRAVATAR: 'SET_IMG_GRAVATAR',
   SET_IMG_GRAVATAR_ERROR: 'SET_IMG_GRAVATAR_ERROR',
   SET_SETTINGS: 'SET_SETTINGS',
+  SET_RANKING: 'SET_RANKING',
+  GET_LOCALSTORAGE_RANKING: 'GET_LOCALSTORAGE_RANKING',
 };
 
 export const setEmail = (payload) => ({ type: ACTIONS.SET_EMAIL, payload });
@@ -14,6 +16,11 @@ export const getToken = (token) => ({ type: ACTIONS.GET_TOKEN, payload: token })
 export const setScore = (score) => ({ type: ACTIONS.SET_SCORE, payload: score });
 
 export const setSettings = (payload) => ({ type: ACTIONS.SET_SETTINGS, payload });
+
+export const setRanking = (payload) => ({ type: ACTIONS.SET_RANKING, payload });
+
+const getLocalStorageRanking = (payload) => (
+  { type: ACTIONS.GET_LOCALSTORAGE_RANKING, payload });
 
 export function getTokenApi() {
   return async (dispatch) => {
@@ -29,6 +36,17 @@ export function getTokenApi() {
 export function setLocalStorageThunk() {
   return async (_, getState) => {
     localStorage.setItem('state', JSON.stringify(getState()));
+  };
+}
+
+export function sendToRank() {
+  const rankItem = JSON.parse(localStorage.getItem('ranking'));
+  return async (dispatch) => (dispatch(getLocalStorageRanking(rankItem)));
+}
+
+export function localStorageRanking() {
+  return async (_, getState) => {
+    localStorage.setItem('ranking', JSON.stringify(getState().ranking));
   };
 }
 
