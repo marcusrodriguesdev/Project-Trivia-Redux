@@ -1,26 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import trophy from '../assets/trophy.png';
+import './ranking.css';
 
 class Ranking extends React.Component {
   render() {
-    const rank = JSON.parse(localStorage.getItem('ranking'));
-    rank.sort((a, b) => b.score - a.score);
     return (
-      <div>
-        <h3 data-testid="ranking-title">Ranking</h3>
-        <ul>
-          {rank.map((player, index) => (
-            <li key={ index }>
-              <img src={ player.picture } alt="Gravatar" />
-              <p data-testid={ `player-name${index}` }>{player.name}</p>
-              <p data-testid={ `player-score${index}` }>{player.score}</p>
-            </li>
-          ))}
-        </ul>
-
-        <Link to="/">
-          <button type="button" data-testid="btn-go-home">Home</button>
-        </Link>
+      <div className="ranking-wrapper">
+        <div className="rank-container">
+          <h3 className="rank-title">Ranking</h3>
+          <div className="rank-item">
+            <div className="rank-box-index">
+              <p className="rank-index">1</p>
+            </div>
+            <img className="rank-image" src="https://memegenerator.net/img/instances/85220527/no-consegue-n-.jpg" alt="" />
+            <p className="rank-player-name">Marcus Vinicius Mendes</p>
+            <img className="trophy" src={ trophy } alt="trophy" />
+            <p className="rank-player-score">400 pontos</p>
+          </div>
+        </div>
       </div>
     );
   }

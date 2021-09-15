@@ -1,0 +1,77 @@
+:root {
+
+  --rgb1: rgba(2, 0, 36, 1) 0%;
+
+  --rgb2: rgba(9, 9, 121, 1) 35%;
+
+  --rgb3: rgba(0, 212, 255, 1) 100%;
+}
+
+.ranking-wrapper {
+  background: linear-gradient(90deg, var(--rgb1), var(--rgb2), var(--rgb3));
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.rank-container {
+  background: black;
+  /* width: 600px; */
+  width: 500px;
+  opacity: 0.9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rank-item {
+  background: linear-gradient(90deg, var(--rgb1), var(--rgb2), var(--rgb3));
+  display: flex;
+  width: 450px;
+  border: 1px white solid;
+  left: 500px;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
+.rank-title {
+  color: white;
+}
+
+.rank-box-index {
+  height: 30px;
+  width: 30px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  
+}
+
+.rank-index {
+  color: black;
+  font-weight: 800;
+}
+
+.rank-image {
+
+  height: 50px;
+  width: 50px;
+}
+
+.rank-player-name {
+  color: white;
+  font-weight: 800;
+}
+
+.trophy {
+  width: 20px;
+  height: 20px;
+}
+.rank-player-score {
+  color: white;
+}
