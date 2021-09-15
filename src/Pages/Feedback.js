@@ -37,19 +37,26 @@ class Feedback extends React.Component {
     const { playerName, playerScore } = this.props;
     return (
       <div>
-        <div>
-          <span data-testid="feedback-text" className="end-game">FIM DE JOGO!</span>
+        <div className="handle-gravatar">
+          <div>
+            <span data-testid="feedback-text" className="end-game">FIM DE JOGO!</span>
+          </div>
+          <header>
+            <img
+              src={ this.returnGravatar() }
+              alt="Gravatar"
+              data-testid="header-profile-picture"
+              className="feedback-gravatar"
+            />
+          </header>
         </div>
-        <header>
-          <img
-            src={ this.returnGravatar() }
-            alt="Gravatar"
-            data-testid="header-profile-picture"
-            className="gravatar"
-          />
-          <span data-testid="header-player-name" className="text">{ playerName }</span>
-          <span data-testid="header-score">{ playerScore }</span>
-        </header>
+        <p
+          data-testid="header-player-name"
+          className="feedback-player-name"
+        >
+          { playerName }
+        </p>
+        <span data-testid="header-score">{ playerScore }</span>
       </div>
     );
   }
