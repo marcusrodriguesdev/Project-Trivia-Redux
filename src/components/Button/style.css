@@ -11,7 +11,9 @@
   transition: filter 0.2s;
 }
 
-.game-button:hover {
+.game-button:hover,
+.game-button:focus-visible {
+  outline: none;
   filter: brightness(1.3);
 }
 

@@ -11,3 +11,8 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   background: #e4e4e4;
 }
+
+.select-input:focus-visible {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  outline: none;
+}

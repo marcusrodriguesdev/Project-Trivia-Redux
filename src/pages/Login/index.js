@@ -77,7 +77,7 @@ class Login extends Component {
     return (
       <div className="login-section">
         <img src={ logo } alt="Trivia" style={ { width: '29em' } } />
-        <form className="login-form">
+        <form className="login-form" autoComplete="off">
           <Input
             placeholder="Name"
             type="text"

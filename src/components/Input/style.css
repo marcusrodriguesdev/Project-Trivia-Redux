@@ -11,6 +11,15 @@
   outline: none;
 }
 
+.game-input:-webkit-autofill,
+.game-input:-webkit-autofill:hover, 
+.game-input:-webkit-autofill:focus, 
+.game-input:-webkit-autofill:active
+{
+ box-shadow: 0 0 0 30px white inset !important;
+ background: white;
+}
+
 .game-input:focus-visible ~ .outline {
   visibility: visible;
   transform: scale(1, 1);
