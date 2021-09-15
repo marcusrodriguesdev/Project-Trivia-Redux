@@ -53,7 +53,7 @@ class Settings extends Component {
     const { categories, quantity } = this.state;
 
     return (
-      <div>
+      <div className="settings-page">
         <header className="settingHeader">
           <h1
             className="settings-title"
@@ -89,7 +89,9 @@ class Settings extends Component {
               />
             </label>
           </div>
-          <button type="button" onClick={ this.handleClick }>Salvar</button>
+          <div className="save-settings">
+            <button type="button" onClick={ this.handleClick }>Salvar</button>
+          </div>
         </form>
       </div>
     );

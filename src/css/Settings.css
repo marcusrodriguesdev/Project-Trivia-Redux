@@ -5,62 +5,85 @@
   padding: 0;
 }
 
+.settings-page {
+  align-items: center;
+  background-color: #874dbf;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
 .settingHeader {
   align-items: center;
+  background-color: white;
   display: flex;
   font-size: 25px;
   height: 10vh;
   justify-content: center;
-  margin: 20px 1px;
+  padding: 3.5rem;
+  width: 100%;
 }
 
 .settingForm {
   align-items: center;
-  background-color: #46178f;
   color: white;
   display: flex;
   flex-direction: column;
-  height: 84vh;
-  justify-content: center;
-}
-
-.settingForm button {
-  border: none;
-  border-radius: 10px;
-  box-shadow: 1px 4px #f0f3f3;
-  font-size: 20px;
-  height: 30px;
-  margin-top: 15px;
-  width: 200px;
-}
-
-.settingForm button:hover {
-  font-weight: 800;
+  margin: auto;
 }
 
 .selectsDiv {
   display: flex;
   flex-direction: column;
+  margin: 2rem 0;
   text-align: center;
+}
+
+.selectsDiv select, .selectsDiv input {
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 30px;
+  text-align: center;
+  width: 45%;
 }
 
 .selectsDiv label {
+  background-color: rgb(0 0 0 / 0.1);
   display: flex;
-  flex-direction: column;
   font-size: 30px;
+  justify-content: space-between;
+  margin: 3px;
   padding: 20px;
 }
 
-.selectsDiv label select {
-  font-size: 30px;
-  text-align: center;
+.selectsDiv option {
+  font-size: 20px;
 }
 
-.selectsDiv label select, option {
-  text-align-last: center;
+.save-settings {
+  align-items: flex-end;
+  display: flex;
+  height: 60px;
+  width: 20rem;
 }
 
-.selectsDiv label input {
-  font-size: 30px;
-  text-align: center;
+.save-settings button {
+  background-color: #66bf39;
+  border: none;
+  border-bottom: 4px solid rgb(0 0 0 / 25%);
+  border-radius: 4px;
+  box-shadow: none;
+  box-sizing: content-box;
+  color: white;
+  font-size: 20px;
+  min-height: 42px;
+  width: 100%;
+}
+
+
+.save-settings button:hover {
+  background-color: #5cad33;
+  border-bottom: 1px solid rgb(0 0 0 / 25%);
 }
