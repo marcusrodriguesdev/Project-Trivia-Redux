@@ -11,16 +11,16 @@ class Ranking extends React.Component {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
 
     return (
-      <div className="mainDiv">
+      <div className="ranking-page">
         <header>
           <h1 data-testid="ranking-title">Ranking</h1>
         </header>
-        <div className="playerContainer">
+
+        <main className="ranking-main">
           <div className="logoButtonContainer">
-            <div className="logoTrivia">
-              <img src={ logo } alt="" />
-            </div>
-            <div className="buttonContainer">
+            <img src={ logo } alt="logo" className="logoTrivia" />
+
+            <div className="back-button">
               <button
                 type="button"
                 onClick={ () => history.push('/') }
@@ -30,10 +30,9 @@ class Ranking extends React.Component {
               </button>
             </div>
           </div>
-          <div className="playerList">
-            <PlayersList ranking={ ranking } />
-          </div>
-        </div>
+
+          <PlayersList ranking={ ranking } />
+        </main>
       </div>
     );
   }

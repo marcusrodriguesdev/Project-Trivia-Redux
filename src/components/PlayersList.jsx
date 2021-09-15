@@ -9,11 +9,11 @@ export default class PlayersList extends Component {
     ranking.sort((a, b) => b.score - a.score);
 
     return (
-      <ul>
+      <ul className="ranking-list">
         { ranking.map(({ name, score, picture }, index) => (
-          <li className="list" key={ index }>
+          <li className="ranking-list-item" key={ index }>
             <img className="invisible" src={ picture } alt="avatar" />
-            <div className="listContainer">
+            <div className="list-item-content">
               <span
                 className="player-name"
                 data-testid={ `player-name-${index}` }
@@ -21,6 +21,7 @@ export default class PlayersList extends Component {
                 <span className="number">{ index + 1 }</span>
                 { name }
               </span>
+
               <span
                 className="player-score"
                 data-testid={ `player-score-${index}` }

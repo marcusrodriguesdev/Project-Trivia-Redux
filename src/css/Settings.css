@@ -18,11 +18,16 @@
   align-items: center;
   background-color: white;
   display: flex;
-  font-size: 25px;
-  height: 10vh;
+  height: 15vh;
   justify-content: center;
-  padding: 3.5rem;
   width: 100%;
+}
+
+.settingHeader h1 {
+  color: #333;
+  font-size: 40px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .settingForm {
@@ -71,19 +76,14 @@
 
 .save-settings button {
   background-color: #66bf39;
-  border: none;
-  border-bottom: 4px solid rgb(0 0 0 / 25%);
-  border-radius: 4px;
-  box-shadow: none;
-  box-sizing: content-box;
   color: white;
   font-size: 20px;
-  min-height: 42px;
+  height: 42px;
   width: 100%;
 }
 
 
 .save-settings button:hover {
   background-color: #5cad33;
-  border-bottom: 1px solid rgb(0 0 0 / 25%);
+  border-bottom: 1px solid rgb(0 0 0 / 0.25);
 }

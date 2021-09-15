@@ -1,72 +1,106 @@
 * {
+  box-sizing: border-box;
   font-family: Montserrat , Helvetica Neue , Helvetica , Arial , sans-serif;
   margin: 0;
   padding: 0;
 }
 
-header {
-  align-items: center;
+.ranking-page {
+  background-color: #46178f;
   display: flex;
-  height: 115px;
-  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
 }
 
-h1 {
+.ranking-page header {
+  align-items: center;
+  background-color: white;
+  display: flex;
+  height: 15vh;
+  justify-content: center;
+  width: 100%;
+}
+
+.ranking-page h1 {
   color: #333;
   font-size: 40px;
   font-weight: 600;
   text-align: center;
 }
 
+.logoTrivia {
+  height: 60px;
+}
+
+.logoButtonContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 2rem;
+  position: relative;
+  width: 100%;
+}
+
+.back-button {
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  position: absolute;
+  right: 1.5rem;
+  width: 170px;
+}
+
+.back-button button {
+  background-color: #1368ce;
+  color: white;
+  font-size: 1rem;
+  height: 48px;
+}
+
+.back-button button:hover {
+  background-color: #1161c2;
+  border-bottom: 1px solid rgb(0 0 0 / 25%);
+}
+
 .invisible {
   display: none;
 }
 
-
-.playerContainer {
-  background-color: #46178f;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.playerList {
+.ranking-main {
   align-items: center;
   display: flex;
-  justify-content: center;
-  margin-top: 150px;
+  flex-direction: column;
+  min-height: 85vh;
 }
 
-.listContainer {
-  display: flex;
-  justify-content: space-between;
-  width: 1200px;
-}
-
-ul {
+.ranking-list {
   color: white;
   font-size: 25px;
   font-weight: 600;
   list-style-type: none;
-  margin-top: 80px;
+  margin: auto;
+  width: 70%;
 }
 
-button {
-  background: white;
-  border: 0;
+.ranking-list-item {
+  padding: 0.5rem 2rem;
+}
+
+.ranking-list-item:nth-of-type( 1 ) {
+  background-color: white;
   border-radius: 4px;
-  box-shadow: rgb(0 0 0 / 25%) 0 -4px inset;
-  color: black;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 700;
-  min-height: 48px;
-  padding: 0 16px 4px;
-  width: 100%;
+  color: #333;
+}
+
+.list-item-content {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .player-name {
-  color: white;
   display: flex;
   font-size: 35px;
   font-weight: 600;
@@ -77,32 +111,4 @@ button {
   display: flex;
   font-size: 17px;
   margin-right: 15px;
-}
-
-.logoTrivia {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  width: 90%;
-}
-
-.logoTrivia img {
-  height: 60px;
-  margin-left: 224px;
-  margin-top: 25px;
-}
-
-.logoButtonContainer {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.buttonContainer {
-  background-color: red;
-  display: flex;
-  justify-content: flex-end;
-  margin: 20px 25px;
-  width: 180px;
 }
