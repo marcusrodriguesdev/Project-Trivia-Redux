@@ -167,7 +167,7 @@ class Game extends Component {
       const { disabled } = this.props;
       return (
         <div className="question-container" id="question-container">
-          <h4 data-testid="question-category">{stringCategory}</h4>
+          <h2 data-testid="question-category">{stringCategory}</h2>
           <p data-testid="question-text">{stringQuestion}</p>
           {shuffledArray.map((element) => (
             element.correct
@@ -190,19 +190,21 @@ class Game extends Component {
     return (
       <div className="body-game">
         <Header />
-        {this.renderQuestion(questions, shuffledArray, questionIndex, over)}
-        {
-          disabled ? (
-            <button
-              data-testid="btn-next"
-              type="button"
-              onClick={ this.nextQuestion }
-            >
-              Próxima
-            </button>
-          ) : null
-        }
-        <img className="img-game" src="https://freepikpsd.com/media/2019/10/homer-simpson-pensando-png-3-Transparent-Images.png" alt="Home-pensando" />
+        <div className="questions">
+          {this.renderQuestion(questions, shuffledArray, questionIndex, over)}
+          {
+            disabled ? (
+              <button
+                className="cta"
+                data-testid="btn-next"
+                type="button"
+                onClick={ this.nextQuestion }
+              >
+                Próxima
+              </button>
+            ) : null
+          }
+        </div>
       </div>
     );
   }
