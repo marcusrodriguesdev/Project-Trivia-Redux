@@ -14,8 +14,13 @@ class Header extends Component {
           src={ `https://www.gravatar.com/avatar/${emailHash}` }
           alt="Avatar"
         />
-        <span data-testid="header-player-name">{ name }</span>
-        <span data-testid="header-score">{score}</span>
+        <label htmlFor="name">
+          <p data-testid="header-player-name" id="name">{ name }</p>
+        </label>
+        <label htmlFor="score">
+          Pontuação
+          <h1 data-testid="header-score" id="score">{` ${score}`}</h1>
+        </label>
       </header>
     );
   }
