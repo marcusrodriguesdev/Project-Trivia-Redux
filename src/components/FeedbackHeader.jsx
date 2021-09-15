@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class FeedbackHeader extends Component {
   render() {
-    const { name, image, score } = this.props;
+    const { name, image, total } = this.props;
     return (
       <header
         className="header"
@@ -37,13 +37,13 @@ class FeedbackHeader extends Component {
 FeedbackHeader.propTypes = {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   name: state.userReducer.name,
   image: state.userReducer.image,
-  score: state.scoreReducer.score,
+  total: state.scoreReducer.total,
 });
 
 export default connect(mapStateToProps)(FeedbackHeader);

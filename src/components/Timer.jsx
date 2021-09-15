@@ -11,10 +11,6 @@ class Timer extends React.Component {
     this.retimer();
   }
 
-  /* componentDidUpdate() {
-    this.retimer();
-  } */
-
   componentWillUnmount() {
     clearInterval(this.intervalId);
   }
