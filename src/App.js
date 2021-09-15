@@ -1,8 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import './App.css';
 import FeedBack from './pages/FeedBack';
-// import GamePage from './pages/GamePage';
 import Login from './pages/Login';
 import Ranking from './pages/Ranking';
 import Settings from './pages/Settings';

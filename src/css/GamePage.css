@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: Montserrat , sans-serif;
   margin: 0;
 }
 
@@ -141,29 +142,25 @@
 }
 
 .alternatives button:nth-of-type( 1 ):before {
-  content: '▲';
-  font-size: 2.2rem;
+  content: url(../images/icons/triangle.png);
   line-height: 1rem;
   padding-right: 0.6rem;
 }
 
 .alternatives button:nth-of-type( 2 ):before {
-  content: '⯁';
-  font-size: 2rem;
+  content: url(../images/icons/diamond.png);
   line-height: 1rem;
   padding-right: 0.6rem;
 }
 
 .alternatives button:nth-of-type( 3 ):before {
-  content: '⚫';
-  font-size: 1.7rem;
+  content: url(../images/icons/circle.png);
   line-height: 1rem;
   padding-right: 0.6rem;
 }
 
 .alternatives button:nth-of-type( 4 ):before {
-  content: '⬛';
-  font-size: 1.5rem;
+  content: url(../images/icons/square.png);
   line-height: 1rem;
   padding-right: 0.6rem;
 }
