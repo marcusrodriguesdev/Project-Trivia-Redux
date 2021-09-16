@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import './style.css';
+import Image from './trivia.png';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -56,7 +58,12 @@ class Initial extends Component {
   render() {
     const { name, email, disable } = this.state;
     return (
-      <div>
+      <div className="mainContent">
+        <img
+          src={ Image }
+          alt="logo"
+          className="logoImage"
+        />
         <input
           id="name"
           data-testid="input-player-name"
@@ -64,6 +71,7 @@ class Initial extends Component {
           onChange={ this.handleChange }
           placeholder="Name"
           value={ name }
+          className="defaultStyle"
         />
 
         <input
@@ -73,6 +81,7 @@ class Initial extends Component {
           onChange={ this.handleChange }
           placeholder="E-mail"
           value={ email }
+          className="defaultStyle"
         />
 
         <button
@@ -80,10 +89,17 @@ class Initial extends Component {
           type="button"
           disabled={ disable }
           onClick={ this.sendLogin }
+          className="defaultStyle btnLogin"
         >
           Jogar
         </button>
-        <Link to="/configuracoes" data-testid="btn-settings">Configurações</Link>
+        <Link
+          to="/configuracoes"
+          data-testid="btn-settings"
+          className="defaultStyle configBtn"
+        >
+          Configurações
+        </Link>
       </div>
     );
   }

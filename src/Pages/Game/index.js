@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setScore } from '../../actions';
-import './index.css';
+import './game.css';
 
 class Game extends Component {
   constructor() {
@@ -155,7 +155,7 @@ class Game extends Component {
           <button
             type="button"
             data-testid="correct-answer"
-            className={ greenBorder }
+            className={ `${greenBorder} question` }
             onClick={ this.handleClick }
             disabled={ disable }
           >
@@ -166,7 +166,7 @@ class Game extends Component {
       id += 1;
       return (
         <button
-          className={ redBorder }
+          className={ `${redBorder} question` }
           type="button"
           data-testid={ `wrong-answer-${id}` }
           key={ id }
@@ -185,42 +185,38 @@ class Game extends Component {
     if (loading) return <h1>loading</h1>;
     const { questions } = this.state;
     return (
-      <div>
-        <header>
-          <h1 data-testid="header-player-name">
-            { name }
-          </h1>
+      <div className="gameContent">
+        <header className="header">
           <img
             src={ `https://www.gravatar.com/avatar/${profile}` }
             alt="profile"
             data-testid="header-profile-picture"
+            className="playerPic"
           />
-          <span data-testid="header-score">0</span>
-          <span>
+          <h1 data-testid="header-player-name" className="playerName">
+            { name }
+          </h1>
+          { /*<span data-testid="header-score">0</span>*/ }
+          <span className="timer">
             { timer }
           </span>
         </header>
-        <div>
-          <span data-testid="question-category">
-            {
-              questions[questionNumber].category
-            }
+        <div className="questionArea">
+          <span data-testid="question-category" className="questionCategory">
+            { questions[questionNumber].category }
           </span>
-          <span data-testid="question-text">
-            {
-              questions[questionNumber].question
-            }
+          <span data-testid="question-text" className="questionText">
+            { questions[questionNumber].question }
           </span>
-          <span>
-            {
-              this.renderAnswers() // teste do git
-            }
-          </span>
+          <div className="answersArea">
+            { this.renderAnswers() }
+          </div>
           <button
             type="button"
             data-testid="btn-next"
             hidden={ showButton }
             onClick={ this.nextQuestion }
+            className="nextQuestion"
           >
             Próxima
           </button>
