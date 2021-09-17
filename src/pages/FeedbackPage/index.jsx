@@ -2,23 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import { Link } from 'react-router-dom';
+import { resetStore as resetStoreAction } from '../../redux/actions';
 
 class FeedbackPage extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      feedbackMsg: '',
-    };
-
     this.handleFeedbackMsg = this.handleFeedbackMsg.bind(this);
+    this.redirectToRanking = this.redirectToRanking.bind(this);
+    this.redirectToHome = this.redirectToHome.bind(this);
   }
 
   componentDidMount() {
     const { assertions } = this.props;
     this.handleFeedbackMsg(assertions);
-    console.log(this.state);
   }
 
   handleFeedbackMsg(assertionsNumber) {
@@ -28,6 +25,17 @@ class FeedbackPage extends React.Component {
       return 'Podia ser melhor...';
     }
     return 'Mandou bem!';
+  }
+
+  redirectToRanking() {
+    const { history } = this.props;
+    history.push('/ranking');
+  }
+
+  redirectToHome() {
+    const { history, resetStore } = this.props;
+    resetStore();
+    history.push('/');
   }
 
   render() {
@@ -53,9 +61,20 @@ class FeedbackPage extends React.Component {
           </div>
         </div>
         <div data-testid="feedback-text">{ this.handleFeedbackMsg(assertions) }</div>
-        <Link to="/">
-          <button type="button" data-testid="btn-play-again">Jogar novamente</button>
-        </Link>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ this.redirectToRanking }
+        >
+          Ranking
+        </button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ this.redirectToHome }
+        >
+          Jogar novamente
+        </button>
       </>
     );
   }
@@ -68,11 +87,19 @@ const mapStateToProps = (state) => ({
   assertions: state.player.assertions,
 });
 
+const mapDispatchToProps = () => (dispatch) => ({
+  resetStore: () => dispatch(resetStoreAction()),
+});
+
 FeedbackPage.propTypes = {
-  email: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  name: PropTypes.string.isRequired,
+  resetStore: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps)(FeedbackPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackPage);

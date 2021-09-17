@@ -2,7 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getTriviaToken as getTriviaTokenAction } from '../../redux/actions';
+import {
+  getTriviaToken as getTriviaTokenAction,
+  getLocalStorage as getLocalStorageAction,
+}
+  from '../../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,6 +19,12 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { getLocalStorage } = this.props;
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    getLocalStorage(ranking);
   }
 
   handleClick() {
@@ -67,15 +77,21 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
+  getLocalStorage: PropTypes.func.isRequired,
   getTriviaToken: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  selected: state.game.isAnswered,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   getTriviaToken:
     (name, email, history) => dispatch(getTriviaTokenAction(name, email, history)),
+  getLocalStorage: (payload) => dispatch(getLocalStorageAction(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
