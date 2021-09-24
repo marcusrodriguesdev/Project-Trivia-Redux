@@ -27,6 +27,10 @@ class StopWatch extends Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
   resetTimer() {
     const { changeTimer } = this.props;
     const COUNTDOWN = 30;
@@ -38,13 +42,13 @@ class StopWatch extends Component {
     const { answered } = this.props;
     const ONE_SECOND = 1000;
     this.setState({ isStopped: false });
-    const Id = setInterval(() => {
+    this.intervalId = setInterval(() => {
       const { selected, changeTimer, timer } = this.props;
       if (!selected && timer > 0) {
         changeTimer(timer - 1);
       } else {
         answered();
-        clearInterval(Id);
+        clearInterval(this.intervalId);
         this.setState({ isStopped: true });
       }
     }, ONE_SECOND);
