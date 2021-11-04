@@ -22,4 +22,4 @@
 
 <hr />
 
-- Qualquer dúvida poder me mandar um email: marcusrodriguesdev@gmail.com
+- 📬 Qualquer dúvida poder me mandar um email: marcusrodriguesdev@gmail.com
